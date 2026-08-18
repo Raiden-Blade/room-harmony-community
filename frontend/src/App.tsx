@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { AppLayout } from "./layouts/AppLayout";
 import { AboutPage } from "./pages/AboutPage";
+import { ChallengeDetailPage } from "./pages/ChallengeDetailPage";
 import { CoordinateDetailPage } from "./pages/CoordinateDetailPage";
 import { CreateCoordinatePage } from "./pages/CreateCoordinatePage";
 import { CreatorProfilePage } from "./pages/CreatorProfilePage";
@@ -11,6 +12,7 @@ import { HomePage } from "./pages/HomePage";
 import { PlanEditPage } from "./pages/PlanEditPage";
 import { PlanPage } from "./pages/PlanPage";
 import { ProductDetailPage } from "./pages/ProductDetailPage";
+import { SeasonalLandingPage } from "./pages/SeasonalLandingPage";
 import { SavedPage } from "./pages/SavedPage";
 
 export const router = createBrowserRouter([
@@ -19,6 +21,8 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/explore", element: <ExplorePage /> },
+      { path: "/seasonal", element: <SeasonalLandingPage /> },
+      { path: "/challenges/:challengeSlug", element: <ChallengeDetailPage /> },
       { path: "/create", element: <CreateCoordinatePage /> },
       { path: "/creators/:creatorId", element: <CreatorProfilePage /> },
       { path: "/coordinates/:coordinateId", element: <CoordinateDetailPage /> },

@@ -31,6 +31,13 @@ export function CoordinateDetailPage() {
     if (detail.data.match_reasons.length) {
       void track("match_reason_view", { coordinate_id: detail.data.id });
     }
+    if (detail.data.challenge_contexts.length) {
+      const context = detail.data.challenge_contexts[0];
+      void track(context.status === "ARCHIVED" ? "previous_year_coordinate_view" : "challenge_coordinate_view", {
+        coordinate_id: detail.data.id,
+        properties: { challenge_id: context.challenge_id, season: context.season },
+      });
+    }
   }, [detail.data?.id]);
 
   async function save() {
@@ -57,6 +64,15 @@ export function CoordinateDetailPage() {
       await track("adapt_start", { coordinate_id: detail.data.id });
       await track("plan_start", { coordinate_id: detail.data.id });
       await track("plan_from_coordinate", { coordinate_id: detail.data.id });
+      if (detail.data.challenge_contexts[0]) {
+        await track("challenge_adapt_start", {
+          coordinate_id: detail.data.id,
+          properties: {
+            challenge_id: detail.data.challenge_contexts[0].challenge_id,
+            season: detail.data.challenge_contexts[0].season,
+          },
+        });
+      }
       navigate(`/plans/${plan.id}/edit`);
     } catch (reason) {
       setActionError(reason instanceof Error ? reason.message : "PLANを作れませんでした");
@@ -74,6 +90,37 @@ export function CoordinateDetailPage() {
       await track(result.helpful ? "helpful_add" : "helpful_remove", { coordinate_id: detail.data.id });
     } catch (reason) {
       setActionError(reason instanceof Error ? reason.message : "参考になったを更新できませんでした");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function enterChallenge(challengeSlug: string, challengeId: string) {
+    if (!detail.data) return;
+    const option = detail.data.challenge_options.find((item) => item.challenge_slug === challengeSlug);
+    setBusy(true);
+    setActionError(null);
+    await track("challenge_entry_start", {
+      coordinate_id: detail.data.id,
+      properties: {
+        challenge_id: challengeId,
+        challenge_type: option?.challenge_type || "LIFE_EVENT",
+        season: option?.season || "SPRING",
+      },
+    });
+    try {
+      await api.enterChallenge(challengeSlug, detail.data.id);
+      await track("challenge_entry_complete", {
+        coordinate_id: detail.data.id,
+        properties: { challenge_id: challengeId, challenge_type: option?.challenge_type || "LIFE_EVENT", season: option?.season || "SPRING" },
+      });
+      await detail.refresh();
+    } catch (reason) {
+      await track("challenge_entry_rejected", {
+        coordinate_id: detail.data.id,
+        properties: { challenge_id: challengeId, challenge_type: option?.challenge_type || "LIFE_EVENT", season: option?.season || "SPRING" },
+      });
+      setActionError(reason instanceof Error ? reason.message : "Themeに参加できませんでした");
     } finally {
       setBusy(false);
     }
@@ -168,6 +215,14 @@ export function CoordinateDetailPage() {
       </div>
 
       <DemoNotice />
+
+      {(coordinate.challenge_contexts.length > 0 || coordinate.challenge_options.length > 0) && (
+        <section className="section detail-section coordinate-challenge-panel" aria-labelledby="coordinate-challenge-title">
+          <div className="section-heading"><div><p className="eyebrow">Seasonal context</p><h2 id="coordinate-challenge-title">この暮らしが参加するTheme</h2></div><p>Global順位ではなく、季節と制約から再発見・Adaptします。</p></div>
+          {coordinate.challenge_contexts.length > 0 && <div className="challenge-context-list">{coordinate.challenge_contexts.map((context) => <Link key={context.challenge_id} to={`/challenges/${context.challenge_slug}`}><span><Badge tone={context.status === "ACTIVE" ? "accent" : "quiet"}>{context.status === "ARCHIVED" ? "前年Archive" : "参加中"}</Badge>{context.recognition && <Badge tone="warning">PROTOTYPE PICK</Badge>}</span><strong>{context.challenge_title}</strong><small>{context.season} {context.year}{context.recognition && ` · ${label(context.recognition)}`}</small></Link>)}</div>}
+          {coordinate.challenge_options.some((option) => !option.already_entered) && <div className="challenge-option-list"><h3>この投稿で参加できるTheme</h3>{coordinate.challenge_options.filter((option) => !option.already_entered).map((option) => <article key={option.challenge_id}><div><strong>{option.challenge_title}</strong>{!option.eligible && <small>{option.rejection_messages.join(" ")}</small>}</div>{option.eligible ? <button className="button button--secondary" disabled={busy} onClick={() => void enterChallenge(option.challenge_slug, option.challenge_id)}>このテーマに参加</button> : <Badge tone="quiet">条件外</Badge>}</article>)}</div>}
+        </section>
+      )}
 
       {(coordinate.genealogy.parent || coordinate.genealogy.public_adaptation_count > 0 || coordinate.genealogy.plan_started_count > 0) && <section className="section detail-section lineage-panel" aria-labelledby="lineage-title"><div className="section-heading"><div><p className="eyebrow">Coordinate genealogy</p><h2 id="lineage-title">参考とアレンジのつながり</h2></div><p>巨大な人気グラフではなく、暮らしの再利用だけを示します。</p></div><div className="lineage-grid"><article><span>参考元</span>{coordinate.genealogy.parent ? coordinate.genealogy.parent.available && coordinate.genealogy.parent.id ? <Link to={`/coordinates/${coordinate.genealogy.parent.id}`}>{coordinate.genealogy.parent.title} →</Link> : <strong>{coordinate.genealogy.parent.title}</strong> : <strong>オリジナル</strong>}{coordinate.derivation_type && <small>{label(coordinate.derivation_type)}{coordinate.remix_note && ` · ${coordinate.remix_note}`}</small>}</article><article><span>Private PLAN</span><strong>{coordinate.genealogy.plan_started_count}件</strong><small>このコーデから直接検討を開始</small></article><article><span>公開アレンジ</span><strong>{coordinate.genealogy.public_adaptation_count}件</strong><small>Rootから生まれた公開コーデ</small></article></div>{coordinate.genealogy.public_children.length > 0 && <div className="lineage-children"><h3>公開中の直接アレンジ</h3>{coordinate.genealogy.public_children.map((child) => child.id && <Link key={child.id} to={`/coordinates/${child.id}`}>{child.title} →</Link>)}</div>}</section>}
 

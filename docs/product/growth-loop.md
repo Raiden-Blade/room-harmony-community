@@ -57,3 +57,14 @@ Outputが次のUserのinputになるためである。単発CampaignやContest�
 ## Growth claim
 
 **HYPOTHESIS**: Structured PLAN / REALとCreator impact feedbackを備えたLoopは、単発Contestより再利用可能なCoordinate supplyを持続させる。現時点では未検証。
+
+## Goal 3 Seasonal reuse readiness
+
+Goal 3はChallengeを新しい投稿SNSとして足さず、Goal 2のCoordinate / lineageを年間Loopへ接続する。
+
+```text
+前年Archive → 発見 / Save → Private PLAN → Adapt → Public derivative
+→ Current Challenge Entry → Creator reuse signal → 翌年Archive
+```
+
+`seasonal_landing_view`、`challenge_view`、Entry start / complete / rejected、previous-year view、adapt start、recognition view、archive viewをcontrolled propertyで記録する。これは成長を証明する結果ではなく、次のUser testでreuse funnelを計測できる状態である。

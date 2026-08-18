@@ -19,3 +19,7 @@ def test_openapi_exposes_the_mvp_contract():
     assert "/api/community/coordinates/{coordinate_id}/helpful" in paths
     assert "/api/community/coordinates/{coordinate_id}/reports" in paths
     assert "/api/plans/{plan_id}/publish" in paths
+    assert "/api/seasonal" in paths
+    assert "/api/challenges" in paths
+    assert "/api/challenges/{challenge_slug}" in paths
+    assert "/api/challenges/{challenge_slug}/entries" in paths

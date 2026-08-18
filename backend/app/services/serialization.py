@@ -15,6 +15,7 @@ from app.schemas.common import (
 from app.services.community import coordinate_impact, helpful_count, is_helpful
 from app.services.images import image_url
 from app.services.pricing import calculate_price
+from app.services.seasonal import coordinate_challenge_contexts, coordinate_challenge_options
 
 
 def is_saved(session: Session, session_id: str, coordinate_id: str) -> bool:
@@ -116,6 +117,8 @@ def coordinate_detail(
         },
         creator_impact=impact,
         genealogy=genealogy,
+        challenge_contexts=coordinate_challenge_contexts(session, coordinate.id),
+        challenge_options=coordinate_challenge_options(session, session_id, coordinate),
     )
 
 

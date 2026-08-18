@@ -7,7 +7,8 @@ from pathlib import Path
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.models import Coordinate, CoordinateItem, CoordinateNeed, Product
+from app.models import Challenge, ChallengeEntry, Coordinate, CoordinateItem, CoordinateNeed, Product
+from app.schemas.seasonal import ChallengeConstraint, ChallengeEligibility
 
 
 def seed_if_empty(session: Session, seed_path: Path) -> None:
@@ -88,6 +89,80 @@ def seed_if_empty(session: Session, seed_path: Path) -> None:
                 )
             )
         session.add(coordinate)
+    session.commit()
+
+
+def seed_seasonal_if_empty(session: Session, seed_path: Path) -> None:
+    if session.scalar(select(func.count()).select_from(Challenge)):
+        return
+    payload = json.loads(seed_path.read_text(encoding="utf-8"))
+    valid_statuses = {"UPCOMING", "ACTIVE", "ENDED", "ARCHIVED"}
+    valid_seasons = {"SPRING", "SUMMER", "AUTUMN", "WINTER"}
+    valid_types = {"LIFE_EVENT", "CONSTRAINT", "ADAPT_REMIX"}
+    valid_entry_statuses = {"ACTIVE", "WITHDRAWN", "HIDDEN"}
+    valid_recognitions = {
+        "OFFICIAL_PICK",
+        "USEFUL_REUSE",
+        "SMART_BUDGET",
+        "SMALL_SPACE_IDEA",
+        "EXISTING_FURNITURE",
+        "REAL_ROOM_STORY",
+    }
+    for row in payload["challenges"]:
+        if row["status"] not in valid_statuses or row["season"] not in valid_seasons:
+            raise ValueError(f"Invalid seasonal status or season: {row['id']}")
+        if row["challenge_type"] not in valid_types or row.get("provenance") != "DEMO":
+            raise ValueError(f"Invalid Challenge type or provenance: {row['id']}")
+        if not (_datetime(row["start_at"]) < _datetime(row["end_at"]) < _datetime(row["archive_at"])):
+            raise ValueError(f"Invalid Challenge date order: {row['id']}")
+        eligibility = ChallengeEligibility.model_validate(row["eligibility"])
+        constraints = [ChallengeConstraint.model_validate(item) for item in row["constraints"]]
+        session.add(
+            Challenge(
+                id=row["id"],
+                slug=row["slug"],
+                title=row["title"],
+                description=row["description"],
+                why_it_matters=row["why_it_matters"],
+                theme=row["theme"],
+                season=row["season"],
+                year=row["year"],
+                challenge_type=row["challenge_type"],
+                status=row["status"],
+                start_at=_datetime(row["start_at"]),
+                end_at=_datetime(row["end_at"]),
+                archive_at=_datetime(row["archive_at"]),
+                cover_asset=row["cover_asset"],
+                eligibility_json=json.dumps(eligibility.model_dump(), ensure_ascii=False, sort_keys=True),
+                constraints_json=json.dumps(
+                    [item.model_dump() for item in constraints], ensure_ascii=False, sort_keys=True
+                ),
+                provenance="DEMO",
+            )
+        )
+    session.flush()
+    for row in payload["entries"]:
+        if not session.get(Challenge, row["challenge_id"]):
+            raise ValueError(f"Seasonal entry references missing Challenge: {row['challenge_id']}")
+        if not session.get(Coordinate, row["coordinate_id"]):
+            raise ValueError(f"Seasonal entry references missing Coordinate: {row['coordinate_id']}")
+        if row["status"] not in valid_entry_statuses or row.get("provenance") != "DEMO":
+            raise ValueError(f"Invalid seasonal Entry state or provenance: {row['id']}")
+        recognition = row.get("recognition")
+        if recognition is not None and recognition not in valid_recognitions:
+            raise ValueError(f"Invalid seasonal recognition: {recognition}")
+        session.add(
+            ChallengeEntry(
+                id=row["id"],
+                challenge_id=row["challenge_id"],
+                coordinate_id=row["coordinate_id"],
+                creator_id=None,
+                submitted_at=_datetime(row["submitted_at"]),
+                status=row["status"],
+                recognition=recognition,
+                provenance=row["provenance"],
+            )
+        )
     session.commit()
 
 

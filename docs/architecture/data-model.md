@@ -16,6 +16,8 @@ erDiagram
   COORDINATE ||--o{ COORDINATE_SAVE : saved_as
   USER ||--o{ EVENT : causes
   COORDINATE ||--o{ EVENT : context
+  CHALLENGE ||--o{ CHALLENGE_ENTRY : accepts
+  COORDINATE ||--o{ CHALLENGE_ENTRY : participates_as
 
   USER {
     uuid id PK
@@ -95,6 +97,27 @@ erDiagram
     string variant
     datetime occurred_at
   }
+  CHALLENGE {
+    string id PK
+    string slug UK
+    enum status
+    enum season
+    int year
+    enum challenge_type
+    json eligibility
+    json constraints
+    enum provenance
+  }
+  CHALLENGE_ENTRY {
+    string id PK
+    string challenge_id FK
+    string coordinate_id FK
+    string creator_id FK
+    enum status
+    enum recognition
+    enum provenance
+    datetime submitted_at
+  }
 ```
 
 ## Modeling choices
@@ -160,6 +183,8 @@ Ranking is deterministic in MVP. Exact weights are configuration and test eviden
 - Derivation `(parent_coordinate_id, created_at)`
 - Save `(user_id, created_at)`
 - Event `(experiment_id, variant, occurred_at)` and `(coordinate_id, event_type)`
+- Challenge `(status, season, year)` and unique `slug`
+- Challenge Entry unique `(challenge_id, coordinate_id)` plus `(creator_id, status)`
 
 No production database is created in this Goal.
 
@@ -178,3 +203,11 @@ No production database is created in this Goal.
 - `content_reports`: `(session_id, coordinate_id)` unique report、controlled reason、no auto-delete。
 
 Raw Session IDをPublic APIへ返さない。Hidden / unpublish parentがあってもchild FK recordは削除せず、閲覧者にprivate IDを露出しないtombstone表示を使う。
+
+## Goal 3 local physical model
+
+- `challenges`: status、season / year、type、structured eligibility / display constraints、Demo provenance。
+- `challenge_entries`: existing Coordinate reference、optional Creator trace、status、controlled recognition、submitted timestamp。
+- Entry count、REAL / PLAN内訳、Creator seasonal impactはcurrent SQLite stateからqueryし、seed countを保存しない。
+- Hidden Coordinateまたは`WITHDRAWN / HIDDEN` EntryはPublic gallery / count対象外。
+- Goal 2 DBでは起動時に新Tableを作り、Challengeが空の場合だけSeasonal seedを追加する。既存Coordinateは再Seedしない。

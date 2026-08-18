@@ -34,6 +34,7 @@ from app.services.community import (
 from app.services.images import delete_coordinate_files, image_url, normalize_upload
 from app.services.plans import load_coordinate
 from app.services.serialization import coordinate_detail, coordinate_summary
+from app.services.seasonal import creator_seasonal_summary
 
 
 router = APIRouter(prefix="/api", tags=["community"])
@@ -181,4 +182,5 @@ def _creator_response(session: Session, creator_id: str, session_id: str) -> Cre
         created_at=creator.created_at,
         contributions=[coordinate_summary(load_coordinate(session, row.id), session, session_id) for row in rows],
         is_owner=creator.owner_session_id == session_id,
+        seasonal=creator_seasonal_summary(session, creator.id),
     )

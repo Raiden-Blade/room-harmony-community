@@ -152,3 +152,11 @@
 
 - Decision: Preserve parent / root / structured derivation through Public Coordinate → Private PLAN → Public derivative. Hide private parent identifiers from non-owner responses and use soft unpublish.
 - Consequence: Creator Impact can count reuse without exposing another Session's private PLAN or breaking descendants.
+
+## D-026 — Seasonal Challenge is a Coordinate reuse layer
+
+- Context: A later explicit Goal activates the Seasonal loop that D-008 and D-013 previously deferred.
+- Decision: Add Home discovery plus a dedicated Seasonal Collection, structured Challenge / Entry, previous-year Archive reuse, and controlled Prototype Pick while keeping Coordinate as the only content aggregate.
+- Alternatives: A leaderboard Contest、a second ChallengePost model、or a static seasonal banner.
+- Why: The annual value comes from Archive → Private PLAN → Public derivative → current Entry lineage, not post volume or popularity.
+- Consequence: D-008 remains historical placement guidance; Home has a secondary Seasonal CTA but Core Coordinate discovery remains primary. No top-level navigation、vote ranking、reward、fake official workflow、or User-assigned recognition is added.

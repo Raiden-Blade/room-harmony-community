@@ -39,7 +39,7 @@ flowchart LR
 
 ## Challenge placement
 
-初期はTop-level navigationにしない。`Explore > Seasonal`のCollectionとして扱う。
+初期はTop-level navigationにしない。Homeの補助CTAと`/seasonal` Collectionから入り、Coordinate discoveryを主導線として維持する。
 
 理由:
 
@@ -47,6 +47,19 @@ flowchart LR
 - **INFERENCE**: 新規価値はChallenge page自体でなくPLAN / REAL循環。
 - **RISK**: Top-level化すると参加者の少ない期間に空の機能が目立つ。
 - **DECISION RULE**: 2Season以上でrepeat participationとStore / EC actionへの寄与が確認できた場合に昇格を検討。
+
+## Functional prototype contract
+
+Goal 3では次を実装した。
+
+1. `UPCOMING / ACTIVE / ENDED / ARCHIVED`を明示したChallenge lifecycle。
+2. Room size、household、housing、budget、kind、image、minimum Product countのstructured eligibility。
+3. Ownerのexisting Public Coordinateを参照するEntry。二重の投稿Modelは作らない。
+4. Previous-year Archive → Save / Private PLAN → Adapt → Public derivative → Current Challengeのlineage。
+5. official rankingと誤認させないcontrolled `Prototype Pick`。
+6. Creator Profileのseasonal participation、recognition、direct reuse aggregate。
+
+参加数・REAL / PLAN内訳はcurrent database stateから計算し、Like / view / rankのfake countをSeedしない。Entry作成時はServerがownership、visibility、moderation、duplicate、eligibilityを同じRuleで検証する。詳細は[`challenge-semantics.md`](challenge-semantics.md)。
 
 ## Seasonal KPIs
 

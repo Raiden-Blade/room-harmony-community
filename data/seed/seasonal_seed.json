@@ -1,0 +1,195 @@
+{
+  "challenges": [
+    {
+      "id": "challenge-newlife-2028",
+      "slug": "new-life-6tatami-2028",
+      "title": "新生活の6畳 2028",
+      "description": "6畳前後・一人暮らし・賃貸という共通条件から、自分に近いREAL / PLANを探して次のPLANへつなげるDemo Challengeです。",
+      "why_it_matters": "新生活では商品単体より、限られた広さ・予算・収納・Desk・Bed・Lightingを同時に考える必要があります。前年の事例を再利用し、今年の選択を具体化します。",
+      "theme": "NEW_LIFE",
+      "season": "SPRING",
+      "year": 2028,
+      "challenge_type": "LIFE_EVENT",
+      "status": "ACTIVE",
+      "start_at": "2028-02-01T00:00:00+09:00",
+      "end_at": "2028-05-31T23:59:59+09:00",
+      "archive_at": "2028-06-30T00:00:00+09:00",
+      "cover_asset": "/assets/room-natural.svg",
+      "eligibility": {
+        "size_bands": ["SMALL_6"],
+        "households": ["SINGLE"],
+        "housing_types": ["RENTAL"],
+        "budget_max": 80000,
+        "kinds": ["REAL", "PLAN"],
+        "image_required": false,
+        "min_product_count": 3
+      },
+      "constraints": [
+        {"code": "SIZE_BAND", "operator": "IN", "values": ["SMALL_6"], "label": "6畳前後"},
+        {"code": "HOUSEHOLD", "operator": "IN", "values": ["SINGLE"], "label": "一人暮らし"},
+        {"code": "HOUSING_TYPE", "operator": "IN", "values": ["RENTAL"], "label": "賃貸"},
+        {"code": "BUDGET_MAX", "operator": "LTE", "values": [80000], "label": "予算8万円以内"},
+        {"code": "MIN_PRODUCT_COUNT", "operator": "GTE", "values": [3], "label": "デモ商品3点以上"}
+      ],
+      "provenance": "DEMO"
+    },
+    {
+      "id": "challenge-budget-2028",
+      "slug": "under-50000-2028",
+      "title": "5万円以内でつくる",
+      "description": "限られた予算でも、商品役割と手持ち家具を考えながら空間を組み立てるConstraint Themeです。",
+      "why_it_matters": "安さの順位を競うのではなく、限られた予算の中で何を残し、何を買うかを再利用可能なPLANにします。",
+      "theme": "SMART_BUDGET",
+      "season": "SPRING",
+      "year": 2028,
+      "challenge_type": "CONSTRAINT",
+      "status": "ACTIVE",
+      "start_at": "2028-02-01T00:00:00+09:00",
+      "end_at": "2028-05-31T23:59:59+09:00",
+      "archive_at": "2028-06-30T00:00:00+09:00",
+      "cover_asset": "/assets/room-clear-cool.svg",
+      "eligibility": {
+        "size_bands": [],
+        "households": [],
+        "housing_types": [],
+        "budget_max": 50000,
+        "kinds": ["REAL", "PLAN"],
+        "image_required": false,
+        "min_product_count": 3
+      },
+      "constraints": [
+        {"code": "BUDGET_MAX", "operator": "LTE", "values": [50000], "label": "予算5万円以内"},
+        {"code": "MIN_PRODUCT_COUNT", "operator": "GTE", "values": [3], "label": "デモ商品3点以上"}
+      ],
+      "provenance": "DEMO"
+    },
+    {
+      "id": "challenge-remix-2028",
+      "slug": "storage-remix-2028",
+      "title": "収納重視にアレンジ",
+      "description": "既存Coordinateを起点に、収納重視版へAdaptしてlineageを残すRemix Themeです。",
+      "why_it_matters": "新規投稿を増やすだけでなく、既存の暮らしを別の制約へ変換できることがSeasonal Growthの中心です。",
+      "theme": "STORAGE_REMIX",
+      "season": "AUTUMN",
+      "year": 2028,
+      "challenge_type": "ADAPT_REMIX",
+      "status": "UPCOMING",
+      "start_at": "2028-09-01T00:00:00+09:00",
+      "end_at": "2028-11-30T23:59:59+09:00",
+      "archive_at": "2028-12-31T00:00:00+09:00",
+      "cover_asset": "/assets/room-dandy.svg",
+      "eligibility": {
+        "size_bands": [],
+        "households": [],
+        "housing_types": [],
+        "budget_max": 100000,
+        "kinds": ["REAL", "PLAN"],
+        "image_required": false,
+        "min_product_count": 3
+      },
+      "constraints": [
+        {"code": "MIN_PRODUCT_COUNT", "operator": "GTE", "values": [3], "label": "デモ商品3点以上"}
+      ],
+      "provenance": "DEMO"
+    },
+    {
+      "id": "challenge-summer-2028",
+      "slug": "cool-room-2028",
+      "title": "涼しい部屋の工夫",
+      "description": "Textile・Lighting・配置を含む、夏の暮らしを考えるGeneric Seasonal Themeです。",
+      "why_it_matters": "季節商品だけでなく、暮らし方と既存家具を含むCoordinateとして次の人が再利用できるようにします。",
+      "theme": "COOL_ROOM",
+      "season": "SUMMER",
+      "year": 2028,
+      "challenge_type": "CONSTRAINT",
+      "status": "UPCOMING",
+      "start_at": "2028-06-01T00:00:00+09:00",
+      "end_at": "2028-08-31T23:59:59+09:00",
+      "archive_at": "2028-09-30T00:00:00+09:00",
+      "cover_asset": "/assets/room-clear-cool.svg",
+      "eligibility": {
+        "size_bands": [],
+        "households": [],
+        "housing_types": [],
+        "budget_max": 100000,
+        "kinds": ["REAL", "PLAN"],
+        "image_required": false,
+        "min_product_count": 2
+      },
+      "constraints": [
+        {"code": "MIN_PRODUCT_COUNT", "operator": "GTE", "values": [2], "label": "デモ商品2点以上"}
+      ],
+      "provenance": "DEMO"
+    },
+    {
+      "id": "challenge-autumn-2027",
+      "slug": "cozy-work-2027",
+      "title": "在宅時間を整える 2027",
+      "description": "終了後からArchiveへ移る間の状態を示すEnded Demo Themeです。",
+      "why_it_matters": "終了したThemeも即時削除せず、選定と整理を経て次年度の参考へ残します。",
+      "theme": "COZY_WORK",
+      "season": "AUTUMN",
+      "year": 2027,
+      "challenge_type": "LIFE_EVENT",
+      "status": "ENDED",
+      "start_at": "2027-09-01T00:00:00+09:00",
+      "end_at": "2027-11-30T23:59:59+09:00",
+      "archive_at": "2028-12-31T00:00:00+09:00",
+      "cover_asset": "/assets/room-cozy.svg",
+      "eligibility": {
+        "size_bands": [],
+        "households": [],
+        "housing_types": [],
+        "budget_max": 100000,
+        "kinds": ["REAL", "PLAN"],
+        "image_required": false,
+        "min_product_count": 2
+      },
+      "constraints": [
+        {"code": "MIN_PRODUCT_COUNT", "operator": "GTE", "values": [2], "label": "デモ商品2点以上"}
+      ],
+      "provenance": "DEMO"
+    },
+    {
+      "id": "challenge-newlife-2027",
+      "slug": "new-life-6tatami-2027",
+      "title": "新生活の6畳 2027",
+      "description": "前年のREAL / PLANを今年のUserが再利用するために残したArchive Demoです。",
+      "why_it_matters": "Archiveは過去の結果置き場ではなく、次年度の発見とPrivate PLANを始める入力です。",
+      "theme": "NEW_LIFE",
+      "season": "SPRING",
+      "year": 2027,
+      "challenge_type": "LIFE_EVENT",
+      "status": "ARCHIVED",
+      "start_at": "2027-02-01T00:00:00+09:00",
+      "end_at": "2027-05-31T23:59:59+09:00",
+      "archive_at": "2027-06-30T00:00:00+09:00",
+      "cover_asset": "/assets/room-natural.svg",
+      "eligibility": {
+        "size_bands": ["SMALL_6"],
+        "households": ["SINGLE"],
+        "housing_types": ["RENTAL"],
+        "budget_max": 80000,
+        "kinds": ["REAL", "PLAN"],
+        "image_required": false,
+        "min_product_count": 3
+      },
+      "constraints": [
+        {"code": "SIZE_BAND", "operator": "IN", "values": ["SMALL_6"], "label": "6畳前後"},
+        {"code": "HOUSEHOLD", "operator": "IN", "values": ["SINGLE"], "label": "一人暮らし"},
+        {"code": "HOUSING_TYPE", "operator": "IN", "values": ["RENTAL"], "label": "賃貸"}
+      ],
+      "provenance": "DEMO"
+    }
+  ],
+  "entries": [
+    {"id": "entry-demo-current-001", "challenge_id": "challenge-newlife-2028", "coordinate_id": "coord-019", "status": "ACTIVE", "recognition": "SMALL_SPACE_IDEA", "provenance": "DEMO", "submitted_at": "2028-02-10T10:00:00+09:00"},
+    {"id": "entry-demo-current-002", "challenge_id": "challenge-newlife-2028", "coordinate_id": "coord-021", "status": "ACTIVE", "recognition": null, "provenance": "DEMO", "submitted_at": "2028-02-12T10:00:00+09:00"},
+    {"id": "entry-demo-current-003", "challenge_id": "challenge-newlife-2028", "coordinate_id": "coord-023", "status": "ACTIVE", "recognition": "SMART_BUDGET", "provenance": "DEMO", "submitted_at": "2028-02-14T10:00:00+09:00"},
+    {"id": "entry-demo-budget-001", "challenge_id": "challenge-budget-2028", "coordinate_id": "coord-007", "status": "ACTIVE", "recognition": "SMART_BUDGET", "provenance": "DEMO", "submitted_at": "2028-02-11T10:00:00+09:00"},
+    {"id": "entry-demo-budget-002", "challenge_id": "challenge-budget-2028", "coordinate_id": "coord-023", "status": "ACTIVE", "recognition": null, "provenance": "DEMO", "submitted_at": "2028-02-15T10:00:00+09:00"},
+    {"id": "entry-demo-archive-001", "challenge_id": "challenge-newlife-2027", "coordinate_id": "coord-001", "status": "ACTIVE", "recognition": "SMALL_SPACE_IDEA", "provenance": "DEMO", "submitted_at": "2027-02-10T10:00:00+09:00"},
+    {"id": "entry-demo-archive-002", "challenge_id": "challenge-newlife-2027", "coordinate_id": "coord-003", "status": "ACTIVE", "recognition": "REAL_ROOM_STORY", "provenance": "DEMO", "submitted_at": "2027-02-12T10:00:00+09:00"},
+    {"id": "entry-demo-archive-003", "challenge_id": "challenge-newlife-2027", "coordinate_id": "coord-005", "status": "ACTIVE", "recognition": null, "provenance": "DEMO", "submitted_at": "2027-02-15T10:00:00+09:00"}
+  ]
+}

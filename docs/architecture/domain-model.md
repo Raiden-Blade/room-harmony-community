@@ -47,6 +47,20 @@ classDiagram
     +RemixType type
     +ChangeSummary summary
   }
+  class Challenge {
+    +ChallengeId id
+    +slug
+    +season
+    +year
+    +ChallengeType type
+    +ChallengeStatus status
+    +Eligibility eligibility
+  }
+  class ChallengeEntry {
+    +EntryId id
+    +EntryStatus status
+    +Recognition recognition
+  }
   class User {
     +UserId id
     +UserRole role
@@ -58,6 +72,8 @@ classDiagram
   User "1" --> "0..*" Coordinate : owns
   Coordinate "1" --> "0..1" Derivation : child edge
   Derivation --> Coordinate : parent
+  Challenge "1" --> "0..*" ChallengeEntry
+  Coordinate "1" --> "0..*" ChallengeEntry
 ```
 
 ## Coordinate kinds and lifecycle
@@ -92,7 +108,7 @@ stateDiagram-v2
   REAL_PUBLISHED --> [*]
 ```
 
-MVPでUserが作成するPLANはprivate `PLAN_DRAFT / PLAN_READY`のみである。Bundled synthetic seedには比較対象となる公開のStaff想定PLAN例も含むが、User-created PLANやPublic UGCではない。REAL publishingはfuture boundaryである。
+Goal 1ではUser PLANはprivateだけだった。Goal 2以降は、OwnerがPrivate PLANをstructured reason付きPublic PLAN、または画像付き`USER_DECLARED_UNVERIFIED` REALとして再共有できる。購入済み・公式承認・実在性確認を意味しない。
 
 ## My Coordinate
 
@@ -168,6 +184,23 @@ Current price / stock / Store positionはapproved Product / Store serviceがtrut
 
 These are orthogonal. `STAFF` does not automatically mean purchase verified; `REAL` does not automatically validate every Product.
 
+## Challenge / Entry
+
+Goal 3ではChallengeをCoordinate上のSeasonal participation layerとして実装する。Entryは本文・商品・画像を複製せず、既存Public Coordinateを一つ参照する。
+
+`ChallengeStatus`: `UPCOMING / ACTIVE / ENDED / ARCHIVED`
+
+`ChallengeEntryStatus`: `ACTIVE / WITHDRAWN / HIDDEN`
+
+Invariants:
+
+1. 同一Challenge / Coordinate pairは一つだけ。
+2. Entry作成はCoordinate ownerだけが行える。
+3. Active moderationのPublic REAL / PLANだけが対象。
+4. ACTIVE Challengeだけ受付し、structured eligibilityをServerで検証する。
+5. Recognitionはcontrolled prototype valueで、User inputではない。
+6. Coordinate unpublish時はEntryをwithdrawし、Coordinate / lineage自体は削除しない。
+
 ## Deferred entities
 
 | Candidate | Decision | Reason |
@@ -175,8 +208,8 @@ These are orthogonal. `STAFF` does not automatically mean purchase verified; `RE
 | Reaction | Deferred | MVP causal chain can be tested with Save / Product / PLAN |
 | Comment | Deferred | Moderation / abuse cost |
 | Follow | Deferred | Social graph is not core domain |
-| Challenge | Deferred but model-compatible | Seasonal collection can start as taxonomy / curated list |
-| ChallengeEntry | Deferred | No challenge engine in MVP |
+| Challenge | Implemented in Goal 3 | Structured Seasonal reuse layer; not a contest |
+| ChallengeEntry | Implemented in Goal 3 | Existing Public Coordinate reference with ownership / eligibility |
 | Notification | Deferred | No creator loop implementation yet |
 | Purchase | External reference only | POS / Order owns truth |
 

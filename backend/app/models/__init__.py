@@ -1,5 +1,7 @@
 from app.models.entities import (
     AnalyticsEvent,
+    Challenge,
+    ChallengeEntry,
     ContentReport,
     Coordinate,
     CoordinateImage,
@@ -13,6 +15,8 @@ from app.models.entities import (
 
 __all__ = [
     "AnalyticsEvent",
+    "Challenge",
+    "ChallengeEntry",
     "ContentReport",
     "Coordinate",
     "CoordinateImage",

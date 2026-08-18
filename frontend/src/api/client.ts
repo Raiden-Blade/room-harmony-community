@@ -1,6 +1,8 @@
 import { getSessionId } from "../state/session";
 import type {
   AnalyticsEventName,
+  ChallengeDetail,
+  ChallengeEntry,
   CoordinateDetail,
   CoordinateSummary,
   CreateCoordinateInput,
@@ -11,6 +13,7 @@ import type {
   OptionsResponse,
   ProductDetail,
   ProductSummary,
+  SeasonalLanding,
   UploadedImage,
 } from "./types";
 
@@ -30,8 +33,11 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   if (!response.ok) {
     let message = `Request failed (${response.status})`;
     try {
-      const body = (await response.json()) as { detail?: string };
-      if (body.detail) message = body.detail;
+      const body = (await response.json()) as { detail?: string | { reasons?: string[] } };
+      if (typeof body.detail === "string") message = body.detail;
+      if (body.detail && typeof body.detail === "object" && body.detail.reasons?.length) {
+        message = `参加条件を満たしていません（${body.detail.reasons.join(" / ")}）`;
+      }
     } catch {
       // Keep the HTTP fallback message.
     }
@@ -47,6 +53,13 @@ export function mediaUrl(path: string): string {
 
 export const api = {
   options: () => request<OptionsResponse>("/api/meta/options"),
+  seasonal: () => request<SeasonalLanding>("/api/seasonal"),
+  challenge: (slug: string) => request<ChallengeDetail>(`/api/challenges/${slug}`),
+  enterChallenge: (slug: string, coordinateId: string) =>
+    request<ChallengeEntry>(`/api/challenges/${slug}/entries`, {
+      method: "POST",
+      json: { coordinate_id: coordinateId },
+    }),
   discover: (params: URLSearchParams) => request<DiscoveryResponse>(`/api/coordinates?${params}`),
   coordinate: (id: string) => request<CoordinateDetail>(`/api/coordinates/${id}`),
   product: (id: string) => request<ProductDetail>(`/api/products/${id}`),
