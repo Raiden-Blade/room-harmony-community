@@ -7,7 +7,7 @@ Review target: Seasonal Growth / Challenge Functional Prototype
 
 ## Verdict
 
-Goal 3 is ready for a fresh-clone gate, GitHub CI, and human review. It demonstrates an annual reuse loop without turning the product into a popularity Contest or claiming official NITORI operation, purchase impact, or production readiness.
+Goal 3 passed its fresh-clone gate and is ready for GitHub CI and human review. It demonstrates an annual reuse loop without turning the product into a popularity Contest or claiming official NITORI operation, purchase impact, or production readiness.
 
 ## Acceptance review
 
@@ -36,7 +36,7 @@ Goal 3 is ready for a fresh-clone gate, GitHub CI, and human review. It demonstr
 | 21 | Goal 1 / Goal 2 regression | PASS | 既存backend / frontend / Playwright Flowを含む全SuiteがPASS |
 | 22 | Responsive / visual | PASS | 390 / 768 / 1280、42 screenshots、overflow / overlapなし |
 | 23 | Windows launcher | PASS | working treeでone-click start、health、frontend、owned stop |
-| 24 | Fresh clone | PENDING | Commit後に同一commitからfinal gateを実行 |
+| 24 | Fresh clone | PASS | `5e71f60`から新規cloneし、first-run install / launch / Seasonal API / owned stopを確認 |
 | 25 | GitHub CI | PENDING | Goal 3 PR作成後に確認 |
 
 ## Domain and data semantics
@@ -57,6 +57,7 @@ Goal 3 is ready for a fresh-clone gate, GitHub CI, and human review. It demonstr
 - Dependency checks: `npm audit --audit-level=high` = 0 vulnerabilities; `pip check` = no broken requirements.
 - Visual QA: 14 surfaces × 390 / 768 / 1280 = 42 rendered screenshots inspected. Seasonal categories were de-duplicated and desktop Challenge grid was adjusted to avoid a dense or visually unbalanced layout.
 - Working-tree launcher: backend health、frontend response、owned process stop、ports 8000 / 5173 release, PASS.
+- Fresh clone from `5e71f60`: no pre-existing venv / node_modules / DB、first-run Python + Node install、backend `status=ok`、frontend HTTP 200、2 Active / 2 Upcoming / 1 Ended / 1 Archived、seed entry counts 3 / 3、owned stop、clean tracked worktree, PASS.
 
 ## Safety and trust boundary
 
