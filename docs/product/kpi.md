@@ -62,6 +62,9 @@ flowchart TB
 | Supply | Qualified REAL contribution | Context / product / provenance / moderationを満たす |
 | Supply | Adaptation from coordinate | Parent coordinateを持つchild PLAN / REAL |
 | Supply | Creator impact | Save / adaptation / product exploration aggregate |
+| Supply | Previous-year reuse rate | Archive Coordinate view→Save / PLAN / Adapt |
+| Supply | Eligible Challenge participation | eligibilityを満たすunique Coordinate Entry |
+| Supply | Seasonal public derivative | Archive / Challenge起点lineageからCurrent Challengeへ戻ったPublic Coordinate |
 | Lagging | Assisted multi-item purchase rate | POS / order join必須 |
 | Lagging | Items per assisted purchase | A/Bまたはmatched comparison必須 |
 | Lagging | Revenue / margin | Price / margin / attribution policy確定後のみ |
@@ -85,6 +88,12 @@ Minimum events:
 | `room_harmony_handoff_preview` | coordinate_id, product_count, PREVIEW destination | Current MVP only; live handoffではない |
 | `room_harmony_handoff` | handoff_id, store_id, product_count | Future live contract only; current UI does not fire |
 | `real_transition` | plan_id, resulting_coordinate_id, provenance | Future; consent required |
+| `seasonal_landing_view` / `archive_view` | season, placement | Controlled values only |
+| `challenge_view` | challenge_id, season, challenge_type | No challenge free text |
+| `challenge_entry_start` / `complete` / `rejected` | challenge_id, coordinate_id, kind | Rejection detail remains controlled server response |
+| `challenge_coordinate_view` / `previous_year_coordinate_view` | challenge_id, coordinate_id, recognition | Recognition is controlled enum |
+| `challenge_adapt_start` | challenge_id, coordinate_id, season | No remix note / room photo |
+| `recognition_view` | challenge_id, coordinate_id, recognition | Prototype recognition only |
 
 ## Experiment framing
 
@@ -115,3 +124,18 @@ Goal 2では次を操作・記録可能にするが、効果改善は主張し�
 | Commerce bridge | Goal 1の`ec_action`、`room_harmony_handoff_preview` |
 
 `helpful_count`等のProfile表示はcurrent database stateで、Analytics event totalではない。`remix_note`、display name、bio、filename、image path、EXIF、binaryをAnalytics propertyへ送らない。
+
+## Goal 3 Seasonal Loop readiness
+
+Goal 3では次を操作・記録可能にするが、Seasonal Growthや購買効果はまだ主張しない。
+
+| Layer | Current DB metric / event |
+|---|---|
+| Discovery | Seasonal / Challenge / Archive view events |
+| Participation | current visible unique `ChallengeEntry`、REAL / PLAN内訳 |
+| Reuse | previous-year coordinate view、Private PLAN、Adapt start、Public derivative lineage |
+| Recognition | controlled Prototype Pick viewとCreator recognition count |
+| Creator value | seasonal entry count、recognition count、direct reuse count |
+| Readiness | `SEASONAL_REUSE` analytics readiness aggregate |
+
+Entry countはcurrent database stateであり、Analytics event totalやPopularityではない。正式評価では`Archive view → PLAN → Public derivative → current Entry`のfunnel、eligible denominator、Season cohort、repeat participationを定義し、POS / orderとは別Consent / attribution設計で接続する。

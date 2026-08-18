@@ -71,5 +71,14 @@ def readiness(db: Annotated[Session, Depends(get_db)]) -> KpiReadinessResponse:
                 "plan_starts": counts["plan_start"],
                 "actions": counts["ec_action"] + counts["room_harmony_handoff_preview"],
             },
+            "SEASONAL_REUSE": {
+                "instrumented": counts["seasonal_landing_view"] > 0 or counts["challenge_view"] > 0,
+                "challenge_views": counts["challenge_view"],
+                "entry_starts": counts["challenge_entry_start"],
+                "entry_completes": counts["challenge_entry_complete"],
+                "entry_rejections": counts["challenge_entry_rejected"],
+                "previous_year_views": counts["previous_year_coordinate_view"],
+                "challenge_adapt_starts": counts["challenge_adapt_start"],
+            },
         },
     )

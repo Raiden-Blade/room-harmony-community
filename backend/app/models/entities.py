@@ -41,6 +41,7 @@ class CreatorProfile(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
 
     coordinates: Mapped[list[Coordinate]] = relationship(back_populates="creator")
+    challenge_entries: Mapped[list[ChallengeEntry]] = relationship(back_populates="creator")
 
 
 class Coordinate(Base):
@@ -92,6 +93,7 @@ class Coordinate(Base):
     )
     creator: Mapped[CreatorProfile | None] = relationship(back_populates="coordinates")
     parent: Mapped[Coordinate | None] = relationship(remote_side=[id], foreign_keys=[parent_coordinate_id])
+    challenge_entries: Mapped[list[ChallengeEntry]] = relationship(back_populates="coordinate")
 
 
 class CoordinateNeed(Base):
@@ -174,6 +176,50 @@ class ContentReport(Base):
     reason: Mapped[str] = mapped_column(String(32), index=True)
     status: Mapped[str] = mapped_column(String(16), default="OPEN", index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class Challenge(Base):
+    __tablename__ = "challenges"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    slug: Mapped[str] = mapped_column(String(96), unique=True, index=True)
+    title: Mapped[str] = mapped_column(String(180))
+    description: Mapped[str] = mapped_column(Text)
+    why_it_matters: Mapped[str] = mapped_column(Text)
+    theme: Mapped[str] = mapped_column(String(64), index=True)
+    season: Mapped[str] = mapped_column(String(16), index=True)
+    year: Mapped[int] = mapped_column(Integer, index=True)
+    challenge_type: Mapped[str] = mapped_column(String(32), index=True)
+    status: Mapped[str] = mapped_column(String(16), index=True)
+    start_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    end_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    archive_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    cover_asset: Mapped[str] = mapped_column(String(500))
+    eligibility_json: Mapped[str] = mapped_column(Text, default="{}")
+    constraints_json: Mapped[str] = mapped_column(Text, default="[]")
+    provenance: Mapped[str] = mapped_column(String(32), default="DEMO")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    entries: Mapped[list[ChallengeEntry]] = relationship(back_populates="challenge")
+
+
+class ChallengeEntry(Base):
+    __tablename__ = "challenge_entries"
+    __table_args__ = (UniqueConstraint("challenge_id", "coordinate_id"),)
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    challenge_id: Mapped[str] = mapped_column(ForeignKey("challenges.id"), index=True)
+    coordinate_id: Mapped[str] = mapped_column(ForeignKey("coordinates.id"), index=True)
+    creator_id: Mapped[str | None] = mapped_column(ForeignKey("creator_profiles.id"), nullable=True, index=True)
+    submitted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    status: Mapped[str] = mapped_column(String(16), default="ACTIVE", index=True)
+    recognition: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    provenance: Mapped[str] = mapped_column(String(32), default="USER")
+    withdrawn_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    challenge: Mapped[Challenge] = relationship(back_populates="entries")
+    coordinate: Mapped[Coordinate] = relationship(back_populates="challenge_entries")
+    creator: Mapped[CreatorProfile | None] = relationship(back_populates="challenge_entries")
 
 
 class AnalyticsEvent(Base):

@@ -4,9 +4,9 @@
 
 > 商品を一つずつ売るUIではなく、「なぜこの組み合わせが自分の暮らしに合うか」を理解し、手持ち家具も残しながら次の行動へ進めるかを検証します。
 
-## Current status / Goal 2
+## Current status / Goal 3
 
-2026-08-19時点で、Goal 1のFunctional MVPを維持したままCreator & Community Loopを追加しました。Display Identity、REAL / PLAN投稿、安全なLocal画像Upload、Helpful、Report、Public→Private PLAN→Public派生、Parent / Root lineage、Creator Impactが実DB値で動きます。これはCreator Loopを操作・計測可能にするPrototypeであり、Production効果、併売率向上、公式System接続は未検証です。
+2026-08-19時点で、Goal 1のFunctional MVPとGoal 2 Creator & Community Loopを維持したまま、Goal 3 Seasonal Growth Loopを追加しました。既存Public REAL / PLANをstructured条件でChallengeへ参加させ、前年Archive → Private PLAN → Public derivative → Current ChallengeをParent / Root lineage付きで再利用できます。参加数、REAL / PLAN内訳、Creator seasonal impactは実DB値です。これは年間reuse loopを操作・計測可能にするPrototypeであり、Production効果、併売率向上、公式選定、NITORI / Room Harmony接続は未検証です。
 
 ## いちばん簡単な起動方法（Windows）
 
@@ -26,7 +26,7 @@ LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port�
 
 別Physical Windows PCでの確認はまだ自動検証と分けて扱います。Merge前の5分確認は[`docs/operations/second-pc-checklist.md`](docs/operations/second-pc-checklist.md)を使用してください。現在の状態は`MANUAL_SECOND_PC_TEST_REQUIRED`です。
 
-## Demoで確認する5つのFlow
+## Demoで確認する7つのFlow
 
 ### Flow A — Discovery / Save
 
@@ -70,16 +70,32 @@ LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port�
 4. Detailの参考元 / Root / 公開派生を確認
 5. 元Creator ProfileでHelpful、Save、PLAN開始、公開派生を確認
 
+### Flow F — Seasonal Challenge participation
+
+1. HomeのSeasonal CTAから`/seasonal`へ進む
+2. Active / Constraint / Upcomingと前年Archiveの違いを確認
+3. Active Challengeで理由、structured条件、実DBのREAL / PLAN内訳を見る
+4. 既存の自分のPublic Coordinateで参加、またはChallenge条件付きCreateを開く
+5. Entry後、Challenge galleryとCreator Profileのseasonal participationを確認
+
+### Flow G — Previous-year reuse
+
+1. `新生活の6畳 2027` Archiveを開く
+2. 前年REALをSaveし、Private PLANへAdapt
+3. 商品や手持ち家具を変更してPublic derivativeとして共有
+4. 条件を満たす派生CoordinateをCurrent Challengeへ参加
+5. DetailのParent / RootとCreator seasonal reuseを往復して確認
+
 Handoffは**Preview only**です。既存Room HarmonyやNITORI内部Systemへ通信しません。
 
 ## 実装Stack
 
 | Layer | Technology | Responsibility |
 |---|---|---|
-| Frontend | React 18 / TypeScript / Vite / React Router | 11 route screens、Creator form / profile、responsive UI、typed API client |
-| Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy / Pillow | ranking、Save / PLAN、Creator、lineage、impact、safe image normalization |
-| Data | SQLite + generated JSON seed + ignored local uploads | anonymous Session ownership、36 seed Coordinates、60 demo Products、User contributions |
-| Test | pytest / Vitest / Testing Library / Playwright | 43 backend tests、13 frontend tests、5 browser flows、3 responsive checks |
+| Frontend | React 18 / TypeScript / Vite / React Router | 13 route screens、Creator / Seasonal UI、responsive UI、typed API client |
+| Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy / Pillow | ranking、Save / PLAN、Creator、lineage、Seasonal eligibility / Entry、safe image normalization |
+| Data | SQLite + generated JSON seed + ignored local uploads | anonymous Session ownership、36 Coordinates、60 Products、6 Challenges、8 Entries、User contributions |
+| Test | pytest / Vitest / Testing Library / Playwright | 54 backend tests、18 frontend tests、8 functional browser flows、3 responsive checks |
 
 Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/src/api/types.ts`](frontend/src/api/types.ts)のTypeScript contractと[`frontend/src/api/client.ts`](frontend/src/api/client.ts)を通してだけ接続します。
 
@@ -106,6 +122,8 @@ room-harmony-community/
 - REAL / PLAN、Official / Staff / User declaredは将来のData modelを示す架空例で、公式認定や実在投稿を意味しません。
 - Goal 2でUserがUploadした画像は`.demo/uploads/`へrandom filenameのWebPとしてLocal保存され、Git対象外です。元filename、client path、EXIFは保存しません。
 - `USER_DECLARED` REALはUser申告であり、NITORIまたはSystemによる本人・購入・実在性の確認済み情報ではありません。
+- 6件のChallengeと8件のEntryも架空のSeasonal seedです。`Prototype Pick`はDemo上のcontrolled recognitionで、NITORI社員による公式選定、人気順位、品質保証ではありません。
+- Challenge参加数とREAL / PLAN内訳はcurrent SQLiteから計算し、fake view / like / rank countを保存しません。
 
 詳細は[`data/README.md`](data/README.md)と[`docs/sources/source-links.md`](docs/sources/source-links.md)を参照してください。
 
@@ -136,11 +154,11 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-## Goal 1 DB → Goal 2 DB
+## Goal 1 / Goal 2 DB → Goal 3 DB
 
-通常はそのまま`start-demo.cmd`を実行してください。起動時に[`backend/app/core/schema.py`](backend/app/core/schema.py)が既存SQLiteへGoal 2列を追加し、SQLAlchemyが新Tableを作成します。既存Product、Coordinate、Save、PLANは削除・再Seedしません。
+通常はそのまま`start-demo.cmd`を実行してください。起動時に[`backend/app/core/schema.py`](backend/app/core/schema.py)が既存SQLiteへGoal 2列を追加し、SQLAlchemyがGoal 2 / Goal 3 Tableを作成します。Seasonal seedはChallengeが空の場合だけ独立投入し、既存Product、Coordinate、Creator、Save、PLAN、lineageは削除・再Seedしません。
 
-更新前に`.demo/*.db`を別場所へCopyすることを推奨します。これは小規模Local Prototype向けのdeterministic upgradeであり、Production migration frameworkではありません。完全Resetを自分で選ぶ場合だけ、停止後に対象の`.demo` DBを削除して再起動します。詳細は[`docs/operations/goal1-to-goal2-migration.md`](docs/operations/goal1-to-goal2-migration.md)です。
+更新前に`.demo/*.db`を別場所へCopyすることを推奨します。これは小規模Local Prototype向けのdeterministic upgradeであり、Production migration frameworkではありません。完全Resetを自分で選ぶ場合だけ、停止後に対象の`.demo` DBを削除して再起動します。詳細は[`Goal 1 → Goal 2`](docs/operations/goal1-to-goal2-migration.md)と[`Goal 2 → Goal 3`](docs/operations/goal2-to-goal3-migration.md)です。
 
 ## Test / Validation
 
@@ -177,7 +195,7 @@ Pull Requestでは`.github/workflows/ci.yml`がbackend tests、frontend tests、
 
 ## MVPに含まれないもの
 
-- Generic Like、Comment、Follow、DM、Notification、Following Feed、Leaderboard、Contest
+- Generic Like、Comment、Follow、DM、Notification、Following Feed、Leaderboard、vote Contest、reward
 - AI / LLM / image recognition
 - 本物のNITORI商品・価格・在庫・POS・決済・店内Map
 - Production authentication / deployment

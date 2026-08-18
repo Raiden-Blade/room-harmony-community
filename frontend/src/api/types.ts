@@ -113,6 +113,33 @@ export type CoordinateDetail = CoordinateSummary & {
   };
   creator_impact: CreatorImpact;
   genealogy: Genealogy;
+  challenge_contexts: CoordinateChallengeContext[];
+  challenge_options: CoordinateChallengeOption[];
+};
+
+export type CoordinateChallengeContext = {
+  challenge_id: string;
+  challenge_slug: string;
+  challenge_title: string;
+  season: Season;
+  year: number;
+  status: ChallengeStatus;
+  entry_status: "ACTIVE" | "WITHDRAWN" | "HIDDEN";
+  recognition: Recognition | null;
+  provenance: "DEMO" | "USER" | "PROTOTYPE_PICK";
+};
+
+export type CoordinateChallengeOption = {
+  challenge_id: string;
+  challenge_slug: string;
+  challenge_title: string;
+  challenge_type: ChallengeType;
+  season: Season;
+  year: number;
+  eligible: boolean;
+  rejection_codes: string[];
+  rejection_messages: string[];
+  already_entered: boolean;
 };
 
 export type CreatorProfile = {
@@ -124,6 +151,115 @@ export type CreatorProfile = {
   created_at: string;
   contributions: CoordinateSummary[];
   is_owner: boolean;
+  seasonal: CreatorSeasonalSummary;
+};
+
+export type CreatorSeasonalSummary = {
+  challenge_entries: number;
+  recognized_coordinates: number;
+  seasonal_reuse_count: number;
+  participations: Array<{
+    challenge_id: string;
+    challenge_slug: string;
+    challenge_title: string;
+    season: Season;
+    year: number;
+    coordinate_id: string;
+    coordinate_title: string;
+    recognition: Recognition | null;
+    provenance: "DEMO" | "USER" | "PROTOTYPE_PICK";
+  }>;
+};
+
+export type Season = "SPRING" | "SUMMER" | "AUTUMN" | "WINTER";
+export type ChallengeType = "LIFE_EVENT" | "CONSTRAINT" | "ADAPT_REMIX";
+export type ChallengeStatus = "UPCOMING" | "ACTIVE" | "ENDED" | "ARCHIVED";
+export type Recognition =
+  | "OFFICIAL_PICK"
+  | "USEFUL_REUSE"
+  | "SMART_BUDGET"
+  | "SMALL_SPACE_IDEA"
+  | "EXISTING_FURNITURE"
+  | "REAL_ROOM_STORY";
+
+export type ChallengeConstraint = {
+  code: string;
+  operator: "IN" | "LTE" | "EQ" | "GTE";
+  values: Array<string | number | boolean>;
+  label: string;
+};
+
+export type ChallengeEligibility = {
+  size_bands: string[];
+  households: string[];
+  housing_types: string[];
+  budget_max: number | null;
+  kinds: Array<"REAL" | "PLAN">;
+  image_required: boolean;
+  min_product_count: number | null;
+};
+
+export type ChallengeSummary = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  theme: string;
+  season: Season;
+  year: number;
+  challenge_type: ChallengeType;
+  status: ChallengeStatus;
+  start_at: string;
+  end_at: string;
+  archive_at: string;
+  cover_asset: string;
+  provenance: "DEMO";
+  constraints: ChallengeConstraint[];
+  constraint_summary: string;
+  entry_count: number;
+};
+
+export type ChallengeEntry = {
+  id: string;
+  challenge_id: string;
+  coordinate_id: string;
+  creator_id: string | null;
+  submitted_at: string;
+  status: "ACTIVE" | "WITHDRAWN" | "HIDDEN";
+  recognition: Recognition | null;
+  provenance: "DEMO" | "USER" | "PROTOTYPE_PICK";
+  coordinate: CoordinateSummary;
+};
+
+export type ChallengeCandidate = {
+  coordinate: CoordinateSummary;
+  eligible: boolean;
+  rejection_codes: string[];
+  rejection_messages: string[];
+  already_entered: boolean;
+};
+
+export type ChallengeDetail = ChallengeSummary & {
+  why_it_matters: string;
+  eligibility: ChallengeEligibility;
+  participation_count: number;
+  real_count: number;
+  plan_count: number;
+  entries: ChallengeEntry[];
+  prototype_picks: ChallengeEntry[];
+  my_candidates: ChallengeCandidate[];
+};
+
+export type SeasonalLanding = {
+  concept_label: "Seasonal Growth Concept";
+  featured: ChallengeSummary | null;
+  active: ChallengeSummary[];
+  upcoming: ChallengeSummary[];
+  ended: ChallengeSummary[];
+  archived: ChallengeSummary[];
+  constraint_themes: ChallengeSummary[];
+  previous_year_coordinates: CoordinateSummary[];
+  notice: string;
 };
 
 export type UploadedImage = {
@@ -221,4 +357,14 @@ export type AnalyticsEventName =
   | "public_adaptation_publish"
   | "creator_impact_view"
   | "coordinate_unpublish"
-  | "content_report";
+  | "content_report"
+  | "seasonal_landing_view"
+  | "challenge_view"
+  | "challenge_entry_start"
+  | "challenge_entry_complete"
+  | "challenge_entry_rejected"
+  | "challenge_coordinate_view"
+  | "previous_year_coordinate_view"
+  | "challenge_adapt_start"
+  | "recognition_view"
+  | "archive_view";

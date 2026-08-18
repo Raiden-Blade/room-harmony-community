@@ -5,9 +5,9 @@
 ```mermaid
 flowchart LR
   B[Browser<br/>React / TypeScript] -->|JSON + X-Session-ID| A[FastAPI<br/>Pydantic contract]
-  A --> S[Service layer<br/>ranking / plan / pricing]
+  A --> S[Service layer<br/>ranking / plan / seasonal rules]
   S --> D[(SQLite<br/>local demo)]
-  G[Generated seed JSON<br/>36 Coordinate / 60 Product] -->|seed when empty| D
+  G[Generated seed JSON<br/>36 Coordinate / 60 Product<br/>6 Challenge / 8 Entry] -->|independent seed when empty| D
   A -. preview only .-> H[Room Harmony handoff contract]
 ```
 
@@ -18,6 +18,8 @@ FrontendとBackendはHTTP boundaryで分離する。React componentからSQLite�
 | Route | Screen / purpose |
 |---|---|
 | `/` | Home / target / quick need / seasonal collection |
+| `/seasonal` | Active / Constraint / Upcoming / previous-year reuse loop |
+| `/challenges/:slug` | eligibility、real counts、Entry、Prototype Pick、gallery |
 | `/explore` | Similar / editorial baseline / new-life discovery |
 | `/create` | Progressive REAL / PLAN contribution form |
 | `/creators/:id` | Display Identity、contribution history、useful impact |
@@ -37,10 +39,13 @@ FrontendとBackendはHTTP boundaryで分離する。React componentからSQLite�
 - `backend/app/services/pricing.py`: known total and explicit unknown count
 - `backend/app/services/seed.py`: empty-database seed only
 - `backend/app/services/community.py`: Creator、public contribution、Helpful、lineage、impact、ownership
+- `backend/app/services/seasonal_rules.py`: structured Challenge eligibility evaluation
+- `backend/app/services/seasonal.py`: Challenge list/detail、real DB counts、Entry、Archive / Creator aggregate
 - `backend/app/services/images.py`: actual decode、EXIF removal、WebP normalization、random local storage
 - `backend/app/core/schema.py`: Goal 1 SQLiteからのnon-destructive local upgrade
 - `backend/app/integrations/room_harmony/handoff.py`: versioned payload creation; no network call
 - `backend/app/api/`: catalog、saved、plans、analytics HTTP routes
+- `backend/app/api/seasonal.py`: Seasonal landing、Challenge list/detail、Entry HTTP routes
 
 ## Contract ownership
 
@@ -56,6 +61,12 @@ Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Sessi
 
 `CreatorProfile`はanonymous Sessionに内部だけで紐づくDisplay Identityである。Public APIはraw Session IDを返さない。`Coordinate`は`creator_id`、`parent_coordinate_id`、`root_coordinate_id`、structured `derivation_type`を持ち、Public REAL / PLAN → Private PLAN → Public derivativeを表現する。Helpful、Save、PLAN開始、Public adaptationはfake seed countではなくSQLiteから集計する。
 
+## Goal 3 Seasonal loop — active prototype
+
+`Challenge`はCoordinateを置き換えず、既存Public REAL / PLANへ`ChallengeEntry`を結ぶ。Serverはstatus、ownership、visibility、moderation、duplicate、room / household / housing / budget / kind / image / Product countを検証する。Previous-year ArchiveからGoal 2のPrivate PLAN / lineageを通ってCurrent Challengeへ再参加できる。
+
+Recognitionはbundled Demo seedだけのcontrolled `Prototype Pick`で、User APIから設定できない。参加数、REAL / PLAN内訳、Creator participation / reuseはSQLite current stateから集計し、fake ranking countは持たない。詳細は[`seasonal-growth.md`](seasonal-growth.md)を参照。
+
 ## Security / trust boundary
 
 - Handoffの`return_url`はlocal pathだけ許可する。
@@ -67,6 +78,8 @@ Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Sessi
 - Public REALは1枚以上の画像を要求し、`USER_DECLARED_UNVERIFIED`として表示する。
 - Report reasonはcontrolled enumで保存し、報告だけで自動削除しない。
 - 自分のPublic Coordinateだけedit / unpublish可能。unpublishはlineageを残し、Local image fileは公開Storageから削除する。
+- Challenge EntryはOwnerのPublic / Active Coordinateだけ許可し、unpublish時にwithdrawする。
+- Challenge、Recognition、画像、価格はDemoであり、NITORI公式Campaign / 選定 / live dataではない。
 
 ## Verification ownership
 

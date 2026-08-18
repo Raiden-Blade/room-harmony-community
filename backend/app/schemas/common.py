@@ -109,6 +109,31 @@ class CreatorImpactSummary(BaseModel):
     real_room_contributions: int = 0
 
 
+class CoordinateChallengeContext(BaseModel):
+    challenge_id: str
+    challenge_slug: str
+    challenge_title: str
+    season: str
+    year: int
+    status: str
+    entry_status: str
+    recognition: str | None
+    provenance: str
+
+
+class CoordinateChallengeOption(BaseModel):
+    challenge_id: str
+    challenge_slug: str
+    challenge_title: str
+    challenge_type: str
+    season: str
+    year: int
+    eligible: bool
+    rejection_codes: list[str] = Field(default_factory=list)
+    rejection_messages: list[str] = Field(default_factory=list)
+    already_entered: bool = False
+
+
 class CoordinateDetail(CoordinateSummary):
     parent_coordinate_id: str | None
     remix_note: str | None = None
@@ -116,6 +141,8 @@ class CoordinateDetail(CoordinateSummary):
     creator_impact_slot: dict[str, int | bool | None]
     creator_impact: CreatorImpactSummary
     genealogy: GenealogySummary
+    challenge_contexts: list[CoordinateChallengeContext] = Field(default_factory=list)
+    challenge_options: list[CoordinateChallengeOption] = Field(default_factory=list)
 
 
 class ProductDetail(ProductSummary):
@@ -250,6 +277,17 @@ ALLOWED_EVENT_NAMES = {
     "creator_impact_view",
     "coordinate_unpublish",
     "content_report",
+    # Goal 3 Seasonal Growth Loop events.
+    "seasonal_landing_view",
+    "challenge_view",
+    "challenge_entry_start",
+    "challenge_entry_complete",
+    "challenge_entry_rejected",
+    "challenge_coordinate_view",
+    "previous_year_coordinate_view",
+    "challenge_adapt_start",
+    "recognition_view",
+    "archive_view",
 }
 
 ALLOWED_EVENT_PROPERTIES = {
@@ -269,11 +307,27 @@ ALLOWED_EVENT_PROPERTIES = {
     "kind",
     "derivation_type",
     "report_reason",
+    "challenge_id",
+    "season",
+    "challenge_type",
+    "recognition",
 }
 
 ANALYTICS_ENUM_VALUES = {
     "mode": {"similar", "popular", "newlife"},
-    "placement": {"HOME", "EXPLORE", "COORDINATE", "PRODUCT", "SAVED", "PLAN", "CREATE", "CREATOR_PROFILE"},
+    "placement": {
+        "HOME",
+        "EXPLORE",
+        "COORDINATE",
+        "PRODUCT",
+        "SAVED",
+        "PLAN",
+        "CREATE",
+        "CREATOR_PROFILE",
+        "SEASONAL",
+        "CHALLENGE",
+        "ARCHIVE",
+    },
     "room_size": {"TINY_5_5", "SMALL_6", "MEDIUM_7_8"},
     "need": {"STORAGE", "LOW_BUDGET", "WORK_FROM_HOME", "RELAX", "SLEEP", "COMPACT"},
     "role": {"MAIN_FURNITURE", "SUPPORT_FURNITURE", "STORAGE", "LIGHTING", "TEXTILE"},
@@ -291,6 +345,20 @@ ANALYTICS_ENUM_VALUES = {
         "OTHER",
     },
     "report_reason": {"INAPPROPRIATE", "PRIVACY", "MISLEADING", "COPYRIGHT", "SPAM", "OTHER"},
+    "season": {"SPRING", "SUMMER", "AUTUMN", "WINTER"},
+    "challenge_type": {"LIFE_EVENT", "CONSTRAINT", "ADAPT_REMIX"},
+    "recognition": {
+        "OFFICIAL_PICK",
+        "USEFUL_REUSE",
+        "SMART_BUDGET",
+        "SMALL_SPACE_IDEA",
+        "EXISTING_FURNITURE",
+        "REAL_ROOM_STORY",
+    },
+}
+
+ANALYTICS_IDENTIFIER_PATTERNS = {
+    "challenge_id": re.compile(r"^challenge-[A-Za-z0-9-]+$"),
 }
 
 ANALYTICS_INTEGER_RANGES = {
@@ -343,6 +411,10 @@ class AnalyticsEventRequest(BaseModel):
             if key in ANALYTICS_ENUM_VALUES:
                 if not isinstance(item, str) or item not in ANALYTICS_ENUM_VALUES[key]:
                     raise ValueError(f"unsupported analytics enum value for {key}")
+                continue
+            if key in ANALYTICS_IDENTIFIER_PATTERNS:
+                if not isinstance(item, str) or not ANALYTICS_IDENTIFIER_PATTERNS[key].fullmatch(item):
+                    raise ValueError(f"unsupported analytics identifier value for {key}")
                 continue
             if key in ANALYTICS_INTEGER_RANGES:
                 minimum, maximum = ANALYTICS_INTEGER_RANGES[key]

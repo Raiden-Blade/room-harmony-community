@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { api, mediaUrl, track } from "../api/client";
-import type { CreatorProfile, DerivationType, ProductSummary, UploadedImage } from "../api/types";
+import type { ChallengeDetail, CreatorProfile, DerivationType, ProductSummary, UploadedImage } from "../api/types";
 import { Badge } from "../components/common/Badge";
 import { label, yen } from "../utils/labels";
 
@@ -20,6 +20,7 @@ export function CreateCoordinatePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const parentId = searchParams.get("parent");
+  const challengeSlug = searchParams.get("challenge");
   const [step, setStep] = useState(1);
   const [creator, setCreator] = useState<CreatorProfile | null>(null);
   const [displayName, setDisplayName] = useState("");
@@ -43,6 +44,8 @@ export function CreateCoordinatePage() {
   const [remixNote, setRemixNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [challenge, setChallenge] = useState<ChallengeDetail | null>(null);
+  const [publishedCoordinateId, setPublishedCoordinateId] = useState<string | null>(null);
 
   useEffect(() => {
     void track("create_coordinate_start", { properties: { placement: "CREATE" } });
@@ -55,6 +58,22 @@ export function CreateCoordinatePage() {
       setError(reason instanceof Error ? reason.message : "商品候補を読み込めませんでした");
     });
   }, []);
+
+  useEffect(() => {
+    if (!challengeSlug) return;
+    void api.challenge(challengeSlug).then((data) => {
+      setChallenge(data);
+      if (data.status !== "ACTIVE") {
+        setError("このテーマは現在参加受付中ではありません。参考コーデとして閲覧できます。");
+        return;
+      }
+      if (data.eligibility.size_bands[0]) setSizeBand(data.eligibility.size_bands[0]);
+      if (data.eligibility.housing_types[0]) setHousingType(data.eligibility.housing_types[0]);
+      if (data.eligibility.households[0]) setHousehold(data.eligibility.households[0]);
+      if (data.eligibility.budget_max) setBudgetMax(data.eligibility.budget_max);
+      if (data.eligibility.kinds.length === 1) setKind(data.eligibility.kinds[0]);
+    }).catch((reason) => setError(reason instanceof Error ? reason.message : "Themeを読み込めませんでした"));
+  }, [challengeSlug]);
 
   const chosenProducts = useMemo(
     () => products.filter((product) => selectedProducts.includes(product.id)),
@@ -131,6 +150,7 @@ export function CreateCoordinatePage() {
 
   async function publish(event: FormEvent) {
     event.preventDefault();
+    if (publishedCoordinateId) return;
     if (!creator) {
       setError("先に表示名を保存してください。");
       goToStep(1);
@@ -183,6 +203,29 @@ export function CreateCoordinatePage() {
         coordinate_id: coordinate.id,
         properties: { kind },
       });
+      setPublishedCoordinateId(coordinate.id);
+      if (challengeSlug && challenge) {
+        await track("challenge_entry_start", {
+          coordinate_id: coordinate.id,
+          properties: { challenge_id: challenge.id, season: challenge.season, challenge_type: challenge.challenge_type },
+        });
+        try {
+          await api.enterChallenge(challengeSlug, coordinate.id);
+          await track("challenge_entry_complete", {
+            coordinate_id: coordinate.id,
+            properties: { challenge_id: challenge.id, season: challenge.season, challenge_type: challenge.challenge_type },
+          });
+          navigate(`/challenges/${challengeSlug}`);
+          return;
+        } catch (reason) {
+          await track("challenge_entry_rejected", {
+            coordinate_id: coordinate.id,
+            properties: { challenge_id: challenge.id, season: challenge.season, challenge_type: challenge.challenge_type },
+          });
+          setError(`Coordinateは公開されましたが、Theme参加は完了していません。${reason instanceof Error ? reason.message : "参加条件を確認してください。"}`);
+          return;
+        }
+      }
       navigate(`/coordinates/${coordinate.id}`);
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "公開できませんでした");
@@ -197,6 +240,7 @@ export function CreateCoordinatePage() {
         <p className="eyebrow">Create a useful Coordinate</p>
         <h1>暮らしを、誰かの参考にする</h1>
         <p>人気を競う投稿ではなく、部屋条件・商品・手持ち家具を再利用できる形で共有します。</p>
+        {challenge && <div className="challenge-create-context"><Badge tone="accent">参加予定のTheme</Badge><strong>{challenge.title}</strong><span>{challenge.constraint_summary}</span></div>}
       </header>
 
       <ol className="stepper" aria-label="投稿の進み具合">
@@ -247,10 +291,10 @@ export function CreateCoordinatePage() {
             <section className="form-section" aria-labelledby="room-images"><h2 id="room-images">部屋画像 {kind === "REAL" && <Badge tone="warning">REALは必須</Badge>}</h2><p className="form-help">JPEG / PNG / WebP、1枚8MB以下、最大5枚。サーバーで再変換し、EXIFを除去します。</p>{kind === "REAL" && <div className="privacy-notice"><strong>投稿前のプライバシー確認</strong><p>顔・氏名・郵便物・住所・車のナンバーなど、個人情報が画像に写っていないことを自分で確認してください。</p></div>}<label className="upload-box">画像を選ぶ<input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={(event) => void upload(event)} /></label><div className="upload-preview">{images.map((image) => <img key={image.id} src={mediaUrl(image.url)} alt="アップロードした部屋のプレビュー" />)}</div></section>
             {parentId && <section className="form-section"><h2>参考元からの変更理由</h2><label>変更理由<select value={derivationType} onChange={(event) => setDerivationType(event.target.value as DerivationType)}>{DERIVATIONS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label><label>補足（任意）<input value={remixNote} onChange={(event) => setRemixNote(event.target.value)} maxLength={200} /></label></section>}
             <div className="publish-disclosure"><strong>{kind === "REAL" ? "USER申告のREAL ROOM" : "これから実現したい公開PLAN"}</strong><p>{kind === "REAL" ? "NITORIや本システムが実在性・購入・商品使用を確認したものではありません。" : "購入済み、在庫確保、専門家による設計承認を意味しません。"}</p></div>
-            <div className="form-actions"><button className="button button--ghost" type="button" onClick={() => goToStep(2)}>戻る</button><button className="button button--primary" disabled={busy} type="submit">{kind === "REAL" ? "REAL ROOMとして公開" : "PLANとして公開"}</button></div>
+            <div className="form-actions"><button className="button button--ghost" type="button" onClick={() => goToStep(2)}>戻る</button><button className="button button--primary" disabled={busy || Boolean(publishedCoordinateId)} type="submit">{publishedCoordinateId ? "Coordinateは公開済み" : kind === "REAL" ? "REAL ROOMとして公開" : "PLANとして公開"}</button></div>
           </fieldset>
         )}
-        {error && <p className="inline-error" role="alert">{error}</p>}
+        {error && <p className="inline-error" role="alert">{error}{publishedCoordinateId && <><br /><a href={`/coordinates/${publishedCoordinateId}`}>公開済みCoordinateを確認する →</a></>}</p>}
       </form>
     </div>
   );

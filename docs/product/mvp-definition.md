@@ -1,6 +1,6 @@
 # MVP Definition
 
-> This document preserves the Goal 1 MVP baseline. Goal 2 explicitly activates public REAL / PLAN contribution, Helpful, local image upload, lineage, and Creator Impact while keeping every Goal 1 flow. See [`../architecture/community-loop.md`](../architecture/community-loop.md). Items below marked out of the original MVP are historical Phase 1 boundaries, not a claim that Goal 2 removed them.
+> This document preserves the Goal 1 MVP baseline. Goal 2 activates public REAL / PLAN contribution, Helpful, local image upload, lineage, and Creator Impact. Goal 3 activates structured Seasonal Challenge / Entry / Archive reuse without adding ranking. See [`../architecture/community-loop.md`](../architecture/community-loop.md) and [`../architecture/seasonal-growth.md`](../architecture/seasonal-growth.md). Items below marked out of the original MVP are historical Phase 1 boundaries, not a claim that later Goals removed them.
 
 ## MVP objective
 
@@ -97,7 +97,7 @@ flowchart LR
 - Production authentication / NITORI account integration
 - Public image upload / REAL ROOM publish
 - Like / Comment / Follow / notification
-- Challenge engine / leaderboard / reward
+- Leaderboard / vote contest / reward（Goal 3の非競争Seasonal Challengeは実装済み）
 - Production moderation tooling
 - Full 3D editor / room scan
 - ML recommendation / AI image recognition / LLM concierge

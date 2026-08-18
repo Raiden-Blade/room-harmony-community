@@ -6,6 +6,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 from app.schemas.common import CoordinateSummary, CreatorImpactSummary
+from app.schemas.seasonal import CreatorSeasonalSummary
 
 
 CoordinateKind = Literal["REAL", "PLAN"]
@@ -55,6 +56,7 @@ class CreatorProfileResponse(BaseModel):
     created_at: datetime
     contributions: list[CoordinateSummary]
     is_owner: bool
+    seasonal: CreatorSeasonalSummary = Field(default_factory=CreatorSeasonalSummary)
 
 
 class ImageUploadResponse(BaseModel):

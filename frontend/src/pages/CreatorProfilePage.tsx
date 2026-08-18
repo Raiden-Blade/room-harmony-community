@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 
 import { api, track } from "../api/client";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
+import { Badge } from "../components/common/Badge";
 import { ErrorView, Loading } from "../components/common/StatusView";
 import { useAsync } from "../hooks/useAsync";
 
@@ -56,6 +57,16 @@ export function CreatorProfilePage() {
         <div className="impact-grid">
           {metrics.map(([name, value, help]) => <article key={name}><strong>{value}</strong><span>{name}</span><small>{help}</small></article>)}
         </div>
+      </section>
+
+      <section className="creator-seasonal-section" aria-labelledby="creator-seasonal-title">
+        <div className="section-heading"><div><p className="eyebrow">Seasonal contribution</p><h2 id="creator-seasonal-title">今年の新生活ユーザーの参考へ</h2></div><p>Followerではなく、Theme参加・Recognition・再利用を実Recordから表示します。</p></div>
+        <div className="creator-seasonal-summary">
+          <article><strong>{data.seasonal.challenge_entries}</strong><span>Theme参加</span></article>
+          <article><strong>{data.seasonal.recognized_coordinates}</strong><span>Prototype Pick</span></article>
+          <article><strong>{data.seasonal.seasonal_reuse_count}</strong><span>Seasonal再利用</span></article>
+        </div>
+        {data.seasonal.participations.length > 0 ? <div className="creator-participations">{data.seasonal.participations.map((participation) => <article key={`${participation.challenge_id}-${participation.coordinate_id}`}><div><Badge tone="accent">{participation.season} {participation.year}</Badge>{participation.recognition && <Badge tone="warning">PROTOTYPE PICK</Badge>}</div><Link to={`/challenges/${participation.challenge_slug}`}>{participation.challenge_title} →</Link><small><Link to={`/coordinates/${participation.coordinate_id}`}>{participation.coordinate_title}</Link></small></article>)}</div> : <p className="empty-card">Seasonal Themeへの参加はまだありません。</p>}
       </section>
 
       <section className="section section--flush" aria-labelledby="contributions-title">

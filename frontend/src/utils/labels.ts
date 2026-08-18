@@ -46,6 +46,15 @@ const LABELS: Record<string, string> = {
   EXISTING_FURNITURE: "手持ち家具を活かした",
   PRODUCT_SUBSTITUTION: "商品を置き換えた",
   OTHER: "その他",
+  SPRING: "春",
+  SUMMER: "夏",
+  AUTUMN: "秋",
+  WINTER: "冬",
+  OFFICIAL_PICK: "Prototype選定",
+  USEFUL_REUSE: "再利用の工夫",
+  SMART_BUDGET: "予算の工夫",
+  SMALL_SPACE_IDEA: "小さな部屋の工夫",
+  REAL_ROOM_STORY: "REAL ROOMの工夫",
 };
 
 export function label(value: string): string {

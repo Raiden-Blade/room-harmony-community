@@ -46,18 +46,32 @@ try {
         budget_max: 50000,
         style: "NATURAL",
         needs: ["STORAGE"],
-        products: [{ product_id: "DEMO-BED-01", role: "MAIN_FURNITURE", quantity: 1 }],
+        products: [
+          { product_id: "DEMO-BED-01", role: "MAIN_FURNITURE", quantity: 1 },
+          { product_id: "DEMO-DESK-01", role: "SUPPORT_FURNITURE", quantity: 1 },
+          { product_id: "DEMO-STORAGE-01", role: "STORAGE", quantity: 1 },
+        ],
         existing_furniture: [{ label: "手持ちの机", category: "SUPPORT_FURNITURE", dimensions: "幅90cm" }],
         image_ids: [],
       }),
     });
     if (!contributionResponse.ok) throw new Error(`Could not create visual QA Coordinate (${contributionResponse.status})`);
     const contribution = await contributionResponse.json();
+    const entryResponse = await fetch(`${apiBaseUrl}/api/challenges/new-life-6tatami-2028/entries`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-Session-ID": sessionId },
+      body: JSON.stringify({ coordinate_id: contribution.id }),
+    });
+    if (!entryResponse.ok) throw new Error(`Could not create visual QA Challenge Entry (${entryResponse.status})`);
     const pages = [
       { name: "home", path: "/" },
+      { name: "seasonal", path: "/seasonal" },
+      { name: "challenge", path: "/challenges/new-life-6tatami-2028" },
+      { name: "archive", path: "/challenges/new-life-6tatami-2027" },
       { name: "explore", path: "/explore?room_size=SMALL_6&need=STORAGE&budget_max=50000" },
       { name: "coordinate", path: `/coordinates/${contribution.id}` },
       { name: "create", path: "/create" },
+      { name: "create-challenge", path: "/create?challenge=new-life-6tatami-2028" },
       { name: "create-products", path: "/create" },
       { name: "create-real-products", path: "/create" },
       { name: "creator", path: `/creators/${creator.id}` },

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository contains the product definition, approved Phase 1 Functional MVP, and Goal 2 Creator & Community Loop for a participatory Nitori coordinate platform. The current implementation is a synthetic/local-data prototype under review; it is not production-ready and does not prove business impact.
+This repository contains the product definition, approved Phase 1 Functional MVP, Goal 2 Creator & Community Loop, and Goal 3 Seasonal Growth Loop for a participatory Nitori coordinate platform. The current implementation is a synthetic/local-data prototype under review; it is not production-ready and does not prove business impact.
 
 ## Navigation
 
@@ -23,7 +23,7 @@ This repository contains the product definition, approved Phase 1 Functional MVP
 
 `https://github.com/Raiden-Blade/room-harmoney` is read-only reference material. Never add, modify, delete, commit, branch, or reconfigure anything in that repository while working here.
 
-Goal 2 explicitly authorizes Public USER_DECLARED REAL / PLAN, Helpful, Save / Adapt lineage, local safe image upload, Report, and Creator useful-impact UI. Do not add Comment, Follow, DM, notification, Challenge / Contest / Ranking, AI / LLM, real NITORI APIs, live Room Harmony calls, production authentication, payment, or deployment without a new explicit Goal. Goal 3 / Goal 4 remain out of scope.
+Goal 2 explicitly authorizes Public USER_DECLARED REAL / PLAN, Helpful, Save / Adapt lineage, local safe image upload, Report, and Creator useful-impact UI. Goal 3 additionally authorizes structured Seasonal Challenges, eligibility-checked Entry, previous-year Archive reuse, controlled Prototype Pick recognition, Creator seasonal impact, and their analytics. Challenge is a reuse layer over Coordinate, not a second post system or popularity contest. Do not add Comment, Follow, DM, notification, Leaderboard, free-form recognition, AI / LLM, real NITORI APIs, live Room Harmony calls, production authentication, payment, or deployment without a new explicit Goal. Goal 4 remains out of scope.
 
 ## Evidence Discipline
 

@@ -14,7 +14,7 @@ const quickEntries = [
 
 export function HomePage() {
   const seasonal = useAsync(
-    () => api.discover(new URLSearchParams({ mode: "newlife", limit: "3" })),
+    () => api.seasonal(),
     [],
   );
 
@@ -62,18 +62,18 @@ export function HomePage() {
       <section className="section section--seasonal" aria-labelledby="seasonal-title">
         <div className="seasonal-story">
           <p className="eyebrow">Seasonal collection</p>
-          <h2 id="seasonal-title">新生活2027</h2>
-          <p>前年のREAL ROOM例を、今年の一人暮らしPLANへ。Contestではなく、実現につながる事例集として扱います。</p>
+          <h2 id="seasonal-title">{seasonal.data?.featured?.title || "新生活の6畳"}</h2>
+          <p>前年のREAL ROOM例を、今年の一人暮らしPLANへ。Contestではなく、実現につながるSeasonal Growthとして扱います。</p>
           <ol className="story-steps" aria-label="季節の循環">
             <li><span>01</span>前年のREAL例</li>
             <li><span>02</span>自分向けPLAN</li>
             <li><span>03</span>店舗・ECで確認</li>
           </ol>
-          <Link className="button button--secondary" to="/explore?mode=newlife">新生活コレクションを見る</Link>
+          <Link className="button button--secondary" to="/seasonal">今のテーマと前年Archiveを見る</Link>
         </div>
         <div className="coordinate-grid coordinate-grid--three">
           {seasonal.loading && <Loading />}
-          {seasonal.data?.results.map((coordinate) => <CoordinateCard key={coordinate.id} coordinate={coordinate} />)}
+          {seasonal.data?.previous_year_coordinates.slice(0, 3).map((coordinate) => <CoordinateCard key={coordinate.id} coordinate={coordinate} />)}
         </div>
       </section>
 

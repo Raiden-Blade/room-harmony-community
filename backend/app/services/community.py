@@ -27,6 +27,7 @@ from app.schemas.community import (
 )
 from app.services.images import image_url
 from app.services.plans import load_coordinate, require_owned_plan
+from app.services.seasonal import withdraw_entries_for_coordinate
 
 
 def creator_for_session(session: Session, session_id: str) -> CreatorProfile | None:
@@ -328,6 +329,7 @@ def unpublish_owned_coordinate(session: Session, session_id: str, coordinate_id:
     coordinate.status = "ARCHIVED"
     coordinate.moderation_status = "HIDDEN"
     coordinate.unpublished_at = datetime.now(timezone.utc)
+    withdraw_entries_for_coordinate(session, coordinate.id)
     session.commit()
     return coordinate
 

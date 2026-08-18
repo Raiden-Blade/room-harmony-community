@@ -44,6 +44,36 @@ for (const viewport of viewports) {
     const actionBox = await mainAction.boundingBox();
     expect(actionBox?.height ?? 0).toBeGreaterThanOrEqual(44);
 
+    await page.goto("/seasonal");
+    await expect(page.getByRole("heading", { name: /前年の暮らしを/ })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    const seasonalAction = page.getByRole("link", { name: "今のテーマを見る" });
+    expect((await seasonalAction.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
+    await testInfo.attach(`${viewport.name}-seasonal`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+
+    await page.goto("/challenges/new-life-6tatami-2028");
+    await expect(page.getByRole("heading", { name: "新生活の6畳 2028" })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    const challengeAction = page.getByRole("link", { name: "このテーマでコーデをつくる" });
+    expect((await challengeAction.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
+    await page.keyboard.press("Tab");
+    await expect(page.locator(":focus-visible")).toBeVisible();
+    await testInfo.attach(`${viewport.name}-challenge`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+
+    await page.goto("/challenges/new-life-6tatami-2027");
+    await expect(page.getByText("前年Archive")).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    await testInfo.attach(`${viewport.name}-archive`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+
     await page.goto("/coordinates/coord-001");
     await expect(page.getByRole("heading", { name: /ナチュラルで整える/ })).toBeVisible();
     await expectNoHorizontalOverflow(page);

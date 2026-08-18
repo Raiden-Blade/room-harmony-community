@@ -78,7 +78,18 @@ flowchart LR
   O --> N[翌年のSimilar-to-me seed]
 ```
 
-ChallengeはExplore配下のCollectionとして始める。Top-level navigationやCompetition engineは継続参加が確認された後に判断する。
+ChallengeはHomeの補助CTAとSeasonal Collectionから始める。Top-level navigationやCompetition engineは継続参加が確認された後に判断する。
+
+Current functional path:
+
+1. HomeからSeasonal landingへ入る。
+2. Active / Constraint / Upcomingとprevious-year Archiveを区別して見る。
+3. Challenge Detailでwhy、structured条件、REAL / PLAN内訳、Prototype Pickの非公式境界を確認する。
+4. 自分のeligible Public Coordinateで参加、またはChallenge条件をprefillした既存Create flowで作成する。
+5. 前年CoordinateはSave / Private PLANへAdaptし、Parent / Root lineageを残す。
+6. Public derivativeをCurrent Challengeへ参加させ、Creator Profileからseasonal impactを辿る。
+
+Entryは別Postではない。既存Coordinateへの参加関係で、unpublish / moderation / lineageを共通利用する。
 
 ## Cross-journey handoff principles
 

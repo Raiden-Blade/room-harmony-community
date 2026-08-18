@@ -7,11 +7,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.api import analytics, catalog, community, plans, saved
+from app.api import analytics, catalog, community, plans, saved, seasonal
 from app.core.config import Settings
 from app.core.database import Base, create_database
 from app.core.schema import upgrade_demo_schema
-from app.services.seed import seed_if_empty
+from app.services.seed import seed_if_empty, seed_seasonal_if_empty
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -28,6 +28,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         upgrade_demo_schema(engine)
         with session_factory() as session:
             seed_if_empty(session, active_settings.seed_path)
+            seed_seasonal_if_empty(session, active_settings.seasonal_seed_path)
         yield
         engine.dispose()
 
@@ -52,6 +53,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(saved.router)
     app.include_router(plans.router)
     app.include_router(community.router)
+    app.include_router(seasonal.router)
     app.include_router(analytics.router)
 
     @app.get("/health", tags=["system"])
