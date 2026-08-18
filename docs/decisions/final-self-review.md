@@ -2,7 +2,7 @@
 
 Review date: 2026-08-18 (JST)
 
-Current result: **AUTOMATED GATE PASS / FRESH CLONE PENDING**. This is not a production-readiness, official-integration, or business-impact verdict. A second physical Windows PC remains a separate manual check.
+Current result: **LOCAL + FRESH-CLONE GATES PASS / GITHUB ACTIONS PENDING**. This is not a production-readiness, official-integration, or business-impact verdict. A second physical Windows PC remains a separate manual check.
 
 | # | Check | Result | Evidence / correction |
 |---:|---|---|---|
@@ -29,7 +29,7 @@ Current result: **AUTOMATED GATE PASS / FRESH CLONE PENDING**. This is not a pro
 | 21 | Private PLAN boundaryを守るか | PASS | Cross-session read / list / save / clone / mutate / ready / handoffを404で遮断。Responseからowner Session IDを除外。 |
 | 22 | 390px mobileで主要Flowが使えるか | PASS | Chromium 390 / 768 / 1280 test、horizontal overflow 0、tap target 44px以上、visible focus、15 rendered screenshots review。 |
 | 23 | Windows launcherが安全に起動・停止できるか | PASS | `python.exe` / `py.exe -3` fallback、venv再検証、owned PID、unmanaged port refusal、stale state、port releaseを確認。 |
-| 24 | Fresh setupを再現できるか | PENDING | Final tracked commitから`.venv / node_modules / .demo`無しのtemporary cloneを作り、Install → health → flow smoke → stopを再確認する。 |
+| 24 | Fresh setupを再現できるか | PASS | Tracked commit `9506b7e`から`.venv / node_modules / .demo`無しのtemporary cloneを作り、Install → health → frontend 200 → API flow smoke → private boundary → stop → ports解放 → clean statusを確認。 |
 | 25 | 別Physical Windows PCで確認したか | MANUAL_REQUIRED | 実機2台目そのものは未使用。`docs/operations/second-pc-checklist.md`を使用し、未実施をPASSと表現しない。 |
 
 ## Critical findings corrected during Goal 1.5
@@ -61,10 +61,9 @@ Current result: **AUTOMATED GATE PASS / FRESH CLONE PENDING**. This is not a pro
 
 ## Pending final evidence
 
-- Final tracked commitからのfresh clone install / startup / API flow smoke / shutdown / clean status
 - GitHub Actions backend / frontend jobs after push
 - Second physical Windows PC remains `MANUAL_SECOND_PC_TEST_REQUIRED`
 
 ## Provisional verdict
 
-Local automated checks are green. `READY_FOR_HUMAN_MERGE` is not assigned until the final fresh-clone gate and GitHub Actions pass. Production readiness、NITORI data permission、official Product ID、Room Harmony owner / API、business uplift、moderated user testは未完了であり、次Phaseへ自動進行しない。
+Local automated checks and fresh-clone acceptance are green. `READY_FOR_HUMAN_MERGE` is not assigned until GitHub Actions pass. Production readiness、NITORI data permission、official Product ID、Room Harmony owner / API、business uplift、moderated user testは未完了であり、次Phaseへ自動進行しない。
