@@ -1,23 +1,154 @@
 # Room Harmony Community
 
-NITORIの既存Coordinate資産を、閲覧だけでなく「自分に近い事例の発見 → PLAN → Store / EC Action → REAL ROOM → 次の人の発見」へ循環させる参加型Coordinate PlatformのProduct Definition repositoryです。
+「新生活 × 一人暮らし × 6畳」を入口に、暮らしのCoordinateを**自分に近い事例から探す → 商品の役割を空間単位で理解する → 保存する → Private PLANへ変更する → 店舗比較用のHandoffを準備する**まで動かせるFunctional MVPです。
 
-> 暮らしの事例を「見る」だけで終わらせず、自分の条件に合わせたPLANへ変え、店舗・ECで実現し、REAL ROOMとして次の人へ循環させる。
+> 商品を一つずつ売るUIではなく、「なぜこの組み合わせが自分の暮らしに合うか」を理解し、手持ち家具も残しながら次の行動へ進めるかを検証します。
+
+## Current status / Phase 1 validation
+
+2026-08-18時点で、Functional MVP、synthetic seed、analytics instrumentation、automated tests、Windows one-click launcherまで実装済みです。検証対象はH1 `Similar-to-me vs editorial`、H2 `Structured detail → multi-category exploration`、H3 `Save → PLAN → action`です。Similar / PopularはUserが自分で切り替える比較条件であり、Randomized A/B assignmentではありません。Production効果、併売率向上、公式System接続は未検証です。
+
+## いちばん簡単な起動方法（Windows）
+
+1. このRepositoryをZIPでDownloadし、**ZIPを展開**します。
+2. [Python 3.11以上](https://www.python.org/downloads/windows/)と[Node.js 20.19〜24.x](https://nodejs.org/)が未Installなら先にInstallします。GitはZIP利用では不要、`git clone`する場合はGit 2.xが必要です。Launcherは利用可能な`python.exe`を優先し、無ければWindows Python Launcherの`py.exe -3`を確認します。
+3. Repository直下の`start-demo.cmd`をDouble-clickします。
+4. 初回のみPython / Node依存関係が自動Installされ、Health check後にブラウザが開きます。
+
+起動後:
+
+- App: <http://127.0.0.1:5173>
+- API health: <http://127.0.0.1:8000/health>
+- Swagger / OpenAPI: <http://127.0.0.1:8000/docs>
+- 終了: `stop-demo.cmd`をDouble-click
+
+LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port、owned process、backend health、frontend応答を確認し、120秒でTimeoutします。失敗時は`.demo/logs/`の場所と原因を表示します。ZIP内から直接実行、Microsoft Store alias、Python / Node不足、古いvirtualenv、他Processによるport使用は自動で隠さず、修正方法を表示します。
+
+別Physical Windows PCでの確認はまだ自動検証と分けて扱います。Merge前の5分確認は[`docs/operations/second-pc-checklist.md`](docs/operations/second-pc-checklist.md)を使用してください。現在の状態は`MANUAL_SECOND_PC_TEST_REQUIRED`です。
+
+## Demoで確認する2つのFlow
+
+### Flow A — Discovery / Save
+
+1. Homeの`6畳のおすすめを見る`
+2. 部屋・困りごと・予算を選ぶ
+3. `あなたに近い理由`を確認
+4. Coordinate Detailから複数商品を見る
+5. Product Detailから使用Coordinateへ戻る
+6. `あとで参考にする`
+
+### Flow B — Private PLAN / Action
+
+1. `保存・PLAN`から保存したCoordinateを開く
+2. `自分向けに変更する`
+3. 商品を`残す / 別の商品に変更 / 追加`
+4. 手持ち家具を追加（購入Totalには含めない）
+5. Totalを確認して`比較準備へ`
+6. Room Harmony Handoff payload Previewを確認
+
+Handoffは**Preview only**です。既存Room HarmonyやNITORI内部Systemへ通信しません。
+
+## 実装Stack
+
+| Layer | Technology | Responsibility |
+|---|---|---|
+| Frontend | React 18 / TypeScript / Vite / React Router | 9 route screens、responsive UI、API client、analytics event |
+| Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy | deterministic ranking、Save / PLAN lifecycle、price計算、handoff、event |
+| Data | SQLite + generated JSON seed | anonymous local Session、36 Coordinates、60 Product references |
+| Test | pytest / Vitest / Testing Library / Playwright | unit、API integration、page behavior、2本のE2E、responsive checks |
+
+Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/src/api/types.ts`](frontend/src/api/types.ts)のTypeScript contractと[`frontend/src/api/client.ts`](frontend/src/api/client.ts)を通してだけ接続します。
+
+## Repository structure
+
+```text
+room-harmony-community/
+├── frontend/        React UI、typed API client、Vitest、Playwright
+├── backend/         FastAPI、domain / service / repository、pytest
+├── data/seed/       generated synthetic demo dataset
+├── docs/            Phase 0定義 + implementation / runbook / decisions
+├── scripts/         seed / validation / launcher helpers
+├── start-demo.cmd   Windows one-click start
+└── stop-demo.cmd    owned processes only stop
+```
+
+## Dataと権利の境界
+
+- 36件のCoordinate、60件のProduct、価格、画像はすべて架空の機能検証Dataです。
+- Product IDは`DEMO-*`であり、NITORI SKUではありません。
+- 画像はこのRepository用に生成したoriginal SVGです。Instagram、NITORI Coordinate投稿、商品画像を取得・転載していません。
+- 価格は`デモ価格スナップショット`と明示し、未取得価格は0円にせず件数を表示します。
+- 外部URLはNITORI公式検索ページへの参考Linkで、在庫・Cart・購入・価格APIではありません。
+- REAL / PLAN、Official / Staff / User declaredは将来のData modelを示す架空例で、公式認定や実在投稿を意味しません。
+
+詳細は[`data/README.md`](data/README.md)と[`docs/sources/source-links.md`](docs/sources/source-links.md)を参照してください。
+
+## 推薦の意味
+
+`あなたに近い`はAI / LLMではありません。Room size、Need、Budget、Room / Housing / Household、Style、手持ち家具との相性を固定weightで採点し、同点時もID順で決まるdeterministic rankingです。表示理由も同じ一致条件から生成します。`編集部ピック`はH1比較用のPopular / editorial baselineです。
+
+このMVPは併売率や売上改善を証明しません。H1〜H3の操作EventとUser選択の`comparison_condition`を蓄積し、「次に正式なUser testで何を比較できるか」を示します。Randomized assignment、sticky group、sample-size設計、統計解析は未実装です。
+
+## 開発者向け起動
+
+Backend:
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
+```
+
+`python.exe`が無く`py.exe`のみ利用できるWindowsでは、最初の行を`py -3 -m venv .venv`に置き換えます。
+
+Frontend（別Terminal）:
+
+```powershell
+cd frontend
+npm.cmd ci
+npm.cmd run dev
+```
+
+## Test / Validation
+
+```powershell
+# Seed schema / rights / count
+backend\.venv\Scripts\python.exe scripts\validate_data\validate_seed.py
+
+# Backend unit + API + OpenAPI contract
+backend\.venv\Scripts\python.exe -m pytest -q
+
+# Frontend behavior + production build + dependency audit
+cd frontend
+npm.cmd run test:run
+npm.cmd run build
+npm.cmd audit --audit-level=high
+
+# Real Chromium flows + 390 / 768 / 1280 responsive checks
+npm.cmd run test:e2e
+```
+
+Visual QA captureはDemo起動中に`npm.cmd run qa:visual`を実行すると`.demo/visual-qa/`へ出力されます。
+
+Pull Requestでは`.github/workflows/ci.yml`がbackend tests、frontend tests、frontend production buildを実行します。Playwright、Windows launcher、fresh-clone、別Physical PCはlocal / manual gateとして分離します。
 
 ## Repository boundary
 
-本Repositoryは既存[Room Harmony](https://github.com/Raiden-Blade/room-harmoney)から意図的に分離しています。既存Room Harmonyはread-only referenceであり、QR、商品Recommendation、Guided Chat、複数商品のStore Routeを担当します。本RepositoryはCoordinate discovery、Save、PLAN / REAL、Adapt / Remix、Creator / Seasonal loopを定義します。
+本Repositoryは既存[Room Harmony](https://github.com/Raiden-Blade/room-harmoney)から意図的に分離しています。
 
-## Current status
+- Community: Coordinate discovery / Save / PLAN / Adapt / Seasonal collection
+- Room Harmony: QR / Product recommendation / Guided Chat / Store route / Visit session
+- 接点: versioned Handoff previewのみ
 
-Product Definition、Current-state audit、Domain / Data / System Architecture、MVP、Phase 1 planまでを作成しました。Phase 1の本実装には進まず、人間Reviewを待つ状態です。
+既存`room-harmoney`のcode、branch、data、runtimeは変更していません。
 
-今回の範囲外:
+## MVPに含まれないもの
 
-- Full React / FastAPI application
-- Production authentication / upload / social features
-- ML / AI image recognition / LLM concierge
-- NITORI internal API / POS / live Room Harmony integration
-- Production deployment
+- Public UGC、投稿Upload、Like、Comment、Follow、Leaderboard、Contest
+- AI / LLM / image recognition
+- 本物のNITORI商品・価格・在庫・POS・決済・店内Map
+- Production authentication / deployment
+- Live Room Harmony integration
 
-最初に[Documentation Index](docs/index.md)を読み、Fact / Observation / Inference / Hypothesisの区別とSource statusを確認してください。
+Documentationの入口は[`docs/index.md`](docs/index.md)、実装構造は[`docs/architecture/implementation.md`](docs/architecture/implementation.md)、起動Troubleshootingは[`docs/operations/demo-runbook.md`](docs/operations/demo-runbook.md)です。

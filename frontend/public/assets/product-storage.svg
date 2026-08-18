@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title">
+  <title id="title">storageのオリジナルデモプレースホルダー</title>
+  <rect width="640" height="480" fill="#f0ece4"/><circle cx="530" cy="80" r="120" fill="#b28a60" opacity=".16"/><g fill="#b28a60" stroke="#b28a60" stroke-width="16" stroke-linejoin="round"><rect x="155" y="85" width="330" height="300" rx="12"/><path d="M155 180h330M155 280h330M320 85v300" stroke="#f4ede1"/><circle cx="300" cy="135" r="7" fill="#f4ede1"/><circle cx="340" cy="135" r="7" fill="#f4ede1"/></g><text x="320" y="435" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#6a675f">DEMO PRODUCT</text>
+</svg>

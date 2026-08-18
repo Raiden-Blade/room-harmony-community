@@ -1,6 +1,6 @@
 # Phase 1 Recommended Implementation Plan
 
-本書は人間Review後に開始する推奨計画である。今回のGoalでは実装しない。
+本書は当初、人間Review後に開始する推奨計画として作成した。その後、2026-08-18の明示的な実装指示により、権利安全なsynthetic dataを用いたFunctional MVPを独立branchで実装した。Production integrationとPublic communityは引き続き実装しない。
 
 ## Phase 1 outcome
 
@@ -26,7 +26,7 @@
 
 Gate: 全Seedがsource、permission、provenance、product reference、context validationを通る。
 
-### P2. Experience prototype
+### P2. Experience prototype — implemented for functional demo
 
 - Home / Explore / Detail / Saved / My Coordinateのclickable prototype
 - Similar-to-me 3-input以下
@@ -36,7 +36,7 @@ Gate: 全Seedがsource、permission、provenance、product reference、context v
 
 Gate: 5名程度のformative testで主要flowをmoderator interventionなしに完了でき、REAL / PLANを誤解しない。
 
-### P3. Deterministic retrieval
+### P3. Deterministic retrieval — implemented and covered by golden tests
 
 - Weighted rule-based similarity
 - Match reason
@@ -46,16 +46,17 @@ Gate: 5名程度のformative testで主要flowをmoderator interventionなしに
 
 Gate: Golden casesでexpected top resultsとreasonが再現可能。Popularity concentrationを確認。
 
-### P4. Analytics and experiment contract
+### P4. Analytics and future experiment contract — event capture/readiness implemented; randomized experiment not implemented
 
-- Event dictionary、exposure semantics、anonymous identity、retention period
-- H1 / H2 / H3のbaseline / variant
+- Event dictionary、anonymous identity、controlled properties、retention review
+- H1のUser-selected comparison condition（Similar / Popular）とH2 / H3 funnel instrumentation
+- 将来のassignment、exposure semantics、sticky group、sample size、analysis plan
 - CAMPER calculation test
 - Consent / privacy review
 
-Gate: Synthetic event setからKPIを再現し、double count / missing exposureがない。
+Gate: 現MVPではEvent contractと重複しないPreview action countを確認する。正式Experimentへ進む前にassignment / exposure / sample-size / analysisを別途承認する。
 
-### P5. Integration boundary prototype
+### P5. Integration boundary prototype — preview-only implemented
 
 - Official EC link pattern
 - Room Harmony handoff payload validator

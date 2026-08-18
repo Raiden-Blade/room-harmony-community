@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-labelledby="title">
+  <title id="title">lightingのオリジナルデモプレースホルダー</title>
+  <rect width="640" height="480" fill="#f0ece4"/><circle cx="530" cy="80" r="120" fill="#d3a14d" opacity=".16"/><g fill="#d3a14d" stroke="#d3a14d" stroke-width="16" stroke-linejoin="round"><path d="M320 70v105"/><path d="M235 220h170l-42-80h-86z"/><circle cx="320" cy="245" r="35" fill="#fff1b8"/><path d="M320 280v105M255 385h130"/></g><text x="320" y="435" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#6a675f">DEMO PRODUCT</text>
+</svg>

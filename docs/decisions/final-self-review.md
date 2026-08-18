@@ -1,36 +1,69 @@
-# Final Self-Review
+# Final Self-Review — Goal 1.5 Merge Gate
 
-Review date: 2026-08-18
+Review date: 2026-08-18 (JST)
+
+Current result: **READY_FOR_HUMAN_MERGE**. Local, fresh-clone, and GitHub Actions gates pass. This is not a production-readiness, official-integration, or business-impact verdict. A second physical Windows PC remains a separate manual check.
 
 | # | Check | Result | Evidence / correction |
 |---:|---|---|---|
-| 1 | Instagram Cloneになっていないか | Pass | Coordinate core、Room / Need / Product / PLAN / lineageを定義。[Differentiation](../product/differentiation.md) |
-| 2 | NITORI既存機能を無意味に再実装していないか | Pass | EC / Inventory / Map / Simulation / Adviserを既存Ownerへ残した。[NITORI audit](../audit/nitori-current-state.md) |
-| 3 | Room Harmonyと責務が重複していないか | Pass | CommunityとQR / Recommendation / Routeを分離。[Integration boundary](../architecture/room-harmony-integration.md) |
-| 4 | UGC自体が目的になっていないか | Pass | MVPはPublic uploadを除外し、discovery→PLAN→actionを検証。[MVP](../product/mvp-definition.md) |
-| 5 | 併売率への因果関係を説明できるか | Pass with hypothesis caveat | KPI treeとCAMPERを定義。Purchase effectは未証明。[KPI](../product/kpi.md) |
-| 6 | 投稿しないUserにも価値があるか | Pass | Browse / Save / Product / private PLANが独立価値。[Participation ladder](../product/participation-ladder.md) |
-| 7 | 新生活以外にも継続利用理由があるか | Pass | Summer / Autumn / Winter / always-on needsを定義。[Seasonal loop](../product/seasonal-growth-loop.md) |
-| 8 | Seasonal Growth Loopが成立しているか | Pass as hypothesis | 前年REAL→今年PLAN→今年REAL→翌年Seed。Longitudinal validationは未実施。 |
-| 9 | REAL / PLAN transitionが成立しているか | Pass in model | Lifecycle、provenance、statusを分離。[Domain model](../architecture/domain-model.md) |
-| 10 | Product → Coordinateも成立するか | Pass | Index / Journey / ER indexを定義。NITORIにも一部既存。 |
-| 11 | Remixが単なるCopyになっていないか | Pass | Change reason、kept / removed / added、parent edgeを定義。 |
-| 12 | PopularではなくUseful for Meを扱えているか | Pass | Deterministic similar-to-me、match reason、fallbackを定義。 |
-| 13 | Existing Furnitureを無視していないか | Pass | `CATALOG_OWNED / EXISTING_EXTERNAL / CATALOG_TO_BUY`を定義。 |
-| 14 | Source URLがすべて保存されているか | Pass for consulted sources | [Source registry](../sources/source-links.md)にNITORI 15件、Room Harmony 12件。 |
-| 15 | 読み込めなかったSourceを推測していないか | Pass | NIT-015はNOT_YET_VERIFIED、Unknownを明示。 |
-| 16 | Existing Room Harmonyに変更を加えていないか | Pass | 公開直前にHEAD `d41f411a783f555fd4828cb001695c30126e3bb5`とclean working treeを再確認。 |
-| 17 | 新Repositoryとして完全に分離されているか | Pass | 独立Git rootと独立Remote `Raiden-Blade/room-harmony-community`を確認。 |
-| 18 | MVPが大きすぎないか | Pass after cuts | Public UGC、Social graph、Challenge engine、ML、3D、live integrationを除外。 |
+| 1 | Primary Targetが新生活・一人暮らし・6畳に明確か | PASS | Home CTA、default discovery、golden case、seasonal collectionを同targetへ統一。 |
+| 2 | DomainがTargetだけにHard-codeされていないか | PASS | size 3 bands、need 6、style 6、generic room / housing / household / budget fields。Ranking contextもoptional。 |
+| 3 | Instagram Cloneになっていないか | PASS | Infinite feed、Like、Comment、Followを置かず、discovery → structured detail → private PLANを中心にした。 |
+| 4 | Product catalog Cloneになっていないか | PASS | Space / problem / match reasonを先に表示。Fake cart、inventory、checkoutなし。 |
+| 5 | Existing NITORI assetsを重複実装していないか | PASS | Official search linkのみ。価格・在庫・Map・購入・相談はtruth ownerへ残す。 |
+| 6 | Coordinateが中心Domainになっているか | PASS | Coordinate aggregateがNeed / Item / PLAN lineage / provenance / seasonal / creator slotを所有。 |
+| 7 | Similar-to-meの理由が説明できるか | PASS | Need、room size、budget等の固定weightと同じ条件から最大4理由を生成。Weight別・tie-break・golden top testあり。 |
+| 8 | PLANがProfessional Designと誤認されないか | PASS | `PRIVATE PLAN`、デモ、未承認、購入・在庫確保ではないcopyをDetail / PLAN / Aboutに表示。 |
+| 9 | REAL / PLANが明確か | PASS | kind badge、status、visibility、parent linkをData / API / UIで分離。Bundled Staff PLANはsynthetic public example。 |
+| 10 | Existing Furnitureを扱えるか | PASS | Product ID不要のlabel / category / optional dimensions。購入Totalから除外するunit + E2E test。 |
+| 11 | SaveとLikeを混同していないか | PASS | `あとで参考にする`、`参考候補`として扱い、reaction countやLike UIなし。 |
+| 12 | Product → Coordinateが動くか | PASS | Product Detailの`この商品を使ったコーデを見る`とAPI integration / frontend / E2E test。 |
+| 13 | Coordinate → Multiple Productが動くか | PASS | role付き5商品、2商品Detail閲覧をE2Eで確認。 |
+| 14 | Store / EC Actionまで到達できるか | PASS | Official search CTAとgoal-centered Handoff Preview。実購入・店舗在庫照会・live handoffは行わない。 |
+| 15 | Room Harmony Boundaryを守っているか | PASS | Community側contract builderのみ、`live_integration=false`、network callなし。Existing repository unchanged。 |
+| 16 | Creator / Emotional Loopが将来拡張可能か | PASS | creator metadata、official pick、seasonal recognition、helpful / saved / adaptation slot、attribution event名を予約。Public UGC actionは未実装。 |
+| 17 | Seed画像の権利状態が追跡可能か | PASS | 全Product / Coordinateにrights status。12点のlocal original SVG。Validatorがasset path traversalと外部imageを拒否。 |
+| 18 | Official URLが制御されているか | PASS | Validatorが`https://www.nitori-net.jp/ec/search/...`のexact host / pathを強制。User inputをredirectに使用しない。 |
+| 19 | Analyticsで次の検証準備ができるか | PASS | allowlist Event、controlled enum / integer、anonymous Session、readiness endpoint。`comparison_condition`はUser選択でありA/B割当ではない。 |
+| 20 | Analyticsが行動を二重計上しないか | PASS | Handoff Previewは`room_harmony_handoff_preview`だけを発火し、live actionとして数えない。 |
+| 21 | Private PLAN boundaryを守るか | PASS | Cross-session read / list / save / clone / mutate / ready / handoffを404で遮断。Responseからowner Session IDを除外。 |
+| 22 | 390px mobileで主要Flowが使えるか | PASS | Chromium 390 / 768 / 1280 test、horizontal overflow 0、tap target 44px以上、visible focus、15 rendered screenshots review。 |
+| 23 | Windows launcherが安全に起動・停止できるか | PASS | `python.exe` / `py.exe -3` fallback、venv再検証、owned PID、unmanaged port refusal、stale state、port releaseを確認。 |
+| 24 | Fresh setupを再現できるか | PASS | Tracked branch snapshotから`.venv / node_modules / .demo`無しのtemporary cloneを作り、Install → health → frontend 200 → API flow smoke → private boundary → stop → ports解放 → clean statusを確認。 |
+| 25 | 別Physical Windows PCで確認したか | MANUAL_REQUIRED | 実機2台目そのものは未使用。`docs/operations/second-pc-checklist.md`を使用し、未実施をPASSと表現しない。 |
 
-## Critical review findings
+## Critical findings corrected during Goal 1.5
 
-1. 最も大きな誤りRiskは「NITORIにPlanningがない」と説明すること。Simulationと専門相談があるため、新Productはself-service前段とpersistent planに限定した。
-2. 第二のRiskはCommunityとRoom Harmonyの推薦責務重複。CommunityはCoordinate retrieval、Room Harmonyはproduct recommendation / store executionに分離した。
-3. 第三のRiskはUGC / Contestを成長の原因と扱うこと。どちらも未検証のinput mechanismであり、MVPから外した。
-4. 第四のRiskは既存Room Harmonyの9,180商品を「全てReal data」と呼ぶこと。Product fieldsとsource URLはofficial EC由来だが、Lift / Coordinate / Map / POSはvalidation dataである。
-5. 第五のRiskはMVPをProduct buildへ膨張させること。Current deliverableはProduct Definitionで停止する。
+1. Architecture docsの旧module path、旧handoff route、README screen count、AGENTS project phaseを現実装へ同期した。
+2. Windows launcherが`python.exe`だけを前提としていたため、usable Python判定、`py.exe -3` fallback、既存venv version checkを追加した。
+3. User-selected modeを`experiment_group`と呼び、`newlife`を`popular`へ誤分類していたため、公開contractを`comparison_condition`へ変更した。
+4. Handoff Previewがlive actionと二重計上されていたため、preview専用Event 1件だけへ修正した。
+5. Analytics allowlist内の文字列が実質free textを許していたため、enum / integer range / controlled IDへ制限した。
+6. Private PLANのSave APIが存在を`false`で漏らし、responseがowner Session IDを返していたため、404 boundaryとresponse最小化を追加した。
+7. HandoffのStore ID / return URLが広すぎたため、Demo Store IDとlocal pathだけに制限した。
+8. Stop launcherがstale PID `0`をWindows Idle Processとして扱う場合があったため、non-positive PIDを無視し、停止後のport releaseを確認するよう修正した。
+9. Saved / PLAN editの失敗時にErrorが見えず、formが先に消える場合があったため、失敗表示と成功後resetへ修正した。
+10. E2Eの広いheading selectorが同名要素を複数matchしてflakyになったため、URLとunique level-1 headingで確認するよう修正した。
 
-## Review verdict
+## Verified commands / outcomes before fresh-clone gate
 
-ArchitectureとMVPはPhase 1判断に必要な粒度へ到達した。ただしPhase 1を開始する前に、人間がSeed contentの権利、target segment、PLAN identity、price source、Room Harmony handoff ownerを決める必要がある。
+- `backend\.venv\Scripts\python.exe scripts\validate_data\validate_seed.py` → 36 Coordinates / 60 Products PASS
+- `backend\.venv\Scripts\python.exe -m pytest -q` → 33 passed
+- `npm.cmd run test:run` → 8 passed
+- `npm.cmd run build` → production build PASS
+- `npm.cmd audit --audit-level=high` → 0 vulnerabilities
+- `npm.cmd run test:e2e` → 5 passed（2 primary flows + 3 responsive viewports）
+- `npm.cmd run qa:visual` → 15 screenshots（5 screens × 3 viewports）rendered and reviewed
+- `start-demo.cmd -NoBrowser` → health OK / frontend 200 / repeated start detection / stop ports released
+- simulated `py.exe -3`-only PATH → fallback start / health / stop PASS
+- missing runtime / unmanaged 8000 / unrelated PID / stale state checks → explicit failure or safe cleanup PASS
+- Markdown local links → 29 files PASS; CI YAML / PowerShell syntax PASS
+
+## Final merge-gate evidence
+
+- GitHub Actions backend / frontend jobs → PASS
+- Second physical Windows PC remains `MANUAL_SECOND_PC_TEST_REQUIRED`
+
+## Verdict
+
+**READY_FOR_HUMAN_MERGE**. Automated checks, rendered QA, Windows lifecycle checks, fresh-clone acceptance, and GitHub Actions are green. MergeそのものはHuman decisionとし、自動Mergeしない。Production readiness、NITORI data permission、official Product ID、Room Harmony owner / API、business uplift、moderated user testは未完了であり、次Phaseへ自動進行しない。

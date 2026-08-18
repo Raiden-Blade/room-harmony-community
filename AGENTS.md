@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository defines the product, evidence, domain, data, UX, and architecture for a participatory Nitori coordinate platform. It is a product-definition repository until Phase 1 implementation is explicitly approved.
+This repository contains the product definition and the approved Phase 1 Functional MVP for a participatory Nitori coordinate platform. The current implementation is a synthetic-data prototype under review; it is not production-ready and does not prove business impact.
 
 ## Navigation
 
@@ -13,12 +13,17 @@ This repository defines the product, evidence, domain, data, UX, and architectur
 - `docs/research/`: assumptions, evidence, and validation plans
 - `docs/decisions/`: accepted, rejected, and deferred decisions
 - `prototypes/`: optional low-fidelity artifacts only
+- `frontend/`: React / TypeScript Functional MVP and browser tests
+- `backend/`: FastAPI / SQLAlchemy API and pytest suite
+- `scripts/`: seed validation and repository-relative Windows launcher helpers
 
 `docs/index.md` is the documentation entry point. Product truth is defined by the documents above, not by this file.
 
 ## Boundaries
 
 `https://github.com/Raiden-Blade/room-harmoney` is read-only reference material. Never add, modify, delete, commit, branch, or reconfigure anything in that repository while working here.
+
+Do not add Public UGC, creator reactions, challenges, AI / LLM, real NITORI APIs, live Room Harmony calls, production authentication, payment, or deployment without a new explicit Goal. Creator / Emotional Loop remains a core future hypothesis for Goal 2, not an optional decoration and not a current UI feature.
 
 ## Evidence Discipline
 
@@ -31,6 +36,8 @@ This repository defines the product, evidence, domain, data, UX, and architectur
 
 Keep sources, audits, product decisions, architecture, and research separate. Update linked documents together when a decision changes a domain concept, KPI, integration boundary, or MVP scope.
 
-## Future Coding and Validation
+## Coding and Validation
 
 Prefer small, typed modules with explicit contracts and tests at system boundaries. Validate documentation links, Mermaid syntax, schema examples, and traceability from hypothesis to required feature before implementation. Production features require separate human approval.
+
+For current commands and module paths, treat `README.md`, `docs/architecture/implementation.md`, and `docs/operations/demo-runbook.md` as the operational source of truth. Similar / Popular are user-selected comparison conditions, not randomized experiment assignment.

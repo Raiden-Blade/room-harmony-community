@@ -30,6 +30,12 @@
 - [Data model](architecture/data-model.md)
 - [Room Harmony integration](architecture/room-harmony-integration.md)
 - [UX information architecture](architecture/ux-information-architecture.md)
+- [Functional MVP implementation](architecture/implementation.md)
+
+## Operations
+
+- [Windows demo runbook](operations/demo-runbook.md)
+- [Second physical Windows PC checklist](operations/second-pc-checklist.md)
 
 ## Research and decisions
 
