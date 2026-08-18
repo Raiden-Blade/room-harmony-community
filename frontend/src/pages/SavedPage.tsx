@@ -11,13 +11,17 @@ export function SavedPage() {
   const navigate = useNavigate();
   const collection = useAsync(async () => ({ saved: await api.saved(), plans: await api.plans() }), []);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   async function createPlan(coordinateId: string, budgetMax: number) {
     setBusyId(coordinateId);
+    setActionError(null);
     try {
       const plan = await api.createPlan(coordinateId, budgetMax);
       await track("plan_start", { coordinate_id: coordinateId });
       navigate(`/plans/${plan.id}/edit`);
+    } catch (reason) {
+      setActionError(reason instanceof Error ? reason.message : "PLANを作れませんでした");
     } finally {
       setBusyId(null);
     }
@@ -33,6 +37,7 @@ export function SavedPage() {
         <h1>あとで見る事例と、自分のPLAN</h1>
         <p>Saveは「参考候補」、PLANは「自分の条件へ変え始めたもの」です。</p>
       </header>
+      {actionError && <p className="inline-error" role="alert">{actionError}</p>}
 
       <section className="section section--flush" aria-labelledby="plans-title">
         <div className="section-heading"><div><p className="eyebrow">Private</p><h2 id="plans-title">My PLAN</h2></div></div>

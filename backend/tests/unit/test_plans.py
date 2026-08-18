@@ -1,3 +1,6 @@
+import pytest
+from pydantic import ValidationError
+
 from app.integrations.room_harmony import build_handoff_preview
 from app.schemas.common import HandoffRequest
 from app.services.plans import (
@@ -58,3 +61,19 @@ def test_handoff_payload_is_preview_only_and_contains_plan_products(seeded_sessi
     assert payload.live_integration is False
     assert payload.anchor_product_id in payload.product_ids
     assert payload.return_url.startswith("/")
+
+
+@pytest.mark.parametrize("return_url", ["https://evil.example/", "//evil.example/", "/\\evil.example/"])
+def test_handoff_return_url_rejects_external_or_ambiguous_paths(return_url):
+    with pytest.raises(ValidationError):
+        HandoffRequest(return_url=return_url)
+
+
+def test_handoff_store_id_rejects_free_text():
+    with pytest.raises(ValidationError):
+        HandoffRequest(store_id="my home address")
+
+    with pytest.raises(ValidationError):
+        HandoffRequest(store_id="1234567890")
+
+    assert HandoffRequest(store_id="DEMO-STORE-001").store_id == "DEMO-STORE-001"

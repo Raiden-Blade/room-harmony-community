@@ -118,3 +118,16 @@
 - Alternatives: Build creator competition now; omit future slots entirely.
 - Why: This preserves a migration path without letting engagement mechanics distort H1〜H3.
 - Consequence: Creator impact remains unmeasured and must be activated by a future Decision.
+
+## D-020 — Similar / Popular is a comparison condition, not an experiment group
+
+- Context: The Functional MVP lets the User choose Similar, Popular, or New-life display. No randomized assignment or sticky group exists.
+- Decision: Expose `comparison_condition` in API / Frontend / Analytics and reserve formal experiment semantics for a later approved design.
+- Reason: Calling a User-selected mode an `experiment_group` can falsely imply causal A/B evidence; it also misclassified New-life as Popular.
+- Consequence: Current logs support instrumentation review only. They do not prove uplift, significance, sales, or co-purchase improvement.
+
+## D-021 — Add low-cost PR CI, keep browser and Windows gates local
+
+- Context: Backend pytest, Frontend Vitest, and production build are deterministic and platform-neutral; Playwright, Windows launcher, fresh-clone, and second-PC checks have heavier environment requirements.
+- Decision: Run backend tests, frontend tests, and frontend build in GitHub Actions on Pull Requests. Keep Playwright and Windows lifecycle as explicit local gates for this Goal.
+- Consequence: CI is a fast regression signal, not a replacement for rendered UI review, fresh-clone verification, or the manual second-PC checklist.

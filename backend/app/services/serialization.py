@@ -71,7 +71,6 @@ def coordinate_detail(
     return CoordinateDetail(
         **summary.model_dump(),
         parent_coordinate_id=coordinate.parent_coordinate_id,
-        owner_session_id=coordinate.owner_session_id,
         items=[
             CoordinateItemResponse(
                 id=item.id,

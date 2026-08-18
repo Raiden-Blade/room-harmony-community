@@ -46,7 +46,7 @@ function Stop-OwnedProcess([int]$ProcessId) {
     $processInfo = Get-CimInstance Win32_Process -Filter "ProcessId = $ProcessId" -ErrorAction SilentlyContinue
     if (-not $processInfo) { return }
     $commandLine = [string]$processInfo.CommandLine
-    if ($commandLine -notlike "*$repositoryDirectory*") {
+    if ($commandLine.IndexOf($repositoryDirectory, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
         Write-Warning "PID $ProcessId does not belong to this repository; it was not stopped."
         return
     }
@@ -56,7 +56,11 @@ function Stop-OwnedProcess([int]$ProcessId) {
 function Test-OwnedProcess([int]$ProcessId) {
     if ($ProcessId -le 0) { return $false }
     $processInfo = Get-CimInstance Win32_Process -Filter "ProcessId = $ProcessId" -ErrorAction SilentlyContinue
-    return [bool]($processInfo -and [string]$processInfo.CommandLine -like "*$repositoryDirectory*")
+    if (-not $processInfo) { return $false }
+    return ([string]$processInfo.CommandLine).IndexOf(
+        $repositoryDirectory,
+        [System.StringComparison]::OrdinalIgnoreCase
+    ) -ge 0
 }
 
 function Show-LogTail([string]$Label, [string]$Path) {
@@ -84,6 +88,102 @@ function Get-RequiredCommand([string]$Name, [string]$InstallHint) {
         Fail "$Name was not found. $InstallHint Then close and reopen this window."
     }
     return $command.Source
+}
+
+function Test-PythonRuntime([string]$Executable, [string[]]$PrefixArguments, [string]$Label) {
+    $previousErrorAction = $ErrorActionPreference
+    try {
+        # Windows PowerShell can surface native stderr as NativeCommandError when
+        # ErrorActionPreference is Stop. Probe candidates without turning a failed
+        # Microsoft Store alias into an unhandled launcher exception.
+        $ErrorActionPreference = "Continue"
+        $output = & $Executable @PrefixArguments -c "import sys; print('.'.join(map(str, sys.version_info[:3])))" 2>&1
+        $exitCode = $LASTEXITCODE
+    } catch {
+        return [pscustomobject]@{
+            Usable = $false
+            Label = $Label
+            Reason = $_.Exception.Message
+            Executable = $Executable
+            PrefixArguments = $PrefixArguments
+            Version = $null
+        }
+    } finally {
+        $ErrorActionPreference = $previousErrorAction
+    }
+
+    $versionText = @($output | ForEach-Object { [string]$_ }) |
+        Where-Object { $_ -match '^\d+\.\d+\.\d+$' } |
+        Select-Object -Last 1
+    if ($exitCode -ne 0 -or -not $versionText) {
+        $reason = (@($output | ForEach-Object { [string]$_ }) -join " ").Trim()
+        if (-not $reason) { $reason = "interpreter probe exited with code $exitCode" }
+        return [pscustomobject]@{
+            Usable = $false
+            Label = $Label
+            Reason = $reason
+            Executable = $Executable
+            PrefixArguments = $PrefixArguments
+            Version = $null
+        }
+    }
+
+    try {
+        $version = [version]$versionText
+    } catch {
+        return [pscustomobject]@{
+            Usable = $false
+            Label = $Label
+            Reason = "returned an unreadable version: $versionText"
+            Executable = $Executable
+            PrefixArguments = $PrefixArguments
+            Version = $null
+        }
+    }
+    return [pscustomobject]@{
+        Usable = $true
+        Label = $Label
+        Reason = $null
+        Executable = $Executable
+        PrefixArguments = $PrefixArguments
+        Version = $version
+    }
+}
+
+function Find-CompatiblePython() {
+    $attempts = @()
+    $pythonCommand = Get-Command "python.exe" -ErrorAction SilentlyContinue
+    if ($pythonCommand) {
+        if ($pythonCommand.Source -match '(?i)\\Microsoft\\WindowsApps\\python\.exe$') {
+            $attempts += "python.exe: Microsoft Store alias (not a usable interpreter)"
+        } else {
+            $candidate = Test-PythonRuntime -Executable $pythonCommand.Source -PrefixArguments @() -Label "python.exe"
+            if ($candidate.Usable -and $candidate.Version -ge [version]"3.11.0") { return $candidate }
+            if ($candidate.Usable) {
+                $attempts += "python.exe: Python $($candidate.Version) is older than 3.11"
+            } else {
+                $attempts += "python.exe: $($candidate.Reason)"
+            }
+        }
+    } else {
+        $attempts += "python.exe: not found"
+    }
+
+    $pyCommand = Get-Command "py.exe" -ErrorAction SilentlyContinue
+    if ($pyCommand) {
+        $candidate = Test-PythonRuntime -Executable $pyCommand.Source -PrefixArguments @("-3") -Label "py.exe -3"
+        if ($candidate.Usable -and $candidate.Version -ge [version]"3.11.0") { return $candidate }
+        if ($candidate.Usable) {
+            $attempts += "py.exe -3: Python $($candidate.Version) is older than 3.11"
+        } else {
+            $attempts += "py.exe -3: $($candidate.Reason)"
+        }
+    } else {
+        $attempts += "py.exe: not found"
+    }
+
+    Fail ("No usable Python 3.11+ runtime was found. " + ($attempts -join "; ") +
+        ". Install Python from https://www.python.org/downloads/windows/, enable the Python Launcher, then reopen this window.")
 }
 
 function Test-PortAvailable([int]$Port) {
@@ -145,18 +245,11 @@ if (Test-Path -LiteralPath $statePath) {
 }
 
 Write-Step "Checking Python and Node.js"
-$systemPython = Get-RequiredCommand -Name "python.exe" -InstallHint "Install Python 3.11 or newer from https://www.python.org/downloads/windows/."
+$pythonRuntime = Find-CompatiblePython
 $node = Get-RequiredCommand -Name "node.exe" -InstallHint "Install Node.js 20 LTS or newer from https://nodejs.org/."
 $npm = Get-RequiredCommand -Name "npm.cmd" -InstallHint "Reinstall Node.js with npm enabled."
 
-$pythonVersionText = & $systemPython -c "import sys; print('.'.join(map(str, sys.version_info[:3])))" 2>$null
-if ($LASTEXITCODE -ne 0 -or -not $pythonVersionText) {
-    Fail "python.exe was found but could not run. Disable a Microsoft Store alias or reinstall Python 3.11+."
-}
-$pythonVersion = [version]$pythonVersionText.Trim()
-if ($pythonVersion -lt [version]"3.11.0") {
-    Fail "Python $pythonVersion is too old. Python 3.11 or newer is required."
-}
+$pythonVersion = $pythonRuntime.Version
 $nodeVersionText = (& $node --version 2>$null).TrimStart("v").Trim()
 if ($LASTEXITCODE -ne 0 -or -not $nodeVersionText) {
     Fail "node.exe was found but could not run. Reinstall Node.js with npm enabled."
@@ -165,15 +258,23 @@ $nodeVersion = [version]$nodeVersionText
 if ($nodeVersion -lt [version]"20.19.0" -or $nodeVersion -ge [version]"25.0.0") {
     Fail "Node.js $nodeVersion is unsupported. Install Node.js 20.19 through 24.x."
 }
-Write-Host "Python $pythonVersion / Node.js ${nodeVersion}: OK" -ForegroundColor Green
+Write-Host "$($pythonRuntime.Label) (Python $pythonVersion) / Node.js ${nodeVersion}: OK" -ForegroundColor Green
 
 Test-PortAvailable -Port 8000 | Out-Null
 Test-PortAvailable -Port 5173 | Out-Null
 
 Write-Step "Preparing backend dependencies"
 if (-not (Test-Path -LiteralPath $pythonVenv)) {
-    & $systemPython -m venv (Join-Path $backendDirectory ".venv")
+    $venvArguments = @($pythonRuntime.PrefixArguments) + @("-m", "venv", (Join-Path $backendDirectory ".venv"))
+    & $pythonRuntime.Executable @venvArguments
     if ($LASTEXITCODE -ne 0) { Fail "Python virtual environment creation failed." }
+}
+$venvRuntime = Test-PythonRuntime -Executable $pythonVenv -PrefixArguments @() -Label "backend virtual environment"
+if (-not $venvRuntime.Usable) {
+    Fail "The existing backend\.venv Python cannot run: $($venvRuntime.Reason). Remove only backend\.venv and retry."
+}
+if ($venvRuntime.Version -lt [version]"3.11.0") {
+    Fail "The existing backend\.venv uses Python $($venvRuntime.Version). Remove only backend\.venv and retry with Python 3.11+."
 }
 $backendHash = Get-Sha256 -Path $backendRequirements
 $installedBackendHash = if (Test-Path -LiteralPath $backendHashPath) { (Get-Content -Raw -LiteralPath $backendHashPath).Trim() } else { "" }

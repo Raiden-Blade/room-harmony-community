@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
@@ -43,7 +43,7 @@ def save_coordinate(
 ) -> SaveResponse:
     coordinate = load_coordinate(db, coordinate_id)
     if coordinate.visibility != "PUBLIC":
-        return SaveResponse(coordinate_id=coordinate_id, saved=False)
+        raise HTTPException(status_code=404, detail="Coordinate not found")
     existing = db.scalar(
         select(CoordinateSave).where(
             CoordinateSave.session_id == session_id,

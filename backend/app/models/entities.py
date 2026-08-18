@@ -120,5 +120,9 @@ class AnalyticsEvent(Base):
     session_id: Mapped[str] = mapped_column(String(64), index=True)
     coordinate_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     product_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
-    experiment_group: Mapped[str | None] = mapped_column(String(32), nullable=True, index=True)
+    # Keep the existing SQLite column name so local demo databases remain
+    # readable, while exposing the honest domain term in Python/API code.
+    comparison_condition: Mapped[str | None] = mapped_column(
+        "experiment_group", String(32), nullable=True, index=True
+    )
     properties_json: Mapped[str] = mapped_column(Text, default="{}")

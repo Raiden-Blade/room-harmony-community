@@ -21,8 +21,10 @@ export function HandoffPage() {
 
   useEffect(() => {
     if (!preview) return;
-    void track("store_action", { coordinate_id: preview.coordinate_id, properties: { destination: "ROOM_HARMONY_PREVIEW", product_count: preview.product_ids.length } });
-    void track("room_harmony_handoff", { coordinate_id: preview.coordinate_id, properties: { destination: "PREVIEW_ONLY", product_count: preview.product_ids.length } });
+    void track("room_harmony_handoff_preview", {
+      coordinate_id: preview.coordinate_id,
+      properties: { destination: "ROOM_HARMONY_PREVIEW", product_count: preview.product_ids.length },
+    });
   }, [preview?.handoff_id]);
 
   if (plan.loading) return <Loading />;

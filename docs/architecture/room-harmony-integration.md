@@ -21,6 +21,8 @@ room-harmony://visit/start?handoff_id=<opaque-id>&return_url=<approved-url>
 
 Prototype may display the payload for review but must not call the Existing Room Harmony runtime.
 
+Current preview accepts only a repository-local path such as `/plans/<id>` for `return_url`. The absolute approved-origin URL shown below is a future integration contract example and must not be enabled until an origin allowlist and owner review exist.
+
 ## Proposed handoff payload v1
 
 ```json

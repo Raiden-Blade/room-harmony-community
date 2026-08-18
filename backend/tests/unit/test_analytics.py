@@ -21,3 +21,14 @@ def test_unknown_event_is_rejected():
 def test_free_text_property_is_rejected():
     with pytest.raises(ValidationError):
         AnalyticsEventRequest(event_name="product_view", properties={"comment": "private room details"})
+
+    with pytest.raises(ValidationError):
+        AnalyticsEventRequest(event_name="product_view", properties={"category": "my private room"})
+
+
+def test_free_text_identifiers_are_rejected():
+    with pytest.raises(ValidationError):
+        AnalyticsEventRequest(event_name="coordinate_view", coordinate_id="my private room")
+
+    with pytest.raises(ValidationError):
+        AnalyticsEventRequest(event_name="product_view", product_id="secret product note")

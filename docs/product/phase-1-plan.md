@@ -46,14 +46,15 @@ Gate: 5名程度のformative testで主要flowをmoderator interventionなしに
 
 Gate: Golden casesでexpected top resultsとreasonが再現可能。Popularity concentrationを確認。
 
-### P4. Analytics and experiment contract — event capture/readiness implemented; experiment result not claimed
+### P4. Analytics and future experiment contract — event capture/readiness implemented; randomized experiment not implemented
 
-- Event dictionary、exposure semantics、anonymous identity、retention period
-- H1 / H2 / H3のbaseline / variant
+- Event dictionary、anonymous identity、controlled properties、retention review
+- H1のUser-selected comparison condition（Similar / Popular）とH2 / H3 funnel instrumentation
+- 将来のassignment、exposure semantics、sticky group、sample size、analysis plan
 - CAMPER calculation test
 - Consent / privacy review
 
-Gate: Synthetic event setからKPIを再現し、double count / missing exposureがない。
+Gate: 現MVPではEvent contractと重複しないPreview action countを確認する。正式Experimentへ進む前にassignment / exposure / sample-size / analysisを別途承認する。
 
 ### P5. Integration boundary prototype — preview-only implemented
 

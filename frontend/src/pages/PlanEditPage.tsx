@@ -26,13 +26,22 @@ export function PlanEditPage() {
     void api.products(addRole).then((response) => {
       setAddOptions(response.results);
       setAddProductId(response.results[0]?.id || "");
+    }).catch((reason) => {
+      setAddOptions([]);
+      setAddProductId("");
+      setActionError(reason instanceof Error ? reason.message : "追加商品を読み込めませんでした");
     });
   }, [addRole]);
 
   async function loadAlternatives(item: CoordinateItem) {
     if (!item.product) return;
-    const response = await api.products(item.role, item.product.id);
-    setAlternatives((current) => ({ ...current, [item.id]: response.results.slice(0, 4) }));
+    setActionError(null);
+    try {
+      const response = await api.products(item.role, item.product.id);
+      setAlternatives((current) => ({ ...current, [item.id]: response.results.slice(0, 4) }));
+    } catch (reason) {
+      setActionError(reason instanceof Error ? reason.message : "置換候補を読み込めませんでした");
+    }
   }
 
   async function mutate(action: () => Promise<CoordinateDetail>, eventName: Parameters<typeof track>[0], properties: Record<string, string> = {}) {
@@ -42,21 +51,27 @@ export function PlanEditPage() {
       const updated = await action();
       plan.setData(updated);
       await track(eventName, { coordinate_id: updated.id, properties });
+      return true;
     } catch (reason) {
       setActionError(reason instanceof Error ? reason.message : "更新できませんでした");
+      return false;
     } finally {
       setBusy(false);
     }
   }
 
-  function addExisting(event: FormEvent) {
+  async function addExisting(event: FormEvent) {
     event.preventDefault();
     if (!existingLabel.trim()) return;
-    void mutate(
+    const succeeded = await mutate(
       () => api.addExisting(planId, existingLabel.trim(), existingCategory, dimensions.trim()),
       "existing_furniture_add",
       { role: existingCategory },
-    ).then(() => { setExistingLabel(""); setDimensions(""); });
+    );
+    if (succeeded) {
+      setExistingLabel("");
+      setDimensions("");
+    }
   }
 
   function addProduct(event: FormEvent) {
@@ -67,6 +82,7 @@ export function PlanEditPage() {
 
   async function finish() {
     setBusy(true);
+    setActionError(null);
     try {
       const ready = await api.readyPlan(planId);
       await track("plan_ready", { coordinate_id: ready.id, properties: { product_count: ready.product_count, category_count: ready.category_count } });

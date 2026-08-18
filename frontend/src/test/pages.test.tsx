@@ -48,7 +48,7 @@ const summary: CoordinateSummary = {
 };
 
 const detail: CoordinateDetail = {
-  ...summary, parent_coordinate_id: null, owner_session_id: null,
+  ...summary, parent_coordinate_id: null,
   items: [
     { id: 1, role: "MAIN_FURNITURE", source: "CATALOG_TO_BUY", quantity: 1, price_snapshot: 15900, price_observed_at: product.price_observed_at, existing_label: null, dimensions: null, mutation_state: "ORIGINAL", product },
     { id: 2, role: "STORAGE", source: "CATALOG_TO_BUY", quantity: 1, price_snapshot: 5900, price_observed_at: storage.price_observed_at, existing_label: null, dimensions: null, mutation_state: "ORIGINAL", product: storage },
@@ -58,7 +58,7 @@ const detail: CoordinateDetail = {
 
 const plan: CoordinateDetail = {
   ...detail, id: "plan-001", kind: "PLAN", status: "DRAFT",
-  title: "自分用：収納重視の6畳ナチュラルルーム", parent_coordinate_id: "coord-001", owner_session_id: "test-session",
+  title: "自分用：収納重視の6畳ナチュラルルーム", parent_coordinate_id: "coord-001",
 };
 
 const options = {
@@ -76,7 +76,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(track).mockResolvedValue(undefined);
   vi.mocked(api.options).mockResolvedValue(options);
-  vi.mocked(api.discover).mockResolvedValue({ mode: "similar", experiment_group: "similar", context: {}, results: [summary] });
+  vi.mocked(api.discover).mockResolvedValue({ mode: "similar", comparison_condition: "similar", context: {}, results: [summary] });
   vi.mocked(api.coordinate).mockResolvedValue(detail);
   vi.mocked(api.saved).mockResolvedValue([summary]);
   vi.mocked(api.plans).mockResolvedValue([plan]);

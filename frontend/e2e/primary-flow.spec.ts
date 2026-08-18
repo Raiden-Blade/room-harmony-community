@@ -10,7 +10,8 @@ test("E2E 1: Home → Similar-to-me → products → Save", async ({ page }) => 
   await expect(page.getByText("収納不足に対応").first()).toBeVisible();
 
   await page.getByRole("link", { name: "空間全体を見る" }).first().click();
-  await expect(page.getByRole("heading", { name: /ナチュラルで整える/ })).toBeVisible();
+  await expect(page).toHaveURL(/\/coordinates\/coord-001$/);
+  await expect(page.getByRole("heading", { level: 1, name: /ナチュラルで整える/ })).toBeVisible();
   const productLinks = page.getByRole("link", { name: "商品と使用コーデを見る" });
   await expect(productLinks).toHaveCount(5);
 

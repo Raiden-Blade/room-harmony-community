@@ -24,26 +24,28 @@ FrontendとBackendはHTTP boundaryで分離する。React componentからSQLite�
 | `/saved` | Saved and private PLAN separation |
 | `/plans/:id` | PLAN summary and action readiness |
 | `/plans/:id/edit` | keep / replace / add / existing furniture / total |
-| `/handoff/:id` | Room Harmony payload preview only |
+| `/plans/:id/handoff` | Room Harmony payload preview only |
 | `/about` | Demo truth boundary / H1〜H3 readiness |
 
 ## Backend modules
 
-- `models`: Product、Coordinate、Need、Item、Save、AnalyticsEvent
-- `services/ranking.py`: fixed-weight deterministic Similar-to-me
-- `services/plans.py`: private clone、item mutation、existing furniture、ready transition
-- `services/pricing.py`: known total and explicit unknown count
-- `services/seed.py`: empty-database seed only
-- `integrations/room_harmony.py`: versioned payload creation; no network call
-- `api`: catalog、saved、plans、analytics
+- `backend/app/models/entities.py`: Product、Coordinate、Need、Item、Save、AnalyticsEvent
+- `backend/app/ranking/similarity.py`: fixed-weight deterministic Similar-to-me
+- `backend/app/services/plans.py`: private clone、item mutation、existing furniture、ready transition
+- `backend/app/services/pricing.py`: known total and explicit unknown count
+- `backend/app/services/seed.py`: empty-database seed only
+- `backend/app/integrations/room_harmony/handoff.py`: versioned payload creation; no network call
+- `backend/app/api/`: catalog、saved、plans、analytics HTTP routes
 
 ## Contract ownership
 
 FastAPIがruntime OpenAPIを`/openapi.json`へ公開する。Frontendの`src/api/types.ts`はMVPで必要なresponse shapeをTypeScriptとして固定し、`src/api/client.ts`以外からAPIへ直接Accessしない。Backend integration testはrequired pathがOpenAPIに残ることを確認する。
 
+Discovery responseとAnalytics eventの`comparison_condition`は、User自身が選択した`similar / popular / newlife`表示を記録する。Randomized group assignment、sticky allocation、causal A/B resultを意味しない。SQLiteの既存互換のため内部column名だけは`experiment_group`を維持するが、公開API・Python domain・Frontendでは使用しない。
+
 ## Anonymous demo identity
 
-Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Session-ID`で送る。これはAuthenticationではなく、同じBrowser内のSave / Private PLANを再現するためだけのtest identityである。名前、email、会員ID、住所、room photoを保存しない。
+Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Session-ID`で送る。これはAuthenticationではなく、同じBrowser内のSave / Private PLANを再現するためだけのtest identityである。`owner_session_id`はBackend ownership checkにのみ使い、Coordinate responseへ返さない。名前、email、会員ID、住所、room photoを保存しない。
 
 ## Future creator slots — inactive
 
@@ -56,3 +58,12 @@ Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Sessi
 - CORSはlocalhost development originだけ。
 - Official URLはserver seedで管理し、User inputをredirect URLとして使わない。
 - Demo dataをproduction truthとして扱わない。
+
+## Verification ownership
+
+- Seed: `scripts/validate_data/validate_seed.py`
+- Backend: `backend/tests/`（pytest）
+- Frontend unit: `frontend/src/**/*.test.tsx`（Vitest）
+- Browser / responsive: `frontend/e2e/`（Playwright、390 / 768 / 1280）
+- Windows lifecycle: `start-demo.cmd` / `stop-demo.cmd`
+- Second physical PC: `docs/operations/second-pc-checklist.md`（manual gate）

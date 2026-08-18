@@ -67,7 +67,6 @@ export type CoordinateSummary = {
 
 export type CoordinateDetail = CoordinateSummary & {
   parent_coordinate_id: string | null;
-  owner_session_id: string | null;
   items: CoordinateItem[];
   creator_impact_slot: {
     enabled: boolean;
@@ -81,7 +80,7 @@ export type ProductDetail = ProductSummary & { coordinates: CoordinateSummary[] 
 
 export type DiscoveryResponse = {
   mode: "similar" | "popular" | "newlife";
-  experiment_group: "similar" | "popular";
+  comparison_condition: "similar" | "popular" | "newlife";
   context: Record<string, string | number | null>;
   results: CoordinateSummary[];
 };
@@ -126,8 +125,7 @@ export type AnalyticsEventName =
   | "existing_furniture_add"
   | "plan_ready"
   | "ec_action"
-  | "store_action"
-  | "room_harmony_handoff"
+  | "room_harmony_handoff_preview"
   | "creator_coordinate_impression"
   | "creator_attributed_save"
   | "creator_attributed_plan_start";

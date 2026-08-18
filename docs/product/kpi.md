@@ -68,11 +68,13 @@ flowchart TB
 
 ## Event model
 
+Current Functional MVPは`comparison_condition = similar | popular | newlife`をUser選択の表示条件として記録する。これはexperiment assignmentではない。正式A/Bにはassignment、exposure semantics、sticky group、baseline、sample size、analysis planが別途必要である。
+
 Minimum events:
 
 | Event | Key properties | PII rule |
 |---|---|---|
-| `coordinate_impression` | coordinate_id, placement, rank, match_dimensions | No free text |
+| `discovery_impression` | coordinate_id, comparison_condition, rank, match_dimension_count | No free text; controlled values only |
 | `coordinate_view` | coordinate_id, kind, provenance | No image analysis data |
 | `similar_filter_applied` | enum values / bands | No exact address / free text |
 | `coordinate_saved` | coordinate_id | Pseudonymous user/session only |
@@ -80,7 +82,8 @@ Minimum events:
 | `plan_started` / `plan_completed` | parent_id, room bands, need enums | No room photo in event |
 | `plan_item_changed` | old/new product ID, change_reason enum | No free text by default |
 | `ec_action` | coordinate_id, product_ids, destination | No order content unless approved |
-| `room_harmony_handoff` | handoff_id, store_id, product_count | No PII / free text in URL |
+| `room_harmony_handoff_preview` | coordinate_id, product_count, PREVIEW destination | Current MVP only; live handoffではない |
+| `room_harmony_handoff` | handoff_id, store_id, product_count | Future live contract only; current UI does not fire |
 | `real_transition` | plan_id, resulting_coordinate_id, provenance | Future; consent required |
 
 ## Experiment framing
@@ -92,6 +95,8 @@ MVP experiment candidates:
 3. Save only vs Save + “My PLANにする”
 
 Do not reuse Existing Room Harmony’s `treatment/control` semantics without a new assignment design. Community experiment ID and exposure event must be explicit.
+
+Current MVPの`similar / popular`切替結果をRandomized A/B resultとして解析・表示してはいけない。
 
 ## North-star caveat
 

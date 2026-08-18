@@ -15,9 +15,16 @@ async function expectNoHorizontalOverflow(page: Page) {
 }
 
 for (const viewport of viewports) {
-  test(`responsive ${viewport.name}: key screens fit and remain operable`, async ({ page }, testInfo: TestInfo) => {
+  test(`responsive ${viewport.name}: key screens fit and remain operable`, async ({ page, request }, testInfo: TestInfo) => {
+    const sessionId = `responsive-${viewport.name}-${Date.now()}`;
+    const planResponse = await request.post("http://127.0.0.1:8000/api/plans/from-coordinate/coord-001", {
+      headers: { "X-Session-ID": sessionId },
+      data: {},
+    });
+    expect(planResponse.ok()).toBeTruthy();
+    const plan = await planResponse.json() as { id: string };
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
-    await page.addInitScript(() => localStorage.setItem("rhc-demo-session", "responsive-user"));
+    await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
 
     await page.goto("/");
     await expect(page.getByRole("heading", { name: /自分の部屋で試せるPLANへ/ })).toBeVisible();
@@ -41,5 +48,24 @@ for (const viewport of viewports) {
 
     await page.keyboard.press("Tab");
     await expect(page.locator(":focus-visible")).toBeVisible();
+
+    await page.goto(`/plans/${plan.id}/edit`);
+    await expect(page.getByRole("heading", { name: "自分向けに変更する" })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    const replaceBox = await page.getByRole("button", { name: "別の商品に変更" }).first().boundingBox();
+    expect(replaceBox?.height ?? 0).toBeGreaterThanOrEqual(44);
+    await testInfo.attach(`${viewport.name}-plan-edit`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+
+    await page.goto(`/plans/${plan.id}/handoff`);
+    await expect(page.getByText("PREVIEW ONLY")).toBeVisible();
+    await expect(page.getByLabel("Room Harmony handoff payload")).toContainText('"live_integration": false');
+    await expectNoHorizontalOverflow(page);
+    await testInfo.attach(`${viewport.name}-handoff`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
   });
 }

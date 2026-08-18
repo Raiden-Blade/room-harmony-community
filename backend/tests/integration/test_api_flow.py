@@ -29,6 +29,7 @@ def test_save_and_plan_creation_api(client):
     assert created.status_code == 201
     assert created.json()["parent_coordinate_id"] == "coord-001"
     assert created.json()["kind"] == "PLAN"
+    assert "owner_session_id" not in created.json()
 
 
 def test_plan_update_and_handoff_preview_api(client):
@@ -60,14 +61,44 @@ def test_plan_update_and_handoff_preview_api(client):
 
 
 def test_private_plan_is_not_visible_or_cloneable_by_another_session(client):
-    plan = client.post("/api/plans/from-coordinate/coord-001", json={}).json()
+    owner_headers = {"X-Session-ID": "owner-session"}
+    plan = client.post("/api/plans/from-coordinate/coord-001", json={}, headers=owner_headers).json()
     other_headers = {"X-Session-ID": "other-session"}
+    item_id = next(item["id"] for item in plan["items"] if item["product"])
 
     assert client.get(f"/api/plans/{plan['id']}", headers=other_headers).status_code == 404
     assert client.get(f"/api/coordinates/{plan['id']}", headers=other_headers).status_code == 404
     assert client.post(
         f"/api/plans/from-coordinate/{plan['id']}", json={}, headers=other_headers
     ).status_code == 404
+    assert client.post(f"/api/saved/{plan['id']}", headers=other_headers).status_code == 404
+    assert client.post(
+        f"/api/plans/{plan['id']}/items/{item_id}/keep", headers=other_headers
+    ).status_code == 404
+    assert client.post(
+        f"/api/plans/{plan['id']}/items/{item_id}/replace",
+        json={"product_id": "DEMO-BED-02"},
+        headers=other_headers,
+    ).status_code == 404
+    assert client.post(
+        f"/api/plans/{plan['id']}/items",
+        json={"product_id": "DEMO-SUPPORT-01", "role": "SUPPORT_FURNITURE"},
+        headers=other_headers,
+    ).status_code == 404
+    assert client.post(
+        f"/api/plans/{plan['id']}/existing-furniture",
+        json={"label": "probe", "category": "OTHER"},
+        headers=other_headers,
+    ).status_code == 404
+    assert client.post(f"/api/plans/{plan['id']}/ready", headers=other_headers).status_code == 404
+    assert client.post(
+        f"/api/plans/{plan['id']}/handoff-preview", json={}, headers=other_headers
+    ).status_code == 404
+    assert all(
+        row["id"] != plan["id"]
+        for row in client.get("/api/coordinates", params={"limit": 50}, headers=other_headers).json()["results"]
+    )
+    assert all(row["id"] != plan["id"] for row in client.get("/api/plans", headers=other_headers).json())
 
 
 def test_analytics_validation_and_readiness_api(client):
@@ -75,8 +106,8 @@ def test_analytics_validation_and_readiness_api(client):
         "/api/analytics/events",
         json={
             "event_name": "discovery_impression",
-            "experiment_group": "similar",
-            "properties": {"mode": "similar", "rank": 1},
+            "comparison_condition": "similar",
+            "properties": {"mode": "similar", "rank": 1, "match_dimension_count": 3},
         },
     )
     assert accepted.status_code == 202
@@ -87,4 +118,11 @@ def test_analytics_validation_and_readiness_api(client):
     assert rejected.status_code == 422
     readiness = client.get("/api/analytics/readiness").json()
     assert readiness["event_counts"]["discovery_impression"] == 1
-    assert "改善" in readiness["disclaimer"]
+    assert "Randomized A/B" in readiness["disclaimer"]
+
+
+def test_discovery_exposes_user_selected_comparison_condition_not_experiment_assignment(client):
+    for mode in ("similar", "popular", "newlife"):
+        body = client.get("/api/coordinates", params={"mode": mode, "limit": 1}).json()
+        assert body["comparison_condition"] == mode
+        assert "experiment_group" not in body

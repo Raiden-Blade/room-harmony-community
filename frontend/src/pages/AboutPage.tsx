@@ -20,9 +20,10 @@ export function AboutPage() {
       </section>
       <section className="section section--flush" aria-labelledby="measurement-title">
         <div className="section-heading"><div><p className="eyebrow">Measurement readiness</p><h2 id="measurement-title">H1〜H3を計測可能にする</h2></div></div>
+        <p className="price-caveat">現在のSimilar / PopularはUser自身が選ぶ表示条件です。Randomized A/B Testの割当ではなく、将来の比較検証に必要なEvent計測を準備しています。</p>
         <div className="measurement-grid">
           {Object.entries(readiness.data?.measurement_support || { H1: {}, H2: {}, H3: {} }).map(([key, values]) => (
-            <article key={key}><strong>{key}</strong><p>{key === "H1" ? "Similar vs Popular → 商品探索" : key === "H2" ? "構造化Detail → 複数カテゴリ" : "Save → PLAN → Action"}</p><small>デモEvent: {Object.values(values).filter((value) => typeof value === "number").reduce((sum, value) => sum + Number(value), 0)}件</small></article>
+            <article key={key}><strong>{key}</strong><p>{key === "H1" ? "Similar vs Popular → 商品探索" : key === "H2" ? "構造化Detail → 複数カテゴリ" : "Save → PLAN → Action"}</p><small>記録済みカウンタ合計: {Object.values(values).filter((value) => typeof value === "number").reduce((sum, value) => sum + Number(value), 0)}件</small></article>
           ))}
         </div>
         <p className="price-caveat">{readiness.data?.disclaimer || "Eventは操作後に蓄積されます。"}</p>

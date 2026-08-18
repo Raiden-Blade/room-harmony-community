@@ -6,12 +6,12 @@
 
 ## Current status / Phase 1 validation
 
-2026-08-18時点で、Functional MVP、synthetic seed、analytics、automated tests、Windows one-click launcherまで実装済みです。検証対象はH1 `Similar-to-me vs editorial`、H2 `Structured detail → multi-category exploration`、H3 `Save → PLAN → action`です。Production効果、併売率向上、公式System接続は未検証です。
+2026-08-18時点で、Functional MVP、synthetic seed、analytics instrumentation、automated tests、Windows one-click launcherまで実装済みです。検証対象はH1 `Similar-to-me vs editorial`、H2 `Structured detail → multi-category exploration`、H3 `Save → PLAN → action`です。Similar / PopularはUserが自分で切り替える比較条件であり、Randomized A/B assignmentではありません。Production効果、併売率向上、公式System接続は未検証です。
 
 ## いちばん簡単な起動方法（Windows）
 
 1. このRepositoryをZIPでDownloadし、**ZIPを展開**します。
-2. [Python 3.11以上](https://www.python.org/downloads/windows/)と[Node.js 20.19〜24.x](https://nodejs.org/)が未Installなら先にInstallします。GitはZIP利用では不要、`git clone`する場合はGit 2.xが必要です。
+2. [Python 3.11以上](https://www.python.org/downloads/windows/)と[Node.js 20.19〜24.x](https://nodejs.org/)が未Installなら先にInstallします。GitはZIP利用では不要、`git clone`する場合はGit 2.xが必要です。Launcherは利用可能な`python.exe`を優先し、無ければWindows Python Launcherの`py.exe -3`を確認します。
 3. Repository直下の`start-demo.cmd`をDouble-clickします。
 4. 初回のみPython / Node依存関係が自動Installされ、Health check後にブラウザが開きます。
 
@@ -22,7 +22,9 @@
 - Swagger / OpenAPI: <http://127.0.0.1:8000/docs>
 - 終了: `stop-demo.cmd`をDouble-click
 
-LauncherはPython / Node version、依存関係、8000 / 5173 port、backend health、frontend応答を確認し、120秒でTimeoutします。失敗時は`.demo/logs/`の場所と原因を表示します。ZIP内から直接実行、Python / Node不足、他Processによるport使用は自動で隠さず、修正方法を表示します。
+LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port、owned process、backend health、frontend応答を確認し、120秒でTimeoutします。失敗時は`.demo/logs/`の場所と原因を表示します。ZIP内から直接実行、Microsoft Store alias、Python / Node不足、古いvirtualenv、他Processによるport使用は自動で隠さず、修正方法を表示します。
+
+別Physical Windows PCでの確認はまだ自動検証と分けて扱います。Merge前の5分確認は[`docs/operations/second-pc-checklist.md`](docs/operations/second-pc-checklist.md)を使用してください。現在の状態は`MANUAL_SECOND_PC_TEST_REQUIRED`です。
 
 ## Demoで確認する2つのFlow
 
@@ -50,7 +52,7 @@ Handoffは**Preview only**です。既存Room HarmonyやNITORI内部Systemへ通
 
 | Layer | Technology | Responsibility |
 |---|---|---|
-| Frontend | React 18 / TypeScript / Vite / React Router | 8画面、responsive UI、API client、analytics event |
+| Frontend | React 18 / TypeScript / Vite / React Router | 9 route screens、responsive UI、API client、analytics event |
 | Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy | deterministic ranking、Save / PLAN lifecycle、price計算、handoff、event |
 | Data | SQLite + generated JSON seed | anonymous local Session、36 Coordinates、60 Product references |
 | Test | pytest / Vitest / Testing Library / Playwright | unit、API integration、page behavior、2本のE2E、responsive checks |
@@ -85,7 +87,7 @@ room-harmony-community/
 
 `あなたに近い`はAI / LLMではありません。Room size、Need、Budget、Room / Housing / Household、Style、手持ち家具との相性を固定weightで採点し、同点時もID順で決まるdeterministic rankingです。表示理由も同じ一致条件から生成します。`編集部ピック`はH1比較用のPopular / editorial baselineです。
 
-このMVPは併売率や売上改善を証明しません。H1〜H3の操作Eventを蓄積し、「次にUser testで何を比較できるか」を示します。
+このMVPは併売率や売上改善を証明しません。H1〜H3の操作EventとUser選択の`comparison_condition`を蓄積し、「次に正式なUser testで何を比較できるか」を示します。Randomized assignment、sticky group、sample-size設計、統計解析は未実装です。
 
 ## 開発者向け起動
 
@@ -97,6 +99,8 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
 ```
+
+`python.exe`が無く`py.exe`のみ利用できるWindowsでは、最初の行を`py -3 -m venv .venv`に置き換えます。
 
 Frontend（別Terminal）:
 
@@ -126,6 +130,8 @@ npm.cmd run test:e2e
 ```
 
 Visual QA captureはDemo起動中に`npm.cmd run qa:visual`を実行すると`.demo/visual-qa/`へ出力されます。
+
+Pull Requestでは`.github/workflows/ci.yml`がbackend tests、frontend tests、frontend production buildを実行します。Playwright、Windows launcher、fresh-clone、別Physical PCはlocal / manual gateとして分離します。
 
 ## Repository boundary
 

@@ -78,7 +78,7 @@ def discover(
     ranked = rank_coordinates(list_public_coordinates(db), context, mode=mode)[:limit]
     return DiscoveryResponse(
         mode=mode,
-        experiment_group="similar" if mode == "similar" else "popular",
+        comparison_condition=mode,
         context={"room_size": room_size, "need": need, "budget_max": budget_max},
         results=[coordinate_summary(item, db, session_id, score, reasons) for item, score, reasons in ranked],
     )

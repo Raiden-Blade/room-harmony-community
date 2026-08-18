@@ -29,8 +29,8 @@ export function ExplorePage() {
     discovery.data.results.forEach((coordinate, rank) => {
       void track("discovery_impression", {
         coordinate_id: coordinate.id,
-        experiment_group: discovery.data?.experiment_group,
-        properties: { mode, rank: rank + 1, match_dimensions: coordinate.match_reasons },
+        comparison_condition: discovery.data?.comparison_condition,
+        properties: { mode, rank: rank + 1, match_dimension_count: coordinate.match_reasons.length },
       });
     });
   }, [discovery.data, mode]);
@@ -40,7 +40,7 @@ export function ExplorePage() {
     const next = new URLSearchParams({ mode: "similar", room_size: roomSize, need, budget_max: budget });
     setSearchParams(next);
     void track("context_select", {
-      experiment_group: "similar",
+      comparison_condition: "similar",
       properties: { room_size: roomSize, need, budget_max: Number(budget) },
     });
   }
@@ -88,7 +88,7 @@ export function ExplorePage() {
 
       <div className="result-summary" aria-live="polite">
         <strong>{discovery.data?.results.length || 0}件</strong>
-        <span>{mode === "similar" ? "条件一致をルールで並べています" : "比較用のBaseline表示です"}</span>
+        <span>{mode === "similar" ? "条件一致をルールで並べています" : mode === "popular" ? "比較用のBaseline表示です" : "新生活向けの編集コレクションです"}</span>
       </div>
       {discovery.loading && <Loading label="近い暮らしを探しています" />}
       {discovery.error && <ErrorView message={discovery.error} action={<button onClick={discovery.refresh}>再試行</button>} />}

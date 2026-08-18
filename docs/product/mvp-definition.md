@@ -86,7 +86,7 @@ flowchart LR
 - Total estimate
 - Official external links
 - Room Harmony handoff contract + non-production stub
-- Analytics events and basic experiment assignment
+- Analytics events and user-selected comparison-condition labels（randomized assignmentではない）
 - Responsive static / functional prototype sufficient for usability testing
 
 ### Explicitly out

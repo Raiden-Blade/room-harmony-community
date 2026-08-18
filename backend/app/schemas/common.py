@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime
+from urllib.parse import urlsplit
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -77,7 +79,6 @@ class CoordinateSummary(BaseModel):
 
 class CoordinateDetail(CoordinateSummary):
     parent_coordinate_id: str | None
-    owner_session_id: str | None
     items: list[CoordinateItemResponse]
     creator_impact_slot: dict[str, int | bool | None]
 
@@ -92,7 +93,7 @@ class ProductListResponse(BaseModel):
 
 class DiscoveryResponse(BaseModel):
     mode: Literal["similar", "popular", "newlife"]
-    experiment_group: Literal["similar", "popular"]
+    comparison_condition: Literal["similar", "popular", "newlife"]
     context: dict[str, str | int | None]
     results: list[CoordinateSummary]
 
@@ -133,10 +134,32 @@ class HandoffRequest(BaseModel):
     store_id: str | None = Field(default=None, max_length=64)
     return_url: str = Field(default="/saved", max_length=300)
 
+    @field_validator("anchor_product_id", "store_id")
+    @classmethod
+    def allow_only_identifier_values(cls, value: str | None) -> str | None:
+        if value is not None and not re.fullmatch(r"[A-Za-z0-9_-]+", value):
+            raise ValueError("handoff identifiers may contain only letters, numbers, underscore, and hyphen")
+        return value
+
+    @field_validator("store_id")
+    @classmethod
+    def allow_only_demo_store_ids(cls, value: str | None) -> str | None:
+        if value is not None and not re.fullmatch(r"DEMO-STORE-[A-Za-z0-9_-]+", value):
+            raise ValueError("store_id must be an approved DEMO-STORE identifier")
+        return value
+
     @field_validator("return_url")
     @classmethod
     def allow_only_local_return(cls, value: str) -> str:
-        if not value.startswith("/") or value.startswith("//"):
+        parsed = urlsplit(value)
+        if (
+            not value.startswith("/")
+            or value.startswith("//")
+            or "\\" in value
+            or parsed.scheme
+            or parsed.netloc
+            or any(ord(char) < 32 for char in value)
+        ):
             raise ValueError("return_url must be a local path")
         return value
 
@@ -174,8 +197,7 @@ ALLOWED_EVENT_NAMES = {
     "existing_furniture_add",
     "plan_ready",
     "ec_action",
-    "store_action",
-    "room_harmony_handoff",
+    "room_harmony_handoff_preview",
     # Reserved for a future creator program. The MVP has no public reaction UI.
     "creator_coordinate_impression",
     "creator_attributed_save",
@@ -189,7 +211,7 @@ ALLOWED_EVENT_PROPERTIES = {
     "room_size",
     "need",
     "budget_max",
-    "match_dimensions",
+    "match_dimension_count",
     "role",
     "category",
     "category_count",
@@ -198,14 +220,33 @@ ALLOWED_EVENT_PROPERTIES = {
     "mutation",
 }
 
+ANALYTICS_ENUM_VALUES = {
+    "mode": {"similar", "popular", "newlife"},
+    "placement": {"HOME", "EXPLORE", "COORDINATE", "PRODUCT", "SAVED", "PLAN"},
+    "room_size": {"TINY_5_5", "SMALL_6", "MEDIUM_7_8"},
+    "need": {"STORAGE", "LOW_BUDGET", "WORK_FROM_HOME", "RELAX", "SLEEP", "COMPACT"},
+    "role": {"MAIN_FURNITURE", "SUPPORT_FURNITURE", "STORAGE", "LIGHTING", "TEXTILE"},
+    "category": {"BED", "SUPPORT", "STORAGE", "LIGHTING", "TEXTILE", "DESK"},
+    "destination": {"NITORI_SEARCH", "ROOM_HARMONY_PREVIEW", "PREVIEW_ONLY"},
+    "mutation": {"KEPT", "REPLACED", "ADDED"},
+}
+
+ANALYTICS_INTEGER_RANGES = {
+    "rank": (1, 50),
+    "budget_max": (1_000, 1_000_000),
+    "match_dimension_count": (0, 8),
+    "category_count": (0, 100),
+    "product_count": (0, 100),
+}
+
 
 class AnalyticsEventRequest(BaseModel):
     event_name: str
     occurred_at: datetime | None = None
     coordinate_id: str | None = Field(default=None, max_length=64)
     product_id: str | None = Field(default=None, max_length=64)
-    experiment_group: str | None = Field(default=None, max_length=32)
-    properties: dict[str, str | int | bool | list[str]] = Field(default_factory=dict)
+    comparison_condition: Literal["similar", "popular", "newlife"] | None = None
+    properties: dict[str, str | int] = Field(default_factory=dict)
 
     @field_validator("event_name")
     @classmethod
@@ -214,16 +255,37 @@ class AnalyticsEventRequest(BaseModel):
             raise ValueError("unknown analytics event")
         return value
 
+    @field_validator("coordinate_id")
+    @classmethod
+    def safe_coordinate_id(cls, value: str | None) -> str | None:
+        if value is not None and not re.fullmatch(r"(?:coord-[A-Za-z0-9_-]+|plan-[0-9a-fA-F-]{36})", value):
+            raise ValueError("coordinate_id must be a demo Coordinate or PLAN identifier")
+        return value
+
+    @field_validator("product_id")
+    @classmethod
+    def safe_product_id(cls, value: str | None) -> str | None:
+        if value is not None and not re.fullmatch(r"DEMO-[A-Za-z0-9-]+", value):
+            raise ValueError("product_id must be a DEMO product identifier")
+        return value
+
     @field_validator("properties")
     @classmethod
     def safe_properties(cls, value: dict[str, object]) -> dict[str, object]:
         unknown = set(value) - ALLOWED_EVENT_PROPERTIES
         if unknown:
             raise ValueError(f"unsupported analytics properties: {sorted(unknown)}")
-        for item in value.values():
-            strings = item if isinstance(item, list) else [item]
-            if any(isinstance(text, str) and len(text) > 64 for text in strings):
-                raise ValueError("analytics text values must be enum-like and at most 64 characters")
+        for key, item in value.items():
+            if key in ANALYTICS_ENUM_VALUES:
+                if not isinstance(item, str) or item not in ANALYTICS_ENUM_VALUES[key]:
+                    raise ValueError(f"unsupported analytics enum value for {key}")
+                continue
+            if key in ANALYTICS_INTEGER_RANGES:
+                minimum, maximum = ANALYTICS_INTEGER_RANGES[key]
+                if isinstance(item, bool) or not isinstance(item, int) or not minimum <= item <= maximum:
+                    raise ValueError(f"analytics integer value for {key} is out of range")
+                continue
+            raise ValueError(f"analytics property {key} has no controlled value contract")
         return value
 
 

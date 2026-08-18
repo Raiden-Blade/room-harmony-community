@@ -35,6 +35,7 @@
 ## Operations
 
 - [Windows demo runbook](operations/demo-runbook.md)
+- [Second physical Windows PC checklist](operations/second-pc-checklist.md)
 
 ## Research and decisions
 

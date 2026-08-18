@@ -92,8 +92,8 @@ export async function track(
   context: {
     coordinate_id?: string;
     product_id?: string;
-    experiment_group?: string;
-    properties?: Record<string, string | number | boolean | string[]>;
+    comparison_condition?: "similar" | "popular" | "newlife";
+    properties?: Record<string, string | number>;
   } = {},
 ): Promise<void> {
   try {

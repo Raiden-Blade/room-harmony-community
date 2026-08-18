@@ -92,7 +92,7 @@ stateDiagram-v2
   REAL_PUBLISHED --> [*]
 ```
 
-MVP implements only private `PLAN_DRAFT / PLAN_READY` semantics. REAL publishing is a future boundary.
+MVPでUserが作成するPLANはprivate `PLAN_DRAFT / PLAN_READY`のみである。Bundled synthetic seedには比較対象となる公開のStaff想定PLAN例も含むが、User-created PLANやPublic UGCではない。REAL publishingはfuture boundaryである。
 
 ## My Coordinate
 

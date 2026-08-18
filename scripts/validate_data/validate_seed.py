@@ -2,11 +2,24 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[2]
 SEED = ROOT / "data" / "seed" / "demo_seed.json"
 ALLOWED_RIGHTS = {"LOCALLY_CREATED_DEMO", "CC0", "EXPLICITLY_PERMITTED"}
+PUBLIC_ASSET_ROOT = (ROOT / "frontend" / "public").resolve()
+
+
+def local_asset(path: str) -> Path | None:
+    if not path.startswith("/assets/") or not path.endswith(".svg"):
+        return None
+    candidate = (PUBLIC_ASSET_ROOT / path.lstrip("/")).resolve()
+    try:
+        candidate.relative_to(PUBLIC_ASSET_ROOT)
+    except ValueError:
+        return None
+    return candidate
 
 
 def validate() -> None:
@@ -28,12 +41,19 @@ def validate() -> None:
             errors.append(f"unsafe product rights: {product['id']}")
         if not product["id"].startswith("DEMO-"):
             errors.append(f"non-demo product ID: {product['id']}")
-        if "nitori-net.jp/ec/search/" not in product["official_url"]:
+        official_url = urlsplit(product["official_url"])
+        if (
+            official_url.scheme != "https"
+            or official_url.hostname != "www.nitori-net.jp"
+            or not official_url.path.startswith("/ec/search/")
+            or official_url.username
+            or official_url.password
+        ):
             errors.append(f"unexpected official URL: {product['id']}")
-        if not product["image_url"].startswith("/assets/"):
+        asset = local_asset(product["image_url"])
+        if asset is None:
             errors.append(f"external product image is not allowed: {product['id']}")
-        asset = ROOT / "frontend" / "public" / product["image_url"].lstrip("/")
-        if not asset.is_file():
+        elif not asset.is_file():
             errors.append(f"missing product asset: {product['id']}")
         if (product["price_snapshot"] is None) != (product["price_status"] == "MISSING"):
             errors.append(f"inconsistent missing price state: {product['id']}")
@@ -63,10 +83,10 @@ def validate() -> None:
             errors.append(f"unsafe coordinate image rights: {coordinate['id']}")
         if not coordinate["demo_disclosure"]:
             errors.append(f"missing demo disclosure: {coordinate['id']}")
-        if not coordinate["image_url"].startswith("/assets/"):
+        asset = local_asset(coordinate["image_url"])
+        if asset is None:
             errors.append(f"external coordinate image is not allowed: {coordinate['id']}")
-        asset = ROOT / "frontend" / "public" / coordinate["image_url"].lstrip("/")
-        if not asset.is_file():
+        elif not asset.is_file():
             errors.append(f"missing coordinate asset: {coordinate['id']}")
         categories = set()
         for item in coordinate["items"]:
