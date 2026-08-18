@@ -131,6 +131,6 @@ Quantitative thresholds must be set after baseline measurement; no arbitrary upl
 
 - Users treat PLAN as confirmed stock / price / professional design.
 - Similar-to-me input burden outweighs discovery value.
-- Save is sufficient andPLAN adds no action intent.
+- Save is sufficient and PLAN adds no action intent.
 - Staff must manually fix most PLAN data.
 - Existing NITORI services already provide the same persistent workflow under an unaudited surface.

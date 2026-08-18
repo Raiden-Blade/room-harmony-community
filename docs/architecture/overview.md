@@ -71,7 +71,7 @@ Community may cache a Product display snapshot with `observed_at` but never labe
 
 ## Deployment boundary
 
-Phase 1 prototype remains independent and can use static Seed data. No sharedDatabase, no direct import from Existing Room Harmony, no modification of its code, no production authentication, and no production deployment in the current Goal.
+Phase 1 prototype remains independent and can use static Seed data. No shared database, no direct import from Existing Room Harmony, no modification of its code, no production authentication, and no production deployment in the current Goal.
 
 ## Security and privacy principles
 

@@ -7,7 +7,7 @@ Community  = Inspiration / Relevance / Save / PLAN / Adapt / Creator loop
 Room Harmony = Product recommendation / Guided Chat / QR / Store route / Visit session
 ```
 
-Both remain independent. Integration is a versioned handoff, not a sharedDatabase or code merge.
+Both remain independent. Integration is a versioned handoff, not a shared database or code merge.
 
 ## Primary handoff
 
