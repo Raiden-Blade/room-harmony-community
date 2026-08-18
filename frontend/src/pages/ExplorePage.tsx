@@ -1,0 +1,100 @@
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
+import { api, track } from "../api/client";
+import { CoordinateCard } from "../components/coordinate/CoordinateCard";
+import { ErrorView, Loading } from "../components/common/StatusView";
+import { useAsync } from "../hooks/useAsync";
+
+export function ExplorePage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const mode = searchParams.get("mode") || "similar";
+  const [roomSize, setRoomSize] = useState(searchParams.get("room_size") || "SMALL_6");
+  const [need, setNeed] = useState(searchParams.get("need") || "STORAGE");
+  const [budget, setBudget] = useState(searchParams.get("budget_max") || "50000");
+  const options = useAsync(() => api.options(), []);
+  const requestParams = useMemo(() => {
+    const next = new URLSearchParams({ mode, limit: "18" });
+    if (mode === "similar") {
+      next.set("room_size", searchParams.get("room_size") || "SMALL_6");
+      next.set("need", searchParams.get("need") || "STORAGE");
+      next.set("budget_max", searchParams.get("budget_max") || "50000");
+    }
+    return next;
+  }, [mode, searchParams]);
+  const discovery = useAsync(() => api.discover(requestParams), [requestParams.toString()]);
+
+  useEffect(() => {
+    if (!discovery.data) return;
+    discovery.data.results.forEach((coordinate, rank) => {
+      void track("discovery_impression", {
+        coordinate_id: coordinate.id,
+        experiment_group: discovery.data?.experiment_group,
+        properties: { mode, rank: rank + 1, match_dimensions: coordinate.match_reasons },
+      });
+    });
+  }, [discovery.data, mode]);
+
+  function submit(event: FormEvent) {
+    event.preventDefault();
+    const next = new URLSearchParams({ mode: "similar", room_size: roomSize, need, budget_max: budget });
+    setSearchParams(next);
+    void track("context_select", {
+      experiment_group: "similar",
+      properties: { room_size: roomSize, need, budget_max: Number(budget) },
+    });
+  }
+
+  function setMode(nextMode: string) {
+    const next = new URLSearchParams(searchParams);
+    next.set("mode", nextMode);
+    setSearchParams(next);
+  }
+
+  return (
+    <div className="page-shell">
+      <header className="page-intro">
+        <p className="eyebrow">Explore</p>
+        <h1>あなたの条件に近いコーデ</h1>
+        <p>人気だけでなく、部屋・困りごと・予算の一致を優先します。</p>
+      </header>
+
+      <div className="explore-tabs" role="tablist" aria-label="表示基準">
+        <button role="tab" aria-selected={mode === "similar"} onClick={() => setMode("similar")}>あなたに近い</button>
+        <button role="tab" aria-selected={mode === "popular"} onClick={() => setMode("popular")}>編集部ピック</button>
+        <button role="tab" aria-selected={mode === "newlife"} onClick={() => setMode("newlife")}>新生活2027</button>
+      </div>
+
+      {mode === "similar" && (
+        <form className="filter-panel" onSubmit={submit} aria-label="近いコーデの条件">
+          <label>部屋の広さ
+            <select aria-label="部屋の広さ" value={roomSize} onChange={(event) => setRoomSize(event.target.value)}>
+              {options.data?.room_sizes.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+          </label>
+          <label>いちばんの困りごと
+            <select aria-label="いちばんの困りごと" value={need} onChange={(event) => setNeed(event.target.value)}>
+              {options.data?.needs.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+          </label>
+          <label>購入予算の目安
+            <select aria-label="購入予算の目安" value={budget} onChange={(event) => setBudget(event.target.value)}>
+              {options.data?.budgets.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+            </select>
+          </label>
+          <button className="button button--primary" type="submit">この条件で探す</button>
+        </form>
+      )}
+
+      <div className="result-summary" aria-live="polite">
+        <strong>{discovery.data?.results.length || 0}件</strong>
+        <span>{mode === "similar" ? "条件一致をルールで並べています" : "比較用のBaseline表示です"}</span>
+      </div>
+      {discovery.loading && <Loading label="近い暮らしを探しています" />}
+      {discovery.error && <ErrorView message={discovery.error} action={<button onClick={discovery.refresh}>再試行</button>} />}
+      <section className="coordinate-grid" aria-label="コーディネート一覧">
+        {discovery.data?.results.map((coordinate) => <CoordinateCard key={coordinate.id} coordinate={coordinate} />)}
+      </section>
+    </div>
+  );
+}

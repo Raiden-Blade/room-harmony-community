@@ -43,6 +43,15 @@
 | RH-011 | Route graph | https://github.com/Raiden-Blade/room-harmoney/blob/d41f411a783f555fd4828cb001695c30126e3bb5/backend/routing/graph.py | Source code | Multi-product route 監査 | READ | NetworkX shortest path + nearest-neighbor order | 厳密 TSP 最適化ではなく近似。 |
 | RH-012 | OpenAPI snapshot | https://github.com/Raiden-Blade/room-harmoney/blob/d41f411a783f555fd4828cb001695c30126e3bb5/docs/openapi.json | API specification | Integration surface 監査 | READ | session / qr / products / recommendations / chat / route / events | New Community から直接接続は今回行わない。 |
 
+## Development runtime sources
+
+以下は起動案内の公式配布先であり、Product仮説やNITORI機能の根拠には使わない。
+
+| Source ID | Source name | URL | Source type | Purpose | Retrieval status | What it supports | Notes |
+|---|---|---|---|---|---|---|---|
+| DEV-001 | Python Releases for Windows | https://www.python.org/downloads/windows/ | Python official | Windows runtime install destination | VERIFIED | Python official Windows installer availability | MVPのminimum versionはRepository contract / test environmentによる。 |
+| DEV-002 | Node.js official download | https://nodejs.org/ | Node.js official | Node / npm install destination | VERIFIED | Node.js official distribution entry | Supported rangeはVite engineとlocal clean-room testに基づく。 |
+
 ## Retrieval caveats
 
 - **OBSERVATION**: NITORI の件数・価格・在庫・表示順は 2026-08-18 時点の画面観察であり、固定仕様ではない。

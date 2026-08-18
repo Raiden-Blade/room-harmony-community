@@ -1,0 +1,3358 @@
+{
+  "metadata": {
+    "generated_at": "2026-08-18T00:00:00+00:00",
+    "dataset_kind": "SYNTHETIC_FUNCTIONAL_PROTOTYPE",
+    "rights_notice": "No third-party coordinate image is included. All SVG assets are locally created demo visuals.",
+    "price_notice": "All prices are fictional demo snapshots and may not match current official prices."
+  },
+  "products": [
+    {
+      "id": "DEMO-BED-01",
+      "name": "ナチュラルベッド デモ01",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 15900,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-BED-02",
+      "name": "クリアクールベッド デモ02",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 16600,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-BED-03",
+      "name": "ダンディベッド デモ03",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 17300,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-BED-04",
+      "name": "エレガントベッド デモ04",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 18000,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-BED-05",
+      "name": "コージーベッド デモ05",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 18700,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COZY"
+    },
+    {
+      "id": "DEMO-BED-06",
+      "name": "カラフルベッド デモ06",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 19400,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COLORFUL"
+    },
+    {
+      "id": "DEMO-BED-07",
+      "name": "ナチュラルベッド デモ07",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 20100,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-BED-08",
+      "name": "クリアクールベッド デモ08",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 20800,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-BED-09",
+      "name": "ダンディベッド デモ09",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": 21500,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-BED-10",
+      "name": "エレガントベッド デモ10",
+      "category": "BED",
+      "default_role": "MAIN_FURNITURE",
+      "price_snapshot": null,
+      "price_status": "MISSING",
+      "price_observed_at": null,
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%99%E3%83%83%E3%83%89",
+      "image_url": "/assets/product-bed.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-DESK-01",
+      "name": "ナチュラルデスク デモ01",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 8900,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-DESK-02",
+      "name": "クリアクールデスク デモ02",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 9600,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-DESK-03",
+      "name": "ダンディデスク デモ03",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 10300,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-DESK-04",
+      "name": "エレガントデスク デモ04",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 11000,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-DESK-05",
+      "name": "コージーデスク デモ05",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 11700,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COZY"
+    },
+    {
+      "id": "DEMO-DESK-06",
+      "name": "カラフルデスク デモ06",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 12400,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COLORFUL"
+    },
+    {
+      "id": "DEMO-DESK-07",
+      "name": "ナチュラルデスク デモ07",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 13100,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-DESK-08",
+      "name": "クリアクールデスク デモ08",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 13800,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-DESK-09",
+      "name": "ダンディデスク デモ09",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 14500,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-DESK-10",
+      "name": "エレガントデスク デモ10",
+      "category": "DESK",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": null,
+      "price_status": "MISSING",
+      "price_observed_at": null,
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%87%E3%82%B9%E3%82%AF",
+      "image_url": "/assets/product-desk.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-STORAGE-01",
+      "name": "ナチュラル収納 デモ01",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 5900,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-STORAGE-02",
+      "name": "クリアクール収納 デモ02",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 6600,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-STORAGE-03",
+      "name": "ダンディ収納 デモ03",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 7300,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-STORAGE-04",
+      "name": "エレガント収納 デモ04",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 8000,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-STORAGE-05",
+      "name": "コージー収納 デモ05",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 8700,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COZY"
+    },
+    {
+      "id": "DEMO-STORAGE-06",
+      "name": "カラフル収納 デモ06",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 9400,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COLORFUL"
+    },
+    {
+      "id": "DEMO-STORAGE-07",
+      "name": "ナチュラル収納 デモ07",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 10100,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-STORAGE-08",
+      "name": "クリアクール収納 デモ08",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 10800,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-STORAGE-09",
+      "name": "ダンディ収納 デモ09",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": 11500,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-STORAGE-10",
+      "name": "エレガント収納 デモ10",
+      "category": "STORAGE",
+      "default_role": "STORAGE",
+      "price_snapshot": null,
+      "price_status": "MISSING",
+      "price_observed_at": null,
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E5%8F%8E%E7%B4%8D",
+      "image_url": "/assets/product-storage.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-LIGHTING-01",
+      "name": "ナチュラル照明 デモ01",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 2900,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-LIGHTING-02",
+      "name": "クリアクール照明 デモ02",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 3600,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-LIGHTING-03",
+      "name": "ダンディ照明 デモ03",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 4300,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-LIGHTING-04",
+      "name": "エレガント照明 デモ04",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 5000,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-LIGHTING-05",
+      "name": "コージー照明 デモ05",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 5700,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COZY"
+    },
+    {
+      "id": "DEMO-LIGHTING-06",
+      "name": "カラフル照明 デモ06",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 6400,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COLORFUL"
+    },
+    {
+      "id": "DEMO-LIGHTING-07",
+      "name": "ナチュラル照明 デモ07",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 7100,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-LIGHTING-08",
+      "name": "クリアクール照明 デモ08",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 7800,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-LIGHTING-09",
+      "name": "ダンディ照明 デモ09",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": 8500,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-LIGHTING-10",
+      "name": "エレガント照明 デモ10",
+      "category": "LIGHTING",
+      "default_role": "LIGHTING",
+      "price_snapshot": null,
+      "price_status": "MISSING",
+      "price_observed_at": null,
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E7%85%A7%E6%98%8E",
+      "image_url": "/assets/product-lighting.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-TEXTILE-01",
+      "name": "ナチュラルテキスタイル デモ01",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 3900,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-TEXTILE-02",
+      "name": "クリアクールテキスタイル デモ02",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 4600,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-TEXTILE-03",
+      "name": "ダンディテキスタイル デモ03",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 5300,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-TEXTILE-04",
+      "name": "エレガントテキスタイル デモ04",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 6000,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-TEXTILE-05",
+      "name": "コージーテキスタイル デモ05",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 6700,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COZY"
+    },
+    {
+      "id": "DEMO-TEXTILE-06",
+      "name": "カラフルテキスタイル デモ06",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 7400,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COLORFUL"
+    },
+    {
+      "id": "DEMO-TEXTILE-07",
+      "name": "ナチュラルテキスタイル デモ07",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 8100,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-TEXTILE-08",
+      "name": "クリアクールテキスタイル デモ08",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 8800,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-TEXTILE-09",
+      "name": "ダンディテキスタイル デモ09",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": 9500,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-TEXTILE-10",
+      "name": "エレガントテキスタイル デモ10",
+      "category": "TEXTILE",
+      "default_role": "TEXTILE",
+      "price_snapshot": null,
+      "price_status": "MISSING",
+      "price_observed_at": null,
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%83%86%E3%82%AD%E3%82%B9%E3%82%BF%E3%82%A4%E3%83%AB",
+      "image_url": "/assets/product-textile.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-SUPPORT-01",
+      "name": "ナチュラルサイド家具 デモ01",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 4900,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-SUPPORT-02",
+      "name": "クリアクールサイド家具 デモ02",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 5600,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-SUPPORT-03",
+      "name": "ダンディサイド家具 デモ03",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 6300,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-SUPPORT-04",
+      "name": "エレガントサイド家具 デモ04",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 7000,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    },
+    {
+      "id": "DEMO-SUPPORT-05",
+      "name": "コージーサイド家具 デモ05",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 7700,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COZY"
+    },
+    {
+      "id": "DEMO-SUPPORT-06",
+      "name": "カラフルサイド家具 デモ06",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 8400,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "COLORFUL"
+    },
+    {
+      "id": "DEMO-SUPPORT-07",
+      "name": "ナチュラルサイド家具 デモ07",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 9100,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "NATURAL"
+    },
+    {
+      "id": "DEMO-SUPPORT-08",
+      "name": "クリアクールサイド家具 デモ08",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 9800,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "CLEAR_COOL"
+    },
+    {
+      "id": "DEMO-SUPPORT-09",
+      "name": "ダンディサイド家具 デモ09",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": 10500,
+      "price_status": "DEMO_SNAPSHOT",
+      "price_observed_at": "2026-08-18T00:00:00+00:00",
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "DANDY"
+    },
+    {
+      "id": "DEMO-SUPPORT-10",
+      "name": "エレガントサイド家具 デモ10",
+      "category": "SUPPORT",
+      "default_role": "SUPPORT_FURNITURE",
+      "price_snapshot": null,
+      "price_status": "MISSING",
+      "price_observed_at": null,
+      "official_url": "https://www.nitori-net.jp/ec/search/?q=%E3%82%B5%E3%82%A4%E3%83%89%E5%AE%B6%E5%85%B7",
+      "image_url": "/assets/product-support.svg",
+      "provenance": "DEMO",
+      "rights_status": "LOCALLY_CREATED_DEMO",
+      "style_hint": "ELEGANT"
+    }
+  ],
+  "coordinates": [
+    {
+      "id": "coord-001",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ナチュラルで整える、収納を増やしたい6畳プラン",
+      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 壁面とベッド周りを使って床を広く保ちます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "NATURAL",
+      "needs": [
+        "STORAGE",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-natural.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 1,
+      "official_pick": true,
+      "seasonal_recognition": "NEW_LIFE_DEMO_PICK",
+      "items": [
+        {
+          "product_id": "DEMO-BED-01",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-01",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-01",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-01",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-01",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-002",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "クリアクールで整える、収納を増やしたい6畳プラン",
+      "description": "白とグレーを基調に、狭さを感じにくくした部屋 壁面とベッド周りを使って床を広く保ちます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "CLEAR_COOL",
+      "needs": [
+        "STORAGE",
+        "RENTAL"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-clear-cool.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 2,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-02",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-02",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-02",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-02",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-02",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-003",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ダンディで整える、収納を増やしたい6畳プラン",
+      "description": "濃い木目と低い家具で落ち着きを出した部屋 壁面とベッド周りを使って床を広く保ちます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "DANDY",
+      "needs": [
+        "STORAGE",
+        "RENTAL"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-dandy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 3,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-03",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-03",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-03",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-03",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-03",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-004",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "エレガントで整える、収納を増やしたい6畳プラン",
+      "description": "やわらかな色と照明で上品に整えた部屋 壁面とベッド周りを使って床を広く保ちます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "ELEGANT",
+      "needs": [
+        "STORAGE",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-elegant.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 4,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-04",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-04",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-04",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-04",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-04",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-005",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "コージーで整える、収納を増やしたい6畳プラン",
+      "description": "布ものと間接照明でくつろぎを重視した部屋 壁面とベッド周りを使って床を広く保ちます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COZY",
+      "needs": [
+        "STORAGE",
+        "RENTAL"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-cozy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 5,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-05",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-05",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-05",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-05",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-05",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-006",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "カラフルで整える、収納を増やしたい6畳プラン",
+      "description": "小物の色を絞り、生活感を楽しく見せる部屋 壁面とベッド周りを使って床を広く保ちます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COLORFUL",
+      "needs": [
+        "STORAGE",
+        "RENTAL"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-colorful.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 6,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-06",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-06",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-06",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-06",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-06",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-007",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ナチュラルで整える、5万円前後で揃えたい6畳プラン",
+      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "NATURAL",
+      "needs": [
+        "LOW_BUDGET",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-natural.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 7,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-03",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-03",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-03",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-03",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-03",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-008",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "クリアクールで整える、5万円前後で揃えたい6畳プラン",
+      "description": "白とグレーを基調に、狭さを感じにくくした部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "CLEAR_COOL",
+      "needs": [
+        "LOW_BUDGET",
+        "RENTAL"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-clear-cool.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 8,
+      "official_pick": true,
+      "seasonal_recognition": "NEW_LIFE_DEMO_PICK",
+      "items": [
+        {
+          "product_id": "DEMO-BED-04",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-04",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-04",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-04",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-04",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-009",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ダンディで整える、5万円前後で揃えたい6畳プラン",
+      "description": "濃い木目と低い家具で落ち着きを出した部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "DANDY",
+      "needs": [
+        "LOW_BUDGET",
+        "RENTAL"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-dandy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 9,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-05",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-05",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-05",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-05",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-05",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-010",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "エレガントで整える、5万円前後で揃えたい6畳プラン",
+      "description": "やわらかな色と照明で上品に整えた部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "ELEGANT",
+      "needs": [
+        "LOW_BUDGET",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-elegant.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 10,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-06",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-06",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-06",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-06",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-06",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-011",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "コージーで整える、5万円前後で揃えたい6畳プラン",
+      "description": "布ものと間接照明でくつろぎを重視した部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COZY",
+      "needs": [
+        "LOW_BUDGET",
+        "RENTAL"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-cozy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 11,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-07",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-07",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-07",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-07",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-07",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-012",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "カラフルで整える、5万円前後で揃えたい6畳プラン",
+      "description": "小物の色を絞り、生活感を楽しく見せる部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COLORFUL",
+      "needs": [
+        "LOW_BUDGET",
+        "RENTAL"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-colorful.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 12,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-08",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-08",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-08",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-08",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-08",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-013",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ナチュラルで整える、勉強・在宅作業をしたい6畳プラン",
+      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "NATURAL",
+      "needs": [
+        "WORK_FROM_HOME",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-natural.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 13,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-05",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-05",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-05",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-05",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-05",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-014",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "クリアクールで整える、勉強・在宅作業をしたい6畳プラン",
+      "description": "白とグレーを基調に、狭さを感じにくくした部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "CLEAR_COOL",
+      "needs": [
+        "WORK_FROM_HOME",
+        "RENTAL"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-clear-cool.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 14,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-06",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-06",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-06",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-06",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-06",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-015",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ダンディで整える、勉強・在宅作業をしたい6畳プラン",
+      "description": "濃い木目と低い家具で落ち着きを出した部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "DANDY",
+      "needs": [
+        "WORK_FROM_HOME",
+        "RENTAL"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-dandy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 15,
+      "official_pick": true,
+      "seasonal_recognition": "NEW_LIFE_DEMO_PICK",
+      "items": [
+        {
+          "product_id": "DEMO-BED-07",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-07",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-07",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-07",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-07",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-016",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "エレガントで整える、勉強・在宅作業をしたい6畳プラン",
+      "description": "やわらかな色と照明で上品に整えた部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "ELEGANT",
+      "needs": [
+        "WORK_FROM_HOME",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-elegant.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 16,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-08",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-08",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-08",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-08",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-08",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-017",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "コージーで整える、勉強・在宅作業をしたい6畳プラン",
+      "description": "布ものと間接照明でくつろぎを重視した部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COZY",
+      "needs": [
+        "WORK_FROM_HOME",
+        "RENTAL"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-cozy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 17,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-09",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-09",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-09",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-09",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-09",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-018",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "カラフルで整える、勉強・在宅作業をしたい6畳プラン",
+      "description": "小物の色を絞り、生活感を楽しく見せる部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "COLORFUL",
+      "needs": [
+        "WORK_FROM_HOME",
+        "RENTAL"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-colorful.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": "NEW_LIFE_2027",
+      "editorial_rank": 18,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-01",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-01",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-01",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-01",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-01",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-019",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ナチュラルで整える、帰宅後にくつろぎたい6畳プラン",
+      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 低い家具と布ものを使い、視線の抜けを残します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "NATURAL",
+      "needs": [
+        "RELAX",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-natural.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 19,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-07",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-SUPPORT-07",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-07",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-07",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-07",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-020",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "クリアクールで整える、帰宅後にくつろぎたい6畳プラン",
+      "description": "白とグレーを基調に、狭さを感じにくくした部屋 低い家具と布ものを使い、視線の抜けを残します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "CLEAR_COOL",
+      "needs": [
+        "RELAX",
+        "RENTAL"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-clear-cool.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 20,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-08",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-SUPPORT-08",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-08",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-08",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-08",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-021",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ダンディで整える、帰宅後にくつろぎたい6畳プラン",
+      "description": "濃い木目と低い家具で落ち着きを出した部屋 低い家具と布ものを使い、視線の抜けを残します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "DANDY",
+      "needs": [
+        "RELAX",
+        "RENTAL"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-dandy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 21,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-09",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-SUPPORT-09",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-09",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-09",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-09",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-022",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "エレガントで整える、帰宅後にくつろぎたい6畳プラン",
+      "description": "やわらかな色と照明で上品に整えた部屋 低い家具と布ものを使い、視線の抜けを残します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "ELEGANT",
+      "needs": [
+        "RELAX",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-elegant.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 22,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-01",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-SUPPORT-01",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-01",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-01",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-01",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-023",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "コージーで整える、帰宅後にくつろぎたい6畳プラン",
+      "description": "布ものと間接照明でくつろぎを重視した部屋 低い家具と布ものを使い、視線の抜けを残します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "COZY",
+      "needs": [
+        "RELAX",
+        "RENTAL"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-cozy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 23,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-02",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-SUPPORT-02",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-02",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-02",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-02",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-024",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "カラフルで整える、帰宅後にくつろぎたい6畳プラン",
+      "description": "小物の色を絞り、生活感を楽しく見せる部屋 低い家具と布ものを使い、視線の抜けを残します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "COLORFUL",
+      "needs": [
+        "RELAX",
+        "RENTAL"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-colorful.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 24,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-03",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-SUPPORT-03",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-03",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-03",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-03",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-025",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ナチュラルで整える、睡眠環境を整えたい6畳プラン",
+      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "NATURAL",
+      "needs": [
+        "SLEEP",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-natural.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 25,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-09",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-09",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-09",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-09",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-09",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-026",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "クリアクールで整える、睡眠環境を整えたい6畳プラン",
+      "description": "白とグレーを基調に、狭さを感じにくくした部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "CLEAR_COOL",
+      "needs": [
+        "SLEEP",
+        "RENTAL"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-clear-cool.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 26,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-01",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-01",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-01",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-01",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-01",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-027",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ダンディで整える、睡眠環境を整えたい6畳プラン",
+      "description": "濃い木目と低い家具で落ち着きを出した部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "DANDY",
+      "needs": [
+        "SLEEP",
+        "RENTAL"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-dandy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 27,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-02",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-02",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-02",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-02",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-02",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-028",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "エレガントで整える、睡眠環境を整えたい6畳プラン",
+      "description": "やわらかな色と照明で上品に整えた部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "ELEGANT",
+      "needs": [
+        "SLEEP",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-elegant.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 28,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-03",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-03",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-03",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-03",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-03",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-029",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "コージーで整える、睡眠環境を整えたい6畳プラン",
+      "description": "布ものと間接照明でくつろぎを重視した部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "COZY",
+      "needs": [
+        "SLEEP",
+        "RENTAL"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-cozy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 29,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-04",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-04",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-04",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-04",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-04",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-030",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "カラフルで整える、睡眠環境を整えたい6畳プラン",
+      "description": "小物の色を絞り、生活感を楽しく見せる部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COLORFUL",
+      "needs": [
+        "SLEEP",
+        "RENTAL"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-colorful.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 30,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-05",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-05",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-05",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-05",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-05",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-031",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ナチュラルで整える、6畳を広く使いたい6畳プラン",
+      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 奥行きの浅い家具と兼用できる商品を中心にします。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "NATURAL",
+      "needs": [
+        "COMPACT",
+        "RENTAL"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-natural.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 31,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-02",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-02",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-02",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-02",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-02",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-032",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "クリアクールで整える、6畳を広く使いたい6畳プラン",
+      "description": "白とグレーを基調に、狭さを感じにくくした部屋 奥行きの浅い家具と兼用できる商品を中心にします。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "CLEAR_COOL",
+      "needs": [
+        "COMPACT",
+        "RENTAL"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-clear-cool.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 32,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-03",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-03",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-03",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-03",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-03",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-033",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "ダンディで整える、6畳を広く使いたい6畳プラン",
+      "description": "濃い木目と低い家具で落ち着きを出した部屋 奥行きの浅い家具と兼用できる商品を中心にします。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "DANDY",
+      "needs": [
+        "COMPACT",
+        "RENTAL"
+      ],
+      "provenance": "DEMO",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-dandy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 33,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-04",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-04",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-04",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-04",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-04",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-034",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "エレガントで整える、6畳を広く使いたい6畳プラン",
+      "description": "やわらかな色と照明で上品に整えた部屋 奥行きの浅い家具と兼用できる商品を中心にします。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "TINY_5_5",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "ELEGANT",
+      "needs": [
+        "COMPACT",
+        "RENTAL"
+      ],
+      "provenance": "STAFF",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
+      "image_url": "/assets/room-elegant.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 34,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-05",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-05",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-05",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-05",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-05",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-035",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "コージーで整える、6畳を広く使いたい6畳プラン",
+      "description": "布ものと間接照明でくつろぎを重視した部屋 奥行きの浅い家具と兼用できる商品を中心にします。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COZY",
+      "needs": [
+        "COMPACT",
+        "RENTAL"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/room-cozy.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 35,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-06",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-06",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-06",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-06",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-06",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-036",
+      "kind": "REAL",
+      "status": "PUBLISHED",
+      "visibility": "PUBLIC",
+      "title": "カラフルで整える、6畳を広く使いたい6畳プラン",
+      "description": "小物の色を絞り、生活感を楽しく見せる部屋 奥行きの浅い家具と兼用できる商品を中心にします。 商品構成・価格・画像はすべてデモです。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_80000",
+      "budget_max": 80000,
+      "style": "COLORFUL",
+      "needs": [
+        "COMPACT",
+        "RENTAL"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-colorful.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+      "seasonal_collection": null,
+      "editorial_rank": 36,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "DEMO-BED-07",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "DEMO-DESK-07",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "DEMO-STORAGE-07",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "DEMO-LIGHTING-07",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "DEMO-TEXTILE-07",
+          "role": "TEXTILE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    }
+  ]
+}

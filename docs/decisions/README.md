@@ -78,3 +78,43 @@
 
 - Decision: Stop after Product Definition, Architecture, Evidence Map, MVP, Phase 1 plan, and review.
 - Reason: Explicit Goal stop condition.
+
+## D-015 — Human authorization supersedes the Phase 0 stop
+
+- Context: D-014 correctly stopped the prior Product Definition Goal. A later explicit Goal requested a complete Functional MVP in this Repository and publication as a draft PR.
+- Decision: Implement Phase 1 on an isolated branch while preserving all production / live-integration exclusions.
+- Alternatives: Keep documentation-only; modify Existing Room Harmony; build a public community immediately.
+- Why: The new authorization is explicit, bounded, and testable. The other alternatives either ignore the current Goal or violate repository / scope boundaries.
+- Consequence: D-014 remains historical evidence, but no longer describes current status.
+
+## D-016 — Synthetic 36 Coordinate / 60 Product seed
+
+- Context: Rights for official / staff / user content are not approved. The current Goal requires 30〜50 Coordinates and 50〜100 Products.
+- Decision: Generate 36 Coordinates and 60 `DEMO-*` Product references with original local SVG assets.
+- Alternatives: Scrape public images; block implementation until real data; reuse unknown-rights media.
+- Why: It meets functional breadth without misrepresenting provenance or redistributing third-party content.
+- Consequence: Product / price / image quality cannot be evaluated as production content. Import contracts remain replaceable.
+
+## D-017 — Local three-layer functional prototype
+
+- Context: The MVP needs real state transitions, contract visibility, and novice-friendly Windows execution.
+- Decision: React / TypeScript / Vite frontend, FastAPI / Pydantic / SQLAlchemy backend, local SQLite, anonymous Browser Session.
+- Alternatives: Static mock; frontend-only localStorage; share Existing Room Harmony backend.
+- Why: This is the smallest architecture that tests Save / PLAN mutation / analytics while preserving service ownership.
+- Consequence: No production auth, deployment, horizontal scale, or multi-device sync.
+
+## D-018 — Room Harmony remains preview-only
+
+- Context: Product IDs, owner review, short-lived token, and approved runtime are not agreed.
+- Decision: Validate and render Handoff payload v1, set `live_integration=false`, and make no network call.
+- Alternatives: Deep-link the current prototype; write directly to Existing Room Harmony data; remove the integration concept.
+- Why: Preview enables contract review without creating a false connected state.
+- Consequence: In-store routing and real product recommendation remain out of this MVP.
+
+## D-019 — Creator impact is schema-first, UI-later
+
+- Context: Official creator / seasonal recognition may later explain why users imitate a Coordinate, but public reaction mechanics are unvalidated.
+- Decision: Reserve creator metadata, recognition, attribution event names, and aggregate response slots; do not expose Like / Follow / ranking / upload UI.
+- Alternatives: Build creator competition now; omit future slots entirely.
+- Why: This preserves a migration path without letting engagement mechanics distort H1〜H3.
+- Consequence: Creator impact remains unmeasured and must be activated by a future Decision.

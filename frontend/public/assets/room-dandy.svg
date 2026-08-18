@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title">
+  <title id="title">dandyのオリジナルデモルーム</title>
+  <defs><linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d8d0c6"/><stop offset="1" stop-color="#ffffff"/></linearGradient><linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dccbb4"/><stop offset="1" stop-color="#bda98f"/></linearGradient></defs>
+  <rect width="1200" height="900" fill="url(#wall)"/><path d="M0 580L1200 490V900H0Z" fill="url(#floor)"/>
+  <rect x="82" y="90" width="310" height="305" rx="12" fill="#eaf3f2" stroke="#d1d8d5" stroke-width="16"/><path d="M237 98v289M90 245h294" stroke="#d1d8d5" stroke-width="10"/>
+  <circle cx="1000" cy="125" r="52" fill="#9a6d4c" opacity=".9"/><path d="M1000 175v120" stroke="#574f47" stroke-width="10"/><path d="M950 295h100" stroke="#574f47" stroke-width="14"/>
+  <rect x="550" y="355" width="500" height="255" rx="32" fill="#594a40"/><rect x="575" y="310" width="210" height="130" rx="55" fill="#f4eee3"/><rect x="815" y="310" width="210" height="130" rx="55" fill="#344842"/><path d="M595 610v95M1008 610v95" stroke="#62554a" stroke-width="18"/>
+  <rect x="425" y="645" width="620" height="150" rx="70" fill="#ebe2d5" opacity=".95"/><ellipse cx="730" cy="655" rx="160" ry="58" fill="#344842" opacity=".72"/>
+  <rect x="90" y="480" width="250" height="235" rx="15" fill="#594a40"/><path d="M90 555h250M90 635h250" stroke="#f4eee3" stroke-width="9"/><circle cx="205" cy="518" r="7" fill="#f4eee3"/>
+  <path d="M355 715h30V425h-30" fill="#344842"/><path d="M310 430q60-150 120 0" fill="#344842" opacity=".9"/>
+  <rect x="0" y="0" width="1200" height="900" fill="none" stroke="#ffffff" stroke-opacity=".4" stroke-width="30"/>
+</svg>
