@@ -7,6 +7,7 @@ from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "data" / "seed" / "demo_seed.json"
+VISUAL_MANIFEST = ROOT / "data" / "seed" / "visual_asset_manifest.json"
 
 CATEGORIES = [
     ("BED", "MAIN_FURNITURE", "ベッド", 15_900),
@@ -71,12 +72,17 @@ def build_products() -> list[dict[str, object]]:
 
 
 def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, object]]:
+    visual_manifest = json.loads(VISUAL_MANIFEST.read_text(encoding="utf-8"))
+    visual_assets = {
+        item["coordinate_id"]: item["current_asset"] for item in visual_manifest["coordinates"]
+    }
     by_category: dict[str, list[dict[str, object]]] = {}
     for product in products:
         by_category.setdefault(str(product["category"]), []).append(product)
 
     coordinates: list[dict[str, object]] = []
     size_cycle = ["SMALL_6", "TINY_5_5", "SMALL_6", "MEDIUM_7_8"]
+    size_labels = {"SMALL_6": "6畳", "TINY_5_5": "5.5畳", "MEDIUM_7_8": "7〜8畳"}
     for need_index, (need_code, need_label, need_copy) in enumerate(NEEDS):
         for style_index, (style_code, style_label, style_copy) in enumerate(STYLES):
             coordinate_index = need_index * len(STYLES) + style_index
@@ -105,16 +111,24 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
             existing = []
             if coordinate_index % 5 == 0:
                 existing = [{"label": "手持ちのチェア", "category": "SUPPORT_FURNITURE", "dimensions": "幅45cm（デモ）"}]
+            coordinate_id = f"coord-{coordinate_index + 1:03d}"
+            size_band = size_cycle[coordinate_index % len(size_cycle)]
+            size_label = size_labels[size_band]
+            title = (
+                f"{style_label}で整える、{size_label}を広く使うプラン"
+                if need_code == "COMPACT"
+                else f"{style_label}で整える、{need_label}{size_label}プラン"
+            )
             coordinates.append(
                 {
-                    "id": f"coord-{coordinate_index + 1:03d}",
+                    "id": coordinate_id,
                     "kind": kind,
                     "status": "PUBLISHED" if kind == "REAL" else "READY_FOR_ACTION",
                     "visibility": "PUBLIC",
-                    "title": f"{style_label}で整える、{need_label}6畳プラン",
+                    "title": title,
                     "description": f"{style_copy} {need_copy} 商品構成・価格・画像はすべてデモです。",
                     "room_type": "ONE_ROOM",
-                    "size_band": size_cycle[coordinate_index % len(size_cycle)],
+                    "size_band": size_band,
                     "housing_type": "RENTAL",
                     "household": "SINGLE",
                     "budget_band": _budget_band(budget_max),
@@ -125,7 +139,9 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                     "verification_state": "DEMO_ONLY",
                     "creator_display": creator_display,
                     "creator_type": creator_type,
-                    "image_url": f"/assets/room-{style_code.lower().replace('_', '-')}.svg",
+                    "image_url": visual_assets.get(
+                        coordinate_id, f"/assets/room-{style_code.lower().replace('_', '-')}.svg"
+                    ),
                     "image_rights": "LOCALLY_CREATED_DEMO",
                     "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
                     "seasonal_collection": "NEW_LIFE_2027" if coordinate_index < 18 else None,

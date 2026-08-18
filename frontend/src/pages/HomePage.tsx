@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { api, track } from "../api/client";
+import { api, trackOnce } from "../api/client";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
+import { SafeImage } from "../components/common/SafeImage";
 import { Loading } from "../components/common/StatusView";
 import { useAsync } from "../hooks/useAsync";
 
@@ -19,8 +20,8 @@ export function HomePage() {
   );
 
   useEffect(() => {
-    void track("session_start");
-    void track("home_view");
+    trackOnce("session-start", "session_start");
+    trackOnce("home-view", "home_view");
   }, []);
 
   return (
@@ -36,7 +37,7 @@ export function HomePage() {
           <p className="hero__microcopy">入力内容はデモ端末内の匿名Sessionでのみ使用します。</p>
         </div>
         <div className="hero__visual">
-          <img src="/assets/room-natural.svg" alt="6畳の一人暮らしを表したオリジナルデモイラスト" />
+          <SafeImage src="/assets/room-natural.svg" alt="6畳の一人暮らしを表したオリジナルデモイラスト" />
           <div className="hero__annotation hero__annotation--one"><strong>6畳</strong><span>サイズから絞る</span></div>
           <div className="hero__annotation hero__annotation--two"><strong>5万円</strong><span>予算で現実的に</span></div>
           <div className="hero__annotation hero__annotation--three"><strong>5商品</strong><span>空間全体で理解</span></div>
@@ -63,7 +64,7 @@ export function HomePage() {
         <div className="seasonal-story">
           <p className="eyebrow">Seasonal collection</p>
           <h2 id="seasonal-title">{seasonal.data?.featured?.title || "新生活の6畳"}</h2>
-          <p>前年のREAL ROOM例を、今年の一人暮らしPLANへ。Contestではなく、実現につながるSeasonal Growthとして扱います。</p>
+          <p>前年のREAL ROOM例を、今年の一人暮らしPLANへ。順位を競わず、実現に役立つ季節ごとの再利用として扱います。</p>
           <ol className="story-steps" aria-label="季節の循環">
             <li><span>01</span>前年のREAL例</li>
             <li><span>02</span>自分向けPLAN</li>

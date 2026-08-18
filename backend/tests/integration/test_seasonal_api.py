@@ -217,3 +217,13 @@ def test_archived_coordinate_can_be_adapted_published_and_entered_with_lineage(c
     creator = client.get("/api/creators/me", headers=OWNER).json()
     assert creator["seasonal"]["challenge_entries"] == 1
     assert creator["seasonal"]["participations"][0]["coordinate_id"] == derivative.json()["id"]
+    assert creator["seasonal"]["direct_seasonal_reuse_count"] == 0
+
+    direct_child = client.post(
+        f"/api/plans/from-coordinate/{derivative.json()['id']}",
+        json={},
+        headers=OTHER,
+    )
+    assert direct_child.status_code == 201
+    creator = client.get("/api/creators/me", headers=OWNER).json()
+    assert creator["seasonal"]["direct_seasonal_reuse_count"] == 1

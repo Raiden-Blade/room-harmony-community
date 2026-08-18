@@ -44,7 +44,7 @@ export function AppLayout() {
         ))}
       </nav>
       <footer className="site-footer">
-        <p>Functional MVP / synthetic demo data / no live NITORI or Room Harmony connection</p>
+        <p>すべてデモ用の架空データです。NITORI・Room Harmonyとの実接続はありません。</p>
       </footer>
     </div>
   );

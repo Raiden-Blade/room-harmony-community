@@ -8,10 +8,10 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await page.goto("/");
     await page.getByRole("link", { name: "今のテーマと前年Archiveを見る" }).click();
     await expect(page).toHaveURL(/\/seasonal$/);
-    await expect(page.getByRole("heading", { name: "Seasonal Growth Loop" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "季節のコーデ再利用ループ" })).toBeVisible();
     await page.getByRole("link", { name: "今のテーマを見る" }).click();
     await expect(page.getByRole("heading", { name: "新生活の6畳 2028" })).toBeVisible();
-    await expect(page.getByText("NITORI公式Contest・公式選定ではなく")).toBeVisible();
+    await expect(page.getByText(/NITORI公式企画・公式選定ではありません/)).toBeVisible();
     await page.locator("#challenge-gallery").getByRole("link", { name: "空間全体を見る" }).first().click();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await page.getByRole("button", { name: "あとで参考にする" }).click();
@@ -72,7 +72,7 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await page.goto("/challenges/new-life-6tatami-2027");
     await expect(page.getByText("前年Archive")).toBeVisible();
     await page.locator("#challenge-gallery").getByRole("link", { name: "空間全体を見る" }).first().click();
-    await expect(page.getByText("この暮らしが参加するTheme")).toBeVisible();
+    await expect(page.getByText("この暮らしが参加するテーマ")).toBeVisible();
     await page.getByRole("button", { name: "このコーデを自分向けにアレンジ" }).click();
     await expect(page.getByRole("heading", { name: "自分向けに変更する" })).toBeVisible();
     await page.getByRole("button", { name: "この内容で比較準備へ" }).click();
@@ -96,7 +96,7 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await expect(page.getByRole("heading", { name: "E2E Archive Remixer" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "今年の新生活ユーザーの参考へ" })).toBeVisible();
     const seasonalSummary = page.locator(".creator-seasonal-summary");
-    await expect(seasonalSummary.locator("article").filter({ hasText: "Theme参加" }).getByText("1")).toBeVisible();
+    await expect(seasonalSummary.locator("article").filter({ hasText: "テーマ参加" }).getByText("1")).toBeVisible();
     await page.getByRole("link", { name: "新生活の6畳 2028 →" }).click();
     await expect(page.locator(`#challenge-gallery a[href="/coordinates/${derivativeId}"]`).first()).toBeVisible();
   });

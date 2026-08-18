@@ -85,7 +85,7 @@ Goal 3 passed its fresh-clone gate and GitHub CI and is ready for human review. 
 2. Approve the exact production eligibility vocabulary and who may change it.
 3. Define staff Recognition workflow, disclosure wording, audit trail, removal, and dispute handling.
 4. Define moderation SLA for a Coordinate that is already featured in an active or archived Challenge.
-5. Decide whether direct PLAN starts, public derivatives, or only cross-user reuse should count as `seasonal_reuse_count`.
+5. `direct_seasonal_reuse_count`はChallenge参加コーデからの直接の派生だけを数え、Private / Public・同一User / 他Userを区別しない。正式KPI化には分母と対象範囲の再定義が必要。
 6. Define year rollover, Archive timing, timezone, and automated status transition ownership.
 7. Validate the funnel denominator for eligible Coordinate → Entry and the cohort logic for prior-year → PLAN → current Entry.
 8. Run the documented second physical Windows PC checklist.

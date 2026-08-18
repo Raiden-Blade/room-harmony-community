@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository contains the product definition, approved Phase 1 Functional MVP, Goal 2 Creator & Community Loop, and Goal 3 Seasonal Growth Loop for a participatory Nitori coordinate platform. The current implementation is a synthetic/local-data prototype under review; it is not production-ready and does not prove business impact.
+This repository contains the product definition and final local-demo implementation for the Phase 1 Functional MVP, Goal 2 Creator & Community Loop, Goal 3 Seasonal Growth Loop, and Goal 4 demo hardening. The current implementation is a synthetic/local-data prototype under final human review; it is not production-ready and does not prove business impact.
 
 ## Navigation
 
@@ -15,7 +15,7 @@ This repository contains the product definition, approved Phase 1 Functional MVP
 - `prototypes/`: optional low-fidelity artifacts only
 - `frontend/`: React / TypeScript Functional MVP and browser tests
 - `backend/`: FastAPI / SQLAlchemy API and pytest suite
-- `scripts/`: seed validation and repository-relative Windows launcher helpers
+- `scripts/`: seed generation / validation, repository-relative Windows lifecycle helpers, and isolated visual QA
 
 `docs/index.md` is the documentation entry point. Product truth is defined by the documents above, not by this file.
 
@@ -23,7 +23,7 @@ This repository contains the product definition, approved Phase 1 Functional MVP
 
 `https://github.com/Raiden-Blade/room-harmoney` is read-only reference material. Never add, modify, delete, commit, branch, or reconfigure anything in that repository while working here.
 
-Goal 2 explicitly authorizes Public USER_DECLARED REAL / PLAN, Helpful, Save / Adapt lineage, local safe image upload, Report, and Creator useful-impact UI. Goal 3 additionally authorizes structured Seasonal Challenges, eligibility-checked Entry, previous-year Archive reuse, controlled Prototype Pick recognition, Creator seasonal impact, and their analytics. Challenge is a reuse layer over Coordinate, not a second post system or popularity contest. Do not add Comment, Follow, DM, notification, Leaderboard, free-form recognition, AI / LLM, real NITORI APIs, live Room Harmony calls, production authentication, payment, or deployment without a new explicit Goal. Goal 4 remains out of scope.
+Goal 2 explicitly authorizes Public USER_DECLARED REAL / PLAN, Helpful, Save / Adapt lineage, local safe image upload, Report, and Creator useful-impact UI. Goal 3 additionally authorizes structured Seasonal Challenges, eligibility-checked Entry, previous-year Archive reuse, controlled Prototype Pick recognition, Creator seasonal impact, and their analytics. Goal 4 authorizes reliability, UX consistency, local asset differentiation, safe reset, visual QA isolation, and final operator documentation; it does not authorize a new product feature. Challenge is a reuse layer over Coordinate, not a second post system or popularity contest. Do not add Comment, Follow, DM, notification, Leaderboard, free-form recognition, AI / LLM, real NITORI APIs, live Room Harmony calls, production authentication, payment, deployment, or a next Goal without explicit human approval.
 
 ## Evidence Discipline
 
@@ -40,4 +40,4 @@ Keep sources, audits, product decisions, architecture, and research separate. Up
 
 Prefer small, typed modules with explicit contracts and tests at system boundaries. Validate documentation links, Mermaid syntax, schema examples, and traceability from hypothesis to required feature before implementation. Production features require separate human approval.
 
-For current commands and module paths, treat `README.md`, `docs/architecture/implementation.md`, and `docs/operations/demo-runbook.md` as the operational source of truth. Similar / Popular are user-selected comparison conditions, not randomized experiment assignment.
+For current commands and module paths, treat `README.md`, `docs/architecture/implementation.md`, and `docs/operations/demo-runbook.md` as the operational source of truth. Use `reset-demo.cmd` only for the repository-local Demo DB and uploads; preserve logs and source files. Similar / Popular are user-selected comparison conditions, not randomized experiment assignment. `direct_seasonal_reuse_count` means direct child PLAN / Coordinate count from the Creator's Challenge-participating Coordinates, including same- and cross-session children; it is not an all-descendant or business-uplift KPI.

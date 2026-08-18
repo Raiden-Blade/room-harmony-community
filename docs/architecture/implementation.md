@@ -8,6 +8,7 @@ flowchart LR
   A --> S[Service layer<br/>ranking / plan / seasonal rules]
   S --> D[(SQLite<br/>local demo)]
   G[Generated seed JSON<br/>36 Coordinate / 60 Product<br/>6 Challenge / 8 Entry] -->|independent seed when empty| D
+  V[Visual asset manifest<br/>15 primary Coordinate mappings] --> G
   A -. preview only .-> H[Room Harmony handoff contract]
 ```
 
@@ -67,6 +68,17 @@ Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Sessi
 
 Recognitionはbundled Demo seedだけのcontrolled `Prototype Pick`で、User APIから設定できない。参加数、REAL / PLAN内訳、Creator participation / reuseはSQLite current stateから集計し、fake ranking countは持たない。詳細は[`seasonal-growth.md`](seasonal-growth.md)を参照。
 
+`direct_seasonal_reuse_count`は、Creator自身のChallenge参加Coordinateを直接の親として作られたchild PLAN / Coordinateの件数である。公開・非公開、同一・別Sessionを含むが、孫以降のdescendantは含まない。Creatorの再利用状況を説明するPrototype集計であり、購買・成長KPIではない。
+
+## Goal 4 final-demo hardening
+
+- `data/seed/visual_asset_manifest.json`がMain Demo 15 Coordinateと個別local SVG、future realistic asset filename、rights、visual directionを対応付ける。画像参照はDomain logicやrankingから独立する。
+- `SafeImage`がmissing / failed room・product assetをrepository-local fallbackへ切り替え、remote fetchに依存しない。
+- API clientはknown HTTP / eligibility / upload errorをactionableな日本語へ変換し、stack traceやinternal reason codeをMain UIへ出さない。
+- passive page exposure eventは`trackOnce`で同一Browser runtime内の重複送信を抑える。Save、Helpful、Publish等の明示Action eventは通常通り送る。
+- visual QAはport 8100 / 5174とprocess-scoped SQLite / upload directoryを所有し、Main Demo DBを変更しない。
+- `reset-demo.cmd`は明示確認後、Repository内`.demo`のknown DB / uploadsだけを初期化する。Source、logs、visual QA capture、unmanaged processは変更しない。
+
 ## Security / trust boundary
 
 - Handoffの`return_url`はlocal pathだけ許可する。
@@ -87,5 +99,6 @@ Recognitionはbundled Demo seedだけのcontrolled `Prototype Pick`で、User AP
 - Backend: `backend/tests/`（pytest）
 - Frontend unit: `frontend/src/**/*.test.tsx`（Vitest）
 - Browser / responsive: `frontend/e2e/`（Playwright、390 / 768 / 1280）
-- Windows lifecycle: `start-demo.cmd` / `stop-demo.cmd`
+- Visual render: `frontend/scripts/capture-visual-qa.mjs`（temporary DB、57 captures、horizontal overflow check）
+- Windows lifecycle: `start-demo.cmd` / `stop-demo.cmd` / `reset-demo.cmd`
 - Second physical PC: `docs/operations/second-pc-checklist.md`（manual gate）

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { api, track } from "../api/client";
+import { api, track, trackOnce } from "../api/client";
 import { Badge } from "../components/common/Badge";
 import { ErrorView, Loading } from "../components/common/StatusView";
+import { SafeImage } from "../components/common/SafeImage";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
 import { useAsync } from "../hooks/useAsync";
 import { label } from "../utils/labels";
@@ -16,6 +17,12 @@ const statusText = {
   ARCHIVED: "前年Archive",
 } as const;
 
+const challengeTypeText = {
+  LIFE_EVENT: "暮らしの節目",
+  CONSTRAINT: "条件から選ぶ",
+  ADAPT_REMIX: "アレンジして再利用",
+} as const;
+
 export function ChallengeDetailPage() {
   const { challengeSlug = "" } = useParams();
   const detail = useAsync(() => api.challenge(challengeSlug), [challengeSlug]);
@@ -25,7 +32,7 @@ export function ChallengeDetailPage() {
 
   useEffect(() => {
     if (!detail.data) return;
-    void track("challenge_view", {
+    trackOnce(`challenge-view:${detail.data.id}`, "challenge_view", {
       properties: {
         challenge_id: detail.data.id,
         season: detail.data.season,
@@ -34,10 +41,10 @@ export function ChallengeDetailPage() {
       },
     });
     if (detail.data.status === "ARCHIVED") {
-      void track("archive_view", { properties: { challenge_id: detail.data.id, season: detail.data.season } });
+      trackOnce(`archive-view:${detail.data.id}`, "archive_view", { properties: { challenge_id: detail.data.id, season: detail.data.season } });
     }
     if (detail.data.prototype_picks.length) {
-      void track("recognition_view", {
+      trackOnce(`recognition-view:${detail.data.id}`, "recognition_view", {
         properties: {
           challenge_id: detail.data.id,
           season: detail.data.season,
@@ -62,7 +69,7 @@ export function ChallengeDetailPage() {
         coordinate_id: coordinateId,
         properties: { challenge_id: detail.data.id, season: detail.data.season, challenge_type: detail.data.challenge_type },
       });
-      setMessage("このCoordinateでテーマに参加しました。Entry countは実DBから更新されています。");
+      setMessage("このコーデでテーマに参加しました。参加数を更新しました。");
       await detail.refresh();
     } catch (reason) {
       await track("challenge_entry_rejected", {
@@ -76,28 +83,28 @@ export function ChallengeDetailPage() {
   }
 
   if (detail.loading) return <Loading />;
-  if (detail.error || !detail.data) return <ErrorView message={detail.error || "Challengeが見つかりません"} />;
+  if (detail.error || !detail.data) return <ErrorView message={detail.error || "テーマが見つかりません"} />;
   const data = detail.data;
 
   return (
     <div className="page-shell challenge-page">
-      <Link className="back-link" to="/seasonal">← Seasonalへ戻る</Link>
+      <Link className="back-link" to="/seasonal">← 季節テーマへ戻る</Link>
       <header className="challenge-hero">
-        <img src={data.cover_asset} alt="" />
+        <SafeImage src={data.cover_asset} alt="" />
         <div>
           <div className="badge-row">
             <Badge tone={data.status === "ACTIVE" ? "accent" : "quiet"}>{statusText[data.status]}</Badge>
-            <Badge>{data.season} {data.year}</Badge>
-            <Badge tone="warning">DEMO CHALLENGE</Badge>
+            <Badge>{label(data.season)} {data.year}</Badge>
+            <Badge tone="warning">{data.year}年想定デモ</Badge>
           </div>
-          <p className="eyebrow">{data.challenge_type.replace("_", " / ")}</p>
+          <p className="eyebrow">{challengeTypeText[data.challenge_type]}</p>
           <h1>{data.title}</h1>
           <p className="detail-lead">{data.description}</p>
           <div className="inline-actions">
             {data.status === "ACTIVE" && <Link className="button button--primary" to={`/create?challenge=${data.slug}`}>このテーマでコーデをつくる</Link>}
             <a className="button button--ghost" href="#challenge-gallery">参考コーデを見る</a>
           </div>
-          <small>NITORI公式Contest・公式選定ではなく、Seasonal Growthを検証するFunctional Prototypeです。</small>
+          <small>NITORI公式企画・公式選定ではありません。受付状態と日付はデモ用データとして固定しています。</small>
         </div>
       </header>
 
@@ -107,19 +114,19 @@ export function ChallengeDetailPage() {
       </section>
 
       <section className="challenge-facts" aria-label="テーマの参加状況">
-        <article><strong>{data.participation_count}</strong><span>参加Coordinate</span><small>実Recordのみ</small></article>
-        <article><strong>{data.real_count}</strong><span>REAL ROOM</span><small>User申告 / Demoを分離</small></article>
+        <article><strong>{data.participation_count}</strong><span>参加コーデ</span><small>現在のデモDBから集計</small></article>
+        <article><strong>{data.real_count}</strong><span>REAL ROOM</span><small>利用者申告 / デモを区別</small></article>
         <article><strong>{data.plan_count}</strong><span>PLAN</span><small>購入済みではない</small></article>
       </section>
 
       <section className="section section--flush" aria-labelledby="constraints-title">
-        <div className="section-heading"><div><p className="eyebrow">Structured eligibility</p><h2 id="constraints-title">参加条件</h2></div><p>曖昧な説明文だけでなく、Serverが同じ条件を検証します。</p></div>
-        <ul className="constraint-list">{data.constraints.map((constraint) => <li key={constraint.code}><span>{constraint.operator}</span><strong>{constraint.label}</strong></li>)}</ul>
+        <div className="section-heading"><div><p className="eyebrow">参加前に確認</p><h2 id="constraints-title">参加条件</h2></div><p>公開時には、画面と同じ条件をサーバー側でも確認します。</p></div>
+        <ul className="constraint-list">{data.constraints.map((constraint) => <li key={constraint.code}><span aria-hidden="true">✓</span><strong>{constraint.label}</strong></li>)}</ul>
       </section>
 
       {data.status === "ACTIVE" && (
         <section className="entry-panel" aria-labelledby="entry-panel-title">
-          <div><p className="eyebrow">Use your existing Coordinate</p><h2 id="entry-panel-title">自分の投稿で参加</h2><p>新しい投稿Flowを複製せず、既存のPublic REAL / PLANをEntryにします。</p></div>
+          <div><p className="eyebrow">公開済みコーデを活用</p><h2 id="entry-panel-title">自分の投稿で参加</h2><p>条件に合う公開済みのREAL ROOM / PLANから参加できます。</p></div>
           {data.my_candidates.length ? (
             <div className="candidate-list">
               {data.my_candidates.map((candidate) => (
@@ -131,7 +138,7 @@ export function ChallengeDetailPage() {
                 </article>
               ))}
             </div>
-          ) : <p className="empty-card">参加できる自分のPublic Coordinateはまだありません。<Link to={`/create?challenge=${data.slug}`}>このテーマでつくる →</Link></p>}
+          ) : <p className="empty-card">参加できる自分の公開コーデはまだありません。<Link to={`/create?challenge=${data.slug}`}>このテーマでつくる →</Link></p>}
           {message && <p className="success-message" role="status">{message}</p>}
           {error && <p className="inline-error" role="alert">{error}</p>}
         </section>
@@ -139,14 +146,14 @@ export function ChallengeDetailPage() {
 
       {data.prototype_picks.length > 0 && (
         <section className="section section--flush" aria-labelledby="prototype-picks-title">
-          <div className="section-heading"><div><p className="eyebrow">Recognition, not ranking</p><h2 id="prototype-picks-title">Prototype Pick</h2></div><p>実社員による公式選定ではなく、Demo上のControlled Recognitionです。</p></div>
+          <div className="section-heading"><div><p className="eyebrow">順位ではなく工夫を紹介</p><h2 id="prototype-picks-title">Prototype Pick</h2></div><p>デモ上の選定例です。似鳥社員による公式選定ではありません。</p></div>
           <div className="recognition-strip">{data.prototype_picks.map((entry) => <Link key={entry.id} to={`/coordinates/${entry.coordinate_id}`}><Badge tone="warning">PROTOTYPE PICK</Badge><strong>{entry.coordinate.title}</strong><span>{entry.recognition && label(entry.recognition)} →</span></Link>)}</div>
         </section>
       )}
 
       <section id="challenge-gallery" className="section section--flush" aria-labelledby="challenge-gallery-title">
-        <div className="section-heading"><div><p className="eyebrow">Relevant examples</p><h2 id="challenge-gallery-title">このテーマの参考コーデ</h2></div><p>Global順位は付けず、REAL / PLANとRecognitionを明示します。</p></div>
-        {data.entries.length ? <div className="coordinate-grid coordinate-grid--three">{data.entries.map((entry) => <div className="challenge-entry" key={entry.id}>{entry.recognition && <div className="challenge-entry__recognition"><Badge tone="warning">PROTOTYPE PICK</Badge><span>{label(entry.recognition)}</span></div>}<CoordinateCard coordinate={entry.coordinate} /></div>)}</div> : <p className="empty-card">公開中のEntryはまだありません。</p>}
+        <div className="section-heading"><div><p className="eyebrow">テーマに合う事例</p><h2 id="challenge-gallery-title">このテーマの参考コーデ</h2></div><p>人気順位は付けず、REAL ROOM / PLANと工夫の種類を明示します。</p></div>
+        {data.entries.length ? <div className="coordinate-grid coordinate-grid--three">{data.entries.map((entry) => <div className="challenge-entry" key={entry.id}>{entry.recognition && <div className="challenge-entry__recognition"><Badge tone="warning">PROTOTYPE PICK</Badge><span>{label(entry.recognition)}</span></div>}<CoordinateCard coordinate={entry.coordinate} /></div>)}</div> : <p className="empty-card">公開中の参加コーデはまだありません。{data.status === "ACTIVE" && <><br /><Link to={`/create?challenge=${data.slug}`}>最初のコーデをつくる →</Link></>}</p>}
       </section>
     </div>
   );

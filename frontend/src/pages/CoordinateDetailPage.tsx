@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { api, mediaUrl, track } from "../api/client";
+import { api, mediaUrl, track, trackOnce } from "../api/client";
 import { Badge } from "../components/common/Badge";
 import { DemoNotice } from "../components/common/DemoNotice";
+import { SafeImage } from "../components/common/SafeImage";
 import { ErrorView, Loading } from "../components/common/StatusView";
 import { ProductCard } from "../components/product/ProductCard";
 import { useAsync } from "../hooks/useAsync";
@@ -24,16 +25,16 @@ export function CoordinateDetailPage() {
 
   useEffect(() => {
     if (!detail.data) return;
-    void track("coordinate_view", {
+    trackOnce(`coordinate-view:${detail.data.id}`, "coordinate_view", {
       coordinate_id: detail.data.id,
       properties: { product_count: detail.data.product_count, category_count: detail.data.category_count },
     });
     if (detail.data.match_reasons.length) {
-      void track("match_reason_view", { coordinate_id: detail.data.id });
+      trackOnce(`match-reason-view:${detail.data.id}`, "match_reason_view", { coordinate_id: detail.data.id });
     }
     if (detail.data.challenge_contexts.length) {
       const context = detail.data.challenge_contexts[0];
-      void track(context.status === "ARCHIVED" ? "previous_year_coordinate_view" : "challenge_coordinate_view", {
+      trackOnce(`challenge-coordinate-view:${context.challenge_id}:${detail.data.id}`, context.status === "ARCHIVED" ? "previous_year_coordinate_view" : "challenge_coordinate_view", {
         coordinate_id: detail.data.id,
         properties: { challenge_id: context.challenge_id, season: context.season },
       });
@@ -120,7 +121,7 @@ export function CoordinateDetailPage() {
         coordinate_id: detail.data.id,
         properties: { challenge_id: challengeId, challenge_type: option?.challenge_type || "LIFE_EVENT", season: option?.season || "SPRING" },
       });
-      setActionError(reason instanceof Error ? reason.message : "Themeに参加できませんでした");
+      setActionError(reason instanceof Error ? reason.message : "テーマに参加できませんでした");
     } finally {
       setBusy(false);
     }
@@ -181,7 +182,7 @@ export function CoordinateDetailPage() {
     <div className="detail-page">
       <div className="detail-hero">
         <div className="detail-hero__image">
-          <img src={mediaUrl(coordinate.image_urls?.[0] || coordinate.image_url)} alt={`${coordinate.title}の部屋・コーデ画像`} />
+          <SafeImage src={mediaUrl(coordinate.image_urls?.[0] || coordinate.image_url)} alt={`${coordinate.title}の部屋・コーデ画像`} />
           <div className="coordinate-card__badges">
             <Badge tone={coordinate.kind === "REAL" ? "accent" : "quiet"}>{label(coordinate.kind)}</Badge>
             <Badge tone="warning">デモ</Badge>
@@ -218,9 +219,9 @@ export function CoordinateDetailPage() {
 
       {(coordinate.challenge_contexts.length > 0 || coordinate.challenge_options.length > 0) && (
         <section className="section detail-section coordinate-challenge-panel" aria-labelledby="coordinate-challenge-title">
-          <div className="section-heading"><div><p className="eyebrow">Seasonal context</p><h2 id="coordinate-challenge-title">この暮らしが参加するTheme</h2></div><p>Global順位ではなく、季節と制約から再発見・Adaptします。</p></div>
+          <div className="section-heading"><div><p className="eyebrow">季節とのつながり</p><h2 id="coordinate-challenge-title">この暮らしが参加するテーマ</h2></div><p>人気順位ではなく、季節と条件から再発見し、自分向けにアレンジします。</p></div>
           {coordinate.challenge_contexts.length > 0 && <div className="challenge-context-list">{coordinate.challenge_contexts.map((context) => <Link key={context.challenge_id} to={`/challenges/${context.challenge_slug}`}><span><Badge tone={context.status === "ACTIVE" ? "accent" : "quiet"}>{context.status === "ARCHIVED" ? "前年Archive" : "参加中"}</Badge>{context.recognition && <Badge tone="warning">PROTOTYPE PICK</Badge>}</span><strong>{context.challenge_title}</strong><small>{context.season} {context.year}{context.recognition && ` · ${label(context.recognition)}`}</small></Link>)}</div>}
-          {coordinate.challenge_options.some((option) => !option.already_entered) && <div className="challenge-option-list"><h3>この投稿で参加できるTheme</h3>{coordinate.challenge_options.filter((option) => !option.already_entered).map((option) => <article key={option.challenge_id}><div><strong>{option.challenge_title}</strong>{!option.eligible && <small>{option.rejection_messages.join(" ")}</small>}</div>{option.eligible ? <button className="button button--secondary" disabled={busy} onClick={() => void enterChallenge(option.challenge_slug, option.challenge_id)}>このテーマに参加</button> : <Badge tone="quiet">条件外</Badge>}</article>)}</div>}
+          {coordinate.challenge_options.some((option) => !option.already_entered) && <div className="challenge-option-list"><h3>この投稿で参加できるテーマ</h3>{coordinate.challenge_options.filter((option) => !option.already_entered).map((option) => <article key={option.challenge_id}><div><strong>{option.challenge_title}</strong>{!option.eligible && <small>{option.rejection_messages.join(" ")}</small>}</div>{option.eligible ? <button className="button button--secondary" disabled={busy} onClick={() => void enterChallenge(option.challenge_slug, option.challenge_id)}>このテーマに参加</button> : <Badge tone="quiet">条件外</Badge>}</article>)}</div>}
         </section>
       )}
 

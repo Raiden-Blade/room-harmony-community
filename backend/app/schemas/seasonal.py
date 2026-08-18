@@ -135,5 +135,5 @@ class CreatorChallengeParticipation(BaseModel):
 class CreatorSeasonalSummary(BaseModel):
     challenge_entries: int = 0
     recognized_coordinates: int = 0
-    seasonal_reuse_count: int = 0
+    direct_seasonal_reuse_count: int = 0
     participations: list[CreatorChallengeParticipation] = Field(default_factory=list)

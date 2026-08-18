@@ -5,6 +5,7 @@ import { api, track } from "../api/client";
 import type { CoordinateDetail, CoordinateItem, ProductSummary } from "../api/types";
 import { Badge } from "../components/common/Badge";
 import { ErrorView, Loading } from "../components/common/StatusView";
+import { SafeImage } from "../components/common/SafeImage";
 import { useAsync } from "../hooks/useAsync";
 import { dateStamp, label, yen } from "../utils/labels";
 
@@ -110,7 +111,7 @@ export function PlanEditPage() {
             <div className="editor-items">
               {plan.data.items.filter((item) => item.product).map((item) => (
                 <article className="editor-item" key={item.id}>
-                  <img src={item.product!.image_url} alt="オリジナルの商品プレースホルダー" />
+                  <SafeImage src={item.product!.image_url} fallbackSrc="/assets/product-fallback.svg" alt="オリジナルの商品プレースホルダー" />
                   <div className="editor-item__copy">
                     <div className="badge-row"><Badge>{label(item.role)}</Badge><Badge tone={item.mutation_state === "ORIGINAL" ? "quiet" : "accent"}>{label(item.mutation_state)}</Badge></div>
                     <h3>{item.product!.name}</h3><p>{yen(item.price_snapshot)}</p>

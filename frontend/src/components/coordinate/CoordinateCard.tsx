@@ -4,12 +4,13 @@ import { mediaUrl } from "../../api/client";
 import type { CoordinateSummary } from "../../api/types";
 import { label, yen } from "../../utils/labels";
 import { Badge } from "../common/Badge";
+import { SafeImage } from "../common/SafeImage";
 
 export function CoordinateCard({ coordinate }: { coordinate: CoordinateSummary }) {
   return (
     <article className="coordinate-card">
       <Link className="coordinate-card__image" to={`/coordinates/${coordinate.id}`}>
-        <img src={mediaUrl(coordinate.image_urls?.[0] || coordinate.image_url)} alt={`${coordinate.title}のコーデ画像`} loading="lazy" />
+        <SafeImage src={mediaUrl(coordinate.image_urls?.[0] || coordinate.image_url)} alt={`${coordinate.title}のコーデ画像`} loading="lazy" />
         <div className="coordinate-card__badges">
           <Badge tone={coordinate.kind === "REAL" ? "accent" : "quiet"}>{label(coordinate.kind)}</Badge>
           <Badge tone="warning">デモ</Badge>

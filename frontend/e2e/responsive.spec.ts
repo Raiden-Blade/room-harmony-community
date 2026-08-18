@@ -114,7 +114,8 @@ for (const viewport of viewports) {
     });
 
     await page.goto(`/plans/${plan.id}/handoff`);
-    await expect(page.getByText("PREVIEW ONLY")).toBeVisible();
+    await expect(page.getByText("接続前プレビュー")).toBeVisible();
+    await page.getByText("開発者向け：連携データを確認").click();
     await expect(page.getByLabel("Room Harmony handoff payload")).toContainText('"live_integration": false');
     await expectNoHorizontalOverflow(page);
     await testInfo.attach(`${viewport.name}-handoff`, {

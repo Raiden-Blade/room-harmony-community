@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, rmSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,6 +11,10 @@ const python = process.env.RHC_PYTHON || (process.platform === "win32"
   : join(backendDir, ".venv", "bin", "python"));
 const portIndex = process.argv.indexOf("--port");
 const port = portIndex >= 0 ? process.argv[portIndex + 1] : "8000";
+const demoDir = join(repositoryDir, ".demo");
+const defaultDbPath = join(demoDir, `e2e-${process.pid}.db`);
+const defaultUploadDir = join(demoDir, `e2e-uploads-${process.pid}`);
+const ownsTemporaryData = !process.env.RHC_DATABASE_URL && !process.env.RHC_UPLOAD_DIR;
 
 if (!existsSync(python)) {
   console.error(`Backend Python was not found at ${python}. Run the setup steps first.`);
@@ -21,12 +25,24 @@ const child = spawn(python, ["-m", "uvicorn", "app.main:app", "--host", "127.0.0
   cwd: backendDir,
   env: {
     ...process.env,
-    RHC_DATABASE_URL: process.env.RHC_DATABASE_URL || `sqlite:///${join(repositoryDir, ".demo", "e2e.db").replaceAll("\\", "/")}`,
+    RHC_DATABASE_URL: process.env.RHC_DATABASE_URL || `sqlite:///${defaultDbPath.replaceAll("\\", "/")}`,
+    RHC_UPLOAD_DIR: process.env.RHC_UPLOAD_DIR || defaultUploadDir,
   },
   stdio: "inherit",
 });
 
+function cleanupTemporaryData() {
+  if (!ownsTemporaryData) return;
+  for (const path of [defaultDbPath, `${defaultDbPath}-wal`, `${defaultDbPath}-shm`, defaultUploadDir]) {
+    rmSync(path, { force: true, recursive: path === defaultUploadDir });
+  }
+}
+
 for (const signal of ["SIGINT", "SIGTERM"]) {
   process.on(signal, () => child.kill(signal));
 }
-child.on("exit", (code) => process.exit(code ?? 1));
+process.on("exit", cleanupTemporaryData);
+child.on("exit", (code) => {
+  cleanupTemporaryData();
+  process.exit(code ?? 1);
+});

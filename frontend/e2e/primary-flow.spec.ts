@@ -47,6 +47,23 @@ test("E2E 2: Saved → PLAN → Existing → Replace → Total → Handoff", asy
   await page.getByRole("button", { name: "この内容で比較準備へ" }).click();
   await expect(page.getByText("PRIVATE PLAN")).toBeVisible();
   await page.getByRole("link", { name: /店舗で\d+商品を比較する/ }).click();
-  await expect(page.getByText("PREVIEW ONLY")).toBeVisible();
+  await expect(page.getByText("接続前プレビュー")).toBeVisible();
+  await page.getByText("開発者向け：連携データを確認").click();
   await expect(page.getByLabel("Room Harmony handoff payload")).toContainText('"live_integration": false');
+});
+
+test("E2E 3: Product → Coordinate → private PLAN", async ({ page }) => {
+  const sessionId = `e2e-product-reverse-${Date.now()}`;
+  await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
+
+  await page.goto("/products/DEMO-BED-01");
+  await expect(page.getByRole("heading", { name: "この商品を使ったコーデを見る" })).toBeVisible();
+  await page.getByRole("link", { name: "空間全体を見る" }).first().click();
+
+  await expect(page).toHaveURL(/\/coordinates\//);
+  await page.getByRole("button", { name: "このコーデを自分向けにアレンジ" }).click();
+
+  await expect(page).toHaveURL(/\/plans\/[^/]+\/edit$/);
+  await expect(page.getByRole("heading", { name: "自分向けに変更する" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "購入候補" })).toBeVisible();
 });

@@ -38,6 +38,8 @@
 ## Operations
 
 - [Windows demo runbook](operations/demo-runbook.md)
+- [5–8 minute demo script and recovery](operations/demo-script.md)
+- [Visual asset replacement plan](operations/visual-asset-plan.md)
 - [Second physical Windows PC checklist](operations/second-pc-checklist.md)
 - [Goal 1 to Goal 2 local DB migration](operations/goal1-to-goal2-migration.md)
 - [Goal 2 to Goal 3 local DB migration](operations/goal2-to-goal3-migration.md)
@@ -50,4 +52,5 @@
 - [Decision log](decisions/README.md)
 - [Goal 2 final self-review](decisions/goal2-self-review.md)
 - [Goal 3 final self-review](decisions/goal3-self-review.md)
+- [Goal 4 final self-review](decisions/goal4-final-review.md)
 - [Final self-review](decisions/final-self-review.md)

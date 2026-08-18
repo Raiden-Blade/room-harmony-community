@@ -185,7 +185,7 @@ def create_public_coordinate(
 
     products = _products(session, payload.products)
     images = _owned_images(session, session_id, payload.image_ids)
-    primary_url = image_url(images[0]) if images else _fallback_image(products)
+    primary_url = image_url(images[0]) if images else _fallback_image(payload.style)
     budget_max = payload.budget_max or _known_product_total(products) or 50_000
     coordinate = Coordinate(
         id=coordinate_id,
@@ -243,7 +243,7 @@ def publish_plan(
     coordinate_id = f"community-{uuid4()}"
     # A public derivative must not silently republish another User's uploaded
     # room photo. Without a new upload, PLAN uses a local demo placeholder.
-    primary_url = image_url(images[0]) if images else "/assets/room-natural.svg"
+    primary_url = image_url(images[0]) if images else _fallback_image(plan.style)
     coordinate = Coordinate(
         id=coordinate_id,
         owner_session_id=session_id,
@@ -506,8 +506,11 @@ def _known_product_total(products: dict[str, Product]) -> int:
     return sum(product.price_snapshot or 0 for product in products.values())
 
 
-def _fallback_image(products: dict[str, Product]) -> str:
-    return next((product.image_url for product in products.values()), "/assets/room-natural.svg")
+def _fallback_image(style: str | None) -> str:
+    style_asset = (style or "NATURAL").lower().replace("_", "-")
+    if style_asset not in {"natural", "clear-cool", "dandy", "elegant", "cozy", "colorful"}:
+        style_asset = "natural"
+    return f"/assets/room-{style_asset}.svg"
 
 
 def _budget_band(value: int) -> str:

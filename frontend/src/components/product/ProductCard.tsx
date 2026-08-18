@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import type { CoordinateItem, ProductSummary } from "../../api/types";
 import { dateStamp, label, yen } from "../../utils/labels";
 import { Badge } from "../common/Badge";
+import { SafeImage } from "../common/SafeImage";
 
 type Props = { product: ProductSummary; item?: CoordinateItem; compact?: boolean };
 
 export function ProductCard({ product, item, compact = false }: Props) {
   return (
     <article className={`product-card${compact ? " product-card--compact" : ""}`}>
-      <img src={product.image_url} alt="オリジナルの商品プレースホルダー" loading="lazy" />
+      <SafeImage src={product.image_url} fallbackSrc="/assets/product-fallback.svg" alt="オリジナルの商品プレースホルダー" loading="lazy" />
       <div className="product-card__body">
         <div className="badge-row">
           <Badge tone="quiet">{label(item?.role || product.default_role)}</Badge>

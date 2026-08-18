@@ -182,6 +182,8 @@ def test_real_and_plan_creation_are_distinct_and_real_requires_image(client):
     assert real["moderation_status"] == "ACTIVE"
     assert real["image_urls"][0].startswith("/uploads/")
     assert plan["kind"] == "PLAN"
+    assert plan["image_url"] == "/assets/room-natural.svg"
+    assert plan["image_rights"] == "LOCALLY_CREATED_DEMO_PLACEHOLDER"
     assert "購入済み" in plan["demo_disclosure"]
 
     stored = client.app.state.settings.upload_dir / real["image_urls"][0].rsplit("/", 1)[-1]

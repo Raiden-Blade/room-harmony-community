@@ -240,7 +240,7 @@ p { line-height: 1.75; }
 .plan-total-card .price-caveat { color: #c3cbc5; }
 .plan-total-card .button { width: 100%; }
 
-.handoff-layout { display: grid; gap: 18px; }
+.handoff-layout { display: grid; max-width: 900px; gap: 18px; }
 .handoff-summary, .handoff-contract { padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); }
 .handoff-summary dl { margin: 0 0 24px; }
 .handoff-summary dl > div { display: flex; justify-content: space-between; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
@@ -252,7 +252,10 @@ p { line-height: 1.75; }
 .handoff-status { display: flex; gap: 12px; margin-top: 22px; padding: 15px; border-radius: 13px; background: var(--sage); color: var(--green-dark); }
 .handoff-status > span { display: grid; flex: 0 0 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--green); color: #fff; }
 .handoff-status p { margin: 3px 0 0; font-size: .75rem; }
-.handoff-contract { background: #222622; color: #eef2ef; overflow: hidden; }
+.handoff-contract { align-self: start; background: #222622; color: #eef2ef; overflow: hidden; }
+.handoff-contract summary { cursor: pointer; font-weight: 800; list-style-position: inside; }
+.handoff-contract[open] summary { margin-bottom: 18px; }
+.handoff-contract > div > p:not(.eyebrow) { color: #c8d1ca; font-size: .78rem; }
 .handoff-contract .eyebrow { color: #b8d0c4; }
 .handoff-contract pre { max-height: 450px; margin: 0; padding: 15px; border-radius: 10px; background: #151815; color: #d8e3dc; font: .7rem/1.55 Consolas, monospace; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
 .handoff-actions { display: grid; gap: 12px; margin-top: 20px; }
@@ -484,8 +487,8 @@ p { line-height: 1.75; }
   .trust-panel { grid-template-columns: .75fr 1.25fr; padding: 50px max(32px, calc((100vw - 1120px) / 2)); }
   .editor-layout { grid-template-columns: minmax(0, 1fr) 310px; align-items: start; }
   .plan-total-card { position: sticky; top: 100px; }
-  .handoff-layout { grid-template-columns: 1fr 1fr; }
-  .about-grid { grid-template-columns: repeat(4, 1fr); }
+  .handoff-layout { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: repeat(3, 1fr); }
   .creator-impact-panel { grid-template-columns: 1fr 1fr auto; }
   .seasonal-hero, .challenge-hero { grid-template-columns: 1fr 1fr; align-items: center; padding: 48px; }
   .seasonal-loop ol { grid-template-columns: repeat(4, minmax(0, 1fr)); }

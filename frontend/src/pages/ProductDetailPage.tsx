@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { api, track } from "../api/client";
+import { api, track, trackOnce } from "../api/client";
 import { Badge } from "../components/common/Badge";
-import { ErrorView, Loading } from "../components/common/StatusView";
+import { SafeImage } from "../components/common/SafeImage";
+import { EmptyView, ErrorView, Loading } from "../components/common/StatusView";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
 import { useAsync } from "../hooks/useAsync";
 import { dateStamp, label, yen } from "../utils/labels";
@@ -15,7 +16,7 @@ export function ProductDetailPage() {
 
   useEffect(() => {
     if (!product.data) return;
-    void track("product_view", {
+    trackOnce(`product-view:${product.data.id}`, "product_view", {
       product_id: product.data.id,
       properties: { category: product.data.category, role: product.data.default_role },
     });
@@ -29,7 +30,7 @@ export function ProductDetailPage() {
     <div className="page-shell">
       <button className="back-link back-link--button" onClick={() => navigate(-1)}>← 前の画面へ戻る</button>
       <section className="product-detail">
-        <div className="product-detail__image"><img src={item.image_url} alt="オリジナルの商品プレースホルダー" /></div>
+        <div className="product-detail__image"><SafeImage src={item.image_url} fallbackSrc="/assets/product-fallback.svg" alt="オリジナルの商品プレースホルダー" /></div>
         <div className="product-detail__copy">
           <div className="badge-row"><Badge tone="warning">DEMO PRODUCT</Badge><Badge>{label(item.default_role)}</Badge></div>
           <p className="eyebrow">ID: {item.id}</p>
@@ -51,13 +52,13 @@ export function ProductDetailPage() {
           <div><p className="eyebrow">Product → Coordinate</p><h2 id="used-coordinates-title">この商品を使ったコーデを見る</h2></div>
           <p>単一商品から、同じ空間の別カテゴリ商品へ広げます。</p>
         </div>
-        <div className="coordinate-grid coordinate-grid--three">
+        {item.coordinates.length === 0 ? <EmptyView title="この商品を使ったコーデはまだありません"><Link className="button button--secondary" to="/explore">別のコーデを探す</Link></EmptyView> : <div className="coordinate-grid coordinate-grid--three">
           {item.coordinates.slice(0, 6).map((coordinate) => (
             <div key={coordinate.id} onClick={() => void track("product_to_coordinate", { product_id: item.id, coordinate_id: coordinate.id })}>
               <CoordinateCard coordinate={coordinate} />
             </div>
           ))}
-        </div>
+        </div>}
       </section>
     </div>
   );

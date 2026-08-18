@@ -244,9 +244,9 @@ def creator_seasonal_summary(session: Session, creator_id: str) -> CreatorSeason
         .order_by(Challenge.year.desc(), Challenge.start_at)
     ).all()
     coordinate_ids = [coordinate.id for _, _, coordinate in rows]
-    seasonal_reuse = 0
+    direct_seasonal_reuse = 0
     if coordinate_ids:
-        seasonal_reuse = session.scalar(
+        direct_seasonal_reuse = session.scalar(
             select(func.count())
             .select_from(Coordinate)
             .where(Coordinate.parent_coordinate_id.in_(coordinate_ids))
@@ -268,6 +268,6 @@ def creator_seasonal_summary(session: Session, creator_id: str) -> CreatorSeason
     return CreatorSeasonalSummary(
         challenge_entries=len(rows),
         recognized_coordinates=sum(entry.recognition is not None for entry, _, _ in rows),
-        seasonal_reuse_count=seasonal_reuse,
+        direct_seasonal_reuse_count=direct_seasonal_reuse,
         participations=participations,
     )

@@ -4,9 +4,11 @@
 
 > 商品を一つずつ売るUIではなく、「なぜこの組み合わせが自分の暮らしに合うか」を理解し、手持ち家具も残しながら次の行動へ進めるかを検証します。
 
-## Current status / Goal 3
+## Current status / Goal 4
 
-2026-08-19時点で、Goal 1のFunctional MVPとGoal 2 Creator & Community Loopを維持したまま、Goal 3 Seasonal Growth Loopを追加しました。既存Public REAL / PLANをstructured条件でChallengeへ参加させ、前年Archive → Private PLAN → Public derivative → Current ChallengeをParent / Root lineage付きで再利用できます。参加数、REAL / PLAN内訳、Creator seasonal impactは実DB値です。これは年間reuse loopを操作・計測可能にするPrototypeであり、Production効果、併売率向上、公式選定、NITORI / Room Harmony接続は未検証です。
+2026-08-19時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
+
+本Prototypeは年間reuse loopとmulti-product explorationを操作・計測可能にしますが、Production効果、併売率・売上・購入率の向上、NITORIによる公式採用・選定、NITORI / Room Harmonyとの実接続は証明していません。
 
 ## いちばん簡単な起動方法（Windows）
 
@@ -21,72 +23,31 @@
 - API health: <http://127.0.0.1:8000/health>
 - Swagger / OpenAPI: <http://127.0.0.1:8000/docs>
 - 終了: `stop-demo.cmd`をDouble-click
+- 発表前の初期化: `reset-demo.cmd`をDouble-clickし、確認欄へ大文字で`RESET`と入力してから再度`start-demo.cmd`
 
 LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port、owned process、backend health、frontend応答を確認し、120秒でTimeoutします。失敗時は`.demo/logs/`の場所と原因を表示します。ZIP内から直接実行、Microsoft Store alias、Python / Node不足、古いvirtualenv、他Processによるport使用は自動で隠さず、修正方法を表示します。
 
 別Physical Windows PCでの確認はまだ自動検証と分けて扱います。Merge前の5分確認は[`docs/operations/second-pc-checklist.md`](docs/operations/second-pc-checklist.md)を使用してください。現在の状態は`MANUAL_SECOND_PC_TEST_REQUIRED`です。
 
-## Demoで確認する7つのFlow
+## Primary Demo 4本
 
-### Flow A — Discovery / Save
+### Demo 1 — Similar-to-me → PLAN → 店舗比較Preview
 
-1. Homeの`6畳のおすすめを見る`
-2. 部屋・困りごと・予算を選ぶ
-3. `あなたに近い理由`を確認
-4. Coordinate Detailから複数商品を見る
-5. Product Detailから使用Coordinateへ戻る
-6. `あとで参考にする`
+Home → `6畳のおすすめを見る` → 条件に近いCoordinate → 商品 → 保存 → Private PLAN → 商品の置換 / 手持ち家具 → 概算 → 店舗比較 → Handoff Preview。
 
-### Flow B — Private PLAN / Action
+### Demo 2 — Creator / Community reuse
 
-1. `保存・PLAN`から保存したCoordinateを開く
-2. `自分向けに変更する`
-3. 商品を`残す / 別の商品に変更 / 追加`
-4. 手持ち家具を追加（購入Totalには含めない）
-5. Totalを確認して`比較準備へ`
-6. Room Harmony Handoff payload Previewを確認
+画像付きREAL ROOMを公開 → 別Sessionで`参考になった` / 保存 → 自分向けにアレンジ → Public derivative → 元Creatorの役立ち指標を確認。
 
-### Flow C — Creator contribution
+### Demo 3 — 前年Archive → Current Challenge
 
-1. Navigationの`つくる・投稿`
-2. 公開用表示名を作る（Authenticationではありません）
-3. `REAL ROOM`または`PLAN`を明確に選ぶ
-4. Room条件、商品、手持ち家具を入力
-5. REALの場合はJPEG / PNG / WebP画像をUpload
-6. 公開後、Coordinate DetailとCreator Profileを確認
+Seasonal → `新生活の6畳 2027` Archive → 前年REAL → Private PLAN → Public derivative → `新生活の6畳 2028`へ参加。Challengeは人気Contestではなく、条件付きの再利用導線です。
 
-### Flow D — Community reuse
+### Demo 4 — Product reverse discovery
 
-1. 別Browser SessionでPublic Coordinateを開く
-2. `参考になった`と`あとで参考にする`を別Intentとして操作
-3. `このコーデを自分向けにアレンジ`
-4. Private PLANで商品置換、追加、手持ち家具を調整
+Product Detail → `この商品を使ったコーデを見る` → Coordinate → Private PLAN。
 
-### Flow E — Re-share / Impact
-
-1. Private PLANから`公開コーデとして共有`
-2. 実現前ならPLAN、実現後なら画像付きREALを選ぶ
-3. Structuredな変更理由を指定
-4. Detailの参考元 / Root / 公開派生を確認
-5. 元Creator ProfileでHelpful、Save、PLAN開始、公開派生を確認
-
-### Flow F — Seasonal Challenge participation
-
-1. HomeのSeasonal CTAから`/seasonal`へ進む
-2. Active / Constraint / Upcomingと前年Archiveの違いを確認
-3. Active Challengeで理由、structured条件、実DBのREAL / PLAN内訳を見る
-4. 既存の自分のPublic Coordinateで参加、またはChallenge条件付きCreateを開く
-5. Entry後、Challenge galleryとCreator Profileのseasonal participationを確認
-
-### Flow G — Previous-year reuse
-
-1. `新生活の6畳 2027` Archiveを開く
-2. 前年REALをSaveし、Private PLANへAdapt
-3. 商品や手持ち家具を変更してPublic derivativeとして共有
-4. 条件を満たす派生CoordinateをCurrent Challengeへ参加
-5. DetailのParent / RootとCreator seasonal reuseを往復して確認
-
-Handoffは**Preview only**です。既存Room HarmonyやNITORI内部Systemへ通信しません。
+5〜8分のClick順、説明、Failure時のFallbackは[`docs/operations/demo-script.md`](docs/operations/demo-script.md)を使用してください。Handoffは**接続前Preview only**で、既存Room HarmonyやNITORI内部Systemへ通信しません。
 
 ## 実装Stack
 
@@ -95,7 +56,7 @@ Handoffは**Preview only**です。既存Room HarmonyやNITORI内部Systemへ通
 | Frontend | React 18 / TypeScript / Vite / React Router | 13 route screens、Creator / Seasonal UI、responsive UI、typed API client |
 | Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy / Pillow | ranking、Save / PLAN、Creator、lineage、Seasonal eligibility / Entry、safe image normalization |
 | Data | SQLite + generated JSON seed + ignored local uploads | anonymous Session ownership、36 Coordinates、60 Products、6 Challenges、8 Entries、User contributions |
-| Test | pytest / Vitest / Testing Library / Playwright | 54 backend tests、18 frontend tests、8 functional browser flows、3 responsive checks |
+| Test | pytest / Vitest / Testing Library / Playwright | 54 backend tests、24 frontend tests、9 functional browser flows、3 responsive checks |
 
 Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/src/api/types.ts`](frontend/src/api/types.ts)のTypeScript contractと[`frontend/src/api/client.ts`](frontend/src/api/client.ts)を通してだけ接続します。
 
@@ -109,7 +70,8 @@ room-harmony-community/
 ├── docs/            Phase 0定義 + implementation / runbook / decisions
 ├── scripts/         seed / validation / launcher helpers
 ├── start-demo.cmd   Windows one-click start
-└── stop-demo.cmd    owned processes only stop
+├── stop-demo.cmd    owned processes only stop
+└── reset-demo.cmd   confirmed local demo-data reset
 ```
 
 ## Dataと権利の境界
@@ -117,6 +79,7 @@ room-harmony-community/
 - 36件のCoordinate、60件のProduct、価格、画像はすべて架空の機能検証Dataです。
 - Product IDは`DEMO-*`であり、NITORI SKUではありません。
 - 画像はこのRepository用に生成したoriginal SVGです。Instagram、NITORI Coordinate投稿、商品画像を取得・転載していません。
+- Main Demoの15 Coordinateは個別のlocal SVGへmappingし、room size / style / need / furniture roleの違いを視覚的に分けています。将来のoriginal synthetic realistic画像は同じasset referenceだけを差し替え、Domain logicを変更せず導入できます。
 - 価格は`デモ価格スナップショット`と明示し、未取得価格は0円にせず件数を表示します。
 - 外部URLはNITORI公式検索ページへの参考Linkで、在庫・Cart・購入・価格APIではありません。
 - REAL / PLAN、Official / Staff / User declaredは将来のData modelを示す架空例で、公式認定や実在投稿を意味しません。
@@ -158,7 +121,7 @@ npm.cmd run dev
 
 通常はそのまま`start-demo.cmd`を実行してください。起動時に[`backend/app/core/schema.py`](backend/app/core/schema.py)が既存SQLiteへGoal 2列を追加し、SQLAlchemyがGoal 2 / Goal 3 Tableを作成します。Seasonal seedはChallengeが空の場合だけ独立投入し、既存Product、Coordinate、Creator、Save、PLAN、lineageは削除・再Seedしません。
 
-更新前に`.demo/*.db`を別場所へCopyすることを推奨します。これは小規模Local Prototype向けのdeterministic upgradeであり、Production migration frameworkではありません。完全Resetを自分で選ぶ場合だけ、停止後に対象の`.demo` DBを削除して再起動します。詳細は[`Goal 1 → Goal 2`](docs/operations/goal1-to-goal2-migration.md)と[`Goal 2 → Goal 3`](docs/operations/goal2-to-goal3-migration.md)です。
+更新前に`.demo/*.db`を別場所へCopyすることを推奨します。これは小規模Local Prototype向けのdeterministic upgradeであり、Production migration frameworkではありません。発表用に完全Resetする場合は`reset-demo.cmd`を使ってください。Repository内の既知Demo DB / Uploadだけを削除し、source、logs、visual QA screenshotは保持します。詳細は[`Goal 1 → Goal 2`](docs/operations/goal1-to-goal2-migration.md)と[`Goal 2 → Goal 3`](docs/operations/goal2-to-goal3-migration.md)です。
 
 ## Test / Validation
 
@@ -179,7 +142,7 @@ npm.cmd audit --audit-level=high
 npm.cmd run test:e2e
 ```
 
-Visual QA captureはDemo起動中に`npm.cmd run qa:visual`を実行すると`.demo/visual-qa/`へ出力されます。
+Visual QA captureは`frontend`で`npm.cmd run qa:visual`を実行すると、Main Demoとは別のtemporary DB / port 8100 / 5174を使って`.demo/visual-qa/`へ出力されます。終了時にtemporary dataとowned processだけを削除します。
 
 Pull Requestでは`.github/workflows/ci.yml`がbackend tests、frontend tests、frontend production buildを実行します。Playwright、Windows launcher、fresh-clone、別Physical PCはlocal / manual gateとして分離します。
 

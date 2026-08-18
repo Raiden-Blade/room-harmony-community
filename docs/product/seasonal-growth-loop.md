@@ -57,7 +57,7 @@ Goal 3では次を実装した。
 3. Ownerのexisting Public Coordinateを参照するEntry。二重の投稿Modelは作らない。
 4. Previous-year Archive → Save / Private PLAN → Adapt → Public derivative → Current Challengeのlineage。
 5. official rankingと誤認させないcontrolled `Prototype Pick`。
-6. Creator Profileのseasonal participation、recognition、direct reuse aggregate。
+6. Creator Profileのseasonal participation、recognition、`direct_seasonal_reuse_count`。Challenge参加Coordinateからの直接childだけを数え、公開・非公開、同一・別Sessionを含む。
 
 参加数・REAL / PLAN内訳はcurrent database stateから計算し、Like / view / rankのfake countをSeedしない。Entry作成時はServerがownership、visibility、moderation、duplicate、eligibilityを同じRuleで検証する。詳細は[`challenge-semantics.md`](challenge-semantics.md)。
 

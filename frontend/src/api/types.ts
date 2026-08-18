@@ -157,7 +157,7 @@ export type CreatorProfile = {
 export type CreatorSeasonalSummary = {
   challenge_entries: number;
   recognized_coordinates: number;
-  seasonal_reuse_count: number;
+  direct_seasonal_reuse_count: number;
   participations: Array<{
     challenge_id: string;
     challenge_slug: string;

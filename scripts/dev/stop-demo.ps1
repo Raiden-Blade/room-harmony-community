@@ -49,7 +49,7 @@ do {
     Start-Sleep -Milliseconds 200
 } while ((Get-Date) -lt $deadline)
 
-$listeners = @(8000, 5173 | ForEach-Object {
+$listeners = @(@(8000, 5173) | ForEach-Object {
     Get-NetTCPConnection -LocalPort $_ -State Listen -ErrorAction SilentlyContinue
 })
 if ($listeners.Count -gt 0) {

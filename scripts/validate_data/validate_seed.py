@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[2]
 SEED = ROOT / "data" / "seed" / "demo_seed.json"
 SEASONAL_SEED = ROOT / "data" / "seed" / "seasonal_seed.json"
+VISUAL_MANIFEST = ROOT / "data" / "seed" / "visual_asset_manifest.json"
 ALLOWED_RIGHTS = {"LOCALLY_CREATED_DEMO", "CC0", "EXPLICITLY_PERMITTED"}
 PUBLIC_ASSET_ROOT = (ROOT / "frontend" / "public").resolve()
 CHALLENGE_STATUSES = {"UPCOMING", "ACTIVE", "ENDED", "ARCHIVED"}
@@ -37,7 +38,7 @@ FAKE_COUNT_FIELDS = {"entry_count", "participant_count", "view_count", "like_cou
 
 
 def local_asset(path: str) -> Path | None:
-    if not path.startswith("/assets/") or not path.endswith(".svg"):
+    if not path.startswith("/assets/") or Path(path).suffix.lower() not in {".svg", ".png", ".jpg", ".jpeg", ".webp"}:
         return None
     candidate = (PUBLIC_ASSET_ROOT / path.lstrip("/")).resolve()
     try:
@@ -50,6 +51,7 @@ def local_asset(path: str) -> Path | None:
 def validate() -> None:
     payload = json.loads(SEED.read_text(encoding="utf-8"))
     seasonal_payload = json.loads(SEASONAL_SEED.read_text(encoding="utf-8"))
+    visual_manifest = json.loads(VISUAL_MANIFEST.read_text(encoding="utf-8"))
     products = payload["products"]
     coordinates = payload["coordinates"]
     challenges = seasonal_payload["challenges"]
@@ -124,6 +126,11 @@ def validate() -> None:
             categories.add(item["role"])
         if len(categories) < 2:
             errors.append(f"{coordinate['id']} has fewer than two roles")
+        size_label = {"TINY_5_5": "5.5畳", "SMALL_6": "6畳", "MEDIUM_7_8": "7〜8畳"}.get(
+            coordinate["size_band"]
+        )
+        if not size_label or size_label not in coordinate["title"]:
+            errors.append(f"coordinate title does not match room size: {coordinate['id']}")
 
     if len({row["size_band"] for row in coordinates}) < 3:
         errors.append("seed does not cover all three room-size bands")
@@ -133,6 +140,51 @@ def validate() -> None:
         errors.append("seed has no existing-furniture example")
     if not any(product["price_snapshot"] is None for product in products):
         errors.append("seed has no explicit missing-price example")
+
+    visual_rows = visual_manifest.get("coordinates", [])
+    if not 10 <= len(visual_rows) <= 15:
+        errors.append(f"visual manifest needs 10-15 main coordinates, found {len(visual_rows)}")
+    visual_ids = [row.get("coordinate_id") for row in visual_rows]
+    current_assets = [row.get("current_asset") for row in visual_rows]
+    if len(set(visual_ids)) != len(visual_ids):
+        errors.append("duplicate coordinate ID in visual manifest")
+    if len(set(current_assets)) != len(current_assets):
+        errors.append("main demo coordinates must have distinct current visual assets")
+    fallback = local_asset(str(visual_manifest.get("fallback_asset", "")))
+    if fallback is None or not fallback.is_file():
+        errors.append("visual manifest fallback asset is missing or external")
+    for row in visual_rows:
+        coordinate_id = str(row.get("coordinate_id", ""))
+        coordinate = coordinate_by_id.get(coordinate_id)
+        if coordinate is None:
+            errors.append(f"unknown coordinate in visual manifest: {coordinate_id}")
+            continue
+        if row.get("rights_status") not in ALLOWED_RIGHTS:
+            errors.append(f"unsafe visual manifest rights: {coordinate_id}")
+        current_asset = local_asset(str(row.get("current_asset", "")))
+        if current_asset is None or not current_asset.is_file():
+            errors.append(f"missing current visual asset: {coordinate_id}")
+        if coordinate.get("image_url") != row.get("current_asset"):
+            errors.append(f"seed/manifest image mismatch: {coordinate_id}")
+        expected_room = {
+            "TINY_5_5": "5.5畳ワンルーム",
+            "SMALL_6": "6畳ワンルーム",
+            "MEDIUM_7_8": "7〜8畳ワンルーム",
+        }.get(coordinate.get("size_band"))
+        if row.get("room") != expected_room:
+            errors.append(f"seed/manifest room mismatch: {coordinate_id}")
+        if row.get("style") != coordinate.get("style"):
+            errors.append(f"seed/manifest style mismatch: {coordinate_id}")
+        if row.get("need") not in coordinate.get("needs", []):
+            errors.append(f"seed/manifest need mismatch: {coordinate_id}")
+        actual_roles = {item.get("role") for item in coordinate.get("items", [])}
+        if not set(row.get("product_roles", [])).issubset(actual_roles):
+            errors.append(f"seed/manifest product role mismatch: {coordinate_id}")
+        future_asset = local_asset(str(row.get("future_asset", "")))
+        if future_asset is None:
+            errors.append(f"future visual path must stay local and use an approved format: {coordinate_id}")
+        if not str(row.get("future_direction", "")).strip():
+            errors.append(f"missing future visual direction: {coordinate_id}")
 
     golden = next(item for item in coordinates if item["id"] == "coord-001")
     if not {"STORAGE", "RENTAL"}.issubset(golden["needs"]) or golden["size_band"] != "SMALL_6":

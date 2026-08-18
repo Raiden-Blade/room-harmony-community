@@ -18,6 +18,57 @@ import type {
 } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+const trackedOnceKeys = new Set<string>();
+
+const SERVER_MESSAGES: Record<string, string> = {
+  "Coordinate not found": "コーデが見つかりません。公開状態が変わった可能性があります。",
+  "Product not found": "商品が見つかりません。デモデータを再読み込みしてください。",
+  "Private PLAN not found": "この端末のセッションではPLANを開けません。作成した端末でお試しください。",
+  "Creator profile not found": "クリエイターページが見つかりません。",
+  "Challenge not found": "テーマが見つかりません。",
+  "Challenge is not active": "このテーマは現在、参加を受け付けていません。",
+  "Owned public Coordinate not found": "自分が公開したコーデだけが参加できます。",
+  "Coordinate is already entered in this Challenge": "このコーデはすでにテーマへ参加済みです。",
+  "Invalid X-Session-ID": "端末内のセッション情報が無効です。ページを再読み込みしてください。",
+  "Only JPEG, PNG, and WebP images are accepted": "画像はJPEG・PNG・WebPから選んでください。",
+  "Each image must be 8 MB or smaller": "画像は1枚8MB以下にしてください。",
+  "Image file is empty": "空の画像ファイルはアップロードできません。",
+  "Image content does not match its media type": "画像の形式を確認して、もう一度選んでください。",
+  "Image dimensions are too large": "画像の縦横サイズが大きすぎます。小さくしてからお試しください。",
+  "The uploaded file is not a decodable image": "画像を読み取れませんでした。別の画像でお試しください。",
+  "Create a display identity before publishing": "公開用の表示名を先に設定してください。",
+  "A public REAL ROOM requires at least one room image": "REAL ROOMの公開には部屋画像が1枚以上必要です。",
+  "Publishing as REAL ROOM requires a room image": "REAL ROOMの公開には部屋画像が必要です。",
+  "A derivative Coordinate requires a structured reason": "参考元から変更した理由を選んでください。",
+  "A derivation reason requires a parent Coordinate": "変更理由を付けるには、参考元のコーデからアレンジを開始してください。",
+  "You cannot mark your own Coordinate as helpful": "自分のコーデには「参考になった」を付けられません。別の利用者からの反応として記録します。",
+  "A Coordinate cannot be its own parent": "同じコーデを参考元には設定できません。",
+  "Parent Coordinate not found": "参考元のコーデが見つかりません。公開状態が変わった可能性があります。",
+  "Coordinate lineage cannot contain a cycle": "参考関係が循環するため、このアレンジは公開できません。",
+  "Duplicate product tag": "同じ商品が重複しています。商品を一度だけ選んでください。",
+  "Uploaded image not found": "アップロード済み画像が見つかりません。画像を選び直してください。",
+  "Unsafe image filename": "画像ファイル名を変更して、もう一度選んでください。",
+  "Unsafe upload path": "画像を安全に保存できませんでした。別の画像を選んでください。",
+  "PLAN requires at least one product": "PLANには商品を1点以上追加してください。",
+  "Replacement product not found": "変更先の商品が見つかりません。候補を選び直してください。",
+  "Replacement must use the same product role": "同じ役割の商品から変更先を選んでください。",
+  "Role does not match product": "商品の役割が一致しません。別の商品を選んでください。",
+  "PLAN item not found": "変更するPLAN商品が見つかりません。画面を再読み込みしてください。",
+  "Product already exists in PLAN": "その商品はすでにPLANに含まれています。",
+  "Select a different product": "現在とは別の商品を選んでください。",
+  "No products available for handoff": "比較する商品がありません。PLANに商品を追加してください。",
+  "Anchor product must be selected in the PLAN": "比較の起点はPLANに含まれる商品から選んでください。",
+};
+
+const ELIGIBILITY_MESSAGES: Record<string, string> = {
+  ROOM_MISMATCH: "部屋の広さがテーマ条件と一致しません。",
+  HOUSEHOLD_MISMATCH: "暮らす人数がテーマ条件と一致しません。",
+  HOUSING_MISMATCH: "住まいの種類がテーマ条件と一致しません。",
+  BUDGET_MISMATCH: "予算上限がテーマ条件を超えています。",
+  KIND_MISMATCH: "コーデの種別がテーマ条件と一致しません。",
+  IMAGE_REQUIRED: "このテーマへの参加には画像が必要です。",
+  PRODUCT_COUNT_MISMATCH: "テーマで必要な商品点数を満たしていません。",
+};
 
 type RequestOptions = RequestInit & { json?: unknown };
 
@@ -25,18 +76,31 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   const headers = new Headers(options.headers);
   headers.set("X-Session-ID", getSessionId());
   if (options.json !== undefined) headers.set("Content-Type", "application/json");
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers,
-    body: options.json === undefined ? options.body : JSON.stringify(options.json),
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers,
+      body: options.json === undefined ? options.body : JSON.stringify(options.json),
+    });
+  } catch {
+    throw new Error("サーバーに接続できません。start-demo.cmdでデモを起動してから、再試行してください。");
+  }
   if (!response.ok) {
-    let message = `Request failed (${response.status})`;
+    let message = response.status === 404
+      ? "指定された情報が見つかりません。"
+      : response.status === 422
+        ? "入力内容を確認してください。"
+        : response.status >= 500
+          ? "サーバーで問題が発生しました。少し待ってから再試行してください。"
+          : `処理を完了できませんでした（${response.status}）。`;
     try {
-      const body = (await response.json()) as { detail?: string | { reasons?: string[] } };
-      if (typeof body.detail === "string") message = body.detail;
-      if (body.detail && typeof body.detail === "object" && body.detail.reasons?.length) {
-        message = `参加条件を満たしていません（${body.detail.reasons.join(" / ")}）`;
+      const body = (await response.json()) as { detail?: string | Array<{ msg?: string }> | { reasons?: string[] } };
+      if (typeof body.detail === "string") message = SERVER_MESSAGES[body.detail] || message;
+      if (Array.isArray(body.detail)) message = "入力内容を確認してください。必須項目を選び直してから再試行してください。";
+      if (body.detail && !Array.isArray(body.detail) && typeof body.detail === "object" && body.detail.reasons?.length) {
+        const reasons = body.detail.reasons.map((reason) => ELIGIBILITY_MESSAGES[reason] || reason);
+        message = `参加条件を確認してください。${reasons.join(" ")}`;
       }
     } catch {
       // Keep the HTTP fallback message.
@@ -164,4 +228,14 @@ export async function track(
   } catch {
     // Analytics must never block the core demo flow.
   }
+}
+
+export function trackOnce(
+  key: string,
+  eventName: AnalyticsEventName,
+  context: Parameters<typeof track>[1] = {},
+): void {
+  if (trackedOnceKeys.has(key)) return;
+  trackedOnceKeys.add(key);
+  void track(eventName, context);
 }

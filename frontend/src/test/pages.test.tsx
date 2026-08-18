@@ -30,6 +30,7 @@ vi.mock("../api/client", () => ({
   },
   mediaUrl: (path: string) => path,
   track: vi.fn().mockResolvedValue(undefined),
+  trackOnce: vi.fn(),
 }));
 
 const product: ProductSummary = {
@@ -83,7 +84,7 @@ const options = {
   styles: [{ value: "NATURAL", label: "ナチュラル" }],
 };
 
-const emptySeasonal = { challenge_entries: 0, recognized_coordinates: 0, seasonal_reuse_count: 0, participations: [] };
+const emptySeasonal = { challenge_entries: 0, recognized_coordinates: 0, direct_seasonal_reuse_count: 0, participations: [] };
 
 const challengeSummary: ChallengeSummary = {
   id: "challenge-newlife-2028", slug: "new-life-6tatami-2028", title: "新生活の6畳 2028",
@@ -189,7 +190,7 @@ describe("Goal 2 creator and community surfaces", () => {
       id: "creator-1", display_name: "暮らしの試作家", bio: "手持ち家具を活かします。", contribution_count: 1,
       impact: { published_coordinates: 1, helpful_count: 3, saved_count: 2, plan_started_count: 2, public_adaptation_count: 1, real_room_contributions: 1 },
       created_at: "2026-08-18T00:00:00Z", contributions: [{ ...summary, creator_id: "creator-1", creator_display: "暮らしの試作家" }], is_owner: false,
-      seasonal: { challenge_entries: 1, recognized_coordinates: 1, seasonal_reuse_count: 2, participations: [{ challenge_id: challengeSummary.id, challenge_slug: challengeSummary.slug, challenge_title: challengeSummary.title, season: "SPRING", year: 2028, coordinate_id: summary.id, coordinate_title: summary.title, recognition: "SMALL_SPACE_IDEA", provenance: "PROTOTYPE_PICK" }] },
+      seasonal: { challenge_entries: 1, recognized_coordinates: 1, direct_seasonal_reuse_count: 2, participations: [{ challenge_id: challengeSummary.id, challenge_slug: challengeSummary.slug, challenge_title: challengeSummary.title, season: "SPRING", year: 2028, coordinate_id: summary.id, coordinate_title: summary.title, recognition: "SMALL_SPACE_IDEA", provenance: "PROTOTYPE_PICK" }] },
     };
     vi.mocked(api.creator).mockResolvedValue(profile);
     renderRoute(<CreatorProfilePage />, "/creators/creator-1", "/creators/:creatorId");
@@ -245,7 +246,7 @@ describe("Goal 3 seasonal growth surfaces", () => {
   it("Seasonal Landing keeps the annual reuse loop and previous-year archive visible", async () => {
     renderRoute(<SeasonalLandingPage />, "/seasonal", "/seasonal");
     expect(await screen.findByRole("heading", { name: /前年の暮らしを/ })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Seasonal Growth Loop" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "季節のコーデ再利用ループ" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "受付終了・整理中" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "昨年の参考コーデ" })).toBeInTheDocument();
     expect(screen.getByText(summary.title)).toBeInTheDocument();
@@ -258,7 +259,7 @@ describe("Goal 3 seasonal growth surfaces", () => {
     expect(screen.getByRole("heading", { name: "参加条件" })).toBeInTheDocument();
     expect(screen.getByText("予算8万円以内")).toBeInTheDocument();
     expect(screen.getAllByText("PROTOTYPE PICK").length).toBeGreaterThan(0);
-    expect(screen.getByText(/NITORI公式Contest・公式選定ではなく/)).toBeInTheDocument();
+    expect(screen.getByText(/NITORI公式企画・公式選定ではありません/)).toBeInTheDocument();
   });
 
   it("Owner can enter an eligible existing Coordinate", async () => {
@@ -279,10 +280,10 @@ describe("Goal 3 seasonal growth surfaces", () => {
       ...challengeDetail,
       my_candidates: [{ coordinate: { ...summary, id: "community-22222222-2222-2222-2222-222222222222" }, eligible: true, rejection_codes: [], rejection_messages: [], already_entered: false }],
     });
-    vi.mocked(api.enterChallenge).mockRejectedValue(new Error("参加条件を満たしていません（BUDGET_MISMATCH）"));
+    vi.mocked(api.enterChallenge).mockRejectedValue(new Error("参加条件を確認してください。予算上限がテーマ条件を超えています。"));
     renderRoute(<ChallengeDetailPage />, `/challenges/${challengeSummary.slug}`, "/challenges/:challengeSlug");
     await user.click(await screen.findByRole("button", { name: "このテーマに参加" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("BUDGET_MISMATCH");
+    expect(await screen.findByRole("alert")).toHaveTextContent("予算上限がテーマ条件を超えています");
   });
 
   it("Archived Challenge is reusable but no longer accepts entries", async () => {
@@ -358,7 +359,7 @@ describe("functional MVP pages", () => {
     expect(await screen.findByRole("link", { name: "店舗で2商品を比較する" })).toBeInTheDocument();
     view.unmount();
     renderRoute(<HandoffPage />, "/plans/plan-001/handoff", "/plans/:planId/handoff");
-    expect(await screen.findByText("PREVIEW ONLY")).toBeInTheDocument();
+    expect(await screen.findByText("接続前プレビュー")).toBeInTheDocument();
     expect(screen.getAllByText(/Room Harmonyへは送信されません|デモ用プレビュー/).length).toBeGreaterThan(0);
   });
 });
