@@ -25,7 +25,11 @@ def saved_list(
         db.execute(
             select(Coordinate)
             .join(CoordinateSave)
-            .where(CoordinateSave.session_id == session_id)
+            .where(
+                CoordinateSave.session_id == session_id,
+                Coordinate.visibility == "PUBLIC",
+                Coordinate.moderation_status == "ACTIVE",
+            )
             .order_by(CoordinateSave.created_at.desc())
         )
         .unique()
@@ -42,7 +46,7 @@ def save_coordinate(
     session_id: Annotated[str, Depends(get_session_id)],
 ) -> SaveResponse:
     coordinate = load_coordinate(db, coordinate_id)
-    if coordinate.visibility != "PUBLIC":
+    if coordinate.visibility != "PUBLIC" or coordinate.moderation_status != "ACTIVE":
         raise HTTPException(status_code=404, detail="Coordinate not found")
     existing = db.scalar(
         select(CoordinateSave).where(

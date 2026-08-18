@@ -64,23 +64,58 @@ class CoordinateSummary(BaseModel):
     verification_state: str
     creator_display: str
     creator_type: str
+    creator_id: str | None = None
     image_url: str
+    image_urls: list[str] = Field(default_factory=list)
     image_rights: str
     demo_disclosure: str
     seasonal_collection: str | None
     official_pick: bool
+    root_coordinate_id: str | None = None
+    derivation_type: str | None = None
+    moderation_status: str = "ACTIVE"
     price: PriceSummary
     product_count: int
     category_count: int
     match_reasons: list[str] = Field(default_factory=list)
     score: int | None = None
     is_saved: bool = False
+    helpful_count: int = 0
+    is_helpful: bool = False
+    can_edit: bool = False
+
+
+class GenealogyNode(BaseModel):
+    id: str | None
+    title: str
+    kind: str | None
+    available: bool
+
+
+class GenealogySummary(BaseModel):
+    parent: GenealogyNode | None
+    root: GenealogyNode | None
+    plan_started_count: int
+    public_adaptation_count: int
+    public_children: list[GenealogyNode]
+
+
+class CreatorImpactSummary(BaseModel):
+    published_coordinates: int = 0
+    helpful_count: int
+    saved_count: int
+    plan_started_count: int
+    public_adaptation_count: int
+    real_room_contributions: int = 0
 
 
 class CoordinateDetail(CoordinateSummary):
     parent_coordinate_id: str | None
+    remix_note: str | None = None
     items: list[CoordinateItemResponse]
     creator_impact_slot: dict[str, int | bool | None]
+    creator_impact: CreatorImpactSummary
+    genealogy: GenealogySummary
 
 
 class ProductDetail(ProductSummary):
@@ -198,10 +233,23 @@ ALLOWED_EVENT_NAMES = {
     "plan_ready",
     "ec_action",
     "room_harmony_handoff_preview",
-    # Reserved for a future creator program. The MVP has no public reaction UI.
+    # Goal 2 Creator & Community Loop events.
     "creator_coordinate_impression",
     "creator_attributed_save",
     "creator_attributed_plan_start",
+    "creator_profile_view",
+    "create_coordinate_start",
+    "create_coordinate_complete",
+    "real_room_publish",
+    "plan_publish",
+    "helpful_add",
+    "helpful_remove",
+    "adapt_start",
+    "plan_from_coordinate",
+    "public_adaptation_publish",
+    "creator_impact_view",
+    "coordinate_unpublish",
+    "content_report",
 }
 
 ALLOWED_EVENT_PROPERTIES = {
@@ -218,17 +266,31 @@ ALLOWED_EVENT_PROPERTIES = {
     "product_count",
     "destination",
     "mutation",
+    "kind",
+    "derivation_type",
+    "report_reason",
 }
 
 ANALYTICS_ENUM_VALUES = {
     "mode": {"similar", "popular", "newlife"},
-    "placement": {"HOME", "EXPLORE", "COORDINATE", "PRODUCT", "SAVED", "PLAN"},
+    "placement": {"HOME", "EXPLORE", "COORDINATE", "PRODUCT", "SAVED", "PLAN", "CREATE", "CREATOR_PROFILE"},
     "room_size": {"TINY_5_5", "SMALL_6", "MEDIUM_7_8"},
     "need": {"STORAGE", "LOW_BUDGET", "WORK_FROM_HOME", "RELAX", "SLEEP", "COMPACT"},
     "role": {"MAIN_FURNITURE", "SUPPORT_FURNITURE", "STORAGE", "LIGHTING", "TEXTILE"},
     "category": {"BED", "SUPPORT", "STORAGE", "LIGHTING", "TEXTILE", "DESK"},
     "destination": {"NITORI_SEARCH", "ROOM_HARMONY_PREVIEW", "PREVIEW_ONLY"},
     "mutation": {"KEPT", "REPLACED", "ADDED"},
+    "kind": {"REAL", "PLAN"},
+    "derivation_type": {
+        "LOWER_BUDGET",
+        "SMALLER_ROOM",
+        "COLOR_VARIATION",
+        "STORAGE_FOCUS",
+        "EXISTING_FURNITURE",
+        "PRODUCT_SUBSTITUTION",
+        "OTHER",
+    },
+    "report_reason": {"INAPPROPRIATE", "PRIVACY", "MISLEADING", "COPYRIGHT", "SPAM", "OTHER"},
 }
 
 ANALYTICS_INTEGER_RANGES = {
@@ -258,7 +320,9 @@ class AnalyticsEventRequest(BaseModel):
     @field_validator("coordinate_id")
     @classmethod
     def safe_coordinate_id(cls, value: str | None) -> str | None:
-        if value is not None and not re.fullmatch(r"(?:coord-[A-Za-z0-9_-]+|plan-[0-9a-fA-F-]{36})", value):
+        if value is not None and not re.fullmatch(
+            r"(?:coord-[A-Za-z0-9_-]+|plan-[0-9a-fA-F-]{36}|community-[0-9a-fA-F-]{36})", value
+        ):
             raise ValueError("coordinate_id must be a demo Coordinate or PLAN identifier")
         return value
 

@@ -91,7 +91,9 @@ def coordinate_by_id(
     session_id: Annotated[str, Depends(get_session_id)],
 ) -> CoordinateDetail:
     coordinate = load_coordinate(db, coordinate_id)
-    if coordinate.visibility != "PUBLIC" and coordinate.owner_session_id != session_id:
+    if (
+        coordinate.visibility != "PUBLIC" or coordinate.moderation_status != "ACTIVE"
+    ) and coordinate.owner_session_id != session_id:
         raise HTTPException(status_code=404, detail="Coordinate not found")
     return coordinate_detail(coordinate, db, session_id)
 

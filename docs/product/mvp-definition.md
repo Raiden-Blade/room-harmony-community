@@ -1,5 +1,7 @@
 # MVP Definition
 
+> This document preserves the Goal 1 MVP baseline. Goal 2 explicitly activates public REAL / PLAN contribution, Helpful, local image upload, lineage, and Creator Impact while keeping every Goal 1 flow. See [`../architecture/community-loop.md`](../architecture/community-loop.md). Items below marked out of the original MVP are historical Phase 1 boundaries, not a claim that Goal 2 removed them.
+
 ## MVP objective
 
 「自分に近いCoordinateを見つけ、商品を空間単位で理解し、Private PLANにしてStore / EC actionへ進む」という最短因果を検証する。

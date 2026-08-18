@@ -3,6 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppLayout } from "./layouts/AppLayout";
 import { AboutPage } from "./pages/AboutPage";
 import { CoordinateDetailPage } from "./pages/CoordinateDetailPage";
+import { CreateCoordinatePage } from "./pages/CreateCoordinatePage";
+import { CreatorProfilePage } from "./pages/CreatorProfilePage";
 import { ExplorePage } from "./pages/ExplorePage";
 import { HandoffPage } from "./pages/HandoffPage";
 import { HomePage } from "./pages/HomePage";
@@ -17,6 +19,8 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/explore", element: <ExplorePage /> },
+      { path: "/create", element: <CreateCoordinatePage /> },
+      { path: "/creators/:creatorId", element: <CreatorProfilePage /> },
       { path: "/coordinates/:coordinateId", element: <CoordinateDetailPage /> },
       { path: "/products/:productId", element: <ProductDetailPage /> },
       { path: "/saved", element: <SavedPage /> },

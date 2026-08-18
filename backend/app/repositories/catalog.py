@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.models import Coordinate, CoordinateItem, Product
 
@@ -13,8 +13,10 @@ def list_public_coordinates(session: Session) -> list[Coordinate]:
             .options(
                 joinedload(Coordinate.items).joinedload(CoordinateItem.product),
                 joinedload(Coordinate.needs),
+                selectinload(Coordinate.images),
+                joinedload(Coordinate.creator),
             )
-            .where(Coordinate.visibility == "PUBLIC")
+            .where(Coordinate.visibility == "PUBLIC", Coordinate.moderation_status == "ACTIVE")
         )
         .unique()
         .scalars()
@@ -43,10 +45,13 @@ def coordinates_for_product(session: Session, product_id: str) -> list[Coordinat
             .options(
                 joinedload(Coordinate.items).joinedload(CoordinateItem.product),
                 joinedload(Coordinate.needs),
+                selectinload(Coordinate.images),
+                joinedload(Coordinate.creator),
             )
             .where(
                 CoordinateItem.product_id == product_id,
                 Coordinate.visibility == "PUBLIC",
+                Coordinate.moderation_status == "ACTIVE",
             )
             .order_by(Coordinate.editorial_rank)
         )

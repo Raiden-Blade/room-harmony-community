@@ -1,10 +1,13 @@
 const LABELS: Record<string, string> = {
   PLAN: "PLAN（検討中）",
-  REAL: "REAL ROOM例",
+  REAL: "REAL ROOM",
   DEMO: "デモ制作",
   OFFICIAL: "公式想定デモ",
   STAFF: "スタッフ想定デモ",
-  USER_DECLARED: "暮らし手想定デモ",
+  USER_DECLARED: "User申告",
+  USER_DECLARED_UNVERIFIED: "User申告・未確認",
+  DEMO_ONLY: "デモデータ・未確認",
+  DEMO_UNVERIFIED: "デモデータ・未確認",
   ONE_ROOM: "1R / 1K",
   TINY_5_5: "5.5畳前後",
   SMALL_6: "6畳前後",
@@ -36,6 +39,13 @@ const LABELS: Record<string, string> = {
   ORIGINAL: "元プラン",
   READY_FOR_ACTION: "比較準備OK",
   DRAFT: "編集中",
+  LOWER_BUDGET: "予算を抑えた",
+  SMALLER_ROOM: "より小さい部屋向け",
+  COLOR_VARIATION: "色を変えた",
+  STORAGE_FOCUS: "収納を重視した",
+  EXISTING_FURNITURE: "手持ち家具を活かした",
+  PRODUCT_SUBSTITUTION: "商品を置き換えた",
+  OTHER: "その他",
 };
 
 export function label(value: string): string {

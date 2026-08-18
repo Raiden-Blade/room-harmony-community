@@ -5,6 +5,7 @@ import { DemoNotice } from "../components/common/DemoNotice";
 const navItems = [
   { to: "/", label: "ホーム", end: true },
   { to: "/explore", label: "見つける" },
+  { to: "/create", label: "つくる・投稿" },
   { to: "/saved", label: "保存・PLAN" },
   { to: "/about", label: "データについて" },
 ];

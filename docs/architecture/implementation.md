@@ -19,6 +19,8 @@ FrontendとBackendはHTTP boundaryで分離する。React componentからSQLite�
 |---|---|
 | `/` | Home / target / quick need / seasonal collection |
 | `/explore` | Similar / editorial baseline / new-life discovery |
+| `/create` | Progressive REAL / PLAN contribution form |
+| `/creators/:id` | Display Identity、contribution history、useful impact |
 | `/coordinates/:id` | Coordinate detail / role / total / Save / PLAN start |
 | `/products/:id` | Product detail → use Coordinate |
 | `/saved` | Saved and private PLAN separation |
@@ -29,11 +31,14 @@ FrontendとBackendはHTTP boundaryで分離する。React componentからSQLite�
 
 ## Backend modules
 
-- `backend/app/models/entities.py`: Product、Coordinate、Need、Item、Save、AnalyticsEvent
+- `backend/app/models/entities.py`: Product、Coordinate、CreatorProfile、Image、Helpful、Report、Save、AnalyticsEvent
 - `backend/app/ranking/similarity.py`: fixed-weight deterministic Similar-to-me
 - `backend/app/services/plans.py`: private clone、item mutation、existing furniture、ready transition
 - `backend/app/services/pricing.py`: known total and explicit unknown count
 - `backend/app/services/seed.py`: empty-database seed only
+- `backend/app/services/community.py`: Creator、public contribution、Helpful、lineage、impact、ownership
+- `backend/app/services/images.py`: actual decode、EXIF removal、WebP normalization、random local storage
+- `backend/app/core/schema.py`: Goal 1 SQLiteからのnon-destructive local upgrade
 - `backend/app/integrations/room_harmony/handoff.py`: versioned payload creation; no network call
 - `backend/app/api/`: catalog、saved、plans、analytics HTTP routes
 
@@ -47,9 +52,9 @@ Discovery responseとAnalytics eventの`comparison_condition`は、User自身が
 
 Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Session-ID`で送る。これはAuthenticationではなく、同じBrowser内のSave / Private PLANを再現するためだけのtest identityである。`owner_session_id`はBackend ownership checkにのみ使い、Coordinate responseへ返さない。名前、email、会員ID、住所、room photoを保存しない。
 
-## Future creator slots — inactive
+## Goal 2 Creator loop — active prototype
 
-`Coordinate`は`creator_display`、`creator_type`、`official_pick`、`seasonal_recognition`、`ready_for_creator_impact`を持つ。Responseには将来の`helpful / saved / adaptation`集計slotがある。Analytics contractにはattributed impression / save / plan-start名を予約するが、MVP UIにはreaction、ranking、reward、public uploadを置かず、Eventも自動発火しない。
+`CreatorProfile`はanonymous Sessionに内部だけで紐づくDisplay Identityである。Public APIはraw Session IDを返さない。`Coordinate`は`creator_id`、`parent_coordinate_id`、`root_coordinate_id`、structured `derivation_type`を持ち、Public REAL / PLAN → Private PLAN → Public derivativeを表現する。Helpful、Save、PLAN開始、Public adaptationはfake seed countではなくSQLiteから集計する。
 
 ## Security / trust boundary
 
@@ -58,6 +63,10 @@ Frontendはrandom local Session IDをBrowser localStorageへ保存し、`X-Sessi
 - CORSはlocalhost development originだけ。
 - Official URLはserver seedで管理し、User inputをredirect URLとして使わない。
 - Demo dataをproduction truthとして扱わない。
+- UploadはJPEG / PNG / WebPだけをactual decodeし、最大8MB、最大25MP、最大5件。server-side remote URL取得、SVG、path traversalを拒否する。
+- Public REALは1枚以上の画像を要求し、`USER_DECLARED_UNVERIFIED`として表示する。
+- Report reasonはcontrolled enumで保存し、報告だけで自動削除しない。
+- 自分のPublic Coordinateだけedit / unpublish可能。unpublishはlineageを残し、Local image fileは公開Storageから削除する。
 
 ## Verification ownership
 

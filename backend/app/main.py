@@ -5,10 +5,12 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from app.api import analytics, catalog, plans, saved
+from app.api import analytics, catalog, community, plans, saved
 from app.core.config import Settings
 from app.core.database import Base, create_database
+from app.core.schema import upgrade_demo_schema
 from app.services.seed import seed_if_empty
 
 
@@ -17,11 +19,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     database_path = _sqlite_path(active_settings.database_url)
     if database_path:
         database_path.parent.mkdir(parents=True, exist_ok=True)
+    active_settings.upload_dir.mkdir(parents=True, exist_ok=True)
     engine, session_factory = create_database(active_settings.database_url)
 
     @asynccontextmanager
     async def lifespan(_: FastAPI):
         Base.metadata.create_all(engine)
+        upgrade_demo_schema(engine)
         with session_factory() as session:
             seed_if_empty(session, active_settings.seed_path)
         yield
@@ -36,6 +40,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = active_settings
     app.state.engine = engine
     app.state.session_factory = session_factory
+    app.mount("/uploads", StaticFiles(directory=active_settings.upload_dir), name="uploads")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=active_settings.cors_origins,
@@ -46,6 +51,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(catalog.router)
     app.include_router(saved.router)
     app.include_router(plans.router)
+    app.include_router(community.router)
     app.include_router(analytics.router)
 
     @app.get("/health", tags=["system"])

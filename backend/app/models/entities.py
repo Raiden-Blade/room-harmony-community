@@ -30,15 +30,33 @@ class Product(Base):
     items: Mapped[list[CoordinateItem]] = relationship(back_populates="product")
 
 
+class CreatorProfile(Base):
+    __tablename__ = "creator_profiles"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    owner_session_id: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    display_name: Mapped[str] = mapped_column(String(60))
+    bio: Mapped[str | None] = mapped_column(String(240), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
+
+    coordinates: Mapped[list[Coordinate]] = relationship(back_populates="creator")
+
+
 class Coordinate(Base):
     __tablename__ = "coordinates"
 
     id: Mapped[str] = mapped_column(String(64), primary_key=True)
     owner_session_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    creator_id: Mapped[str | None] = mapped_column(ForeignKey("creator_profiles.id"), nullable=True, index=True)
     parent_coordinate_id: Mapped[str | None] = mapped_column(ForeignKey("coordinates.id"), nullable=True)
+    root_coordinate_id: Mapped[str | None] = mapped_column(ForeignKey("coordinates.id"), nullable=True, index=True)
+    derivation_type: Mapped[str | None] = mapped_column(String(48), nullable=True, index=True)
+    remix_note: Mapped[str | None] = mapped_column(String(240), nullable=True)
     kind: Mapped[str] = mapped_column(String(16), index=True)
     status: Mapped[str] = mapped_column(String(32))
     visibility: Mapped[str] = mapped_column(String(16), default="PUBLIC")
+    moderation_status: Mapped[str] = mapped_column(String(16), default="ACTIVE", index=True)
     title: Mapped[str] = mapped_column(String(180))
     description: Mapped[str] = mapped_column(Text)
     room_type: Mapped[str] = mapped_column(String(32), index=True)
@@ -62,12 +80,18 @@ class Coordinate(Base):
     ready_for_creator_impact: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    unpublished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     items: Mapped[list[CoordinateItem]] = relationship(
         back_populates="coordinate", cascade="all, delete-orphan", order_by="CoordinateItem.position"
     )
     needs: Mapped[list[CoordinateNeed]] = relationship(back_populates="coordinate", cascade="all, delete-orphan")
-    parent: Mapped[Coordinate | None] = relationship(remote_side=[id])
+    images: Mapped[list[CoordinateImage]] = relationship(
+        back_populates="coordinate", cascade="all, delete-orphan", order_by="CoordinateImage.sort_order"
+    )
+    creator: Mapped[CreatorProfile | None] = relationship(back_populates="coordinates")
+    parent: Mapped[Coordinate | None] = relationship(remote_side=[id], foreign_keys=[parent_coordinate_id])
 
 
 class CoordinateNeed(Base):
@@ -108,6 +132,47 @@ class CoordinateSave(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     session_id: Mapped[str] = mapped_column(String(64), index=True)
     coordinate_id: Mapped[str] = mapped_column(ForeignKey("coordinates.id", ondelete="CASCADE"), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class CoordinateImage(Base):
+    __tablename__ = "coordinate_images"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    coordinate_id: Mapped[str | None] = mapped_column(
+        ForeignKey("coordinates.id", ondelete="CASCADE"), nullable=True, index=True
+    )
+    owner_session_id: Mapped[str] = mapped_column(String(64), index=True)
+    storage_name: Mapped[str] = mapped_column(String(100), unique=True)
+    mime_type: Mapped[str] = mapped_column(String(32), default="image/webp")
+    width: Mapped[int] = mapped_column(Integer)
+    height: Mapped[int] = mapped_column(Integer)
+    size_bytes: Mapped[int] = mapped_column(Integer)
+    sort_order: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+    coordinate: Mapped[Coordinate | None] = relationship(back_populates="images")
+
+
+class HelpfulReaction(Base):
+    __tablename__ = "helpful_reactions"
+    __table_args__ = (UniqueConstraint("session_id", "coordinate_id"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    session_id: Mapped[str] = mapped_column(String(64), index=True)
+    coordinate_id: Mapped[str] = mapped_column(ForeignKey("coordinates.id", ondelete="CASCADE"), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class ContentReport(Base):
+    __tablename__ = "content_reports"
+    __table_args__ = (UniqueConstraint("session_id", "coordinate_id"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    session_id: Mapped[str] = mapped_column(String(64), index=True)
+    coordinate_id: Mapped[str] = mapped_column(ForeignKey("coordinates.id", ondelete="CASCADE"), index=True)
+    reason: Mapped[str] = mapped_column(String(32), index=True)
+    status: Mapped[str] = mapped_column(String(16), default="OPEN", index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
 

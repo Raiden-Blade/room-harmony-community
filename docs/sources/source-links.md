@@ -57,3 +57,4 @@
 - **OBSERVATION**: NITORI の件数・価格・在庫・表示順は 2026-08-18 時点の画面観察であり、固定仕様ではない。
 - **OBSERVATION**: Public coordinate surfaces で見つからなかった機能は、非公開機能や別導線の不存在まで証明しない。
 - **VERIFIED FACT**: Existing Room Harmony は上記 commit の local checkout を直接読んだ。今回の作業ではその repository に書込みを行わない。
+- User uploadは外部Source registryの証拠ではなく、`USER_DECLARED_UNVERIFIED`なLocal prototype contentとして別管理する。URL、filename、EXIFをSource evidenceに昇格させない。

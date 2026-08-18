@@ -18,6 +18,8 @@ from app.schemas.common import (
     HandoffRequest,
     ReplaceItemRequest,
 )
+from app.schemas.community import PublishPlanRequest
+from app.services.community import publish_plan
 from app.services.plans import (
     add_existing,
     add_product,
@@ -42,7 +44,11 @@ def plans(
     rows = list(
         db.scalars(
             select(Coordinate)
-            .where(Coordinate.kind == "PLAN", Coordinate.owner_session_id == session_id)
+            .where(
+                Coordinate.kind == "PLAN",
+                Coordinate.visibility == "PRIVATE",
+                Coordinate.owner_session_id == session_id,
+            )
             .order_by(Coordinate.updated_at.desc())
         ).all()
     )
@@ -131,6 +137,17 @@ def ready_plan(
 ) -> CoordinateDetail:
     plan = mark_ready(db, require_owned_plan(db, plan_id, session_id))
     return coordinate_detail(plan, db, session_id)
+
+
+@router.post("/{plan_id}/publish", response_model=CoordinateDetail, status_code=201)
+def publish_private_plan(
+    plan_id: str,
+    payload: PublishPlanRequest,
+    db: Annotated[Session, Depends(get_db)],
+    session_id: Annotated[str, Depends(get_session_id)],
+) -> CoordinateDetail:
+    coordinate = publish_plan(db, session_id, plan_id, payload)
+    return coordinate_detail(coordinate, db, session_id)
 
 
 @router.post("/{plan_id}/handoff-preview", response_model=HandoffPayload)

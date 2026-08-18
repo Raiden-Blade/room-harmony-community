@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository contains the product definition and the approved Phase 1 Functional MVP for a participatory Nitori coordinate platform. The current implementation is a synthetic-data prototype under review; it is not production-ready and does not prove business impact.
+This repository contains the product definition, approved Phase 1 Functional MVP, and Goal 2 Creator & Community Loop for a participatory Nitori coordinate platform. The current implementation is a synthetic/local-data prototype under review; it is not production-ready and does not prove business impact.
 
 ## Navigation
 
@@ -23,7 +23,7 @@ This repository contains the product definition and the approved Phase 1 Functio
 
 `https://github.com/Raiden-Blade/room-harmoney` is read-only reference material. Never add, modify, delete, commit, branch, or reconfigure anything in that repository while working here.
 
-Do not add Public UGC, creator reactions, challenges, AI / LLM, real NITORI APIs, live Room Harmony calls, production authentication, payment, or deployment without a new explicit Goal. Creator / Emotional Loop remains a core future hypothesis for Goal 2, not an optional decoration and not a current UI feature.
+Goal 2 explicitly authorizes Public USER_DECLARED REAL / PLAN, Helpful, Save / Adapt lineage, local safe image upload, Report, and Creator useful-impact UI. Do not add Comment, Follow, DM, notification, Challenge / Contest / Ranking, AI / LLM, real NITORI APIs, live Room Harmony calls, production authentication, payment, or deployment without a new explicit Goal. Goal 3 / Goal 4 remain out of scope.
 
 ## Evidence Discipline
 

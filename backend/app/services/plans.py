@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException
 from sqlalchemy import select
-from sqlalchemy.orm import Session, joinedload
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.models import Coordinate, CoordinateItem, CoordinateNeed, Product
 
@@ -15,6 +15,8 @@ def load_coordinate(session: Session, coordinate_id: str) -> Coordinate:
         .options(
             joinedload(Coordinate.items).joinedload(CoordinateItem.product),
             joinedload(Coordinate.needs),
+            selectinload(Coordinate.images),
+            joinedload(Coordinate.creator),
         )
         .where(Coordinate.id == coordinate_id)
     ).unique().scalar_one_or_none()
@@ -25,18 +27,20 @@ def load_coordinate(session: Session, coordinate_id: str) -> Coordinate:
 
 def require_owned_plan(session: Session, plan_id: str, session_id: str) -> Coordinate:
     plan = load_coordinate(session, plan_id)
-    if plan.kind != "PLAN" or plan.owner_session_id != session_id:
+    if plan.kind != "PLAN" or plan.visibility != "PRIVATE" or plan.owner_session_id != session_id:
         raise HTTPException(status_code=404, detail="Private PLAN not found")
     return plan
 
 
 def create_plan(session: Session, parent: Coordinate, session_id: str, budget_max: int | None = None) -> Coordinate:
-    if parent.kind == "PLAN" and parent.owner_session_id == session_id:
+    if parent.kind == "PLAN" and parent.visibility == "PRIVATE" and parent.owner_session_id == session_id:
         return parent
     plan = Coordinate(
         id=f"plan-{uuid4()}",
         owner_session_id=session_id,
         parent_coordinate_id=parent.id,
+        root_coordinate_id=parent.root_coordinate_id or parent.id,
+        derivation_type="OTHER",
         kind="PLAN",
         status="DRAFT",
         visibility="PRIVATE",

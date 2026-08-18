@@ -101,3 +101,17 @@ Current MVPの`similar / popular`切替結果をRandomized A/B resultとして�
 ## North-star caveat
 
 **HYPOTHESIS**: CAMPER is a useful leading indicator of assisted co-purchase. It is not proven to correlate with purchase until POS / order data is joined.
+
+## Goal 2 Creator Loop readiness
+
+Goal 2では次を操作・記録可能にするが、効果改善は主張しない。
+
+| Layer | Current DB metric / event |
+|---|---|
+| Supply | `real_room_publish`、`plan_publish`、current public REAL / PLAN count |
+| Utility | current unique `HelpfulReaction`、current `CoordinateSave`、`helpful_add/remove` |
+| Reuse | Private PLAN row、`plan_from_coordinate`、Public derivative row、`public_adaptation_publish` |
+| Creator value | Creator Profileのhelpful / save / plan started / public adaptation aggregate |
+| Commerce bridge | Goal 1の`ec_action`、`room_harmony_handoff_preview` |
+
+`helpful_count`等のProfile表示はcurrent database stateで、Analytics event totalではない。`remix_note`、display name、bio、filename、image path、EXIF、binaryをAnalytics propertyへ送らない。
