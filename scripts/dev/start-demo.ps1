@@ -177,9 +177,10 @@ if (-not (Test-Path -LiteralPath $pythonVenv)) {
 }
 $backendHash = Get-Sha256 -Path $backendRequirements
 $installedBackendHash = if (Test-Path -LiteralPath $backendHashPath) { (Get-Content -Raw -LiteralPath $backendHashPath).Trim() } else { "" }
-$backendImportsOk = $false
-& $pythonVenv -c "import fastapi, sqlalchemy, uvicorn" 2>$null
-if ($LASTEXITCODE -eq 0) { $backendImportsOk = $true }
+$sitePackages = Join-Path $backendDirectory ".venv\Lib\site-packages"
+$backendImportsOk = (Test-Path -LiteralPath (Join-Path $sitePackages "fastapi")) `
+    -and (Test-Path -LiteralPath (Join-Path $sitePackages "sqlalchemy")) `
+    -and (Test-Path -LiteralPath (Join-Path $sitePackages "uvicorn"))
 if (-not $backendImportsOk -or $backendHash -ne $installedBackendHash) {
     Write-Host "Installing Python packages (first run may take a few minutes)..."
     & $pythonVenv -m pip install --disable-pip-version-check -r $backendRequirements
