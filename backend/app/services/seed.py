@@ -34,9 +34,11 @@ def seed_if_empty(session: Session, seed_path: Path) -> None:
     for row in payload["coordinates"]:
         coordinate = Coordinate(
             id=row["id"],
+            root_coordinate_id=row["id"],
             kind=row["kind"],
             status=row["status"],
             visibility=row["visibility"],
+            moderation_status="ACTIVE",
             title=row["title"],
             description=row["description"],
             room_type=row["room_type"],

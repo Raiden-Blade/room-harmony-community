@@ -14,6 +14,7 @@ def client(tmp_path: Path):
     settings = Settings(
         database_url=f"sqlite:///{(tmp_path / 'test.db').as_posix()}",
         seed_path=REPOSITORY_DIR / "data" / "seed" / "demo_seed.json",
+        upload_dir=tmp_path / "uploads",
         cors_origins=["http://testserver"],
     )
     with TestClient(create_app(settings)) as test_client:

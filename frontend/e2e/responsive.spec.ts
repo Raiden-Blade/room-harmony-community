@@ -23,6 +23,12 @@ for (const viewport of viewports) {
     });
     expect(planResponse.ok()).toBeTruthy();
     const plan = await planResponse.json() as { id: string };
+    const creatorResponse = await request.put("http://127.0.0.1:8000/api/creators/me", {
+      headers: { "X-Session-ID": sessionId },
+      data: { display_name: `Responsive ${viewport.name}`, bio: "Responsive visual QA profile" },
+    });
+    expect(creatorResponse.ok()).toBeTruthy();
+    const creator = await creatorResponse.json() as { id: string };
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
 
@@ -48,6 +54,24 @@ for (const viewport of viewports) {
 
     await page.keyboard.press("Tab");
     await expect(page.locator(":focus-visible")).toBeVisible();
+
+    await page.goto("/create");
+    await expect(page.getByRole("heading", { name: "暮らしを、誰かの参考にする" })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    const createAction = page.getByRole("button", { name: "暮らしの条件へ" });
+    expect((await createAction.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
+    await testInfo.attach(`${viewport.name}-create`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+
+    await page.goto(`/creators/${creator.id}`);
+    await expect(page.getByRole("heading", { name: `Responsive ${viewport.name}` })).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    await testInfo.attach(`${viewport.name}-creator`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
 
     await page.goto(`/plans/${plan.id}/edit`);
     await expect(page.getByRole("heading", { name: "自分向けに変更する" })).toBeVisible();

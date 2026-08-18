@@ -1,12 +1,12 @@
 # Room Harmony Community
 
-「新生活 × 一人暮らし × 6畳」を入口に、暮らしのCoordinateを**自分に近い事例から探す → 商品の役割を空間単位で理解する → 保存する → Private PLANへ変更する → 店舗比較用のHandoffを準備する**まで動かせるFunctional MVPです。
+「新生活 × 一人暮らし × 6畳」を入口に、暮らしのCoordinateを**探す → 保存 / 参考になった → Private PLANへAdapt → Public PLAN / REAL ROOMとして再共有 → Creatorへ役立ちを返す**ところまで動かせるFunctional Prototypeです。
 
 > 商品を一つずつ売るUIではなく、「なぜこの組み合わせが自分の暮らしに合うか」を理解し、手持ち家具も残しながら次の行動へ進めるかを検証します。
 
-## Current status / Phase 1 validation
+## Current status / Goal 2
 
-2026-08-18時点で、Functional MVP、synthetic seed、analytics instrumentation、automated tests、Windows one-click launcherまで実装済みです。検証対象はH1 `Similar-to-me vs editorial`、H2 `Structured detail → multi-category exploration`、H3 `Save → PLAN → action`です。Similar / PopularはUserが自分で切り替える比較条件であり、Randomized A/B assignmentではありません。Production効果、併売率向上、公式System接続は未検証です。
+2026-08-19時点で、Goal 1のFunctional MVPを維持したままCreator & Community Loopを追加しました。Display Identity、REAL / PLAN投稿、安全なLocal画像Upload、Helpful、Report、Public→Private PLAN→Public派生、Parent / Root lineage、Creator Impactが実DB値で動きます。これはCreator Loopを操作・計測可能にするPrototypeであり、Production効果、併売率向上、公式System接続は未検証です。
 
 ## いちばん簡単な起動方法（Windows）
 
@@ -26,7 +26,7 @@ LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port�
 
 別Physical Windows PCでの確認はまだ自動検証と分けて扱います。Merge前の5分確認は[`docs/operations/second-pc-checklist.md`](docs/operations/second-pc-checklist.md)を使用してください。現在の状態は`MANUAL_SECOND_PC_TEST_REQUIRED`です。
 
-## Demoで確認する2つのFlow
+## Demoで確認する5つのFlow
 
 ### Flow A — Discovery / Save
 
@@ -46,16 +46,40 @@ LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port�
 5. Totalを確認して`比較準備へ`
 6. Room Harmony Handoff payload Previewを確認
 
+### Flow C — Creator contribution
+
+1. Navigationの`つくる・投稿`
+2. 公開用表示名を作る（Authenticationではありません）
+3. `REAL ROOM`または`PLAN`を明確に選ぶ
+4. Room条件、商品、手持ち家具を入力
+5. REALの場合はJPEG / PNG / WebP画像をUpload
+6. 公開後、Coordinate DetailとCreator Profileを確認
+
+### Flow D — Community reuse
+
+1. 別Browser SessionでPublic Coordinateを開く
+2. `参考になった`と`あとで参考にする`を別Intentとして操作
+3. `このコーデを自分向けにアレンジ`
+4. Private PLANで商品置換、追加、手持ち家具を調整
+
+### Flow E — Re-share / Impact
+
+1. Private PLANから`公開コーデとして共有`
+2. 実現前ならPLAN、実現後なら画像付きREALを選ぶ
+3. Structuredな変更理由を指定
+4. Detailの参考元 / Root / 公開派生を確認
+5. 元Creator ProfileでHelpful、Save、PLAN開始、公開派生を確認
+
 Handoffは**Preview only**です。既存Room HarmonyやNITORI内部Systemへ通信しません。
 
 ## 実装Stack
 
 | Layer | Technology | Responsibility |
 |---|---|---|
-| Frontend | React 18 / TypeScript / Vite / React Router | 9 route screens、responsive UI、API client、analytics event |
-| Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy | deterministic ranking、Save / PLAN lifecycle、price計算、handoff、event |
-| Data | SQLite + generated JSON seed | anonymous local Session、36 Coordinates、60 Product references |
-| Test | pytest / Vitest / Testing Library / Playwright | unit、API integration、page behavior、2本のE2E、responsive checks |
+| Frontend | React 18 / TypeScript / Vite / React Router | 11 route screens、Creator form / profile、responsive UI、typed API client |
+| Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy / Pillow | ranking、Save / PLAN、Creator、lineage、impact、safe image normalization |
+| Data | SQLite + generated JSON seed + ignored local uploads | anonymous Session ownership、36 seed Coordinates、60 demo Products、User contributions |
+| Test | pytest / Vitest / Testing Library / Playwright | 43 backend tests、13 frontend tests、5 browser flows、3 responsive checks |
 
 Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/src/api/types.ts`](frontend/src/api/types.ts)のTypeScript contractと[`frontend/src/api/client.ts`](frontend/src/api/client.ts)を通してだけ接続します。
 
@@ -80,6 +104,8 @@ room-harmony-community/
 - 価格は`デモ価格スナップショット`と明示し、未取得価格は0円にせず件数を表示します。
 - 外部URLはNITORI公式検索ページへの参考Linkで、在庫・Cart・購入・価格APIではありません。
 - REAL / PLAN、Official / Staff / User declaredは将来のData modelを示す架空例で、公式認定や実在投稿を意味しません。
+- Goal 2でUserがUploadした画像は`.demo/uploads/`へrandom filenameのWebPとしてLocal保存され、Git対象外です。元filename、client path、EXIFは保存しません。
+- `USER_DECLARED` REALはUser申告であり、NITORIまたはSystemによる本人・購入・実在性の確認済み情報ではありません。
 
 詳細は[`data/README.md`](data/README.md)と[`docs/sources/source-links.md`](docs/sources/source-links.md)を参照してください。
 
@@ -109,6 +135,12 @@ cd frontend
 npm.cmd ci
 npm.cmd run dev
 ```
+
+## Goal 1 DB → Goal 2 DB
+
+通常はそのまま`start-demo.cmd`を実行してください。起動時に[`backend/app/core/schema.py`](backend/app/core/schema.py)が既存SQLiteへGoal 2列を追加し、SQLAlchemyが新Tableを作成します。既存Product、Coordinate、Save、PLANは削除・再Seedしません。
+
+更新前に`.demo/*.db`を別場所へCopyすることを推奨します。これは小規模Local Prototype向けのdeterministic upgradeであり、Production migration frameworkではありません。完全Resetを自分で選ぶ場合だけ、停止後に対象の`.demo` DBを削除して再起動します。詳細は[`docs/operations/goal1-to-goal2-migration.md`](docs/operations/goal1-to-goal2-migration.md)です。
 
 ## Test / Validation
 
@@ -145,7 +177,7 @@ Pull Requestでは`.github/workflows/ci.yml`がbackend tests、frontend tests、
 
 ## MVPに含まれないもの
 
-- Public UGC、投稿Upload、Like、Comment、Follow、Leaderboard、Contest
+- Generic Like、Comment、Follow、DM、Notification、Following Feed、Leaderboard、Contest
 - AI / LLM / image recognition
 - 本物のNITORI商品・価格・在庫・POS・決済・店内Map
 - Production authentication / deployment

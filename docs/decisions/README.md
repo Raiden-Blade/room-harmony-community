@@ -131,3 +131,24 @@
 - Context: Backend pytest, Frontend Vitest, and production build are deterministic and platform-neutral; Playwright, Windows launcher, fresh-clone, and second-PC checks have heavier environment requirements.
 - Decision: Run backend tests, frontend tests, and frontend build in GitHub Actions on Pull Requests. Keep Playwright and Windows lifecycle as explicit local gates for this Goal.
 - Consequence: CI is a fast regression signal, not a replacement for rendered UI review, fresh-clone verification, or the manual second-PC checklist.
+
+## D-022 — Activate Creator Loop without turning Coordinate into a Post
+
+- Context: A later explicit Goal authorizes the Creator & Community Loop that D-019 reserved.
+- Decision: Add Display Identity, Public USER_DECLARED REAL / PLAN, Helpful, Adapt, lineage, Report, and useful-impact metrics while keeping `Coordinate` as aggregate root.
+- Consequence: D-009 and D-019 remain historical Goal 1 decisions; their deferred public upload / reaction items are now activated only in this bounded form. Comment、Follow、Feed、Ranking remain excluded.
+
+## D-023 — Helpful and Save are separate current-state intents
+
+- Decision: Helpful means useful / relatable and is unique per anonymous Session; Save means keep for later / PLAN candidate.
+- Consequence: Separate tables、API、UI copy、analytics events。Fake social counts are prohibited.
+
+## D-024 — Local image upload is decode-and-normalize, not file hosting
+
+- Decision: Accept JPEG / PNG / WebP up to 8MB, actual-decode with Pillow, strip metadata, random-name WebP under ignored `.demo/uploads/`, and delete the local file on unpublish.
+- Consequence: No SVG、remote URL download、cloud storage、original filename/path、EXIF、repository commit。A derivative without its own upload cannot republish the source Creator's User image.
+
+## D-025 — Lineage survives privacy boundaries
+
+- Decision: Preserve parent / root / structured derivation through Public Coordinate → Private PLAN → Public derivative. Hide private parent identifiers from non-owner responses and use soft unpublish.
+- Consequence: Creator Impact can count reuse without exposing another Session's private PLAN or breaking descendants.

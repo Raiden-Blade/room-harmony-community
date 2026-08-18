@@ -31,11 +31,13 @@
 - [Room Harmony integration](architecture/room-harmony-integration.md)
 - [UX information architecture](architecture/ux-information-architecture.md)
 - [Functional MVP implementation](architecture/implementation.md)
+- [Goal 2 creator loop](architecture/community-loop.md)
 
 ## Operations
 
 - [Windows demo runbook](operations/demo-runbook.md)
 - [Second physical Windows PC checklist](operations/second-pc-checklist.md)
+- [Goal 1 to Goal 2 local DB migration](operations/goal1-to-goal2-migration.md)
 
 ## Research and decisions
 
@@ -43,4 +45,5 @@
 - [Evidence map](research/evidence-map.md)
 - [Research plan](research/research-plan.md)
 - [Decision log](decisions/README.md)
+- [Goal 2 final self-review](decisions/goal2-self-review.md)
 - [Final self-review](decisions/final-self-review.md)

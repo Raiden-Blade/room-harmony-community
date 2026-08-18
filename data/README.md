@@ -10,6 +10,8 @@
 - Official URLs point to NITORI search pages as external reference destinations. They are not inventory, cart, or purchase integrations.
 - Provenance values demonstrate the future schema. `OFFICIAL`, `STAFF`, and `USER_DECLARED` rows remain explicitly labeled as imagined demo examples, not actual NITORI content.
 
+Goal 2 runtime User uploads are not seed data. They are decoded, metadata-stripped, normalized to random-name WebP files under `.demo/uploads/`, which is Git-ignored. They must not be copied into `data/seed/`, committed, or treated as verified source evidence. Public REAL ROOM remains `USER_DECLARED_UNVERIFIED`.
+
 Regenerate and validate:
 
 ```powershell

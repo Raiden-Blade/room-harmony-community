@@ -52,21 +52,58 @@ export type CoordinateSummary = {
   verification_state: string;
   creator_display: string;
   creator_type: string;
+  creator_id: string | null;
   image_url: string;
+  image_urls: string[];
   image_rights: string;
   demo_disclosure: string;
   seasonal_collection: string | null;
   official_pick: boolean;
+  root_coordinate_id: string | null;
+  derivation_type: DerivationType | null;
+  moderation_status: string;
   price: PriceSummary;
   product_count: number;
   category_count: number;
   match_reasons: string[];
   score: number | null;
   is_saved: boolean;
+  helpful_count: number;
+  is_helpful: boolean;
+  can_edit: boolean;
+};
+
+export type DerivationType =
+  | "LOWER_BUDGET"
+  | "SMALLER_ROOM"
+  | "COLOR_VARIATION"
+  | "STORAGE_FOCUS"
+  | "EXISTING_FURNITURE"
+  | "PRODUCT_SUBSTITUTION"
+  | "OTHER";
+
+export type CreatorImpact = {
+  published_coordinates: number;
+  helpful_count: number;
+  saved_count: number;
+  plan_started_count: number;
+  public_adaptation_count: number;
+  real_room_contributions: number;
+};
+
+export type GenealogyNode = { id: string | null; title: string; kind: "REAL" | "PLAN" | null; available: boolean };
+
+export type Genealogy = {
+  parent: GenealogyNode | null;
+  root: GenealogyNode | null;
+  plan_started_count: number;
+  public_adaptation_count: number;
+  public_children: GenealogyNode[];
 };
 
 export type CoordinateDetail = CoordinateSummary & {
   parent_coordinate_id: string | null;
+  remix_note: string | null;
   items: CoordinateItem[];
   creator_impact_slot: {
     enabled: boolean;
@@ -74,6 +111,49 @@ export type CoordinateDetail = CoordinateSummary & {
     saved_count: number | null;
     adaptation_count: number | null;
   };
+  creator_impact: CreatorImpact;
+  genealogy: Genealogy;
+};
+
+export type CreatorProfile = {
+  id: string;
+  display_name: string;
+  bio: string | null;
+  contribution_count: number;
+  impact: CreatorImpact;
+  created_at: string;
+  contributions: CoordinateSummary[];
+  is_owner: boolean;
+};
+
+export type UploadedImage = {
+  id: string;
+  url: string;
+  mime_type: "image/webp";
+  width: number;
+  height: number;
+  size_bytes: number;
+};
+
+export type ProductTagInput = { product_id: string; role: string; quantity: number };
+export type ExistingFurnitureInput = { label: string; category: string; dimensions?: string | null };
+export type CreateCoordinateInput = {
+  kind: "REAL" | "PLAN";
+  title: string;
+  description?: string | null;
+  room_type?: string | null;
+  size_band?: string | null;
+  housing_type?: string | null;
+  household?: string | null;
+  budget_max?: number | null;
+  style?: string | null;
+  needs: string[];
+  products: ProductTagInput[];
+  existing_furniture: ExistingFurnitureInput[];
+  image_ids: string[];
+  parent_coordinate_id?: string | null;
+  derivation_type?: DerivationType | null;
+  remix_note?: string | null;
 };
 
 export type ProductDetail = ProductSummary & { coordinates: CoordinateSummary[] };
@@ -128,4 +208,17 @@ export type AnalyticsEventName =
   | "room_harmony_handoff_preview"
   | "creator_coordinate_impression"
   | "creator_attributed_save"
-  | "creator_attributed_plan_start";
+  | "creator_attributed_plan_start"
+  | "creator_profile_view"
+  | "create_coordinate_start"
+  | "create_coordinate_complete"
+  | "real_room_publish"
+  | "plan_publish"
+  | "helpful_add"
+  | "helpful_remove"
+  | "adapt_start"
+  | "plan_from_coordinate"
+  | "public_adaptation_publish"
+  | "creator_impact_view"
+  | "coordinate_unpublish"
+  | "content_report";

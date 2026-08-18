@@ -162,3 +162,19 @@ Ranking is deterministic in MVP. Exact weights are configuration and test eviden
 - Event `(experiment_id, variant, occurred_at)` and `(coordinate_id, event_type)`
 
 No production database is created in this Goal.
+
+## Goal 2 local physical model
+
+上のERは長期Logical modelである。Goal 2のLocal SQLite implementationはProduction `USER` / Authenticationを作らず、次を追加する。
+
+- `creator_profiles`: internal id、private `owner_session_id`、public display name / bio。
+- `coordinates.creator_id`: optional display identity link。
+- `coordinates.parent_coordinate_id`: 直接参考にしたCoordinateまたはPrivate PLAN。
+- `coordinates.root_coordinate_id`: 派生系列の起点。
+- `coordinates.derivation_type`: controlled remix reason。
+- `coordinates.moderation_status`: `ACTIVE / HIDDEN` prototype state。
+- `coordinate_images`: random local storage referenceとdimensions。original filename / EXIFなし。
+- `helpful_reactions`: `(session_id, coordinate_id)` unique current reaction。
+- `content_reports`: `(session_id, coordinate_id)` unique report、controlled reason、no auto-delete。
+
+Raw Session IDをPublic APIへ返さない。Hidden / unpublish parentがあってもchild FK recordは削除せず、閲覧者にprivate IDを露出しないtombstone表示を使う。

@@ -62,7 +62,7 @@ flowchart LR
   C --> D[差分: kept / replaced / existing / added]
 ```
 
-MVPではPrivate PLANとして作り、Public remix galleryは作らない。これはremix需要とData qualityを先に検証するためである。
+Goal 1ではPrivate PLANまで、Goal 2ではそのPLANをstructured reason付きのPublic PLAN / 画像付きREALへ再共有できる。Public derivativeはGeneric galleryやrankingではなく、元CoordinateのDetail / Creator Impactから再利用関係として辿る。
 
 ## Journey D — Seasonal Challenge
 

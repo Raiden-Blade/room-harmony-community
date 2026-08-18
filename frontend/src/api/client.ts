@@ -3,11 +3,15 @@ import type {
   AnalyticsEventName,
   CoordinateDetail,
   CoordinateSummary,
+  CreateCoordinateInput,
+  CreatorProfile,
+  DerivationType,
   DiscoveryResponse,
   HandoffPayload,
   OptionsResponse,
   ProductDetail,
   ProductSummary,
+  UploadedImage,
 } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -33,7 +37,12 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     }
     throw new Error(message);
   }
+  if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
+}
+
+export function mediaUrl(path: string): string {
+  return path.startsWith("/uploads/") ? `${API_BASE}${path}` : path;
 }
 
 export const api = {
@@ -85,6 +94,44 @@ export const api = {
     event_counts: Record<string, number>;
     measurement_support: Record<string, Record<string, number | boolean>>;
   }>("/api/analytics/readiness"),
+  creatorMe: () => request<CreatorProfile>("/api/creators/me"),
+  saveCreator: (displayName: string, bio: string) =>
+    request<CreatorProfile>("/api/creators/me", {
+      method: "PUT",
+      json: { display_name: displayName, bio: bio || null },
+    }),
+  creator: (id: string) => request<CreatorProfile>(`/api/creators/${id}`),
+  uploadImage: (file: File) => {
+    const body = new FormData();
+    body.set("image", file);
+    return request<UploadedImage>("/api/community/images", { method: "POST", body });
+  },
+  createCoordinate: (payload: CreateCoordinateInput) =>
+    request<CoordinateDetail>("/api/community/coordinates", { method: "POST", json: payload }),
+  editCoordinate: (id: string, payload: Partial<CreateCoordinateInput>) =>
+    request<CoordinateDetail>(`/api/community/coordinates/${id}`, { method: "PATCH", json: payload }),
+  unpublishCoordinate: (id: string) =>
+    request<void>(`/api/community/coordinates/${id}`, { method: "DELETE" }),
+  helpful: (id: string) =>
+    request<{ coordinate_id: string; helpful: boolean; helpful_count: number }>(
+      `/api/community/coordinates/${id}/helpful`,
+      { method: "POST" },
+    ),
+  unhelpful: (id: string) =>
+    request<{ coordinate_id: string; helpful: boolean; helpful_count: number }>(
+      `/api/community/coordinates/${id}/helpful`,
+      { method: "DELETE" },
+    ),
+  report: (id: string, reason: string) =>
+    request<{ accepted: boolean }>(`/api/community/coordinates/${id}/reports`, {
+      method: "POST",
+      json: { reason },
+    }),
+  publishPlan: (planId: string, kind: "REAL" | "PLAN", derivationType: DerivationType, imageIds: string[], remixNote: string) =>
+    request<CoordinateDetail>(`/api/plans/${planId}/publish`, {
+      method: "POST",
+      json: { kind, derivation_type: derivationType, image_ids: imageIds, remix_note: remixNote || null },
+    }),
 };
 
 export async function track(
