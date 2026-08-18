@@ -7,7 +7,7 @@ Review target: Seasonal Growth / Challenge Functional Prototype
 
 ## Verdict
 
-Goal 3 passed its fresh-clone gate and is ready for GitHub CI and human review. It demonstrates an annual reuse loop without turning the product into a popularity Contest or claiming official NITORI operation, purchase impact, or production readiness.
+Goal 3 passed its fresh-clone gate and GitHub CI and is ready for human review. It demonstrates an annual reuse loop without turning the product into a popularity Contest or claiming official NITORI operation, purchase impact, or production readiness.
 
 ## Acceptance review
 
@@ -37,7 +37,7 @@ Goal 3 passed its fresh-clone gate and is ready for GitHub CI and human review. 
 | 22 | Responsive / visual | PASS | 390 / 768 / 1280、42 screenshots、overflow / overlapなし |
 | 23 | Windows launcher | PASS | working treeでone-click start、health、frontend、owned stop |
 | 24 | Fresh clone | PASS | `5e71f60`から新規cloneし、first-run install / launch / Seasonal API / owned stopを確認 |
-| 25 | GitHub CI | PENDING | Goal 3 PR作成後に確認 |
+| 25 | GitHub CI | PASS | PR #3のbackend / frontend jobがPASS |
 
 ## Domain and data semantics
 
