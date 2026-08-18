@@ -2,7 +2,7 @@
 
 Review date: 2026-08-18 (JST)
 
-Current result: **LOCAL + FRESH-CLONE GATES PASS / GITHUB ACTIONS PENDING**. This is not a production-readiness, official-integration, or business-impact verdict. A second physical Windows PC remains a separate manual check.
+Current result: **READY_FOR_HUMAN_MERGE**. Local, fresh-clone, and GitHub Actions gates pass. This is not a production-readiness, official-integration, or business-impact verdict. A second physical Windows PC remains a separate manual check.
 
 | # | Check | Result | Evidence / correction |
 |---:|---|---|---|
@@ -29,7 +29,7 @@ Current result: **LOCAL + FRESH-CLONE GATES PASS / GITHUB ACTIONS PENDING**. Thi
 | 21 | Private PLAN boundaryを守るか | PASS | Cross-session read / list / save / clone / mutate / ready / handoffを404で遮断。Responseからowner Session IDを除外。 |
 | 22 | 390px mobileで主要Flowが使えるか | PASS | Chromium 390 / 768 / 1280 test、horizontal overflow 0、tap target 44px以上、visible focus、15 rendered screenshots review。 |
 | 23 | Windows launcherが安全に起動・停止できるか | PASS | `python.exe` / `py.exe -3` fallback、venv再検証、owned PID、unmanaged port refusal、stale state、port releaseを確認。 |
-| 24 | Fresh setupを再現できるか | PASS | Tracked commit `9506b7e`から`.venv / node_modules / .demo`無しのtemporary cloneを作り、Install → health → frontend 200 → API flow smoke → private boundary → stop → ports解放 → clean statusを確認。 |
+| 24 | Fresh setupを再現できるか | PASS | Tracked branch snapshotから`.venv / node_modules / .demo`無しのtemporary cloneを作り、Install → health → frontend 200 → API flow smoke → private boundary → stop → ports解放 → clean statusを確認。 |
 | 25 | 別Physical Windows PCで確認したか | MANUAL_REQUIRED | 実機2台目そのものは未使用。`docs/operations/second-pc-checklist.md`を使用し、未実施をPASSと表現しない。 |
 
 ## Critical findings corrected during Goal 1.5
@@ -59,11 +59,11 @@ Current result: **LOCAL + FRESH-CLONE GATES PASS / GITHUB ACTIONS PENDING**. Thi
 - missing runtime / unmanaged 8000 / unrelated PID / stale state checks → explicit failure or safe cleanup PASS
 - Markdown local links → 29 files PASS; CI YAML / PowerShell syntax PASS
 
-## Pending final evidence
+## Final merge-gate evidence
 
-- GitHub Actions backend / frontend jobs after push
+- GitHub Actions backend / frontend jobs → PASS
 - Second physical Windows PC remains `MANUAL_SECOND_PC_TEST_REQUIRED`
 
-## Provisional verdict
+## Verdict
 
-Local automated checks and fresh-clone acceptance are green. `READY_FOR_HUMAN_MERGE` is not assigned until GitHub Actions pass. Production readiness、NITORI data permission、official Product ID、Room Harmony owner / API、business uplift、moderated user testは未完了であり、次Phaseへ自動進行しない。
+**READY_FOR_HUMAN_MERGE**. Automated checks, rendered QA, Windows lifecycle checks, fresh-clone acceptance, and GitHub Actions are green. MergeそのものはHuman decisionとし、自動Mergeしない。Production readiness、NITORI data permission、official Product ID、Room Harmony owner / API、business uplift、moderated user testは未完了であり、次Phaseへ自動進行しない。
