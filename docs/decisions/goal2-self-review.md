@@ -55,7 +55,7 @@ Goal 2 is ready for automated CI and human review. It makes the Creator Loop ope
 - Visual QA: 30 rendered screenshots at 390 / 768 / 1280; PLAN / REAL Create、PLAN→REAL publish、Creator Profile、Coordinate Detail and Goal 1 surfaces inspected with no horizontal overflow.
 - Dependency checks: `npm audit --audit-level=high` = 0 vulnerabilities; `pip check` = no broken requirements.
 - Windows launcher in working tree: backend `status=ok`、frontend HTTP 200、ports released by `stop-demo.cmd`.
-- Fresh-clone result is recorded in the Goal 2 PR after testing the committed branch.
+- Fresh clone from commit `2cad352`: first-run Python / Node dependency install、launcher start、backend `status=ok`、frontend HTTP 200、catalog response、owned stop、clean tracked worktree = PASS.
 - Second physical Windows PC remains `MANUAL_SECOND_PC_TEST_REQUIRED`.
 
 ## Known limitations accepted for Goal 2
