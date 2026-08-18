@@ -68,7 +68,7 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 56 | Production build | PASS | Vite build、64 modules、JS gzip約103kB |
 | 57 | Dependency checks | PASS | npm audit 0 vulnerabilities、pip check clean |
 | 58 | Seed validator | PASS | 36 Coordinate / 60 Product / 6 Challenge / 8 Entry + asset manifest |
-| 59 | Fresh clone | PENDING_FINAL_GATE | Remote Goal 4 branch push後にvenv / node_modules / `.demo`なしで実施 |
+| 59 | Fresh clone | PASS | `e3c7944`を新規clone。venv / node_modules / `.demo`なしからone-click start、health / frontend / Demo 1 API、stop / reset、tracked status cleanを確認 |
 | 60 | GitHub CI | PENDING_PR | Goal 4 PR作成後にGitHub最新checkを確認 |
 | 61 | Existing Room Harmony untouched | PASS | read-only checkout commit / clean statusをFinal Gateで再確認する |
 | 62 | Source registry | PASS | 新外部Sourceなし。assetはlocal originalでsource-links追加不要 |
@@ -89,11 +89,11 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 
 - [ ] Goal 4 PRのUI walkthrough
 - [ ] [`../operations/demo-script.md`](../operations/demo-script.md)を5〜8分で通す
-- [ ] Fresh clone evidenceを本表へ反映
-- [ ] Reset後、upload residueとprivate dataが無い
+- [x] Fresh clone evidenceを本表へ反映
+- [x] Reset後、upload residueとprivate dataが無い
 - [ ] Second physical Windows PC
 - [ ] Projector / display、Browser zoom 100%
-- [ ] 390 / 768 / 1280
-- [ ] Handoff Preview / non-live disclosure
-- [ ] Prototype Pick / non-official disclosure
+- [x] 390 / 768 / 1280
+- [x] Handoff Preview / non-live disclosure
+- [x] Prototype Pick / non-official disclosure
 - [ ] realistic synthetic room imagesを採用する場合はrightsとmanifest mappingを再確認
