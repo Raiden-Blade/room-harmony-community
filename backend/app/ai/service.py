@@ -230,7 +230,7 @@ def _candidate_pool(session: Session, snapshot) -> dict[str, Product]:
             Product.id.like("NTR-%"),
             Product.provenance == "NITORI_OFFICIAL_SNAPSHOT",
             Product.id.not_in(current_ids),
-        ).order_by(Product.default_role, Product.price_snapshot, Product.id)
+        ).order_by(Product.default_role, Product.price_snapshot, Product.id).limit(18)
     ).all()
     return {product.id: product for product in products}
 
