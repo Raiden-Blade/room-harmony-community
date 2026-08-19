@@ -1,14 +1,20 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from PIL import Image
+
 
 ROOT = Path(__file__).resolve().parents[2]
 SEED = ROOT / "data" / "seed" / "demo_seed.json"
 SEASONAL_SEED = ROOT / "data" / "seed" / "seasonal_seed.json"
+VISUAL_MANIFEST = ROOT / "data" / "seed" / "visual_asset_manifest.json"
+PRODUCT_MANIFEST = ROOT / "data" / "seed" / "product_asset_manifest.json"
+HERO_MANIFEST = ROOT / "data" / "seed" / "hero_asset_manifest.json"
 ALLOWED_RIGHTS = {"LOCALLY_CREATED_DEMO", "CC0", "EXPLICITLY_PERMITTED"}
 PUBLIC_ASSET_ROOT = (ROOT / "frontend" / "public").resolve()
 CHALLENGE_STATUSES = {"UPCOMING", "ACTIVE", "ENDED", "ARCHIVED"}
@@ -34,10 +40,14 @@ CONSTRAINT_CODES = {
 }
 CONSTRAINT_OPERATORS = {"IN", "LTE", "GTE", "EQ"}
 FAKE_COUNT_FIELDS = {"entry_count", "participant_count", "view_count", "like_count", "rank"}
+COORDINATE_STYLES = {"NATURAL", "CLEAR_COOL", "DANDY", "ELEGANT", "COZY", "COLORFUL"}
+VERIFIED_OFFICIAL_PRODUCT_STYLES = {"NATURAL", "CLEAR_COOL", "DANDY"}
+STYLE_COMPATIBILITY_STATES = {"VERIFIED_MATCH", "UNVERIFIED_NEUTRAL", "DEMO_ONLY"}
+BUILT_IN_PROVENANCES = {"DEMO", "STAFF", "OFFICIAL"}
 
 
 def local_asset(path: str) -> Path | None:
-    if not path.startswith("/assets/") or not path.endswith(".svg"):
+    if not path.startswith("/assets/") or Path(path).suffix.lower() not in {".svg", ".png", ".jpg", ".jpeg", ".webp"}:
         return None
     candidate = (PUBLIC_ASSET_ROOT / path.lstrip("/")).resolve()
     try:
@@ -47,9 +57,20 @@ def local_asset(path: str) -> Path | None:
     return candidate
 
 
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def validate() -> None:
     payload = json.loads(SEED.read_text(encoding="utf-8"))
     seasonal_payload = json.loads(SEASONAL_SEED.read_text(encoding="utf-8"))
+    visual_manifest = json.loads(VISUAL_MANIFEST.read_text(encoding="utf-8"))
+    product_manifest = json.loads(PRODUCT_MANIFEST.read_text(encoding="utf-8"))
+    hero_manifest = json.loads(HERO_MANIFEST.read_text(encoding="utf-8"))
     products = payload["products"]
     coordinates = payload["coordinates"]
     challenges = seasonal_payload["challenges"]
@@ -68,24 +89,92 @@ def validate() -> None:
     for product in products:
         if product["rights_status"] not in ALLOWED_RIGHTS:
             errors.append(f"unsafe product rights: {product['id']}")
-        if not product["id"].startswith("DEMO-"):
-            errors.append(f"non-demo product ID: {product['id']}")
         official_url = urlsplit(product["official_url"])
         if (
             official_url.scheme != "https"
             or official_url.hostname != "www.nitori-net.jp"
-            or not official_url.path.startswith("/ec/search/")
             or official_url.username
             or official_url.password
         ):
             errors.append(f"unexpected official URL: {product['id']}")
+        if product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT":
+            if not product["id"].startswith("NTR-"):
+                errors.append(f"official snapshot product must use an NTR ID: {product['id']}")
+            if not official_url.path.startswith("/ec/product/"):
+                errors.append(f"official snapshot must link to its product page: {product['id']}")
+            if product["rights_status"] != "EXPLICITLY_PERMITTED":
+                errors.append(f"official product visual must be explicitly permitted: {product['id']}")
+            if product["price_status"] != "NITORI_OFFICIAL_SNAPSHOT":
+                errors.append(f"official product has wrong price status: {product['id']}")
+            if product.get("style_hint") not in VERIFIED_OFFICIAL_PRODUCT_STYLES:
+                errors.append(f"official product has an unverified style hint: {product['id']}")
+        else:
+            if product["provenance"] != "DEMO" or not product["id"].startswith("DEMO-"):
+                errors.append(f"unexpected fallback product provenance or ID: {product['id']}")
+            if not official_url.path.startswith("/ec/search/"):
+                errors.append(f"demo fallback must link only to an official search: {product['id']}")
+            if product.get("style_hint") not in COORDINATE_STYLES:
+                errors.append(f"demo fallback has an unsupported style hint: {product['id']}")
         asset = local_asset(product["image_url"])
         if asset is None:
             errors.append(f"external product image is not allowed: {product['id']}")
         elif not asset.is_file():
             errors.append(f"missing product asset: {product['id']}")
+        elif product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT":
+            if asset.suffix.lower() != ".webp":
+                errors.append(f"official product visual must be WebP: {product['id']}")
+            else:
+                try:
+                    with Image.open(asset) as image:
+                        if image.size != (640, 640):
+                            errors.append(f"official product visual must be 640x640: {product['id']} is {image.size}")
+                except OSError:
+                    errors.append(f"unreadable official product visual: {product['id']}")
+                if asset.stat().st_size > 200_000:
+                    errors.append(f"official product visual is unexpectedly large: {product['id']}")
         if (product["price_snapshot"] is None) != (product["price_status"] == "MISSING"):
             errors.append(f"inconsistent missing price state: {product['id']}")
+
+    product_rows = product_manifest.get("products", [])
+    if len(product_rows) != 18:
+        errors.append(f"product manifest must contain the curated 18-item set, found {len(product_rows)}")
+    if len({row.get("id") for row in product_rows}) != len(product_rows):
+        errors.append("duplicate product ID in product manifest")
+    if len({row.get("local_asset") for row in product_rows}) != len(product_rows):
+        errors.append("curated products must have distinct local assets")
+    product_asset_paths = [local_asset(str(row.get("local_asset", ""))) for row in product_rows]
+    existing_product_assets = [path for path in product_asset_paths if path is not None and path.is_file()]
+    if len(existing_product_assets) == len(product_rows) and len({sha256(path) for path in existing_product_assets}) != len(product_rows):
+        errors.append("curated product image contents must be non-repeating")
+    manifest_categories: dict[str, int] = {}
+    product_by_id = {product["id"]: product for product in products}
+    for row in product_rows:
+        product_id = str(row.get("id", ""))
+        seeded = product_by_id.get(product_id)
+        manifest_categories[str(row.get("category", ""))] = manifest_categories.get(str(row.get("category", "")), 0) + 1
+        if seeded is None:
+            errors.append(f"product manifest item missing from seed: {product_id}")
+            continue
+        for manifest_key, seed_key in (
+            ("name", "name"),
+            ("category", "category"),
+            ("default_role", "default_role"),
+            ("price_snapshot", "price_snapshot"),
+            ("style_hint", "style_hint"),
+            ("official_url", "official_url"),
+            ("local_asset", "image_url"),
+        ):
+            if row.get(manifest_key) != seeded.get(seed_key):
+                errors.append(f"product seed/manifest {manifest_key} mismatch: {product_id}")
+        source_asset = urlsplit(str(row.get("source_asset_url", "")))
+        if source_asset.scheme != "https" or source_asset.hostname != "www.nitori-net.jp":
+            errors.append(f"product source asset must be official NITORI HTTPS: {product_id}")
+        if not str(row.get("source_product_code", "")).strip():
+            errors.append(f"missing source product code: {product_id}")
+    if set(manifest_categories) != {"BED", "DESK", "STORAGE", "LIGHTING", "TEXTILE", "SUPPORT"}:
+        errors.append("product manifest does not cover all six categories")
+    if any(count != 3 for count in manifest_categories.values()):
+        errors.append(f"product manifest must contain three products per category: {manifest_categories}")
 
     for coordinate in coordinates:
         required = {
@@ -112,18 +201,74 @@ def validate() -> None:
             errors.append(f"unsafe coordinate image rights: {coordinate['id']}")
         if not coordinate["demo_disclosure"]:
             errors.append(f"missing demo disclosure: {coordinate['id']}")
+        if coordinate["style"] not in COORDINATE_STYLES:
+            errors.append(f"unsupported Coordinate style: {coordinate['id']}")
         asset = local_asset(coordinate["image_url"])
         if asset is None:
             errors.append(f"external coordinate image is not allowed: {coordinate['id']}")
         elif not asset.is_file():
             errors.append(f"missing coordinate asset: {coordinate['id']}")
         categories = set()
+        selected_products = []
         for item in coordinate["items"]:
             if item["product_id"] not in product_ids:
                 errors.append(f"unknown product {item['product_id']} in {coordinate['id']}")
+                continue
+            product = product_by_id[item["product_id"]]
+            selected_products.append(product)
             categories.add(item["role"])
+            compatibility = item.get("style_compatibility")
+            if compatibility not in STYLE_COMPATIBILITY_STATES:
+                errors.append(f"invalid Product style compatibility in {coordinate['id']}: {compatibility}")
+            verified_match = (
+                product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT"
+                and coordinate["style"] in VERIFIED_OFFICIAL_PRODUCT_STYLES
+                and product.get("style_hint") == coordinate["style"]
+            )
+            expected_compatibility = (
+                "VERIFIED_MATCH"
+                if verified_match
+                else "UNVERIFIED_NEUTRAL"
+                if product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT"
+                else "DEMO_ONLY"
+            )
+            if compatibility != expected_compatibility:
+                errors.append(
+                    f"incorrect Product style compatibility in {coordinate['id']}: "
+                    f"{product['id']} is {compatibility}, expected {expected_compatibility}"
+                )
         if len(categories) < 2:
             errors.append(f"{coordinate['id']} has fewer than two roles")
+        size_label = {"TINY_5_5": "5.5畳", "SMALL_6": "6畳", "MEDIUM_7_8": "7〜8畳"}.get(
+            coordinate["size_band"]
+        )
+        if not size_label or size_label not in coordinate["title"]:
+            errors.append(f"coordinate title does not match room size: {coordinate['id']}")
+        product_categories = [product["category"] for product in selected_products]
+        if coordinate["image_rights"] == "EXPLICITLY_PERMITTED" and any(
+            product["provenance"] != "NITORI_OFFICIAL_SNAPSHOT" for product in selected_products
+        ):
+            errors.append(f"photo-backed coordinate includes an illustrated demo product: {coordinate['id']}")
+        primary_need = next((need for need in coordinate["needs"] if need != "RENTAL"), None)
+        if primary_need == "SLEEP" and "DESK" in product_categories:
+            errors.append(f"sleep composition must not require a desk: {coordinate['id']}")
+        if primary_need == "RELAX" and "DESK" in product_categories:
+            errors.append(f"relax composition must not be work-desk centered: {coordinate['id']}")
+        if primary_need == "WORK_FROM_HOME" and not {"DESK", "SUPPORT", "LIGHTING"}.issubset(product_categories):
+            errors.append(f"work composition lacks desk/support/light: {coordinate['id']}")
+        if primary_need == "STORAGE" and product_categories.count("STORAGE") < 2:
+            errors.append(f"storage composition needs at least two storage products: {coordinate['id']}")
+        known_total = sum(int(product["price_snapshot"] or 0) for product in selected_products)
+        if any(product["price_snapshot"] is None for product in selected_products):
+            errors.append(f"coordinate budget cannot be claimed with unknown seed prices: {coordinate['id']}")
+        if known_total > coordinate["budget_max"]:
+            errors.append(f"coordinate total exceeds its budget claim: {coordinate['id']}")
+        if primary_need == "LOW_BUDGET" and (known_total > 50_000 or coordinate["budget_max"] > 50_000):
+            errors.append(f"low-budget composition exceeds 50,000 yen: {coordinate['id']}")
+        if coordinate["id"].startswith("coord-") and coordinate["kind"] != "PLAN":
+            errors.append(f"built-in reference/prototype must not be labeled REAL: {coordinate['id']}")
+        if coordinate["id"].startswith("coord-") and coordinate["provenance"] not in BUILT_IN_PROVENANCES:
+            errors.append(f"built-in reference/prototype has user provenance: {coordinate['id']}")
 
     if len({row["size_band"] for row in coordinates}) < 3:
         errors.append("seed does not cover all three room-size bands")
@@ -133,6 +278,136 @@ def validate() -> None:
         errors.append("seed has no existing-furniture example")
     if not any(product["price_snapshot"] is None for product in products):
         errors.append("seed has no explicit missing-price example")
+
+    visual_rows = visual_manifest.get("coordinates", [])
+    if not 10 <= len(visual_rows) <= 15:
+        errors.append(f"visual manifest needs 10-15 main coordinates, found {len(visual_rows)}")
+    visual_ids = [row.get("coordinate_id") for row in visual_rows]
+    current_assets = [row.get("current_asset") for row in visual_rows]
+    if len(set(visual_ids)) != len(visual_ids):
+        errors.append("duplicate coordinate ID in visual manifest")
+    if len(set(current_assets)) != len(current_assets):
+        errors.append("main demo coordinates must have distinct current visual assets")
+    coordinate_asset_paths = [local_asset(str(path)) for path in current_assets]
+    existing_coordinate_assets = [path for path in coordinate_asset_paths if path is not None and path.is_file()]
+    if len(existing_coordinate_assets) == len(visual_rows) and len({sha256(path) for path in existing_coordinate_assets}) != len(visual_rows):
+        errors.append("main demo coordinate image contents must be non-repeating")
+    fallback = local_asset(str(visual_manifest.get("fallback_asset", "")))
+    if fallback is None or not fallback.is_file():
+        errors.append("visual manifest fallback asset is missing or external")
+    source_page = urlsplit(str(visual_manifest.get("source_page_url", "")))
+    if source_page.scheme != "https" or source_page.hostname != "www.nitori-net.jp":
+        errors.append("visual manifest source page must be an official HTTPS NITORI URL")
+    if visual_manifest.get("display_classification") != "REFERENCE_ROOM":
+        errors.append("official room imagery must be classified as REFERENCE_ROOM")
+    if visual_manifest.get("product_relationship") != "ROOM_IMAGE_AND_PROTOTYPE_PRODUCT_LIST_ARE_SEPARATE_EVIDENCE_LAYERS":
+        errors.append("official room imagery must not imply a verified product mapping")
+    for row in visual_rows:
+        coordinate_id = str(row.get("coordinate_id", ""))
+        coordinate = coordinate_by_id.get(coordinate_id)
+        if coordinate is None:
+            errors.append(f"unknown coordinate in visual manifest: {coordinate_id}")
+            continue
+        if row.get("rights_status") not in ALLOWED_RIGHTS:
+            errors.append(f"unsafe visual manifest rights: {coordinate_id}")
+        if row.get("rights_status") != "EXPLICITLY_PERMITTED":
+            errors.append(f"priority NITORI visual must be explicitly permitted: {coordinate_id}")
+        if row.get("asset_type") != "NITORI_APPROVED_COORDINATE":
+            errors.append(f"unexpected priority visual asset type: {coordinate_id}")
+        if row.get("permission_basis") != "USER_CONFIRMED_FOR_THIS_PROTOTYPE":
+            errors.append(f"missing permission basis: {coordinate_id}")
+        if not row.get("primary_demo_usage"):
+            errors.append(f"missing primary demo usage: {coordinate_id}")
+        if not str(row.get("visual_fit", "")).strip():
+            errors.append(f"missing visual fit note: {coordinate_id}")
+        current_asset = local_asset(str(row.get("current_asset", "")))
+        if current_asset is None or not current_asset.is_file():
+            errors.append(f"missing current visual asset: {coordinate_id}")
+        elif current_asset.suffix.lower() != ".webp":
+            errors.append(f"priority visual must be an optimized WebP: {coordinate_id}")
+        else:
+            try:
+                with Image.open(current_asset) as image:
+                    if image.size != (640, 400):
+                        errors.append(f"priority visual must be 640x400: {coordinate_id} is {image.size}")
+            except OSError:
+                errors.append(f"unreadable priority visual: {coordinate_id}")
+            if current_asset.stat().st_size > 200_000:
+                errors.append(f"priority visual is unexpectedly large: {coordinate_id}")
+        row_fallback = local_asset(str(row.get("fallback_asset", "")))
+        if row_fallback is None or not row_fallback.is_file() or row_fallback.suffix.lower() != ".svg":
+            errors.append(f"missing repository-original SVG fallback: {coordinate_id}")
+        if coordinate.get("image_url") != row.get("current_asset"):
+            errors.append(f"seed/manifest image mismatch: {coordinate_id}")
+        if coordinate.get("image_rights") != row.get("rights_status"):
+            errors.append(f"seed/manifest image rights mismatch: {coordinate_id}")
+        if row.get("coordinate_title") != coordinate.get("title"):
+            errors.append(f"seed/manifest title mismatch: {coordinate_id}")
+        expected_room = {
+            "TINY_5_5": "5.5畳ワンルーム",
+            "SMALL_6": "6畳ワンルーム",
+            "MEDIUM_7_8": "7〜8畳ワンルーム",
+        }.get(coordinate.get("size_band"))
+        if row.get("room") != expected_room:
+            errors.append(f"seed/manifest room mismatch: {coordinate_id}")
+        if row.get("style") != coordinate.get("style"):
+            errors.append(f"seed/manifest style mismatch: {coordinate_id}")
+        if row.get("need") not in coordinate.get("needs", []):
+            errors.append(f"seed/manifest need mismatch: {coordinate_id}")
+        actual_roles = {item.get("role") for item in coordinate.get("items", [])}
+        if not set(row.get("product_roles", [])).issubset(actual_roles):
+            errors.append(f"seed/manifest product role mismatch: {coordinate_id}")
+        source_asset = urlsplit(str(row.get("source_asset_url", "")))
+        if source_asset.scheme != "https" or source_asset.hostname != "www.nitori-net.jp":
+            errors.append(f"source asset must be an official HTTPS NITORI URL: {coordinate_id}")
+        if not str(row.get("source_image_name", "")).strip():
+            errors.append(f"missing source image name: {coordinate_id}")
+
+    hero_rows = hero_manifest.get("slides", [])
+    if not 3 <= len(hero_rows) <= 4:
+        errors.append(f"hero manifest needs 3-4 slides, found {len(hero_rows)}")
+    if len({row.get("local_asset") for row in hero_rows}) != len(hero_rows):
+        errors.append("hero slides must have distinct local assets")
+    hero_asset_paths = [local_asset(str(row.get("local_asset", ""))) for row in hero_rows]
+    existing_hero_assets = [path for path in hero_asset_paths if path is not None and path.is_file()]
+    if len(existing_hero_assets) == len(hero_rows) and len({sha256(path) for path in existing_hero_assets}) != len(hero_rows):
+        errors.append("hero image contents must be non-repeating")
+    hero_page = urlsplit(str(hero_manifest.get("source_page_url", "")))
+    if hero_page.scheme != "https" or hero_page.hostname != "www.nitori-net.jp":
+        errors.append("hero manifest source page must be an official NITORI URL")
+    for row in hero_rows:
+        slide_id = str(row.get("id", ""))
+        if row.get("rights_status") != "EXPLICITLY_PERMITTED":
+            errors.append(f"hero slide must be explicitly permitted: {slide_id}")
+        source_asset = urlsplit(str(row.get("source_asset_url", "")))
+        if source_asset.scheme != "https" or source_asset.hostname != "www.nitori-net.jp":
+            errors.append(f"hero source asset must be official NITORI HTTPS: {slide_id}")
+        asset = local_asset(str(row.get("local_asset", "")))
+        if asset is None or not asset.is_file() or asset.suffix.lower() != ".webp":
+            errors.append(f"hero asset must be a local WebP: {slide_id}")
+            continue
+        try:
+            with Image.open(asset) as image:
+                if image.size != (1200, 750):
+                    errors.append(f"hero asset must be 1200x750: {slide_id} is {image.size}")
+        except OSError:
+            errors.append(f"unreadable hero asset: {slide_id}")
+        if asset.stat().st_size > 250_000:
+            errors.append(f"hero asset is unexpectedly large: {slide_id}")
+        for key in ("source_theme", "ui_kicker", "ui_title", "cta", "destination"):
+            if not str(row.get(key, "")).strip():
+                errors.append(f"hero slide is missing {key}: {slide_id}")
+        unsupported_claims = " ".join(str(row.get(key, "")) for key in ("ui_kicker", "ui_title", "cta"))
+        if "畳" in unsupported_claims or "万円" in unsupported_claims:
+            errors.append(f"hero copy must not add unverified size/budget claims: {slide_id}")
+        expected_need = {
+            "newlife-storage": "STORAGE",
+            "compact-living": "STORAGE",
+            "work-relax": "WORK_FROM_HOME",
+            "seasonal-bedroom": "COMPACT",
+        }.get(slide_id)
+        if expected_need and row.get("destination") != f"/explore?need={expected_need}":
+            errors.append(f"hero destination does not match its source theme: {slide_id}")
 
     golden = next(item for item in coordinates if item["id"] == "coord-001")
     if not {"STORAGE", "RENTAL"}.issubset(golden["needs"]) or golden["size_band"] != "SMALL_6":

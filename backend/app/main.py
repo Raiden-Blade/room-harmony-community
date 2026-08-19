@@ -58,7 +58,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.get("/health", tags=["system"])
     def health() -> dict[str, str]:
-        return {"status": "ok", "dataset": "synthetic-demo"}
+        return {"status": "ok", "dataset": "mixed-prototype-snapshot"}
 
     return app
 

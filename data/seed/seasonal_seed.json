@@ -4,7 +4,7 @@
       "id": "challenge-newlife-2028",
       "slug": "new-life-6tatami-2028",
       "title": "新生活の6畳 2028",
-      "description": "6畳前後・一人暮らし・賃貸という共通条件から、自分に近いREAL / PLANを探して次のPLANへつなげるDemo Challengeです。",
+      "description": "6畳前後・一人暮らし・賃貸という共通条件から、自分に近い参考コーデ / 投稿PLANを探して次のPLANへつなげるDemo Challengeです。",
       "why_it_matters": "新生活では商品単体より、限られた広さ・予算・収納・Desk・Bed・Lightingを同時に考える必要があります。前年の事例を再利用し、今年の選択を具体化します。",
       "theme": "NEW_LIFE",
       "season": "SPRING",
@@ -14,7 +14,7 @@
       "start_at": "2028-02-01T00:00:00+09:00",
       "end_at": "2028-05-31T23:59:59+09:00",
       "archive_at": "2028-06-30T00:00:00+09:00",
-      "cover_asset": "/assets/room-natural.svg",
+      "cover_asset": "/assets/coordinates/nitori/coord-019-relax-natural.webp",
       "eligibility": {
         "size_bands": ["SMALL_6"],
         "households": ["SINGLE"],
@@ -47,7 +47,7 @@
       "start_at": "2028-02-01T00:00:00+09:00",
       "end_at": "2028-05-31T23:59:59+09:00",
       "archive_at": "2028-06-30T00:00:00+09:00",
-      "cover_asset": "/assets/room-clear-cool.svg",
+      "cover_asset": "/assets/coordinates/nitori/coord-007-budget-natural.webp",
       "eligibility": {
         "size_bands": [],
         "households": [],
@@ -77,7 +77,7 @@
       "start_at": "2028-09-01T00:00:00+09:00",
       "end_at": "2028-11-30T23:59:59+09:00",
       "archive_at": "2028-12-31T00:00:00+09:00",
-      "cover_asset": "/assets/room-dandy.svg",
+      "cover_asset": "/assets/coordinates/nitori/coord-003-storage-dandy.webp",
       "eligibility": {
         "size_bands": [],
         "households": [],
@@ -106,7 +106,7 @@
       "start_at": "2028-06-01T00:00:00+09:00",
       "end_at": "2028-08-31T23:59:59+09:00",
       "archive_at": "2028-09-30T00:00:00+09:00",
-      "cover_asset": "/assets/room-clear-cool.svg",
+      "cover_asset": "/assets/coordinates/nitori/coord-014-work-clear-cool.webp",
       "eligibility": {
         "size_bands": [],
         "households": [],
@@ -135,7 +135,7 @@
       "start_at": "2027-09-01T00:00:00+09:00",
       "end_at": "2027-11-30T23:59:59+09:00",
       "archive_at": "2028-12-31T00:00:00+09:00",
-      "cover_asset": "/assets/room-cozy.svg",
+      "cover_asset": "/assets/coordinates/nitori/coord-013-work-natural.webp",
       "eligibility": {
         "size_bands": [],
         "households": [],
@@ -154,7 +154,7 @@
       "id": "challenge-newlife-2027",
       "slug": "new-life-6tatami-2027",
       "title": "新生活の6畳 2027",
-      "description": "前年のREAL / PLANを今年のUserが再利用するために残したArchive Demoです。",
+      "description": "前年の参考コーデ / 投稿PLANを今年のUserが再利用するために残したArchive Demoです。",
       "why_it_matters": "Archiveは過去の結果置き場ではなく、次年度の発見とPrivate PLANを始める入力です。",
       "theme": "NEW_LIFE",
       "season": "SPRING",
@@ -164,7 +164,7 @@
       "start_at": "2027-02-01T00:00:00+09:00",
       "end_at": "2027-05-31T23:59:59+09:00",
       "archive_at": "2027-06-30T00:00:00+09:00",
-      "cover_asset": "/assets/room-natural.svg",
+      "cover_asset": "/assets/coordinates/nitori/coord-001-storage-natural.webp",
       "eligibility": {
         "size_bands": ["SMALL_6"],
         "households": ["SINGLE"],
@@ -189,7 +189,7 @@
     {"id": "entry-demo-budget-001", "challenge_id": "challenge-budget-2028", "coordinate_id": "coord-007", "status": "ACTIVE", "recognition": "SMART_BUDGET", "provenance": "DEMO", "submitted_at": "2028-02-11T10:00:00+09:00"},
     {"id": "entry-demo-budget-002", "challenge_id": "challenge-budget-2028", "coordinate_id": "coord-023", "status": "ACTIVE", "recognition": null, "provenance": "DEMO", "submitted_at": "2028-02-15T10:00:00+09:00"},
     {"id": "entry-demo-archive-001", "challenge_id": "challenge-newlife-2027", "coordinate_id": "coord-001", "status": "ACTIVE", "recognition": "SMALL_SPACE_IDEA", "provenance": "DEMO", "submitted_at": "2027-02-10T10:00:00+09:00"},
-    {"id": "entry-demo-archive-002", "challenge_id": "challenge-newlife-2027", "coordinate_id": "coord-003", "status": "ACTIVE", "recognition": "REAL_ROOM_STORY", "provenance": "DEMO", "submitted_at": "2027-02-12T10:00:00+09:00"},
+    {"id": "entry-demo-archive-002", "challenge_id": "challenge-newlife-2027", "coordinate_id": "coord-003", "status": "ACTIVE", "recognition": "USEFUL_REUSE", "provenance": "DEMO", "submitted_at": "2027-02-12T10:00:00+09:00"},
     {"id": "entry-demo-archive-003", "challenge_id": "challenge-newlife-2027", "coordinate_id": "coord-005", "status": "ACTIVE", "recognition": null, "provenance": "DEMO", "submitted_at": "2027-02-15T10:00:00+09:00"}
   ]
 }

@@ -51,3 +51,25 @@ def test_goal2_database_adds_goal3_tables_and_seeds_without_reseeding_coordinate
             assert session.scalar(select(func.count()).select_from(Coordinate)) == coordinate_count
             assert session.scalar(select(func.count()).select_from(Challenge)) == 6
             assert session.scalar(select(func.count()).select_from(ChallengeEntry)) == 8
+
+
+def test_restart_repairs_only_stale_built_in_user_provenance(tmp_path):
+    database = tmp_path / "stale-built-in-provenance.db"
+    settings = Settings(
+        database_url=f"sqlite:///{database.as_posix()}",
+        seed_path=REPOSITORY_DIR / "data" / "seed" / "demo_seed.json",
+        seasonal_seed_path=REPOSITORY_DIR / "data" / "seed" / "seasonal_seed.json",
+        upload_dir=tmp_path / "uploads",
+    )
+    with TestClient(create_app(settings)) as client:
+        with client.app.state.session_factory() as session:
+            built_in = session.get(Coordinate, "coord-004")
+            built_in.provenance = "USER_DECLARED"
+            built_in.verification_state = "USER_DECLARED_UNVERIFIED"
+            session.commit()
+
+    with TestClient(create_app(settings)) as client:
+        with client.app.state.session_factory() as session:
+            repaired = session.get(Coordinate, "coord-004")
+            assert repaired.provenance in {"DEMO", "STAFF", "OFFICIAL"}
+            assert repaired.verification_state == "DEMO_ONLY"

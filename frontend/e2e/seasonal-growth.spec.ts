@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { API_BASE_URL } from "./support";
 
 
 test.describe.serial("Goal 3 seasonal growth loop", () => {
@@ -8,10 +9,10 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await page.goto("/");
     await page.getByRole("link", { name: "今のテーマと前年Archiveを見る" }).click();
     await expect(page).toHaveURL(/\/seasonal$/);
-    await expect(page.getByRole("heading", { name: "Seasonal Growth Loop" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "季節のコーデ再利用ループ" })).toBeVisible();
     await page.getByRole("link", { name: "今のテーマを見る" }).click();
     await expect(page.getByRole("heading", { name: "新生活の6畳 2028" })).toBeVisible();
-    await expect(page.getByText("NITORI公式Contest・公式選定ではなく")).toBeVisible();
+    await expect(page.getByText(/NITORI公式企画・公式選定ではありません/)).toBeVisible();
     await page.locator("#challenge-gallery").getByRole("link", { name: "空間全体を見る" }).first().click();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await page.getByRole("button", { name: "あとで参考にする" }).click();
@@ -22,13 +23,13 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
 
   test("E2E B: Creator → owned Coordinate → Challenge Entry → gallery", async ({ page, request }) => {
     const sessionId = `e2e-seasonal-entry-${Date.now()}`;
-    const creatorResponse = await request.put("http://127.0.0.1:8000/api/creators/me", {
+    const creatorResponse = await request.put(`${API_BASE_URL}/api/creators/me`, {
       headers: { "X-Session-ID": sessionId },
       data: { display_name: "E2E Seasonal Creator", bio: "Seasonal参加の検証用Display Identity" },
     });
     expect(creatorResponse.ok()).toBeTruthy();
     const creator = await creatorResponse.json() as { id: string };
-    const coordinateResponse = await request.post("http://127.0.0.1:8000/api/community/coordinates", {
+    const coordinateResponse = await request.post(`${API_BASE_URL}/api/community/coordinates`, {
       headers: { "X-Session-ID": sessionId },
       data: {
         kind: "PLAN",
@@ -72,7 +73,7 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await page.goto("/challenges/new-life-6tatami-2027");
     await expect(page.getByText("前年Archive")).toBeVisible();
     await page.locator("#challenge-gallery").getByRole("link", { name: "空間全体を見る" }).first().click();
-    await expect(page.getByText("この暮らしが参加するTheme")).toBeVisible();
+    await expect(page.getByText("この暮らしが参加するテーマ")).toBeVisible();
     await page.getByRole("button", { name: "このコーデを自分向けにアレンジ" }).click();
     await expect(page.getByRole("heading", { name: "自分向けに変更する" })).toBeVisible();
     await page.getByRole("button", { name: "この内容で比較準備へ" }).click();
@@ -85,7 +86,7 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await expect(page).toHaveURL(/\/coordinates\/community-/);
     const derivativeId = new URL(page.url()).pathname.split("/").at(-1);
     expect(derivativeId).toBeTruthy();
-    await expect(page.getByText("参考とアレンジのつながり")).toBeVisible();
+    await expect(page.getByText("参考元とアレンジ")).toBeVisible();
     await expect(page.getByText("収納を重視した").first()).toBeVisible();
 
     const newLifeOption = page.locator(".challenge-option-list article").filter({ hasText: "新生活の6畳 2028" });
@@ -96,7 +97,7 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await expect(page.getByRole("heading", { name: "E2E Archive Remixer" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "今年の新生活ユーザーの参考へ" })).toBeVisible();
     const seasonalSummary = page.locator(".creator-seasonal-summary");
-    await expect(seasonalSummary.locator("article").filter({ hasText: "Theme参加" }).getByText("1")).toBeVisible();
+    await expect(seasonalSummary.locator("article").filter({ hasText: "テーマ参加" }).getByText("1")).toBeVisible();
     await page.getByRole("link", { name: "新生活の6畳 2028 →" }).click();
     await expect(page.locator(`#challenge-gallery a[href="/coordinates/${derivativeId}"]`).first()).toBeVisible();
   });

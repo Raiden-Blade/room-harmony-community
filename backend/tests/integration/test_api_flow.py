@@ -1,5 +1,5 @@
 def test_health_and_discovery_api(client):
-    assert client.get("/health").json() == {"status": "ok", "dataset": "synthetic-demo"}
+    assert client.get("/health").json() == {"status": "ok", "dataset": "mixed-prototype-snapshot"}
     response = client.get(
         "/api/coordinates",
         params={"mode": "similar", "room_size": "SMALL_6", "need": "STORAGE", "budget_max": 50_000},
@@ -9,16 +9,53 @@ def test_health_and_discovery_api(client):
     assert body["results"][0]["id"] == "coord-001"
     assert body["results"][0]["match_reasons"]
 
+    photo_gallery = client.get("/api/coordinates", params={"limit": 50}).json()["results"]
+    assert len(photo_gallery) == 15
+    assert all(row["image_rights"] == "EXPLICITLY_PERMITTED" for row in photo_gallery)
+    assert len({row["image_url"] for row in photo_gallery}) == len(photo_gallery)
+
+
+def test_default_product_picker_uses_the_18_photo_backed_reference_products(client):
+    products = client.get("/api/products").json()["results"]
+
+    assert len(products) == 18
+    assert all(product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT" for product in products)
+    assert len({product["image_url"] for product in products}) == len(products)
+
 
 def test_coordinate_and_product_to_coordinate_api(client):
     coordinate = client.get("/api/coordinates/coord-001")
     assert coordinate.status_code == 200
-    assert len(coordinate.json()["items"]) >= 5
+    assert coordinate.json()["kind"] == "PLAN"
+    assert coordinate.json()["match_reasons"] == []
+    assert coordinate.json()["price"]["status"] == "NITORI_OFFICIAL_SNAPSHOT"
+    products = [item["product"] for item in coordinate.json()["items"] if item["product"]]
+    assert len(products) >= 5
+    assert all(product["id"].startswith("NTR-") for product in products)
+    assert all(product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT" for product in products)
+    assert len({product["image_url"] for product in products}) == len(products)
 
-    product_id = coordinate.json()["items"][0]["product"]["id"]
+    product_id = products[0]["id"]
     product = client.get(f"/api/products/{product_id}")
     assert product.status_code == 200
+    assert product.json()["image_url"] == products[0]["image_url"]
+    assert product.json()["name"] == products[0]["name"]
+    assert product.json()["price_snapshot"] == products[0]["price_snapshot"]
     assert any(row["id"] == "coord-001" for row in product.json()["coordinates"])
+
+
+def test_coordinate_detail_only_returns_real_selected_context_matches(client):
+    detail = client.get(
+        "/api/coordinates/coord-001",
+        params={"room_size": "SMALL_6", "need": "STORAGE", "budget_max": 50_000},
+    )
+
+    assert detail.status_code == 200
+    assert detail.json()["match_reasons"] == [
+        "収納不足に対応",
+        "6畳前後に近い",
+        "予算5万円以内",
+    ]
 
 
 def test_save_and_plan_creation_api(client):
@@ -30,6 +67,9 @@ def test_save_and_plan_creation_api(client):
     assert created.json()["parent_coordinate_id"] == "coord-001"
     assert created.json()["kind"] == "PLAN"
     assert "owner_session_id" not in created.json()
+    parent = client.get("/api/coordinates/coord-001").json()
+    assert parent["genealogy"]["plan_started_count"] == 1
+    assert [row["id"] for row in parent["genealogy"]["owned_private_plans"]] == [created.json()["id"]]
 
 
 def test_plan_update_and_handoff_preview_api(client):
@@ -111,6 +151,11 @@ def test_analytics_validation_and_readiness_api(client):
         },
     )
     assert accepted.status_code == 202
+    product_reference = client.post(
+        "/api/analytics/events",
+        json={"event_name": "product_view", "product_id": "NTR-2110600044491-0000002000852"},
+    )
+    assert product_reference.status_code == 202
     rejected = client.post(
         "/api/analytics/events",
         json={"event_name": "product_view", "properties": {"free_text": "do not store"}},

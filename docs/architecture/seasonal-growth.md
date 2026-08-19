@@ -55,7 +55,7 @@ Entry POSTは`coordinate_id`以外を受け取らず、recognition自己設定�
 - `/challenges/:slug`: why、structured constraints、real counts、owned candidate、Prototype Pick、gallery。
 - `/create?challenge=:slug`: 既存Create flowを再利用し、条件をprefillしてPublish後にEntry。
 - Coordinate Detail: challenge context、Ownerのexisting-coordinate entry。
-- Creator Profile: participation、recognition、direct reuse impact。
+- Creator Profile: participation、recognition、`direct_seasonal_reuse_count`。これはChallenge参加Coordinateからの直接childを数え、公開・非公開、同一・別Sessionを含む。descendant全体やBusiness KPIではない。
 
 Homeの主導線はCoordinate discoveryのままにし、Seasonalは補助CTAとして置く。Top-levelの独立SNSやContestにはしない。
 

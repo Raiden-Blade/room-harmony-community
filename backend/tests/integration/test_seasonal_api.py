@@ -91,8 +91,8 @@ def test_challenge_detail_exposes_structured_constraints_breakdown_and_prototype
     assert response.status_code == 200
     body = response.json()
     assert body["participation_count"] == 3
-    assert body["real_count"] == 3
-    assert body["plan_count"] == 0
+    assert body["real_count"] == 0
+    assert body["plan_count"] == 3
     assert body["eligibility"]["size_bands"] == ["SMALL_6"]
     assert {item["code"] for item in body["constraints"]} >= {"SIZE_BAND", "BUDGET_MAX"}
     assert body["prototype_picks"]
@@ -217,3 +217,13 @@ def test_archived_coordinate_can_be_adapted_published_and_entered_with_lineage(c
     creator = client.get("/api/creators/me", headers=OWNER).json()
     assert creator["seasonal"]["challenge_entries"] == 1
     assert creator["seasonal"]["participations"][0]["coordinate_id"] == derivative.json()["id"]
+    assert creator["seasonal"]["direct_seasonal_reuse_count"] == 0
+
+    direct_child = client.post(
+        f"/api/plans/from-coordinate/{derivative.json()['id']}",
+        json={},
+        headers=OTHER,
+    )
+    assert direct_child.status_code == 201
+    creator = client.get("/api/creators/me", headers=OWNER).json()
+    assert creator["seasonal"]["direct_seasonal_reuse_count"] == 1

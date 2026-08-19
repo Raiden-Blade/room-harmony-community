@@ -1,12 +1,18 @@
 # MVP Definition
 
-> This document preserves the Goal 1 MVP baseline. Goal 2 activates public REAL / PLAN contribution, Helpful, local image upload, lineage, and Creator Impact. Goal 3 activates structured Seasonal Challenge / Entry / Archive reuse without adding ranking. See [`../architecture/community-loop.md`](../architecture/community-loop.md) and [`../architecture/seasonal-growth.md`](../architecture/seasonal-growth.md). Items below marked out of the original MVP are historical Phase 1 boundaries, not a claim that later Goals removed them.
+> This document preserves the Goal 1 hypothesis baseline and states the final Goal 4 prototype boundary. Goal 2 activates public REAL / PLAN contribution, Helpful, local image upload, lineage, and Creator Impact. Goal 3 activates structured Seasonal Challenge / Entry / Archive reuse without adding ranking. Goal 4 hardens the demo without adding a new product feature. See [`../architecture/community-loop.md`](../architecture/community-loop.md) and [`../architecture/seasonal-growth.md`](../architecture/seasonal-growth.md).
 
 ## MVP objective
 
 「自分に近いCoordinateを見つけ、商品を空間単位で理解し、Private PLANにしてStore / EC actionへ進む」という最短因果を検証する。
 
-Public communityを完成させることはMVPの目的ではない。
+Planning / CommerceがCoreである。Communityは事例を再利用可能にするSupply / feedback loop、Seasonalは前年事例を再発見するGrowth Layerであり、generic social feedや人気Contestを目的にしない。
+
+## Final Goal 4 product story
+
+暮らしの事例を「見る」だけで終わらせず、自分の条件に合わせたPrivate PLANへ変え、店舗・ECで実現する準備をし、実現後はUSER_DECLARED REAL ROOMとして次の人へ循環させるCoordinate Platform。
+
+Current prototypeで実証するのは、multi-product exploration path、PLAN編集、Store / EC action instrumentation、Community / Seasonal reuse measurement readinessまでである。併売率・売上・購入Conversionの向上、NITORI公式採用・選定、実在商品・在庫、live Room Harmony接続は実証しない。
 
 ## Hypothesis → required feature
 
@@ -91,12 +97,17 @@ flowchart LR
 - Analytics events and user-selected comparison-condition labels（randomized assignmentではない）
 - Responsive static / functional prototype sufficient for usability testing
 
-### Explicitly out
+### Original Goal 1 only — historical exclusions later activated by Goal 2 / 3
+
+- Public image upload / USER_DECLARED REAL ROOM publish
+- Helpful / Public adaptation / Creator Impact
+- Structured non-competitive Seasonal Challenge / Archive reuse
+
+### Final prototype — explicitly out
 
 - Production React / FastAPI system at full scale
 - Production authentication / NITORI account integration
-- Public image upload / REAL ROOM publish
-- Like / Comment / Follow / notification
+- Generic Like / Comment / Follow / notification / DM / feed
 - Leaderboard / vote contest / reward（Goal 3の非競争Seasonal Challengeは実装済み）
 - Production moderation tooling
 - Full 3D editor / room scan

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { api, track } from "../api/client";
 import { EmptyView, ErrorView, Loading } from "../components/common/StatusView";
+import { SafeImage } from "../components/common/SafeImage";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
 import { useAsync } from "../hooks/useAsync";
 import { label, yen } from "../utils/labels";
@@ -42,12 +43,12 @@ export function SavedPage() {
       <section className="section section--flush" aria-labelledby="plans-title">
         <div className="section-heading"><div><p className="eyebrow">Private</p><h2 id="plans-title">My PLAN</h2></div></div>
         {collection.data.plans.length === 0 ? (
-          <EmptyView title="PLANはまだありません"><p>保存したコーデから「自分向けに変更する」と、ここにPrivate PLANができます。</p></EmptyView>
+          <EmptyView title="PLANはまだありません"><p>気になるコーデを見つけて「自分向けにアレンジ」すると、ここに検討用PLANができます。</p><Link className="button button--secondary" to="/explore">元になるコーデを探す</Link></EmptyView>
         ) : (
           <div className="plan-list">
             {collection.data.plans.map((plan) => (
               <article className="plan-row" key={plan.id}>
-                <img src={plan.image_url} alt="PLANの元になったオリジナルデモイラスト" />
+                <SafeImage src={plan.image_url} alt="PLANの元になったコーディネート画像" />
                 <div><p className="eyebrow">{label(plan.status)} · {label(plan.size_band)}</p><h3>{plan.title}</h3><p>{yen(plan.price.known_total)} · {plan.product_count}商品</p></div>
                 <Link className="button button--secondary" to={`/plans/${plan.id}`}>PLANを確認</Link>
               </article>

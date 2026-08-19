@@ -22,11 +22,24 @@ Git / Python / npm commandに慣れていないReviewerが、ZIP展開後に同�
 
 Install済みの依存関係はlock / requirements hashで再利用する。Backend / Frontend process IDは`.demo/processes.json`へ保存する。
 
+通常は既定portを使う。既定portを利用できない開発・検証環境に限り、`start-demo.cmd -NoBrowser -BackendPort 8303 -FrontendPort 5376`で別portを指定できる。`stop-demo.cmd`はprocess記録から同じportを読み、Reset時は`reset-demo.cmd -Force -BackendPort 8303 -FrontendPort 5376`のように同じ値を渡す。
+
+展開先Folder名に空白が含まれても起動できる。LauncherはVite entryを明示的にquoteし、Backend processにはRepository pathを含む`--app-dir`を渡すため、`stop-demo.cmd`は他のPython processと区別できる。
+
 Python discoveryはusable `python.exe` → `py.exe -3` → explicit failureの順で行う。Microsoft Store aliasやPython 3.10以下は理由を表示して次候補へ進む。Virtual environment作成とdependency installは選択されたInterpreter系統から作った`backend/.venv`を使用し、既存venvのversionも再確認する。
 
 ## Stop
 
 `stop-demo.cmd`をDouble-clickする。記録されたPIDのcommand lineがこのRepository pathを含む場合だけ停止する。他ProjectのPython / Node processは停止しない。
+
+## Reset before a presentation
+
+1. `reset-demo.cmd`をDouble-clickする。
+2. 表示された絶対pathがこのRepositoryの`.demo`であることを確認する。
+3. 大文字で`RESET`と入力する。
+4. Seed validation完了後に`start-demo.cmd`をDouble-clickする。
+
+Resetはlauncher-owned processを安全に停止し、`.demo/room-harmony-community.db`、known E2E / visual-QA residue、`.demo/uploads`だけを削除する。Save、Helpful、Private PLAN、Creator、Public Coordinate、local upload、Challenge Entry、AnalyticsはSeed状態へ戻る。Source、tracked assets、`.demo/logs`、`.demo/visual-qa`、Repository外file、unmanaged processは変更しない。`-Force`は自動検証用であり、通常の発表準備ではconfirmation付きDouble-clickを使う。
 
 ## Common failures
 
@@ -40,18 +53,21 @@ Python discoveryはusable `python.exe` → `py.exe -3` → explicit failureの�
 | Package installation failed | Network / proxy / permission | Network確認後に再実行。`backend/.venv`や`node_modules`を手動削除しない |
 | Health timeout | Backend / Frontend crash | `.demo/logs/*err.log`の末尾を確認 |
 | Page opens but data is blank | Backend unavailable | <http://127.0.0.1:8000/health>が`status: ok`か確認 |
+| Save / Helpful / Challengeが既に操作済み | 前のDemo Session / DBが残っている | `stop-demo.cmd` → `reset-demo.cmd` → `start-demo.cmd` |
+| Reset refuses to continue | 8000 / 5173にunmanaged listenerがある | 表示されたPIDのAppを確認し、自分で終了してから再実行。Resetは強制終了しない |
 
 ## Manual health checklist
 
-- `/health` returns `{"status":"ok","dataset":"synthetic-demo"}`
+- `/health` returns `{"status":"ok","dataset":"mixed-prototype-snapshot"}`
 - `/docs` lists catalog / saved / plans / analytics
 - Home says `機能検証用デモ`
-- Product IDs use `DEMO-*`
+- Main Demo Product IDsには公式対応の`NTR-*`、fallbackには`DEMO-*`を使う
 - Handoff says `PREVIEW ONLY` and `live_integration: false`
+- Main Demo Coordinateが同じroom imageの連続表示になっていない
 - Stop leaves no listener on port 8000 / 5173
 
 ## Clean-room acceptance
 
-Release前はtemporary directoryへfresh cloneし、tracked fileだけの状態から`start-demo.cmd -NoBrowser`を実行する。Health check、Home 200、`stop-demo.cmd`、port解放まで確認する。
+Release前は空白を含むtemporary directoryへfresh cloneし、venv / node_modules / `.demo`が無いtracked fileだけの状態から`start-demo.cmd -NoBrowser`を実行する。既定portが別のDemoで使用中の場合だけ上記の検証用portを指定する。Health check、Home 200、Demo 1 sanity、Seasonal API、real WebP 200、repeated start、`stop-demo.cmd`、port解放、`reset-demo.cmd -Force`、tracked worktree cleanまで確認する。
 
 これは別Physical PCの確認ではない。別PCは[`second-pc-checklist.md`](second-pc-checklist.md)を使い、未実施なら`MANUAL_SECOND_PC_TEST_REQUIRED`と記録する。

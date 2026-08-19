@@ -182,12 +182,31 @@ def test_real_and_plan_creation_are_distinct_and_real_requires_image(client):
     assert real["moderation_status"] == "ACTIVE"
     assert real["image_urls"][0].startswith("/uploads/")
     assert plan["kind"] == "PLAN"
+    assert plan["image_url"] == "/assets/room-natural.svg"
+    assert plan["image_rights"] == "LOCALLY_CREATED_DEMO_PLACEHOLDER"
     assert "購入済み" in plan["demo_disclosure"]
 
     stored = client.app.state.settings.upload_dir / real["image_urls"][0].rsplit("/", 1)[-1]
     assert stored.is_file()
     assert client.delete(f"/api/community/coordinates/{real['id']}", headers=OWNER).status_code == 204
     assert not stored.exists()
+
+
+def test_public_coordinate_accepts_catalogued_nitori_product_id(client):
+    create_identity(client)
+    payload = coordinate_payload("PLAN")
+    payload["products"] = [
+        {
+            "product_id": "NTR-2110600044491-0000002000852",
+            "role": "MAIN_FURNITURE",
+            "quantity": 1,
+        }
+    ]
+
+    published = client.post("/api/community/coordinates", json=payload, headers=OWNER)
+
+    assert published.status_code == 201, published.text
+    assert published.json()["items"][0]["product"]["id"] == "NTR-2110600044491-0000002000852"
 
 
 def test_helpful_save_adapt_publish_lineage_and_impact(client):

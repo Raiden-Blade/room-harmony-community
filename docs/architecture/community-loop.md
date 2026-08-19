@@ -10,7 +10,7 @@ Creator → Public REAL / PLAN → discovery → Helpful / Save
 → Public PLAN / REALとして再共有 → Creator Impact
 ```
 
-Like、Follower、Comment、DM、Following Feed、Contest、viral rankingは扱わない。Goal 3のSeasonal Challenge、Goal 4のExpansionも実装しない。
+Like、Follower、Comment、DM、Following Feed、Contest、viral rankingは扱わない。このGoal 2設計自体にはSeasonal Challengeを含めず、後続Goal 3がCoordinate上の独立したreuse layerとして追加した。Goal 4は新機能ではなく最終Demo hardeningだけを行う。
 
 ## Identity and ownership
 

@@ -3,7 +3,12 @@ export type PriceSummary = {
   unknown_item_count: number;
   calculated_at: string;
   currency: "JPY";
-  status: "DEMO_SNAPSHOT" | "PARTIAL_DEMO_SNAPSHOT";
+  status:
+    | "DEMO_SNAPSHOT"
+    | "PARTIAL_DEMO_SNAPSHOT"
+    | "NITORI_OFFICIAL_SNAPSHOT"
+    | "PARTIAL_NITORI_OFFICIAL_SNAPSHOT"
+    | "MIXED_SNAPSHOT";
   notice: string;
 };
 
@@ -97,6 +102,7 @@ export type Genealogy = {
   parent: GenealogyNode | null;
   root: GenealogyNode | null;
   plan_started_count: number;
+  owned_private_plans: GenealogyNode[];
   public_adaptation_count: number;
   public_children: GenealogyNode[];
 };
@@ -157,7 +163,7 @@ export type CreatorProfile = {
 export type CreatorSeasonalSummary = {
   challenge_entries: number;
   recognized_coordinates: number;
-  seasonal_reuse_count: number;
+  direct_seasonal_reuse_count: number;
   participations: Array<{
     challenge_id: string;
     challenge_slug: string;

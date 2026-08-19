@@ -12,9 +12,10 @@ from app.schemas.seasonal import ChallengeConstraint, ChallengeEligibility
 
 
 def seed_if_empty(session: Session, seed_path: Path) -> None:
-    if session.scalar(select(func.count()).select_from(Product)):
-        return
     payload = json.loads(seed_path.read_text(encoding="utf-8"))
+    if session.scalar(select(func.count()).select_from(Product)):
+        _repair_stale_built_in_user_provenance(session, payload)
+        return
     for row in payload["products"]:
         session.add(
             Product(
@@ -90,6 +91,29 @@ def seed_if_empty(session: Session, seed_path: Path) -> None:
             )
         session.add(coordinate)
     session.commit()
+
+
+def _repair_stale_built_in_user_provenance(session: Session, payload: dict) -> None:
+    """Repair the pre-Goal-4D seed bug without touching user-created content."""
+
+    expected = {row["id"]: row for row in payload["coordinates"] if row["id"].startswith("coord-")}
+    changed = False
+    for coordinate in session.scalars(
+        select(Coordinate).where(
+            Coordinate.id.in_(expected),
+            Coordinate.owner_session_id.is_(None),
+            Coordinate.creator_id.is_(None),
+            Coordinate.provenance == "USER_DECLARED",
+        )
+    ):
+        row = expected[coordinate.id]
+        coordinate.provenance = row["provenance"]
+        coordinate.verification_state = row["verification_state"]
+        coordinate.creator_display = row["creator_display"]
+        coordinate.creator_type = row["creator_type"]
+        changed = True
+    if changed:
+        session.commit()
 
 
 def seed_seasonal_if_empty(session: Session, seed_path: Path) -> None:

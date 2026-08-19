@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactElement } from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { api, track } from "../api/client";
 import type { ChallengeDetail, ChallengeSummary, CoordinateDetail, CoordinateSummary, CreatorProfile, HandoffPayload, ProductSummary, SeasonalLanding } from "../api/types";
 import { ChallengeDetailPage } from "../pages/ChallengeDetailPage";
+import { HERO_SLIDES } from "../components/home/HeroCarousel";
 import { CreateCoordinatePage } from "../pages/CreateCoordinatePage";
 import { CreatorProfilePage } from "../pages/CreatorProfilePage";
 import { CoordinateDetailPage } from "../pages/CoordinateDetailPage";
@@ -30,6 +31,7 @@ vi.mock("../api/client", () => ({
   },
   mediaUrl: (path: string) => path,
   track: vi.fn().mockResolvedValue(undefined),
+  trackOnce: vi.fn(),
 }));
 
 const product: ProductSummary = {
@@ -45,14 +47,14 @@ const storage: ProductSummary = {
 };
 
 const summary: CoordinateSummary = {
-  id: "coord-001", kind: "REAL", status: "PUBLISHED", title: "収納重視の6畳ナチュラルルーム",
+  id: "coord-001", kind: "PLAN", status: "READY_FOR_ACTION", title: "収納重視の6畳ナチュラルルーム",
   description: "6畳の収納不足を解決する架空デモです。", room_type: "ONE_ROOM", size_band: "SMALL_6",
   housing_type: "RENTAL", household: "SINGLE", budget_band: "UNDER_50000", budget_max: 50000,
   style: "NATURAL", needs: ["STORAGE", "RENTAL"], provenance: "DEMO", verification_state: "DEMO_ONLY",
   creator_display: "Demo team", creator_type: "DEMO_TEAM", image_url: "/assets/room-natural.svg",
   creator_id: null, image_urls: ["/assets/room-natural.svg"], root_coordinate_id: "coord-001",
   derivation_type: null, moderation_status: "ACTIVE",
-  image_rights: "LOCALLY_CREATED_DEMO", demo_disclosure: "オリジナルデモです。", seasonal_collection: "NEW_LIFE_2027",
+  image_rights: "EXPLICITLY_PERMITTED", demo_disclosure: "室内画像と商品一覧は別の参照層です。", seasonal_collection: "NEW_LIFE_2027",
   official_pick: true, price: { known_total: 21800, unknown_item_count: 0, calculated_at: "2026-08-18T00:00:00Z", currency: "JPY", status: "DEMO_SNAPSHOT", notice: "デモ価格です。" },
   product_count: 2, category_count: 2, match_reasons: ["6畳前後に近い", "収納不足に対応", "予算5万円以内"], score: 103, is_saved: false,
   helpful_count: 0, is_helpful: false, can_edit: false,
@@ -66,7 +68,7 @@ const detail: CoordinateDetail = {
   ],
   creator_impact_slot: { enabled: true, helpful_count: null, saved_count: null, adaptation_count: null },
   creator_impact: { published_coordinates: 1, helpful_count: 0, saved_count: 0, plan_started_count: 0, public_adaptation_count: 0, real_room_contributions: 0 },
-  genealogy: { parent: null, root: { id: "coord-001", title: "収納重視の6畳ナチュラルルーム", kind: "REAL", available: true }, plan_started_count: 0, public_adaptation_count: 0, public_children: [] },
+  genealogy: { parent: null, root: { id: "coord-001", title: "収納重視の6畳ナチュラルルーム", kind: "PLAN", available: true }, plan_started_count: 0, owned_private_plans: [], public_adaptation_count: 0, public_children: [] },
   challenge_contexts: [],
   challenge_options: [],
 };
@@ -83,7 +85,7 @@ const options = {
   styles: [{ value: "NATURAL", label: "ナチュラル" }],
 };
 
-const emptySeasonal = { challenge_entries: 0, recognized_coordinates: 0, seasonal_reuse_count: 0, participations: [] };
+const emptySeasonal = { challenge_entries: 0, recognized_coordinates: 0, direct_seasonal_reuse_count: 0, participations: [] };
 
 const challengeSummary: ChallengeSummary = {
   id: "challenge-newlife-2028", slug: "new-life-6tatami-2028", title: "新生活の6畳 2028",
@@ -102,7 +104,7 @@ const challengeDetail: ChallengeDetail = {
   ...challengeSummary,
   why_it_matters: "商品単体ではなく、広さと予算を同時に考えるためです。",
   eligibility: { size_bands: ["SMALL_6"], households: ["SINGLE"], housing_types: ["RENTAL"], budget_max: 80000, kinds: ["REAL", "PLAN"], image_required: false, min_product_count: 2 },
-  participation_count: 1, real_count: 1, plan_count: 0,
+  participation_count: 1, real_count: 0, plan_count: 1,
   entries: [{ id: "entry-1", challenge_id: challengeSummary.id, coordinate_id: summary.id, creator_id: null, submitted_at: "2028-02-10T00:00:00Z", status: "ACTIVE", recognition: "SMALL_SPACE_IDEA", provenance: "PROTOTYPE_PICK", coordinate: summary }],
   prototype_picks: [{ id: "entry-1", challenge_id: challengeSummary.id, coordinate_id: summary.id, creator_id: null, submitted_at: "2028-02-10T00:00:00Z", status: "ACTIVE", recognition: "SMALL_SPACE_IDEA", provenance: "PROTOTYPE_PICK", coordinate: summary }],
   my_candidates: [],
@@ -189,7 +191,7 @@ describe("Goal 2 creator and community surfaces", () => {
       id: "creator-1", display_name: "暮らしの試作家", bio: "手持ち家具を活かします。", contribution_count: 1,
       impact: { published_coordinates: 1, helpful_count: 3, saved_count: 2, plan_started_count: 2, public_adaptation_count: 1, real_room_contributions: 1 },
       created_at: "2026-08-18T00:00:00Z", contributions: [{ ...summary, creator_id: "creator-1", creator_display: "暮らしの試作家" }], is_owner: false,
-      seasonal: { challenge_entries: 1, recognized_coordinates: 1, seasonal_reuse_count: 2, participations: [{ challenge_id: challengeSummary.id, challenge_slug: challengeSummary.slug, challenge_title: challengeSummary.title, season: "SPRING", year: 2028, coordinate_id: summary.id, coordinate_title: summary.title, recognition: "SMALL_SPACE_IDEA", provenance: "PROTOTYPE_PICK" }] },
+      seasonal: { challenge_entries: 1, recognized_coordinates: 1, direct_seasonal_reuse_count: 2, participations: [{ challenge_id: challengeSummary.id, challenge_slug: challengeSummary.slug, challenge_title: challengeSummary.title, season: "SPRING", year: 2028, coordinate_id: summary.id, coordinate_title: summary.title, recognition: "SMALL_SPACE_IDEA", provenance: "PROTOTYPE_PICK" }] },
     };
     vi.mocked(api.creator).mockResolvedValue(profile);
     renderRoute(<CreatorProfilePage />, "/creators/creator-1", "/creators/:creatorId");
@@ -211,15 +213,18 @@ describe("Goal 2 creator and community surfaces", () => {
         parent: { id: "coord-002", title: "参考元のコーデ", kind: "REAL", available: true },
         root: { id: "coord-002", title: "参考元のコーデ", kind: "REAL", available: true },
         plan_started_count: 2,
+        owned_private_plans: [{ id: "plan-001", title: "自分用：参考元のコーデ", kind: "PLAN", available: true }],
         public_adaptation_count: 1,
-        public_children: [],
+        public_children: [{ id: "community-33333333-3333-3333-3333-333333333333", title: "公開アレンジ例", kind: "PLAN", available: true }],
       },
     });
     renderRoute(<CoordinateDetailPage />, "/coordinates/coord-001", "/coordinates/:coordinateId");
     await user.click(await screen.findByRole("button", { name: "参考になった · 0" }));
     expect(api.helpful).toHaveBeenCalledWith("coord-001");
     expect(screen.getByText(/「参考になった」は役立ち/)).toBeInTheDocument();
-    expect(screen.getByText("参考とアレンジのつながり")).toBeInTheDocument();
+    expect(screen.getByText("このコーデがどう活用されたか")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /自分用：参考元のコーデを開く/ })).toHaveAttribute("href", "/plans/plan-001");
+    expect(screen.getByRole("link", { name: "公開アレンジ例 →" })).toHaveAttribute("href", "/coordinates/community-33333333-3333-3333-3333-333333333333");
     await user.click(screen.getByRole("button", { name: "この投稿を報告" }));
     await user.selectOptions(screen.getByLabelText("理由"), "PRIVACY");
     await user.click(screen.getByRole("button", { name: "報告を送る" }));
@@ -245,7 +250,7 @@ describe("Goal 3 seasonal growth surfaces", () => {
   it("Seasonal Landing keeps the annual reuse loop and previous-year archive visible", async () => {
     renderRoute(<SeasonalLandingPage />, "/seasonal", "/seasonal");
     expect(await screen.findByRole("heading", { name: /前年の暮らしを/ })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Seasonal Growth Loop" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "季節のコーデ再利用ループ" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "受付終了・整理中" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "昨年の参考コーデ" })).toBeInTheDocument();
     expect(screen.getByText(summary.title)).toBeInTheDocument();
@@ -258,7 +263,7 @@ describe("Goal 3 seasonal growth surfaces", () => {
     expect(screen.getByRole("heading", { name: "参加条件" })).toBeInTheDocument();
     expect(screen.getByText("予算8万円以内")).toBeInTheDocument();
     expect(screen.getAllByText("PROTOTYPE PICK").length).toBeGreaterThan(0);
-    expect(screen.getByText(/NITORI公式Contest・公式選定ではなく/)).toBeInTheDocument();
+    expect(screen.getByText(/NITORI公式企画・公式選定ではありません/)).toBeInTheDocument();
   });
 
   it("Owner can enter an eligible existing Coordinate", async () => {
@@ -279,10 +284,10 @@ describe("Goal 3 seasonal growth surfaces", () => {
       ...challengeDetail,
       my_candidates: [{ coordinate: { ...summary, id: "community-22222222-2222-2222-2222-222222222222" }, eligible: true, rejection_codes: [], rejection_messages: [], already_entered: false }],
     });
-    vi.mocked(api.enterChallenge).mockRejectedValue(new Error("参加条件を満たしていません（BUDGET_MISMATCH）"));
+    vi.mocked(api.enterChallenge).mockRejectedValue(new Error("参加条件を確認してください。予算上限がテーマ条件を超えています。"));
     renderRoute(<ChallengeDetailPage />, `/challenges/${challengeSummary.slug}`, "/challenges/:challengeSlug");
     await user.click(await screen.findByRole("button", { name: "このテーマに参加" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("BUDGET_MISMATCH");
+    expect(await screen.findByRole("alert")).toHaveTextContent("予算上限がテーマ条件を超えています");
   });
 
   it("Archived Challenge is reusable but no longer accepts entries", async () => {
@@ -297,9 +302,29 @@ describe("Goal 3 seasonal growth surfaces", () => {
 describe("functional MVP pages", () => {
   it("Home shows the primary new-life target and starting CTA", async () => {
     renderRoute(<HomePage />, "/", "/");
-    expect(screen.getByText("新生活 × 一人暮らし × 6畳")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "6畳のおすすめを見る" })).toHaveAttribute("href", expect.stringContaining("SMALL_6"));
+    expect(screen.getByText("暮らしの事例から、自分用PLANへ")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "条件から参考コーデを探す" })).toHaveAttribute("href", "/explore");
     expect(await screen.findByText(summary.title)).toBeInTheDocument();
+  });
+
+  it("Hero metadata avoids unsupported size and budget claims and keeps CTA themes aligned", () => {
+    expect(HERO_SLIDES).toHaveLength(4);
+    for (const slide of HERO_SLIDES) {
+      expect(`${slide.kicker}${slide.title}${slide.cta}`).not.toMatch(/畳|万円/);
+    }
+    expect(HERO_SLIDES.map((slide) => slide.to)).toEqual([
+      "/explore?need=STORAGE",
+      "/explore?need=STORAGE",
+      "/explore?need=WORK_FROM_HOME",
+      "/explore?need=COMPACT",
+    ]);
+  });
+
+  it("Hero controls use image-relative SVG arrows", () => {
+    renderRoute(<HomePage />, "/", "/");
+    expect(screen.getByRole("button", { name: "前の部屋を見る" }).querySelector("svg")).not.toBeNull();
+    expect(screen.getByRole("button", { name: "次の部屋を見る" }).querySelector("svg")).not.toBeNull();
+    expect(screen.getAllByRole("button", { name: /枚目:/ })).toHaveLength(4);
   });
 
   it("Context selection sends at most room, need, and budget", async () => {
@@ -326,6 +351,78 @@ describe("functional MVP pages", () => {
     expect(screen.getByText("メイン家具")).toBeInTheDocument();
     expect(screen.getAllByText("収納").length).toBeGreaterThan(0);
     expect(screen.getByRole("button", { name: "このコーデを自分向けにアレンジ" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "このコーデの特徴" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "選んだ条件との一致" })).not.toBeInTheDocument();
+    expect(screen.getByText(/室内画像と購入候補は、別々の参照情報/)).toBeInTheDocument();
+    expect(screen.getByText("参考コーデ")).toBeInTheDocument();
+    const features = screen.getByRole("list", { name: "コーデの属性" });
+    expect(within(features).queryByRole("button")).not.toBeInTheDocument();
+    expect(within(features).queryByRole("link")).not.toBeInTheDocument();
+  });
+
+  it("Coordinate Detail reached from Explore shows only the selected matching reasons", async () => {
+    renderRoute(
+      <CoordinateDetailPage />,
+      "/coordinates/coord-001?room_size=SMALL_6&need=STORAGE&budget_max=50000",
+      "/coordinates/:coordinateId",
+    );
+
+    expect(await screen.findByRole("heading", { name: "選んだ条件との一致" })).toBeInTheDocument();
+    expect(screen.getByText("収納不足に対応")).toBeInTheDocument();
+    const params = vi.mocked(api.coordinate).mock.calls.at(-1)?.[1];
+    expect(params?.get("room_size")).toBe("SMALL_6");
+    expect(params?.get("need")).toBe("STORAGE");
+    expect(params?.get("budget_max")).toBe("50000");
+  });
+
+  it("Built-in reference provenance is not presented as a User declaration", async () => {
+    vi.mocked(api.coordinate).mockResolvedValue({
+      ...detail,
+      creator_id: null,
+      provenance: "USER_DECLARED",
+      verification_state: "DEMO_ONLY",
+    });
+    renderRoute(<CoordinateDetailPage />, "/coordinates/coord-001", "/coordinates/:coordinateId");
+
+    const source = await screen.findByRole("region", { name: "この事例について" });
+    expect(within(source).getByText("デモ制作（検証用構成）")).toBeInTheDocument();
+    expect(within(source).queryByText(/User申告/)).not.toBeInTheDocument();
+  });
+
+  it("Actual user-created content keeps its User declaration provenance", async () => {
+    vi.mocked(api.coordinate).mockResolvedValue({
+      ...detail,
+      id: "community-11111111-1111-1111-1111-111111111111",
+      kind: "REAL",
+      creator_id: "creator-1",
+      provenance: "USER_DECLARED",
+      verification_state: "USER_DECLARED_UNVERIFIED",
+      image_rights: "USER_UPLOADED_LOCAL",
+    });
+    renderRoute(
+      <CoordinateDetailPage />,
+      "/coordinates/community-11111111-1111-1111-1111-111111111111",
+      "/coordinates/:coordinateId",
+    );
+
+    const source = await screen.findByRole("region", { name: "この事例について" });
+    expect(within(source).getByText("User申告（検証用構成）")).toBeInTheDocument();
+    expect(screen.getByText("ユーザー申告のREAL ROOM")).toBeInTheDocument();
+  });
+
+  it("Existing furniture offers a clear next step to the current user's plan", async () => {
+    const user = userEvent.setup();
+    vi.mocked(api.coordinate).mockResolvedValue({
+      ...detail,
+      items: [
+        ...detail.items,
+        { id: 3, role: "SUPPORT_FURNITURE", source: "EXISTING_EXTERNAL", quantity: 1, price_snapshot: null, price_observed_at: null, existing_label: "手持ちのチェア", dimensions: "幅45cm", mutation_state: "ORIGINAL", product: null },
+      ],
+    });
+    renderRoute(<CoordinateDetailPage />, "/coordinates/coord-001", "/coordinates/:coordinateId");
+
+    await user.click(await screen.findByRole("button", { name: "この家具を残して自分用PLANへ →" }));
+    expect(api.createPlan).toHaveBeenCalledWith("coord-001", 50000);
   });
 
   it("Save is an intent action and changes the button state", async () => {
@@ -353,12 +450,37 @@ describe("functional MVP pages", () => {
     await waitFor(() => expect(api.addExisting).toHaveBeenCalledWith("plan-001", "手持ちチェア", "SUPPORT_FURNITURE", "幅45cm"));
   });
 
+  it("Plan editor uses the backend price notice and the actual Product name for image alt text", async () => {
+    const officialProduct: ProductSummary = {
+      ...product,
+      id: "NTR-2110600044491-0000002000852",
+      name: "パイプベッド シングル (バジーナF WH)",
+      image_url: "/assets/products/nitori/ntr-bed-natural.webp",
+      provenance: "NITORI_OFFICIAL_SNAPSHOT",
+      price_status: "NITORI_OFFICIAL_SNAPSHOT",
+    };
+    const mixedNotice = "NITORI公式参照価格と架空のデモ価格が混在しています。現在価格・在庫を示しません。";
+    vi.mocked(api.plan).mockResolvedValue({
+      ...plan,
+      price: { ...plan.price, status: "MIXED_SNAPSHOT", notice: mixedNotice },
+      items: [{ ...plan.items[0], product: officialProduct }],
+      product_count: 1,
+      category_count: 1,
+    });
+    renderRoute(<PlanEditPage />, "/plans/plan-001/edit", "/plans/:planId/edit");
+
+    expect(await screen.findByRole("img", { name: `${officialProduct.name}の商品画像` })).toBeInTheDocument();
+    expect(screen.getByText(`${mixedNotice} 手持ち家具は購入候補額に含みません。`)).toBeInTheDocument();
+    expect(screen.getByText(/購入候補額を再計算/)).toBeInTheDocument();
+    expect(screen.queryByText("デモ価格です。手持ち家具は含みません。")).not.toBeInTheDocument();
+  });
+
   it("Plan and handoff pages expose a goal-centered preview CTA", async () => {
     const view = renderRoute(<PlanPage />, "/plans/plan-001", "/plans/:planId");
     expect(await screen.findByRole("link", { name: "店舗で2商品を比較する" })).toBeInTheDocument();
     view.unmount();
     renderRoute(<HandoffPage />, "/plans/plan-001/handoff", "/plans/:planId/handoff");
-    expect(await screen.findByText("PREVIEW ONLY")).toBeInTheDocument();
+    expect(await screen.findByText("接続前プレビュー")).toBeInTheDocument();
     expect(screen.getAllByText(/Room Harmonyへは送信されません|デモ用プレビュー/).length).toBeGreaterThan(0);
   });
 });

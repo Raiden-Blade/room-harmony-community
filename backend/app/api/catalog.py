@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_db, get_session_id
 from app.ranking import DiscoveryContext, rank_coordinates
+from app.ranking.similarity import score_coordinate
 from app.repositories.catalog import coordinates_for_product, get_product, list_products, list_public_coordinates
 from app.schemas.common import (
     CoordinateDetail,
@@ -71,9 +72,6 @@ def discover(
         room_size=room_size,
         need=need,
         budget_max=budget_max,
-        room_type="ONE_ROOM",
-        housing="RENTAL",
-        household="SINGLE",
     )
     ranked = rank_coordinates(list_public_coordinates(db), context, mode=mode)[:limit]
     return DiscoveryResponse(
@@ -89,13 +87,22 @@ def coordinate_by_id(
     coordinate_id: str,
     db: Annotated[Session, Depends(get_db)],
     session_id: Annotated[str, Depends(get_session_id)],
+    room_size: str | None = None,
+    need: str | None = None,
+    budget_max: int | None = Query(default=None, ge=1_000, le=1_000_000),
 ) -> CoordinateDetail:
     coordinate = load_coordinate(db, coordinate_id)
     if (
         coordinate.visibility != "PUBLIC" or coordinate.moderation_status != "ACTIVE"
     ) and coordinate.owner_session_id != session_id:
         raise HTTPException(status_code=404, detail="Coordinate not found")
-    return coordinate_detail(coordinate, db, session_id)
+    reasons: list[str] | None = None
+    if room_size is not None or need is not None or budget_max is not None:
+        _, reasons = score_coordinate(
+            coordinate,
+            DiscoveryContext(room_size=room_size, need=need, budget_max=budget_max),
+        )
+    return coordinate_detail(coordinate, db, session_id, reasons=reasons)
 
 
 @router.get("/products", response_model=ProductListResponse)
@@ -103,7 +110,7 @@ def products(
     db: Annotated[Session, Depends(get_db)],
     role: str | None = None,
     exclude: str | None = None,
-    limit: int = Query(default=12, ge=1, le=40),
+    limit: int = Query(default=18, ge=1, le=40),
 ) -> ProductListResponse:
     rows = list_products(db, role, exclude, limit)
     return ProductListResponse(results=[ProductSummary.model_validate(row) for row in rows])

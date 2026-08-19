@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">商品画像の代替イラスト</title>
+  <desc id="desc">画像を読み込めない場合に表示する、家具の箱を表した図</desc>
+  <rect width="800" height="600" fill="#f0efeb"/>
+  <path d="m250 210 150-75 150 75-150 80z" fill="#a7a39b"/>
+  <path d="M250 210v190l150 75V290z" fill="#85827d"/>
+  <path d="M550 210v190l-150 75V290z" fill="#99958d"/>
+  <text x="400" y="535" text-anchor="middle" font-family="sans-serif" font-size="30" fill="#55575a">DEMO PRODUCT</text>
+</svg>

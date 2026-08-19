@@ -1,5 +1,7 @@
 # Final Self-Review — Goal 1.5 Merge Gate
 
+> Historical record: this file captures the 2026-08-18 Goal 1.5 gate. Current visual-asset coverage and final review status are maintained in [`goal4-final-review.md`](goal4-final-review.md); statements below about 12 original SVG assets describe that earlier checkpoint, not the current Goal 4C state.
+
 Review date: 2026-08-18 (JST)
 
 Current result: **READY_FOR_HUMAN_MERGE**. Local, fresh-clone, and GitHub Actions gates pass. This is not a production-readiness, official-integration, or business-impact verdict. A second physical Windows PC remains a separate manual check.

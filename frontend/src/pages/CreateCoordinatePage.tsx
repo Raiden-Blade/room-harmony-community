@@ -1,9 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { api, mediaUrl, track } from "../api/client";
+import { api, mediaUrl, track, trackOnce } from "../api/client";
 import type { ChallengeDetail, CreatorProfile, DerivationType, ProductSummary, UploadedImage } from "../api/types";
 import { Badge } from "../components/common/Badge";
+import { SafeImage } from "../components/common/SafeImage";
 import { label, yen } from "../utils/labels";
 
 const DERIVATIONS: Array<{ value: DerivationType; label: string }> = [
@@ -48,7 +49,7 @@ export function CreateCoordinatePage() {
   const [publishedCoordinateId, setPublishedCoordinateId] = useState<string | null>(null);
 
   useEffect(() => {
-    void track("create_coordinate_start", { properties: { placement: "CREATE" } });
+    trackOnce("create-coordinate-start", "create_coordinate_start", { properties: { placement: "CREATE" } });
     void api.creatorMe().then((profile) => {
       setCreator(profile);
       setDisplayName(profile.display_name);
@@ -72,7 +73,7 @@ export function CreateCoordinatePage() {
       if (data.eligibility.households[0]) setHousehold(data.eligibility.households[0]);
       if (data.eligibility.budget_max) setBudgetMax(data.eligibility.budget_max);
       if (data.eligibility.kinds.length === 1) setKind(data.eligibility.kinds[0]);
-    }).catch((reason) => setError(reason instanceof Error ? reason.message : "Themeを読み込めませんでした"));
+    }).catch((reason) => setError(reason instanceof Error ? reason.message : "テーマを読み込めませんでした"));
   }, [challengeSlug]);
 
   const chosenProducts = useMemo(
@@ -222,7 +223,7 @@ export function CreateCoordinatePage() {
             coordinate_id: coordinate.id,
             properties: { challenge_id: challenge.id, season: challenge.season, challenge_type: challenge.challenge_type },
           });
-          setError(`Coordinateは公開されましたが、Theme参加は完了していません。${reason instanceof Error ? reason.message : "参加条件を確認してください。"}`);
+          setError(`コーデは公開されましたが、テーマ参加は完了していません。${reason instanceof Error ? reason.message : "参加条件を確認してください。"}`);
           return;
         }
       }
@@ -240,7 +241,7 @@ export function CreateCoordinatePage() {
         <p className="eyebrow">Create a useful Coordinate</p>
         <h1>暮らしを、誰かの参考にする</h1>
         <p>人気を競う投稿ではなく、部屋条件・商品・手持ち家具を再利用できる形で共有します。</p>
-        {challenge && <div className="challenge-create-context"><Badge tone="accent">参加予定のTheme</Badge><strong>{challenge.title}</strong><span>{challenge.constraint_summary}</span></div>}
+        {challenge && <div className="challenge-create-context"><Badge tone="accent">参加予定のテーマ</Badge><strong>{challenge.title}</strong><span>{challenge.constraint_summary}</span></div>}
       </header>
 
       <ol className="stepper" aria-label="投稿の進み具合">
@@ -286,9 +287,9 @@ export function CreateCoordinatePage() {
         {step === 3 && (
           <fieldset>
             <legend>再利用できる情報を加えて公開します</legend>
-            <section className="form-section" aria-labelledby="tag-products"><h2 id="tag-products">一緒に使う商品</h2><p className="form-help">デモ商品データから構造的に選びます。画像認識は行いません。</p><div className="product-picker">{products.map((product) => <label key={product.id} className={selectedProducts.includes(product.id) ? "is-selected" : ""}><input type="checkbox" checked={selectedProducts.includes(product.id)} onChange={() => toggleProduct(product.id)} /><img src={product.image_url} alt="" /><span><strong>{product.name}</strong><small>{label(product.default_role)} · {yen(product.price_snapshot)}</small></span></label>)}</div></section>
+            <section className="form-section" aria-labelledby="tag-products"><h2 id="tag-products">一緒に使う商品</h2><p className="form-help">デモ商品データから構造的に選びます。画像認識は行いません。</p><div className="product-picker">{products.map((product) => <label key={product.id} className={selectedProducts.includes(product.id) ? "is-selected" : ""}><input type="checkbox" checked={selectedProducts.includes(product.id)} onChange={() => toggleProduct(product.id)} /><SafeImage src={product.image_url} fallbackSrc="/assets/product-fallback.svg" alt="" /><span><strong>{product.name}</strong><small>{label(product.default_role)} · {yen(product.price_snapshot)}</small></span></label>)}</div></section>
             <section className="form-section" aria-labelledby="owned-furniture"><h2 id="owned-furniture">今持っている家具（任意）</h2><div className="form-grid"><label>名前<input value={existingLabel} onChange={(event) => setExistingLabel(event.target.value)} maxLength={80} placeholder="例：今使っている机" /></label><label>種類<select value={existingCategory} onChange={(event) => setExistingCategory(event.target.value)}><option value="SUPPORT_FURNITURE">サポート家具</option><option value="STORAGE">収納</option><option value="LIGHTING">照明</option><option value="OTHER">その他</option></select></label><label>サイズ（任意）<input value={existingDimensions} onChange={(event) => setExistingDimensions(event.target.value)} maxLength={80} /></label></div></section>
-            <section className="form-section" aria-labelledby="room-images"><h2 id="room-images">部屋画像 {kind === "REAL" && <Badge tone="warning">REALは必須</Badge>}</h2><p className="form-help">JPEG / PNG / WebP、1枚8MB以下、最大5枚。サーバーで再変換し、EXIFを除去します。</p>{kind === "REAL" && <div className="privacy-notice"><strong>投稿前のプライバシー確認</strong><p>顔・氏名・郵便物・住所・車のナンバーなど、個人情報が画像に写っていないことを自分で確認してください。</p></div>}<label className="upload-box">画像を選ぶ<input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={(event) => void upload(event)} /></label><div className="upload-preview">{images.map((image) => <img key={image.id} src={mediaUrl(image.url)} alt="アップロードした部屋のプレビュー" />)}</div></section>
+            <section className="form-section" aria-labelledby="room-images"><h2 id="room-images">部屋画像 {kind === "REAL" && <Badge tone="warning">REALは必須</Badge>}</h2><p className="form-help">JPEG / PNG / WebP、1枚8MB以下、最大5枚。サーバーで再変換し、EXIFを除去します。</p>{kind === "REAL" && <div className="privacy-notice"><strong>投稿前のプライバシー確認</strong><p>顔・氏名・郵便物・住所・車のナンバーなど、個人情報が画像に写っていないことを自分で確認してください。</p></div>}<label className="upload-box">画像を選ぶ<input type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={(event) => void upload(event)} /></label><div className="upload-preview">{images.map((image) => <SafeImage key={image.id} src={mediaUrl(image.url)} alt="アップロードした部屋のプレビュー" />)}</div></section>
             {parentId && <section className="form-section"><h2>参考元からの変更理由</h2><label>変更理由<select value={derivationType} onChange={(event) => setDerivationType(event.target.value as DerivationType)}>{DERIVATIONS.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label><label>補足（任意）<input value={remixNote} onChange={(event) => setRemixNote(event.target.value)} maxLength={200} /></label></section>}
             <div className="publish-disclosure"><strong>{kind === "REAL" ? "USER申告のREAL ROOM" : "これから実現したい公開PLAN"}</strong><p>{kind === "REAL" ? "NITORIや本システムが実在性・購入・商品使用を確認したものではありません。" : "購入済み、在庫確保、専門家による設計承認を意味しません。"}</p></div>
             <div className="form-actions"><button className="button button--ghost" type="button" onClick={() => goToStep(2)}>戻る</button><button className="button button--primary" disabled={busy || Boolean(publishedCoordinateId)} type="submit">{publishedCoordinateId ? "Coordinateは公開済み" : kind === "REAL" ? "REAL ROOMとして公開" : "PLANとして公開"}</button></div>

@@ -3,7 +3,7 @@ export function DemoNotice({ compact = false }: { compact?: boolean }) {
     <aside className={`demo-notice${compact ? " demo-notice--compact" : ""}`} aria-label="デモデータについて">
       <strong>機能検証用デモ</strong>
       {!compact && (
-        <span>画像・商品・価格は架空のデモです。在庫、購入、専門家承認を示しません。</span>
+        <span>主要画面の一部は使用許可を得たNITORI公式画像・商品情報の参照スナップショット、残りは架空のデモです。在庫、購入、公式推奨を示しません。</span>
       )}
     </aside>
   );

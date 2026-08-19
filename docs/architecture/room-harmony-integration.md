@@ -21,6 +21,8 @@ room-harmony://visit/start?handoff_id=<opaque-id>&return_url=<approved-url>
 
 Prototype may display the payload for review but must not call the Existing Room Harmony runtime.
 
+Goal 4のCurrent UIは、最初に目的、商品件数、デモ概算、比較の起点、全商品名、共有しない情報をhuman-readable Summaryとして示す。Technical JSONはclosed `<details>`の中だけに置き、`schema_version`、Coordinate / Product IDs、anchor、intent、local return path、expiry、`live_integration: false`を確認できる。現在の`DEMO-*` Product IDをcanonical NITORI IDとして送らない。
+
 Current preview accepts only a repository-local path such as `/plans/<id>` for `return_url`. The absolute approved-origin URL shown below is a future integration contract example and must not be enabled until an origin allowlist and owner review exist.
 
 ## Proposed handoff payload v1
@@ -118,4 +120,4 @@ Community must not mint a Room Harmony visit session. Room Harmony validates QR 
 
 ## Current decision
 
-**DECISION**: This Goal defines the boundary only. No API call, dependency, branch, or file change is made to Existing Room Harmony.
+**DECISION**: Current Goal 4もPreview boundaryだけを維持する。No API call, dependency, branch, or file change is made to Existing Room Harmony.

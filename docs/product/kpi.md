@@ -47,6 +47,38 @@ flowchart TB
 
 ## Metric layers
 
+Goal 4の最終Demoでは、実装済みのmeasurement readinessを次の3層で説明する。
+
+### 1. Product Utility
+
+| Funnel / signal | Current evidence |
+|---|---|
+| Similar → Coordinate | `discovery_impression`、`coordinate_view`、選択した`comparison_condition` |
+| Coordinate → Save | current `CoordinateSave`と`coordinate_saved` |
+| Coordinate → PLAN | Private PLAN rowと`plan_started` / `plan_from_coordinate` |
+| Product exploration | Coordinate / Product間の遷移、Product ID・role・category |
+| Store / EC action | `ec_action`、`room_harmony_handoff_preview`（実接続ではない） |
+
+### 2. Community Reuse
+
+| Funnel / signal | Current evidence |
+|---|---|
+| Helpful | unique current `HelpfulReaction`とadd / remove event |
+| Save | unique current `CoordinateSave` |
+| PLAN started | direct Private PLAN row |
+| Public adaptation | Parent / Root lineageを持つPublic derivative |
+| REAL contribution | USER_DECLARED / UNVERIFIEDなPublic REAL row |
+
+### 3. Seasonal Reuse
+
+| Funnel / signal | Current evidence |
+|---|---|
+| Challenge Entry | eligibilityを通過したvisible unique Entry |
+| Archived Coordinate → PLAN | previous-year viewとdirect Private PLAN |
+| Current-year derivative Entry | Archive lineageを持つPublic derivativeのCurrent Challenge Entry |
+
+**Measurement readiness ≠ proven uplift.** Eventとcurrent DB aggregateが取得できることは、併売率、売上、購入Conversion、年間Growthの改善を意味しない。これらは正式なassignment / denominator / attribution / POS・order join / analysis planを承認した後にだけ検証できる。
+
 | Layer | Metric | Definition / note |
 |---|---|---|
 | Leading | Qualified coordinate view rate | Search / Explore sessionが必要Dataを持つCoordinateを閲覧 |
@@ -135,7 +167,9 @@ Goal 3では次を操作・記録可能にするが、Seasonal Growthや購買�
 | Participation | current visible unique `ChallengeEntry`、REAL / PLAN内訳 |
 | Reuse | previous-year coordinate view、Private PLAN、Adapt start、Public derivative lineage |
 | Recognition | controlled Prototype Pick viewとCreator recognition count |
-| Creator value | seasonal entry count、recognition count、direct reuse count |
+| Creator value | seasonal entry count、recognition count、`direct_seasonal_reuse_count` |
 | Readiness | `SEASONAL_REUSE` analytics readiness aggregate |
 
 Entry countはcurrent database stateであり、Analytics event totalやPopularityではない。正式評価では`Archive view → PLAN → Public derivative → current Entry`のfunnel、eligible denominator、Season cohort、repeat participationを定義し、POS / orderとは別Consent / attribution設計で接続する。
+
+`direct_seasonal_reuse_count`は、CreatorのChallenge参加Coordinateを直接の親として作られたchild PLAN / Coordinateを数える。公開・非公開、同一・別Sessionを含み、孫以降は含まない。これはCreator画面の説明用aggregateであり、Seasonal upliftやcross-user拡散を証明するKPIではない。

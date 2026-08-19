@@ -1,4 +1,5 @@
 import { expect, test, type Page, type TestInfo } from "@playwright/test";
+import { API_BASE_URL } from "./support";
 
 const viewports = [
   { name: "mobile-390", width: 390, height: 844 },
@@ -17,13 +18,13 @@ async function expectNoHorizontalOverflow(page: Page) {
 for (const viewport of viewports) {
   test(`responsive ${viewport.name}: key screens fit and remain operable`, async ({ page, request }, testInfo: TestInfo) => {
     const sessionId = `responsive-${viewport.name}-${Date.now()}`;
-    const planResponse = await request.post("http://127.0.0.1:8000/api/plans/from-coordinate/coord-001", {
+    const planResponse = await request.post(`${API_BASE_URL}/api/plans/from-coordinate/coord-001`, {
       headers: { "X-Session-ID": sessionId },
       data: {},
     });
     expect(planResponse.ok()).toBeTruthy();
     const plan = await planResponse.json() as { id: string };
-    const creatorResponse = await request.put("http://127.0.0.1:8000/api/creators/me", {
+    const creatorResponse = await request.put(`${API_BASE_URL}/api/creators/me`, {
       headers: { "X-Session-ID": sessionId },
       data: { display_name: `Responsive ${viewport.name}`, bio: "Responsive visual QA profile" },
     });
@@ -40,7 +41,7 @@ for (const viewport of viewports) {
       contentType: "image/png",
     });
 
-    const mainAction = page.getByRole("link", { name: "6畳のおすすめを見る" });
+    const mainAction = page.getByRole("link", { name: "条件から参考コーデを探す" });
     const actionBox = await mainAction.boundingBox();
     expect(actionBox?.height ?? 0).toBeGreaterThanOrEqual(44);
 
@@ -114,7 +115,8 @@ for (const viewport of viewports) {
     });
 
     await page.goto(`/plans/${plan.id}/handoff`);
-    await expect(page.getByText("PREVIEW ONLY")).toBeVisible();
+    await expect(page.getByText("接続前プレビュー")).toBeVisible();
+    await page.getByText("開発者向け：連携データを確認").click();
     await expect(page.getByLabel("Room Harmony handoff payload")).toContainText('"live_integration": false');
     await expectNoHorizontalOverflow(page);
     await testInfo.attach(`${viewport.name}-handoff`, {

@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "test:e2e": "playwright test",
+    "test:e2e": "node scripts/run-e2e.mjs",
     "qa:visual": "node scripts/capture-visual-qa.mjs"
   },
   "dependencies": {

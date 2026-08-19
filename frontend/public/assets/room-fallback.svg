@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">部屋画像の代替イラスト</title>
+  <desc id="desc">画像を読み込めない場合に表示する、ソファと棚のシンプルな室内図</desc>
+  <rect width="1200" height="760" fill="#ecebe7"/>
+  <rect y="510" width="1200" height="250" fill="#d9d4cb"/>
+  <path d="M0 510h1200" stroke="#8d8b86" stroke-width="4"/>
+  <rect x="170" y="370" width="480" height="170" rx="34" fill="#777a7d"/>
+  <rect x="220" y="320" width="190" height="130" rx="28" fill="#919497"/>
+  <rect x="420" y="320" width="180" height="130" rx="28" fill="#85888b"/>
+  <rect x="760" y="210" width="250" height="330" rx="8" fill="#a19c93"/>
+  <path d="M785 285h200M785 365h200M785 445h200" stroke="#ecebe7" stroke-width="10"/>
+  <circle cx="1050" cy="145" r="58" fill="#c9b36f"/>
+  <text x="600" y="650" text-anchor="middle" font-family="sans-serif" font-size="34" fill="#55575a">IMAGE PREVIEW</text>
+</svg>

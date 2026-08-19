@@ -51,8 +51,6 @@ def score_coordinate(coordinate: Coordinate, context: DiscoveryContext) -> tuple
         score += 6
         reasons.append("手持ち家具を活かせる")
 
-    if not reasons:
-        reasons.append("新生活向け編集部ピック")
     return score, reasons[:4]
 
 

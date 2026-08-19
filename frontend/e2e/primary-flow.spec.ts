@@ -1,17 +1,21 @@
 import { expect, test } from "@playwright/test";
+import { API_BASE_URL } from "./support";
 
 test("E2E 1: Home → Similar-to-me → products → Save", async ({ page }) => {
   const sessionId = `e2e-user-one-${Date.now()}`;
   await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
   await page.goto("/");
-  await expect(page.getByText("新生活 × 一人暮らし × 6畳")).toBeVisible();
-  await page.getByRole("link", { name: "6畳のおすすめを見る" }).click();
+  await expect(page.getByText("暮らしの事例から、自分用PLANへ")).toBeVisible();
+  await page.getByRole("link", { name: "条件から参考コーデを探す" }).click();
   await expect(page.getByRole("heading", { name: "あなたの条件に近いコーデ" })).toBeVisible();
   await expect(page.getByText("収納不足に対応").first()).toBeVisible();
 
   await page.getByRole("link", { name: "空間全体を見る" }).first().click();
-  await expect(page).toHaveURL(/\/coordinates\/coord-001$/);
+  await expect(page).toHaveURL(/\/coordinates\/coord-001\?/);
   await expect(page.getByRole("heading", { level: 1, name: /ナチュラルで整える/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "選んだ条件との一致" })).toBeVisible();
+  await expect(page.getByText("参考コーデ").first()).toBeVisible();
+  await expect(page.getByText(/室内画像と購入候補は、別々の参照情報/)).toBeVisible();
   const productLinks = page.getByRole("link", { name: "商品と使用コーデを見る" });
   await expect(productLinks).toHaveCount(5);
 
@@ -27,7 +31,7 @@ test("E2E 1: Home → Similar-to-me → products → Save", async ({ page }) => 
 
 test("E2E 2: Saved → PLAN → Existing → Replace → Total → Handoff", async ({ page, request }) => {
   const sessionId = `e2e-user-two-${Date.now()}`;
-  await request.post("http://127.0.0.1:8000/api/saved/coord-001", { headers: { "X-Session-ID": sessionId } });
+  await request.post(`${API_BASE_URL}/api/saved/coord-001`, { headers: { "X-Session-ID": sessionId } });
   await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
   await page.goto("/saved");
   await expect(page.getByRole("heading", { name: "保存したコーデ" })).toBeVisible();
@@ -47,6 +51,24 @@ test("E2E 2: Saved → PLAN → Existing → Replace → Total → Handoff", asy
   await page.getByRole("button", { name: "この内容で比較準備へ" }).click();
   await expect(page.getByText("PRIVATE PLAN")).toBeVisible();
   await page.getByRole("link", { name: /店舗で\d+商品を比較する/ }).click();
-  await expect(page.getByText("PREVIEW ONLY")).toBeVisible();
+  await expect(page.getByText("接続前プレビュー")).toBeVisible();
+  await page.getByText("開発者向け：連携データを確認").click();
   await expect(page.getByLabel("Room Harmony handoff payload")).toContainText('"live_integration": false');
+});
+
+test("E2E 3: Product → Coordinate → private PLAN", async ({ page }) => {
+  const sessionId = `e2e-product-reverse-${Date.now()}`;
+  await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
+
+  await page.goto("/products/NTR-2110600044491-0000002000852");
+  await expect(page.getByRole("heading", { name: "この商品を使ったコーデを見る" })).toBeVisible();
+  await page.getByRole("link", { name: "空間全体を見る" }).first().click();
+
+  await expect(page).toHaveURL(/\/coordinates\//);
+  await expect(page.getByRole("heading", { name: "このコーデの特徴" })).toBeVisible();
+  await page.getByRole("button", { name: "このコーデを自分向けにアレンジ" }).click();
+
+  await expect(page).toHaveURL(/\/plans\/[^/]+\/edit$/);
+  await expect(page.getByRole("heading", { name: "自分向けに変更する" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "購入候補" })).toBeVisible();
 });

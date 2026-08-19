@@ -75,3 +75,44 @@ def test_ties_use_editorial_rank_then_coordinate_id(seeded_session):
     ranked = rank_coordinates([second, first], DiscoveryContext())
 
     assert [row[0].id for row in ranked] == sorted([first.id, second.id])
+
+
+def _categories(coordinate):
+    return [item.product.category for item in coordinate.items if item.product]
+
+
+def _coordinates_for_need(seeded_session, need):
+    return [
+        coordinate
+        for coordinate in list_public_coordinates(seeded_session)
+        if need in {item.need_code for item in coordinate.needs}
+    ]
+
+
+def test_need_specific_product_compositions_are_not_blanket_category_sets(seeded_session):
+    sleep = _coordinates_for_need(seeded_session, "SLEEP")
+    relax = _coordinates_for_need(seeded_session, "RELAX")
+    work = _coordinates_for_need(seeded_session, "WORK_FROM_HOME")
+    storage = _coordinates_for_need(seeded_session, "STORAGE")
+
+    assert sleep and all("DESK" not in _categories(coordinate) for coordinate in sleep)
+    assert relax and all("DESK" not in _categories(coordinate) for coordinate in relax)
+    assert work and all({"DESK", "SUPPORT", "LIGHTING"}.issubset(_categories(coordinate)) for coordinate in work)
+    assert storage and all(_categories(coordinate).count("STORAGE") >= 2 for coordinate in storage)
+
+
+def test_low_budget_coordinates_fit_their_displayed_budget(seeded_session):
+    low_budget = _coordinates_for_need(seeded_session, "LOW_BUDGET")
+
+    assert low_budget
+    for coordinate in low_budget:
+        total = sum(item.price_snapshot or 0 for item in coordinate.items if item.product)
+        assert total <= coordinate.budget_max <= 50_000
+
+
+def test_built_in_reference_records_are_not_user_real_rooms(seeded_session):
+    built_in = list_public_coordinates(seeded_session)
+
+    assert built_in
+    assert all(coordinate.kind == "PLAN" for coordinate in built_in)
+    assert all(coordinate.verification_state == "DEMO_ONLY" for coordinate in built_in)

@@ -1,0 +1,57 @@
+{
+  "manifest_version": "1.0",
+  "source_page_url": "https://www.nitori-net.jp/ec/feature/newlifegoods/#room",
+  "source_owner": "NITORI",
+  "permission_basis": "USER_CONFIRMED_FOR_THIS_PROTOTYPE",
+  "runtime_hotlinking": false,
+  "slides": [
+    {
+      "id": "newlife-storage",
+      "source_image_name": "room01-3_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room01-3_38w.jpg",
+      "local_asset": "/assets/hero/nitori/newlife-storage.webp",
+      "rights_status": "EXPLICITLY_PERMITTED",
+      "source_theme": "シンプルにそろえて、新しい毎日に余裕が持てるお部屋",
+      "ui_kicker": "シンプルにそろえる部屋",
+      "ui_title": "収納を取り入れて、毎日の余白をつくる",
+      "cta": "収納の参考コーデを見る",
+      "destination": "/explore?need=STORAGE"
+    },
+    {
+      "id": "compact-living",
+      "source_image_name": "room02-3_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room02-3_38w.jpg",
+      "local_asset": "/assets/hero/nitori/compact-living.webp",
+      "rights_status": "EXPLICITLY_PERMITTED",
+      "source_theme": "推しグッズをたくさん集めて楽しむお部屋",
+      "ui_kicker": "好きなものを楽しむ部屋",
+      "ui_title": "見せる・隠すを分けて、好きを楽しむ",
+      "cta": "収納の参考コーデを見る",
+      "destination": "/explore?need=STORAGE"
+    },
+    {
+      "id": "work-relax",
+      "source_image_name": "room05-3_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room05-3_38w.jpg",
+      "local_asset": "/assets/hero/nitori/work-relax.webp",
+      "rights_status": "EXPLICITLY_PERMITTED",
+      "source_theme": "スキルアップにとことん集中できるお部屋",
+      "ui_kicker": "集中できるワークスペース",
+      "ui_title": "作業に集中できる家具構成から考える",
+      "cta": "在宅作業の参考コーデを見る",
+      "destination": "/explore?need=WORK_FROM_HOME"
+    },
+    {
+      "id": "seasonal-bedroom",
+      "source_image_name": "room03-2_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room03-2_38w.jpg",
+      "local_asset": "/assets/hero/nitori/seasonal-bedroom.webp",
+      "rights_status": "EXPLICITLY_PERMITTED",
+      "source_theme": "限られたスペースでも友達を呼べるお部屋",
+      "ui_kicker": "限られた空間を使い分ける部屋",
+      "ui_title": "収納と可変家具で、過ごし方を切り替える",
+      "cta": "省スペースの参考コーデを見る",
+      "destination": "/explore?need=COMPACT"
+    }
+  ]
+}

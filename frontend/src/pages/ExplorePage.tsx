@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { api, track } from "../api/client";
+import { api, track, trackOnce } from "../api/client";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
-import { ErrorView, Loading } from "../components/common/StatusView";
+import { EmptyView, ErrorView, Loading } from "../components/common/StatusView";
 import { useAsync } from "../hooks/useAsync";
 
 export function ExplorePage() {
@@ -23,11 +23,18 @@ export function ExplorePage() {
     return next;
   }, [mode, searchParams]);
   const discovery = useAsync(() => api.discover(requestParams), [requestParams.toString()]);
+  const detailQuery = mode === "similar"
+    ? new URLSearchParams({
+        room_size: searchParams.get("room_size") || "SMALL_6",
+        need: searchParams.get("need") || "STORAGE",
+        budget_max: searchParams.get("budget_max") || "50000",
+      }).toString()
+    : "";
 
   useEffect(() => {
     if (!discovery.data) return;
     discovery.data.results.forEach((coordinate, rank) => {
-      void track("discovery_impression", {
+      trackOnce(`discovery-impression:${mode}:${requestParams.toString()}:${coordinate.id}`, "discovery_impression", {
         coordinate_id: coordinate.id,
         comparison_condition: discovery.data?.comparison_condition,
         properties: { mode, rank: rank + 1, match_dimension_count: coordinate.match_reasons.length },
@@ -92,8 +99,21 @@ export function ExplorePage() {
       </div>
       {discovery.loading && <Loading label="近い暮らしを探しています" />}
       {discovery.error && <ErrorView message={discovery.error} action={<button onClick={discovery.refresh}>再試行</button>} />}
+      {discovery.data && discovery.data.results.length === 0 && (
+        <EmptyView title="この条件に合うコーデはまだありません">
+          <p>条件を変えるか、編集部ピックから近い事例を探してみてください。</p>
+          <button className="button button--secondary" onClick={() => setMode("popular")}>編集部ピックを見る</button>
+        </EmptyView>
+      )}
       <section className="coordinate-grid" aria-label="コーディネート一覧">
-        {discovery.data?.results.map((coordinate) => <CoordinateCard key={coordinate.id} coordinate={coordinate} />)}
+        {discovery.data?.results.map((coordinate) => (
+          <CoordinateCard
+            key={coordinate.id}
+            coordinate={coordinate}
+            detailQuery={detailQuery}
+            showMatchReasons={mode === "similar"}
+          />
+        ))}
       </section>
     </div>
   );

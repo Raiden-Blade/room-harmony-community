@@ -13,10 +13,12 @@ export function AboutPage() {
       </header>
       <DemoNotice />
       <section className="about-grid">
-        <article><span>01</span><h2>Coordinate</h2><p>36件すべて架空です。外部投稿画像は保存・再配布していません。</p></article>
-        <article><span>02</span><h2>Product</h2><p>60件の`DEMO-*`参照です。商品名・価格・画像は機能検証用です。</p></article>
-        <article><span>03</span><h2>Official action</h2><p>公式検索URLのみ外部へ開きます。在庫、Cart、購入完了は模倣しません。</p></article>
-        <article><span>04</span><h2>Room Harmony</h2><p>Live接続はありません。選択商品のHandoff payloadだけをPreviewします。</p></article>
+        <article><span>01</span><h2>このデモで試せること</h2><p>近い暮らしを探し、保存し、自分向けPLANへ変え、店舗・公式サイトでの比較準備まで進めます。</p></article>
+        <article><span>02</span><h2>コーデと部屋画像</h2><p>36件のコーデ構成は検証用です。主要15件とHomeの4枚は、使用許可を得たNITORI公式の室内参照画像をローカル収録し、残りは自作SVGです。これは一般公開Licenseではありません。利用者が公開したREAL ROOMは別扱いの本人申告で、公式確認済みではありません。</p></article>
+        <article><span>03</span><h2>商品と並び順</h2><p>60件中18件は、NITORI公式商品ページの名称・商品参照ID・日付付き価格・主画像を同じ商品単位で対応付けています。残る42件は`DEMO-*`の架空データです。並び順は条件一致ルールで、AI推薦やNITORI公式コーデ提案ではありません。</p></article>
+        <article><span>04</span><h2>画像アップロード</h2><p>JPEG・PNG・WebPをローカル保存し、再変換してEXIFを除去します。投稿者自身による個人情報確認も必要です。</p></article>
+        <article><span>05</span><h2>季節テーマ</h2><p>Prototype Pickはデモ上の選定例で、NITORI公式選定ではありません。人気ランキングも設けていません。</p></article>
+        <article><span>06</span><h2>Room Harmony</h2><p>実接続はありません。比較目的とデモ商品IDを含む連携データのプレビューだけを表示します。</p></article>
       </section>
       <section className="section section--flush" aria-labelledby="measurement-title">
         <div className="section-heading"><div><p className="eyebrow">Measurement readiness</p><h2 id="measurement-title">H1〜H3を計測可能にする</h2></div></div>
@@ -30,7 +32,7 @@ export function AboutPage() {
       </section>
       <section className="about-boundary">
         <h2>このMVPに含まれないもの</h2>
-        <ul className="check-list check-list--muted"><li>Public投稿・Comment・Follow・ランキング</li><li>AI / LLMによる推薦</li><li>本物の価格・在庫・POS・決済</li><li>NITORI内部API・Room Harmony実接続</li><li>売上や併売率が改善したという表示</li></ul>
+        <ul className="check-list check-list--muted"><li>コメント・フォロー・人気ランキング</li><li>AI / LLMによる推薦</li><li>価格・在庫を更新する商品Master / POS / 決済</li><li>NITORI内部API・Room Harmony実接続</li><li>売上・購入率・併売率が改善したという実証</li></ul>
       </section>
     </div>
   );

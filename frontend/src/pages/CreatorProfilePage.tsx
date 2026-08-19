@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { api, track } from "../api/client";
+import { api, trackOnce } from "../api/client";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
 import { Badge } from "../components/common/Badge";
 import { ErrorView, Loading } from "../components/common/StatusView";
@@ -16,8 +16,8 @@ export function CreatorProfilePage() {
 
   useEffect(() => {
     if (!profile.data) return;
-    void track("creator_profile_view", { properties: { placement: "CREATOR_PROFILE" } });
-    void track("creator_impact_view", { properties: { placement: "CREATOR_PROFILE" } });
+    trackOnce(`creator-profile-view:${profile.data.id}`, "creator_profile_view", { properties: { placement: "CREATOR_PROFILE" } });
+    trackOnce(`creator-impact-view:${profile.data.id}`, "creator_impact_view", { properties: { placement: "CREATOR_PROFILE" } });
   }, [profile.data?.id]);
 
   if (profile.loading) return <Loading />;
@@ -44,34 +44,34 @@ export function CreatorProfilePage() {
       <header className="creator-header">
         <div className="creator-avatar" aria-hidden="true">{data.display_name.slice(0, 1)}</div>
         <div>
-          <p className="eyebrow">Creator impact · prototype identity</p>
+          <p className="eyebrow">クリエイターの貢献 · デモ表示名</p>
           <h1>{data.display_name}</h1>
           <p>{data.bio || "暮らしの条件と工夫を共有しています。"}</p>
-          <small>表示名のみのデモIdentityです。本人確認済みアカウントではありません。</small>
+          <small>表示名のみのデモアカウントです。本人確認済みではありません。</small>
         </div>
         {data.is_owner && <Link className="button button--primary" to="/create">新しいコーデをつくる</Link>}
       </header>
 
       <section className="impact-section" aria-labelledby="impact-title">
-        <div className="section-heading"><div><p className="eyebrow">Useful impact</p><h2 id="impact-title">誰かの暮らしに役立った記録</h2></div><p>Followerや人気順位ではなく、参考・保存・再利用を数えます。</p></div>
+        <div className="section-heading"><div><p className="eyebrow">役立ちの記録</p><h2 id="impact-title">誰かの暮らしに役立った記録</h2></div><p>フォロワーや人気順位ではなく、参考・保存・再利用を数えます。</p></div>
         <div className="impact-grid">
           {metrics.map(([name, value, help]) => <article key={name}><strong>{value}</strong><span>{name}</span><small>{help}</small></article>)}
         </div>
       </section>
 
       <section className="creator-seasonal-section" aria-labelledby="creator-seasonal-title">
-        <div className="section-heading"><div><p className="eyebrow">Seasonal contribution</p><h2 id="creator-seasonal-title">今年の新生活ユーザーの参考へ</h2></div><p>Followerではなく、Theme参加・Recognition・再利用を実Recordから表示します。</p></div>
+        <div className="section-heading"><div><p className="eyebrow">季節テーマへの貢献</p><h2 id="creator-seasonal-title">今年の新生活ユーザーの参考へ</h2></div><p>人気順位ではなく、テーマ参加・デモ選定・直接の派生を現在のデモDBから表示します。</p></div>
         <div className="creator-seasonal-summary">
-          <article><strong>{data.seasonal.challenge_entries}</strong><span>Theme参加</span></article>
+          <article><strong>{data.seasonal.challenge_entries}</strong><span>テーマ参加</span></article>
           <article><strong>{data.seasonal.recognized_coordinates}</strong><span>Prototype Pick</span></article>
-          <article><strong>{data.seasonal.seasonal_reuse_count}</strong><span>Seasonal再利用</span></article>
+          <article><strong>{data.seasonal.direct_seasonal_reuse_count}</strong><span>直接の派生</span><small>参加コーデから1世代だけ</small></article>
         </div>
-        {data.seasonal.participations.length > 0 ? <div className="creator-participations">{data.seasonal.participations.map((participation) => <article key={`${participation.challenge_id}-${participation.coordinate_id}`}><div><Badge tone="accent">{participation.season} {participation.year}</Badge>{participation.recognition && <Badge tone="warning">PROTOTYPE PICK</Badge>}</div><Link to={`/challenges/${participation.challenge_slug}`}>{participation.challenge_title} →</Link><small><Link to={`/coordinates/${participation.coordinate_id}`}>{participation.coordinate_title}</Link></small></article>)}</div> : <p className="empty-card">Seasonal Themeへの参加はまだありません。</p>}
+        {data.seasonal.participations.length > 0 ? <div className="creator-participations">{data.seasonal.participations.map((participation) => <article key={`${participation.challenge_id}-${participation.coordinate_id}`}><div><Badge tone="accent">{participation.season} {participation.year}</Badge>{participation.recognition && <Badge tone="warning">PROTOTYPE PICK</Badge>}</div><Link to={`/challenges/${participation.challenge_slug}`}>{participation.challenge_title} →</Link><small><Link to={`/coordinates/${participation.coordinate_id}`}>{participation.coordinate_title}</Link></small></article>)}</div> : <p className="empty-card">季節テーマへの参加はまだありません。<br />{data.is_owner ? <Link to="/seasonal">参加できるテーマを見る →</Link> : <Link to="/seasonal">季節テーマを見る →</Link>}</p>}
       </section>
 
       <section className="section section--flush" aria-labelledby="contributions-title">
         <div className="section-heading"><div><p className="eyebrow">Contribution history</p><h2 id="contributions-title">公開中の暮らし</h2></div><p>{data.contribution_count}件。非公開にした投稿は表示しません。</p></div>
-        {data.contributions.length ? <div className="coordinate-grid coordinate-grid--three">{data.contributions.map((coordinate) => <CoordinateCard key={coordinate.id} coordinate={coordinate} />)}</div> : <p className="empty-card">公開中のコーデはまだありません。</p>}
+        {data.contributions.length ? <div className="coordinate-grid coordinate-grid--three">{data.contributions.map((coordinate) => <CoordinateCard key={coordinate.id} coordinate={coordinate} />)}</div> : <p className="empty-card">公開中のコーデはまだありません。<br />{data.is_owner ? <Link to="/create">最初のコーデをつくる →</Link> : <Link to="/explore">ほかのコーデを探す →</Link>}</p>}
       </section>
     </div>
   );

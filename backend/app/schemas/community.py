@@ -69,7 +69,7 @@ class ImageUploadResponse(BaseModel):
 
 
 class ProductTagRequest(BaseModel):
-    product_id: str = Field(pattern=r"^DEMO-[A-Za-z0-9-]+$", max_length=64)
+    product_id: str = Field(pattern=r"^(?:DEMO|NTR)-[A-Za-z0-9-]+$", max_length=64)
     role: ProductRole
     quantity: int = Field(default=1, ge=1, le=9)
 

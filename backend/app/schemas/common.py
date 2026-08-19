@@ -13,7 +13,13 @@ class PriceSummary(BaseModel):
     unknown_item_count: int
     calculated_at: datetime
     currency: Literal["JPY"] = "JPY"
-    status: Literal["DEMO_SNAPSHOT", "PARTIAL_DEMO_SNAPSHOT"]
+    status: Literal[
+        "DEMO_SNAPSHOT",
+        "PARTIAL_DEMO_SNAPSHOT",
+        "NITORI_OFFICIAL_SNAPSHOT",
+        "PARTIAL_NITORI_OFFICIAL_SNAPSHOT",
+        "MIXED_SNAPSHOT",
+    ]
     notice: str = "表示価格はデモ用スナップショットです。現在の公式価格と異なる場合があります。"
 
 
@@ -96,6 +102,7 @@ class GenealogySummary(BaseModel):
     parent: GenealogyNode | None
     root: GenealogyNode | None
     plan_started_count: int
+    owned_private_plans: list[GenealogyNode] = Field(default_factory=list)
     public_adaptation_count: int
     public_children: list[GenealogyNode]
 
@@ -332,7 +339,7 @@ ANALYTICS_ENUM_VALUES = {
     "need": {"STORAGE", "LOW_BUDGET", "WORK_FROM_HOME", "RELAX", "SLEEP", "COMPACT"},
     "role": {"MAIN_FURNITURE", "SUPPORT_FURNITURE", "STORAGE", "LIGHTING", "TEXTILE"},
     "category": {"BED", "SUPPORT", "STORAGE", "LIGHTING", "TEXTILE", "DESK"},
-    "destination": {"NITORI_SEARCH", "ROOM_HARMONY_PREVIEW", "PREVIEW_ONLY"},
+    "destination": {"NITORI_SEARCH", "NITORI_PRODUCT_PAGE", "ROOM_HARMONY_PREVIEW", "PREVIEW_ONLY"},
     "mutation": {"KEPT", "REPLACED", "ADDED"},
     "kind": {"REAL", "PLAN"},
     "derivation_type": {
@@ -397,8 +404,8 @@ class AnalyticsEventRequest(BaseModel):
     @field_validator("product_id")
     @classmethod
     def safe_product_id(cls, value: str | None) -> str | None:
-        if value is not None and not re.fullmatch(r"DEMO-[A-Za-z0-9-]+", value):
-            raise ValueError("product_id must be a DEMO product identifier")
+        if value is not None and not re.fullmatch(r"(?:DEMO|NTR)-[A-Za-z0-9-]+", value):
+            raise ValueError("product_id must be an approved DEMO or NTR product reference identifier")
         return value
 
     @field_validator("properties")
