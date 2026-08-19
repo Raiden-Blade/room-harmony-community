@@ -40,6 +40,10 @@ CONSTRAINT_CODES = {
 }
 CONSTRAINT_OPERATORS = {"IN", "LTE", "GTE", "EQ"}
 FAKE_COUNT_FIELDS = {"entry_count", "participant_count", "view_count", "like_count", "rank"}
+COORDINATE_STYLES = {"NATURAL", "CLEAR_COOL", "DANDY", "ELEGANT", "COZY", "COLORFUL"}
+VERIFIED_OFFICIAL_PRODUCT_STYLES = {"NATURAL", "CLEAR_COOL", "DANDY"}
+STYLE_COMPATIBILITY_STATES = {"VERIFIED_MATCH", "UNVERIFIED_NEUTRAL", "DEMO_ONLY"}
+BUILT_IN_PROVENANCES = {"DEMO", "STAFF", "OFFICIAL"}
 
 
 def local_asset(path: str) -> Path | None:
@@ -102,11 +106,15 @@ def validate() -> None:
                 errors.append(f"official product visual must be explicitly permitted: {product['id']}")
             if product["price_status"] != "NITORI_OFFICIAL_SNAPSHOT":
                 errors.append(f"official product has wrong price status: {product['id']}")
+            if product.get("style_hint") not in VERIFIED_OFFICIAL_PRODUCT_STYLES:
+                errors.append(f"official product has an unverified style hint: {product['id']}")
         else:
             if product["provenance"] != "DEMO" or not product["id"].startswith("DEMO-"):
                 errors.append(f"unexpected fallback product provenance or ID: {product['id']}")
             if not official_url.path.startswith("/ec/search/"):
                 errors.append(f"demo fallback must link only to an official search: {product['id']}")
+            if product.get("style_hint") not in COORDINATE_STYLES:
+                errors.append(f"demo fallback has an unsupported style hint: {product['id']}")
         asset = local_asset(product["image_url"])
         if asset is None:
             errors.append(f"external product image is not allowed: {product['id']}")
@@ -152,6 +160,7 @@ def validate() -> None:
             ("category", "category"),
             ("default_role", "default_role"),
             ("price_snapshot", "price_snapshot"),
+            ("style_hint", "style_hint"),
             ("official_url", "official_url"),
             ("local_asset", "image_url"),
         ):
@@ -192,6 +201,8 @@ def validate() -> None:
             errors.append(f"unsafe coordinate image rights: {coordinate['id']}")
         if not coordinate["demo_disclosure"]:
             errors.append(f"missing demo disclosure: {coordinate['id']}")
+        if coordinate["style"] not in COORDINATE_STYLES:
+            errors.append(f"unsupported Coordinate style: {coordinate['id']}")
         asset = local_asset(coordinate["image_url"])
         if asset is None:
             errors.append(f"external coordinate image is not allowed: {coordinate['id']}")
@@ -203,8 +214,29 @@ def validate() -> None:
             if item["product_id"] not in product_ids:
                 errors.append(f"unknown product {item['product_id']} in {coordinate['id']}")
                 continue
-            selected_products.append(product_by_id[item["product_id"]])
+            product = product_by_id[item["product_id"]]
+            selected_products.append(product)
             categories.add(item["role"])
+            compatibility = item.get("style_compatibility")
+            if compatibility not in STYLE_COMPATIBILITY_STATES:
+                errors.append(f"invalid Product style compatibility in {coordinate['id']}: {compatibility}")
+            verified_match = (
+                product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT"
+                and coordinate["style"] in VERIFIED_OFFICIAL_PRODUCT_STYLES
+                and product.get("style_hint") == coordinate["style"]
+            )
+            expected_compatibility = (
+                "VERIFIED_MATCH"
+                if verified_match
+                else "UNVERIFIED_NEUTRAL"
+                if product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT"
+                else "DEMO_ONLY"
+            )
+            if compatibility != expected_compatibility:
+                errors.append(
+                    f"incorrect Product style compatibility in {coordinate['id']}: "
+                    f"{product['id']} is {compatibility}, expected {expected_compatibility}"
+                )
         if len(categories) < 2:
             errors.append(f"{coordinate['id']} has fewer than two roles")
         size_label = {"TINY_5_5": "5.5畳", "SMALL_6": "6畳", "MEDIUM_7_8": "7〜8畳"}.get(
@@ -235,6 +267,8 @@ def validate() -> None:
             errors.append(f"low-budget composition exceeds 50,000 yen: {coordinate['id']}")
         if coordinate["id"].startswith("coord-") and coordinate["kind"] != "PLAN":
             errors.append(f"built-in reference/prototype must not be labeled REAL: {coordinate['id']}")
+        if coordinate["id"].startswith("coord-") and coordinate["provenance"] not in BUILT_IN_PROVENANCES:
+            errors.append(f"built-in reference/prototype has user provenance: {coordinate['id']}")
 
     if len({row["size_band"] for row in coordinates}) < 3:
         errors.append("seed does not cover all three room-size bands")

@@ -884,35 +884,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": [
@@ -958,35 +963,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
-          "product_id": "NTR-2115200004555",
+          "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1026,35 +1036,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-7545501",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1078,10 +1093,10 @@
         "RENTAL",
         "COMPACT"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-004-storage-elegant.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1095,35 +1110,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-4904746153517-1000000000000",
+          "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -1146,10 +1166,10 @@
         "STORAGE",
         "RENTAL"
       ],
-      "provenance": "DEMO",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "Community demo team",
-      "creator_type": "DEMO_TEAM",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-005-storage-cozy.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1159,39 +1179,44 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600061047",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-4904746153517-1000000000000",
+          "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2115200004555",
+          "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113400003101",
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113100016593",
+          "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -1207,17 +1232,17 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "COLORFUL",
       "needs": [
         "STORAGE",
         "RENTAL"
       ],
-      "provenance": "STAFF",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "スタッフ想定デモ",
-      "creator_type": "STAFF_DEMO",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1227,39 +1252,44 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2000915-2000865",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
-        },
-        {
-          "product_id": "NTR-2115200004555",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 1
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8380204",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
+        },
+        {
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-7545501",
+          "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": [
@@ -1289,10 +1319,10 @@
         "RENTAL",
         "COMPACT"
       ],
-      "provenance": "OFFICIAL",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "公式想定デモ",
-      "creator_type": "OFFICIAL_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-007-budget-natural.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1306,21 +1336,24 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1343,10 +1376,10 @@
         "LOW_BUDGET",
         "RENTAL"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-008-budget-clear-cool.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1360,21 +1393,24 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1397,10 +1433,10 @@
         "LOW_BUDGET",
         "RENTAL"
       ],
-      "provenance": "DEMO",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "Community demo team",
-      "creator_type": "DEMO_TEAM",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-dandy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1414,21 +1450,24 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1452,10 +1491,10 @@
         "RENTAL",
         "COMPACT"
       ],
-      "provenance": "STAFF",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "スタッフ想定デモ",
-      "creator_type": "STAFF_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1465,25 +1504,28 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600044491-0000002000852",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8842174",
+          "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8380201",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -1506,10 +1548,10 @@
         "LOW_BUDGET",
         "RENTAL"
       ],
-      "provenance": "OFFICIAL",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "公式想定デモ",
-      "creator_type": "OFFICIAL_DEMO",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1523,21 +1565,24 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": [
@@ -1566,10 +1611,10 @@
         "LOW_BUDGET",
         "RENTAL"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1579,25 +1624,28 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2000915-2000865",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2115200004555",
+          "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8380204",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -1638,35 +1686,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-5637001",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1706,35 +1759,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2110700072028",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113300027863",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1774,35 +1832,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -1818,18 +1881,18 @@
       "size_band": "MEDIUM_7_8",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_30000",
-      "budget_max": 30000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "ELEGANT",
       "needs": [
         "WORK_FROM_HOME",
         "RENTAL",
         "COMPACT"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1839,39 +1902,44 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600044491-0000002000852",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-5637001",
+          "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8760844",
+          "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8380201",
+          "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8842174",
+          "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": [
@@ -1893,17 +1961,17 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_30000",
-      "budget_max": 30000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "COZY",
       "needs": [
         "WORK_FROM_HOME",
         "RENTAL"
       ],
-      "provenance": "DEMO",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "Community demo team",
-      "creator_type": "DEMO_TEAM",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1913,39 +1981,44 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600061047",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2110700072028",
+          "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113300027863",
+          "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113400003101",
+          "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-4904746153517-1000000000000",
+          "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -1968,10 +2041,10 @@
         "WORK_FROM_HOME",
         "RENTAL"
       ],
-      "provenance": "STAFF",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "スタッフ想定デモ",
-      "creator_type": "STAFF_DEMO",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -1985,35 +2058,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -2029,18 +2107,18 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "NATURAL",
       "needs": [
         "RELAX",
         "RENTAL",
         "COMPACT"
       ],
-      "provenance": "OFFICIAL",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "公式想定デモ",
-      "creator_type": "OFFICIAL_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-019-relax-natural.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2054,35 +2132,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
-          "product_id": "NTR-2113300027863",
+          "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -2105,10 +2188,10 @@
         "RELAX",
         "RENTAL"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-clear-cool.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2122,35 +2205,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113300027863",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -2173,10 +2261,10 @@
         "RELAX",
         "RENTAL"
       ],
-      "provenance": "DEMO",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "Community demo team",
-      "creator_type": "DEMO_TEAM",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-021-relax-dandy.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2190,35 +2278,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
-          "product_id": "NTR-8760844",
+          "product_id": "NTR-2113300027863",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-7545501",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": [
@@ -2240,18 +2333,18 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "ELEGANT",
       "needs": [
         "RELAX",
         "RENTAL",
         "COMPACT"
       ],
-      "provenance": "STAFF",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "スタッフ想定デモ",
-      "creator_type": "STAFF_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2265,35 +2358,40 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113300027863",
+          "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -2316,10 +2414,10 @@
         "RELAX",
         "RENTAL"
       ],
-      "provenance": "OFFICIAL",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "公式想定デモ",
-      "creator_type": "OFFICIAL_DEMO",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-023-relax-cozy.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2329,39 +2427,44 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600061047",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113300027863",
+          "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113200014178",
+          "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113400003101",
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113100016593",
+          "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -2377,17 +2480,17 @@
       "size_band": "MEDIUM_7_8",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "COLORFUL",
       "needs": [
         "RELAX",
         "RENTAL"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2397,39 +2500,44 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2000915-2000865",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
-        },
-        {
-          "product_id": "NTR-2113200014178",
-          "role": "SUPPORT_FURNITURE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 1
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8380204",
+          "product_id": "NTR-8760844",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
+        },
+        {
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-7545501",
+          "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 4
+          "position": 4,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -2470,28 +2578,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -2531,28 +2643,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": [
@@ -2598,28 +2714,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-7545501",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -2643,10 +2763,10 @@
         "RENTAL",
         "COMPACT"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2656,32 +2776,36 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600044491-0000002000852",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-7349091",
+          "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8380201",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8842174",
+          "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -2704,10 +2828,10 @@
         "SLEEP",
         "RENTAL"
       ],
-      "provenance": "DEMO",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "Community demo team",
-      "creator_type": "DEMO_TEAM",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2721,28 +2845,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -2758,17 +2886,17 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "COLORFUL",
       "needs": [
         "SLEEP",
         "RENTAL"
       ],
-      "provenance": "STAFF",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "スタッフ想定デモ",
-      "creator_type": "STAFF_DEMO",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2778,32 +2906,36 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2000915-2000865",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-7545501",
+          "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8380204",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2115200004555",
+          "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -2826,10 +2958,10 @@
         "COMPACT",
         "RENTAL"
       ],
-      "provenance": "OFFICIAL",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "公式想定デモ",
-      "creator_type": "OFFICIAL_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-031-compact-natural.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
       "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2843,28 +2975,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-5637001",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": [
@@ -2893,10 +3029,10 @@
         "COMPACT",
         "RENTAL"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-clear-cool.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2910,28 +3046,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2110700072028",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113300027863",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -2954,10 +3094,10 @@
         "COMPACT",
         "RENTAL"
       ],
-      "provenance": "DEMO",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "Community demo team",
-      "creator_type": "DEMO_TEAM",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-dandy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -2971,28 +3111,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "VERIFIED_MATCH"
         },
         {
           "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "VERIFIED_MATCH"
         }
       ],
       "existing_furniture": []
@@ -3008,17 +3152,17 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_30000",
-      "budget_max": 30000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "ELEGANT",
       "needs": [
         "COMPACT",
         "RENTAL"
       ],
-      "provenance": "STAFF",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "スタッフ想定デモ",
-      "creator_type": "STAFF_DEMO",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -3028,32 +3172,36 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600044491-0000002000852",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-5637001",
+          "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8842174",
+          "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-8760844",
+          "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -3069,17 +3217,17 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_30000",
-      "budget_max": 30000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "COZY",
       "needs": [
         "COMPACT",
         "RENTAL"
       ],
-      "provenance": "OFFICIAL",
+      "provenance": "STAFF",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "公式想定デモ",
-      "creator_type": "OFFICIAL_DEMO",
+      "creator_display": "スタッフ想定デモ",
+      "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -3089,32 +3237,36 @@
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600061047",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2110700072028",
+          "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-4904746153517-1000000000000",
+          "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
-          "product_id": "NTR-2113300027863",
+          "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": []
@@ -3137,10 +3289,10 @@
         "COMPACT",
         "RENTAL"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "OFFICIAL",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
       "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
@@ -3154,28 +3306,32 @@
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 0
+          "position": 0,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
+          "position": 1,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 2,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         },
         {
           "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
+          "position": 3,
+          "style_compatibility": "UNVERIFIED_NEUTRAL"
         }
       ],
       "existing_furniture": [

@@ -58,7 +58,7 @@ Product Detail → `この商品を使ったコーデを見る` → Coordinate �
 | Frontend | React 18 / TypeScript / Vite / React Router | 13 route screens、Creator / Seasonal UI、responsive UI、typed API client |
 | Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy / Pillow | ranking、Save / PLAN、Creator、lineage、Seasonal eligibility / Entry、safe image normalization |
 | Data | SQLite + generated JSON seed + ignored local uploads | anonymous Session ownership、36 Coordinates、60 Products、6 Challenges、8 Entries、User contributions |
-| Test | pytest / Vitest / Testing Library / Playwright | 60 backend tests、30 frontend tests、9 functional browser flows、3 responsive checks |
+| Test | pytest / Vitest / Testing Library / Playwright | 63 backend tests、33 frontend tests、9 functional browser flows、3 responsive checks |
 
 Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/src/api/types.ts`](frontend/src/api/types.ts)のTypeScript contractと[`frontend/src/api/client.ts`](frontend/src/api/client.ts)を通してだけ接続します。
 
@@ -86,7 +86,8 @@ room-harmony-community/
 - 残りのCoordinateと42件のDemo ProductにはRepository-original SVGを使いますが、写真中心のExplore、Coordinateの商品欄、Createの商品選択には混在させません。個別SVGと共通fallbackは、直接参照と読み込み失敗時の安全策として保持します。Runtime hotlinkはありません。
 - `NTR-*`価格は2026-08-19時点の公式参照スナップショット、`DEMO-*`価格は架空です。未取得価格は0円にせず件数を表示します。
 - `NTR-*`は対応するNITORI公式商品ページ、`DEMO-*`は公式検索ページへの参考Linkです。どちらも在庫・Cart・購入・価格APIではありません。
-- Built-in provenanceやCreator表示は検証用で、公式認定や実在投稿を意味しません。REAL ROOMは、Userが自分の部屋画像をUploadして`USER_DECLARED_UNVERIFIED`として公開した場合だけ使います。
+- Built-in provenanceやCreator表示は検証用で、公式認定や実在投稿を意味しません。内蔵Seedは`DEMO` / `STAFF` / `OFFICIAL`の検証用区分だけを使い、`USER_DECLARED`は使いません。REAL ROOMは、Userが自分の部屋画像をUploadして`USER_DECLARED_UNVERIFIED`として公開した場合だけ使います。
+- Coordinateの雰囲気は6種を保持しますが、18件のNITORI商品参照で確認済みの`style_hint`は`NATURAL` / `CLEAR_COOL` / `DANDY`だけです。`ELEGANT` / `COZY` / `COLORFUL`で使う公式商品候補はStyle一致を主張せず、Seedの`style_compatibility`を`UNVERIFIED_NEUTRAL`として明示します。
 - Goal 2でUserがUploadした画像は`.demo/uploads/`へrandom filenameのWebPとしてLocal保存され、Git対象外です。元filename、client path、EXIFは保存しません。
 - `USER_DECLARED` REALはUser申告であり、NITORIまたはSystemによる本人・購入・実在性の確認済み情報ではありません。
 - 6件のChallengeと8件のEntryも架空のSeasonal seedです。`Prototype Pick`はDemo上のcontrolled recognitionで、NITORI社員による公式選定、人気順位、品質保証ではありません。

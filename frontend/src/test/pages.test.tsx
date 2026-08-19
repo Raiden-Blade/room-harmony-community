@@ -375,6 +375,41 @@ describe("functional MVP pages", () => {
     expect(params?.get("budget_max")).toBe("50000");
   });
 
+  it("Built-in reference provenance is not presented as a User declaration", async () => {
+    vi.mocked(api.coordinate).mockResolvedValue({
+      ...detail,
+      creator_id: null,
+      provenance: "USER_DECLARED",
+      verification_state: "DEMO_ONLY",
+    });
+    renderRoute(<CoordinateDetailPage />, "/coordinates/coord-001", "/coordinates/:coordinateId");
+
+    const source = await screen.findByRole("region", { name: "この事例について" });
+    expect(within(source).getByText("デモ制作（検証用構成）")).toBeInTheDocument();
+    expect(within(source).queryByText(/User申告/)).not.toBeInTheDocument();
+  });
+
+  it("Actual user-created content keeps its User declaration provenance", async () => {
+    vi.mocked(api.coordinate).mockResolvedValue({
+      ...detail,
+      id: "community-11111111-1111-1111-1111-111111111111",
+      kind: "REAL",
+      creator_id: "creator-1",
+      provenance: "USER_DECLARED",
+      verification_state: "USER_DECLARED_UNVERIFIED",
+      image_rights: "USER_UPLOADED_LOCAL",
+    });
+    renderRoute(
+      <CoordinateDetailPage />,
+      "/coordinates/community-11111111-1111-1111-1111-111111111111",
+      "/coordinates/:coordinateId",
+    );
+
+    const source = await screen.findByRole("region", { name: "この事例について" });
+    expect(within(source).getByText("User申告（検証用構成）")).toBeInTheDocument();
+    expect(screen.getByText("ユーザー申告のREAL ROOM")).toBeInTheDocument();
+  });
+
   it("Existing furniture offers a clear next step to the current user's plan", async () => {
     const user = userEvent.setup();
     vi.mocked(api.coordinate).mockResolvedValue({
@@ -413,6 +448,31 @@ describe("functional MVP pages", () => {
     await user.type(screen.getByLabelText("手持ち家具のサイズ"), "幅45cm");
     await user.click(screen.getByRole("button", { name: "手持ち家具を追加" }));
     await waitFor(() => expect(api.addExisting).toHaveBeenCalledWith("plan-001", "手持ちチェア", "SUPPORT_FURNITURE", "幅45cm"));
+  });
+
+  it("Plan editor uses the backend price notice and the actual Product name for image alt text", async () => {
+    const officialProduct: ProductSummary = {
+      ...product,
+      id: "NTR-2110600044491-0000002000852",
+      name: "パイプベッド シングル (バジーナF WH)",
+      image_url: "/assets/products/nitori/ntr-bed-natural.webp",
+      provenance: "NITORI_OFFICIAL_SNAPSHOT",
+      price_status: "NITORI_OFFICIAL_SNAPSHOT",
+    };
+    const mixedNotice = "NITORI公式参照価格と架空のデモ価格が混在しています。現在価格・在庫を示しません。";
+    vi.mocked(api.plan).mockResolvedValue({
+      ...plan,
+      price: { ...plan.price, status: "MIXED_SNAPSHOT", notice: mixedNotice },
+      items: [{ ...plan.items[0], product: officialProduct }],
+      product_count: 1,
+      category_count: 1,
+    });
+    renderRoute(<PlanEditPage />, "/plans/plan-001/edit", "/plans/:planId/edit");
+
+    expect(await screen.findByRole("img", { name: `${officialProduct.name}の商品画像` })).toBeInTheDocument();
+    expect(screen.getByText(`${mixedNotice} 手持ち家具は購入候補額に含みません。`)).toBeInTheDocument();
+    expect(screen.getByText(/購入候補額を再計算/)).toBeInTheDocument();
+    expect(screen.queryByText("デモ価格です。手持ち家具は含みません。")).not.toBeInTheDocument();
   });
 
   it("Plan and handoff pages expose a goal-centered preview CTA", async () => {

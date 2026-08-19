@@ -37,6 +37,11 @@ NEEDS = [
     ("COMPACT", "6畳を広く使いたい", "奥行きの浅い家具と兼用できる商品を中心にします。"),
 ]
 
+# The curated official Product subset has source-backed style hints only for
+# these three styles. The other Coordinate styles remain useful prototype
+# attributes, but must never inherit a verified Product match by index wrap.
+VERIFIED_OFFICIAL_PRODUCT_STYLES = frozenset({"NATURAL", "CLEAR_COOL", "DANDY"})
+
 # A Coordinate is a need-led composition, not the same five categories with a
 # different title. Repeated categories intentionally select different products.
 NEED_PRODUCT_TEMPLATES: dict[str, tuple[str, ...]] = {
@@ -52,8 +57,37 @@ PROVENANCE = [
     ("DEMO", "Community demo team", "DEMO_TEAM"),
     ("STAFF", "スタッフ想定デモ", "STAFF_DEMO"),
     ("OFFICIAL", "公式想定デモ", "OFFICIAL_DEMO"),
-    ("USER_DECLARED", "暮らし手想定デモ", "USER_DEMO"),
 ]
+
+
+def _select_product(
+    priced_rows: list[dict[str, object]],
+    coordinate_style: str,
+    need_index: int,
+    occurrence: int,
+) -> tuple[dict[str, object], str]:
+    official_rows = [
+        row for row in priced_rows if row["provenance"] == "NITORI_OFFICIAL_SNAPSHOT"
+    ]
+    if official_rows:
+        verified_rows = [
+            row
+            for row in official_rows
+            if coordinate_style in VERIFIED_OFFICIAL_PRODUCT_STYLES
+            and row.get("style_hint") == coordinate_style
+        ]
+        if occurrence == 0 and verified_rows:
+            return verified_rows[0], "VERIFIED_MATCH"
+
+        # Repeated categories and unsupported Coordinate styles use a neutral,
+        # deterministic candidate pool. Selection is need-led, not a hidden
+        # ELEGANT→NATURAL / COZY→CLEAR_COOL / COLORFUL→DANDY style mapping.
+        neutral_rows = [row for row in official_rows if row not in verified_rows] or official_rows
+        neutral_index = (need_index + max(occurrence - 1, 0)) % len(neutral_rows)
+        return neutral_rows[neutral_index], "UNVERIFIED_NEUTRAL"
+
+    product = priced_rows[(need_index + occurrence) % len(priced_rows)]
+    return product, "DEMO_ONLY"
 
 
 def build_products() -> list[dict[str, object]]:
@@ -113,20 +147,21 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
     for need_index, (need_code, need_label, need_copy) in enumerate(NEEDS):
         for style_index, (style_code, style_label, style_copy) in enumerate(STYLES):
             coordinate_index = need_index * len(STYLES) + style_index
-            # Product rows 0-5 intentionally follow the six style variants so
-            # the primary item remains consistent with the Coordinate style.
-            product_index = style_index
             category_occurrences: dict[str, int] = {}
             product_rows: list[dict[str, object]] = []
+            product_style_compatibility: list[str] = []
             for category in NEED_PRODUCT_TEMPLATES[need_code]:
                 occurrence = category_occurrences.get(category, 0)
                 category_occurrences[category] = occurrence + 1
                 priced_rows = [row for row in by_category[category] if row["price_snapshot"] is not None]
-                official_rows = [
-                    row for row in priced_rows if row["provenance"] == "NITORI_OFFICIAL_SNAPSHOT"
-                ]
-                candidates = official_rows or priced_rows
-                product_rows.append(candidates[(product_index + occurrence) % len(candidates)])
+                product, compatibility = _select_product(
+                    priced_rows,
+                    coordinate_style=style_code,
+                    need_index=need_index,
+                    occurrence=occurrence,
+                )
+                product_rows.append(product)
+                product_style_compatibility.append(compatibility)
             product_items = [
                 {
                     "product_id": product["id"],
@@ -134,6 +169,7 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                     "source": "CATALOG_TO_BUY",
                     "quantity": 1,
                     "position": position,
+                    "style_compatibility": product_style_compatibility[position],
                 }
                 for position, product in enumerate(product_rows)
             ]

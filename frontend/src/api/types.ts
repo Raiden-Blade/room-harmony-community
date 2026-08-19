@@ -3,7 +3,12 @@ export type PriceSummary = {
   unknown_item_count: number;
   calculated_at: string;
   currency: "JPY";
-  status: "DEMO_SNAPSHOT" | "PARTIAL_DEMO_SNAPSHOT";
+  status:
+    | "DEMO_SNAPSHOT"
+    | "PARTIAL_DEMO_SNAPSHOT"
+    | "NITORI_OFFICIAL_SNAPSHOT"
+    | "PARTIAL_NITORI_OFFICIAL_SNAPSHOT"
+    | "MIXED_SNAPSHOT";
   notice: string;
 };
 

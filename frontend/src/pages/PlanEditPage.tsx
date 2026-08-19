@@ -111,7 +111,7 @@ export function PlanEditPage() {
             <div className="editor-items">
               {plan.data.items.filter((item) => item.product).map((item) => (
                 <article className="editor-item" key={item.id}>
-                  <SafeImage src={item.product!.image_url} fallbackSrc="/assets/product-fallback.svg" alt="オリジナルの商品プレースホルダー" />
+                  <SafeImage src={item.product!.image_url} fallbackSrc="/assets/product-fallback.svg" alt={`${item.product!.name}の商品画像`} />
                   <div className="editor-item__copy">
                     <div className="badge-row"><Badge>{label(item.role)}</Badge><Badge tone={item.mutation_state === "ORIGINAL" ? "quiet" : "accent"}>{label(item.mutation_state)}</Badge></div>
                     <h3>{item.product!.name}</h3><p>{yen(item.price_snapshot)}</p>
@@ -166,9 +166,9 @@ export function PlanEditPage() {
           <p className="eyebrow">Estimated total</p>
           <strong>{yen(plan.data.price.known_total)}</strong>
           <span>{plan.data.product_count}商品 · {plan.data.category_count}カテゴリ</span>
-          <span>デモ合計再計算 · {dateStamp(plan.data.price.calculated_at)}</span>
+          <span>購入候補額を再計算 · {dateStamp(plan.data.price.calculated_at)}</span>
           {plan.data.price.unknown_item_count > 0 && <p>価格未取得 {plan.data.price.unknown_item_count}件</p>}
-          <p className="price-caveat">デモ価格です。手持ち家具は含みません。</p>
+          <p className="price-caveat">{plan.data.price.notice} 手持ち家具は購入候補額に含みません。</p>
           <button className="button button--primary" disabled={busy} onClick={finish}>この内容で比較準備へ</button>
           {actionError && <p className="inline-error" role="alert">{actionError}</p>}
         </aside>
