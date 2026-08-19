@@ -48,7 +48,7 @@ export function SavedPage() {
           <div className="plan-list">
             {collection.data.plans.map((plan) => (
               <article className="plan-row" key={plan.id}>
-                <SafeImage src={plan.image_url} alt="PLANの元になったオリジナルデモイラスト" />
+                <SafeImage src={plan.image_url} alt="PLANの元になったコーディネート画像" />
                 <div><p className="eyebrow">{label(plan.status)} · {label(plan.size_band)}</p><h3>{plan.title}</h3><p>{yen(plan.price.known_total)} · {plan.product_count}商品</p></div>
                 <Link className="button button--secondary" to={`/plans/${plan.id}`}>PLANを確認</Link>
               </article>

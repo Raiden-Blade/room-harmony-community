@@ -73,9 +73,7 @@ def build_products() -> list[dict[str, object]]:
 
 def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, object]]:
     visual_manifest = json.loads(VISUAL_MANIFEST.read_text(encoding="utf-8"))
-    visual_assets = {
-        item["coordinate_id"]: item["current_asset"] for item in visual_manifest["coordinates"]
-    }
+    visual_entries = {item["coordinate_id"]: item for item in visual_manifest["coordinates"]}
     by_category: dict[str, list[dict[str, object]]] = {}
     for product in products:
         by_category.setdefault(str(product["category"]), []).append(product)
@@ -119,6 +117,19 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                 if need_code == "COMPACT"
                 else f"{style_label}で整える、{need_label}{size_label}プラン"
             )
+            visual_entry = visual_entries.get(coordinate_id)
+            image_url = (
+                visual_entry["current_asset"]
+                if visual_entry
+                else f"/assets/room-{style_code.lower().replace('_', '-')}.svg"
+            )
+            image_rights = visual_entry["rights_status"] if visual_entry else "LOCALLY_CREATED_DEMO"
+            demo_disclosure = (
+                "室内画像は、許可を前提に似鳥公式Coordinateページからローカル収録した参照素材です。"
+                "商品構成・ID・価格・投稿者情報は架空のデモです。"
+                if visual_entry
+                else "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。"
+            )
             coordinates.append(
                 {
                     "id": coordinate_id,
@@ -126,7 +137,7 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                     "status": "PUBLISHED" if kind == "REAL" else "READY_FOR_ACTION",
                     "visibility": "PUBLIC",
                     "title": title,
-                    "description": f"{style_copy} {need_copy} 商品構成・価格・画像はすべてデモです。",
+                    "description": f"{style_copy} {need_copy} 商品構成・価格はデモです。画像の出所は詳細画面に表示します。",
                     "room_type": "ONE_ROOM",
                     "size_band": size_band,
                     "housing_type": "RENTAL",
@@ -139,11 +150,9 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                     "verification_state": "DEMO_ONLY",
                     "creator_display": creator_display,
                     "creator_type": creator_type,
-                    "image_url": visual_assets.get(
-                        coordinate_id, f"/assets/room-{style_code.lower().replace('_', '-')}.svg"
-                    ),
-                    "image_rights": "LOCALLY_CREATED_DEMO",
-                    "demo_disclosure": "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。",
+                    "image_url": image_url,
+                    "image_rights": image_rights,
+                    "demo_disclosure": demo_disclosure,
                     "seasonal_collection": "NEW_LIFE_2027" if coordinate_index < 18 else None,
                     "editorial_rank": coordinate_index + 1,
                     "official_pick": coordinate_index in {0, 7, 14},
@@ -172,7 +181,7 @@ def main() -> None:
         "metadata": {
             "generated_at": "2026-08-18T00:00:00+00:00",
             "dataset_kind": "SYNTHETIC_FUNCTIONAL_PROTOTYPE",
-            "rights_notice": "No third-party coordinate image is included. All SVG assets are locally created demo visuals.",
+            "rights_notice": "Fifteen approved NITORI coordinate reference images are bundled locally for this prototype; other room and all product visuals remain repository-original demo assets.",
             "price_notice": "All prices are fictional demo snapshots and may not match current official prices.",
         },
         "products": products,

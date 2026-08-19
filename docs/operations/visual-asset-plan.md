@@ -2,43 +2,50 @@
 
 ## 目的と境界
 
-Home、Explore、Seasonal、Challenge、Coordinate Detailで繰り返し見える主要15件を、同じ部屋画像の色替えだけに見えない状態へする。現在は権利安全な**自作SVG模式図**を使い、実在する部屋・商品・購入実績とは表示しない。第三者画像、NITORI商品写真、SNS投稿画像は同梱しない。
+Final Demoで繰り返し見える主要15件を、使用許可を確認したNITORI公式のワンルームCoordinate参照画像へ置き換えた。収納、在宅作業、低予算、くつろぎ、睡眠、compactの違いを、タイトルだけでなく画像からも読み取れる状態にする。
 
-将来、許諾済みの実写または写実的な合成画像を入手した場合も、`Coordinate.image_url`を差し替えるだけでDomainやAPIを変更しない。候補ファイル名は予約であり、現時点のRepositoryには実画像を含めない。
+- Source page: [新生活用品・お部屋別コーディネート](https://www.nitori-net.jp/ec/feature/newlifegoods/#room)
+- Permission: User confirmed usage for this prototype. **一般的なOpen licenseではない**。
+- Runtime: `frontend/public/assets/coordinates/nitori/`のlocal WebPだけを読む。Hotlinkしない。
+- Data boundary: NITORI由来なのは室内参照画像のみ。Coordinate内容、`DEMO-*`商品、価格、商品画像、投稿者は架空またはRepository-original。
+- User upload boundary: 利用者が投稿するREAL ROOM画像は`.demo/uploads/`へ別管理され、許可済み公式参照画像とは混在させない。
+- Fallback: 既存の個別`room-scene-coord-*.svg`と共通`room-fallback.svg`を残す。
 
-## 主要15件の制作指示
+## 主要15件の確定Mapping
 
-| ID | 表示タイトル / 部屋 | 種別・手持ち家具 | Style・Need | 主な商品役割 | 現在の自作SVG | 将来の候補ファイル / 画づくり |
-|---|---|---|---|---|---|---|
-| coord-001 | ナチュラルで整える収納 / 6畳 | REAL・手持ちチェアあり | NATURAL・STORAGE | 主家具・収納・照明 | `room-scene-coord-001.svg` | `coord-001-storage-natural.webp` / 明るい木目、壁面収納、床の余白 |
-| coord-002 | クリアクールで整える収納 / 5.5畳 | PLAN・なし | CLEAR_COOL・STORAGE | 主家具・収納・布 | `room-scene-coord-002.svg` | `coord-002-storage-clear-cool.webp` / 白とグレー、縦長収納 |
-| coord-003 | ダンディで整える収納 / 6畳 | REAL・なし | DANDY・STORAGE | 主家具・収納・補助家具 | `room-scene-coord-003.svg` | `coord-003-storage-dandy.webp` / 濃色木目、低いベッド、隠す収納 |
-| coord-004 | エレガントで整える収納 / 7〜8畳 | REAL・なし | ELEGANT・STORAGE | 主家具・収納・照明 | `room-scene-coord-004.svg` | `coord-004-storage-elegant.webp` / 柔らかな色、収納と装飾 |
-| coord-005 | コージーで整える収納 / 6畳 | REAL・なし | COZY・STORAGE | 主家具・収納・布 | `room-scene-coord-005.svg` | `coord-005-storage-cozy.webp` / 布素材、かご収納、暖色照明 |
-| coord-007 | 5万円前後のナチュラル / 6畳 | REAL・なし | NATURAL・LOW_BUDGET | 主家具・補助家具・照明 | `room-scene-coord-007.svg` | `coord-007-budget-natural.webp` / 必需品を絞った余白の多い部屋 |
-| coord-008 | 5万円前後のクリアクール / 7〜8畳 | REAL・なし | CLEAR_COOL・LOW_BUDGET | 主家具・補助家具・布 | `room-scene-coord-008.svg` | `coord-008-budget-clear-cool.webp` / 少ない家具でも統一感 |
-| coord-013 | ナチュラルな在宅作業 / 6畳 | REAL・なし | NATURAL・WORK_FROM_HOME | デスク・照明・収納 | `room-scene-coord-013.svg` | `coord-013-work-natural.webp` / 窓際デスク、仕事と睡眠の区分 |
-| coord-014 | クリアクールな在宅作業 / 5.5畳 | PLAN・なし | CLEAR_COOL・WORK_FROM_HOME | デスク・照明・収納 | `room-scene-coord-014.svg` | `coord-014-work-clear-cool.webp` / 省スペースデスク、整理した配線 |
-| coord-015 | ダンディな在宅作業 / 6畳 | REAL・なし | DANDY・WORK_FROM_HOME | デスク・照明・収納 | `room-scene-coord-015.svg` | `coord-015-work-dandy.webp` / 濃色デスク、集中できる作業角 |
-| coord-019 | ナチュラルなくつろぎ / 6畳 | REAL・なし | NATURAL・RELAX | 主家具・補助家具・布 | `room-scene-coord-019.svg` | `coord-019-relax-natural.webp` / 低いソファ、ラグ、視線の抜け |
-| coord-021 | ダンディなくつろぎ / 6畳 | REAL・手持ちチェアあり | DANDY・RELAX | 主家具・補助家具・照明 | `room-scene-coord-021.svg` | `coord-021-relax-dandy.webp` / 低座面、濃色、夜の間接照明 |
-| coord-023 | コージーなくつろぎ / 6畳 | REAL・なし | COZY・RELAX | 主家具・補助家具・布 | `room-scene-coord-023.svg` | `coord-023-relax-cozy.webp` / クッションと布素材の重なり |
-| coord-025 | ナチュラルな睡眠 / 6畳 | REAL・なし | NATURAL・SLEEP | 主家具・照明・布 | `room-scene-coord-025.svg` | `coord-025-sleep-natural.webp` / ベッド中心、遮光と手元灯 |
-| coord-031 | 広く使うナチュラル / 6畳 | REAL・手持ちチェアあり | NATURAL・COMPACT | 主家具・収納・補助家具 | `room-scene-coord-031.svg` | `coord-031-compact-natural.webp` / 折りたたみ家具、通路の余白 |
+| ID | Demo上の役割 | Local NITORI WebP | 公式Source image | SVG fallback | 選定理由 |
+|---|---|---|---|---|---|
+| coord-001 | Similar / PLAN / 前年Archive / Product reverse | `coord-001-storage-natural.webp` | `room04-3_38w.jpg` | `room-scene-coord-001.svg` | 明るい木目とTV周りの収納 |
+| coord-002 | Similar / Clear Cool収納 | `coord-002-storage-clear-cool.webp` | `room05-2_38w.jpg` | `room-scene-coord-002.svg` | 白いDeskと収納で省Space感 |
+| coord-003 | Similar / 前年Archive / Dandy収納 | `coord-003-storage-dandy.webp` | `room03-3_38w.jpg` | `room-scene-coord-003.svg` | 濃色棚が収納Needを明示 |
+| coord-004 | Similar / Elegant収納 | `coord-004-storage-elegant.webp` | `room02-4_38w.jpg` | `room-scene-coord-004.svg` | 白い収納と柔らかなPink |
+| coord-005 | 前年Archive / Cozy収納 | `coord-005-storage-cozy.webp` | `room02-2_38w.jpg` | `room-scene-coord-005.svg` | 布の柔らかさと収納Bed |
+| coord-007 | Similar / 5万円Theme | `coord-007-budget-natural.webp` | `room04-4_38w.jpg` | `room-scene-coord-007.svg` | 家具を絞った低いRelax構成 |
+| coord-008 | Similar / Prototype Pick | `coord-008-budget-clear-cool.webp` | `room01-2_38w.jpg` | `room-scene-coord-008.svg` | Gray中心の簡潔な寝室 |
+| coord-013 | Similar / Work / Seasonal | `coord-013-work-natural.webp` | `room04-2_38w.jpg` | `room-scene-coord-013.svg` | 木目Tableと生活Spaceの両立 |
+| coord-014 | Similar / Work / Summer | `coord-014-work-clear-cool.webp` | `room05-4_38w.jpg` | `room-scene-coord-014.svg` | 白黒Deskを主役にした作業角 |
+| coord-015 | Similar / Work / Product reverse | `coord-015-work-dandy.webp` | `room03-1_38w.jpg` | `room-scene-coord-015.svg` | 濃色DeskでDandyを強く差別化 |
+| coord-019 | Current Challenge / Natural relax | `coord-019-relax-natural.webp` | `room01-4_38w.jpg` | `room-scene-coord-019.svg` | 低いGray Sofaと視線の抜け |
+| coord-021 | Current Challenge / Dandy relax | `coord-021-relax-dandy.webp` | `room03-4_38w.jpg` | `room-scene-coord-021.svg` | 黒い低座家具とLow table |
+| coord-023 | Current Challenge / Cozy relax | `coord-023-relax-cozy.webp` | `room02-1_38w.jpg` | `room-scene-coord-023.svg` | Pinkと布素材の暖かな全景 |
+| coord-025 | Similar / Sleep | `coord-025-sleep-natural.webp` | `room04-1_38w.jpg` | `room-scene-coord-025.svg` | Bedを含むNaturalなRoom全景 |
+| coord-031 | Existing furniture / Adapt / Product reverse | `coord-031-compact-natural.webp` | `room01-1_38w.jpg` | `room-scene-coord-031.svg` | Bed・Sofa・収納の使い分け |
 
-Machine-readableな対応、権利状態、fallback、layout variantは[`data/seed/visual_asset_manifest.json`](../../data/seed/visual_asset_manifest.json)をSource of Truthとする。
+個別の公式asset URL、Coordinate正式Title、権利状態、用途、選定理由は[`data/seed/visual_asset_manifest.json`](../../data/seed/visual_asset_manifest.json)をSource of Truthとする。
 
-## 差し替え条件
+## Asset仕様と差し替え条件
 
-1. 画像ごとの権利根拠を記録し、`LOCALLY_CREATED_DEMO`、`CC0`、`EXPLICITLY_PERMITTED`のいずれかを満たす。
-2. 顔、住所、郵便物、車のナンバーなどの個人情報が写っていないことを確認する。
-3. 主要商品の役割とNeedが画像から読み取れ、タイトルだけを変えた重複画像にしない。
-4. 16:10前後、最低1200×750、WebPを推奨し、各画像の容量を抑える。
-5. 壊れた画像は`/assets/room-fallback.svg`へ切り替わることをBrowser QAで確認する。
-6. `python scripts/validate_data/validate_seed.py`、Frontend build、mobile / tablet / desktop visual QAを通す。
+1. Source取得時の650×414画像を中央基準で16:10へ最小Cropし、640×400 / WebP quality 84へ最適化する。
+2. 15画像はすべて別Source viewを使い、同一fileの複製で差別化したように見せない。
+3. 顔、氏名、住所、郵便物、車のNumber等の個人情報がないことを目視確認する。
+4. `EXPLICITLY_PERMITTED`、`USER_CONFIRMED_FOR_THIS_PROTOTYPE`、Source URL、fallbackをmanifestに必須化する。
+5. Card、Detail hero、Seasonal hero、Challenge cardは16:10を基準にし、`object-fit: cover`の過剰な見切れを避ける。
+6. 壊れた画像は`SafeImage`により`/assets/room-fallback.svg`へ切り替える。個別SVGも将来の手動差し替え用に維持する。
+7. `python scripts/validate_data/validate_seed.py`、Frontend build、390 / 768 / 1280のBrowser QAを通す。
 
 ## 現在の制約
 
-- SVGは配置差を説明する模式図で、商品写真としての魅力や実寸を保証しない。
-- 将来ファイル名は制作・許諾のBacklogであり、「写実画像が完成済み」という意味ではない。
-- 画像の改善だけで購買率、併売率、投稿率が上がるとは主張しない。正式評価にはExposureと行動指標の設計が別途必要である。
+- 公式参照画像と架空のCoordinate商品構成は1対1の実在商品対応を保証しない。画像から確認できる大きな用途・Styleの整合だけを取っている。
+- 15件以外のCoordinateとHome heroはRepository-original SVGのままである。
+- Product imageは今回の置換対象外であり、Repository-original demo-safe SVGを維持する。
+- 画像改善だけで購買率、併売率、投稿率が上がるとは主張しない。正式評価にはExposure、比較条件、行動指標、購入Dataが必要である。

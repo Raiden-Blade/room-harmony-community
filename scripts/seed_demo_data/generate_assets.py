@@ -124,7 +124,7 @@ def main() -> None:
         (ASSETS / f"product-{name}.svg").write_text(product_svg(name, color, shape) + "\n", encoding="utf-8")
     manifest = json.loads(VISUAL_MANIFEST.read_text(encoding="utf-8"))
     for entry in manifest["coordinates"]:
-        target = ASSETS / Path(entry["current_asset"]).name
+        target = ASSETS / Path(entry["fallback_asset"]).name
         target.write_text(scenario_svg(entry) + "\n", encoding="utf-8")
     print(
         f"Wrote {len(ROOM_THEMES)} style fallbacks, {len(manifest['coordinates'])} scenario rooms, "

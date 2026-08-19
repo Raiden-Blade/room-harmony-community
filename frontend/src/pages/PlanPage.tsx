@@ -84,7 +84,7 @@ export function PlanPage() {
           <h1>{data.title}</h1>
           <p>これは購入・在庫確保・専門家の設計承認を示さない、あなただけの検討用PLANです。</p>
         </div>
-        <SafeImage src={data.image_url} alt="PLANの元になったオリジナルデモイラスト" />
+        <SafeImage src={data.image_url} alt="PLANの元になったコーディネート画像" />
       </header>
 
       <section className="plan-summary" aria-label="PLANの要約">

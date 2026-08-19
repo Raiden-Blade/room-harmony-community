@@ -19,7 +19,7 @@
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
 | `6畳のおすすめを見る` | `あなたの条件に近いコーデ` | AIではなく、広さ・困りごと・予算のdeterministic一致。PopularとのA/B結果ではない | 条件が違えば6畳 / 収納 / 5万円を選び`この条件で探す` |
-| 先頭Cardの`空間全体を見る` | Coordinate Detail | 画像だけでなく、近い理由、5商品 / 5カテゴリ、概算を空間単位で見る | Cardが無ければHomeへ戻り同じ条件を再指定 |
+| 先頭Card（`coord-001`）の`空間全体を見る` | Coordinate Detail | 明るい木目と収納が見える許可済み参照画像を入口に、近い理由、5商品 / 5カテゴリ、概算を空間単位で見る。画像は公式参照、商品構成はDEMOという境界も説明 | Cardが無ければHomeへ戻り6畳 / 収納 / 5万円を再指定 |
 | 1商品の`商品と使用コーデを見る` → 戻る | Product Detail → Coordinate | 商品から同じ商品を使うCoordinateへ逆探索できる | 新Tabを開いた場合は元Tabへ戻る |
 | `あとで参考にする` → `このコーデを自分向けにアレンジ` | 保存済み → Private PLAN Edit | Saveは後で見るIntent、PLANは自分向けに変更するIntent | 既に保存済みでもPLAN作成は続行可能。混乱時はReset |
 | `別の商品に変更`、手持ち家具名 / サイズ、`手持ち家具を追加` | 商品置換とExisting Furniture | 全部買い替えず、手持ち品は概算購入額へ含めない | 置換候補が見えなければ別roleの商品で試す |
@@ -32,14 +32,14 @@
 | 通常Windowの`つくる・投稿` | 3-step Create | 表示名はDemo identityでAuthenticationではない。REALは利用者申告・未検証 | Identityが残っていればそのまま次へ |
 | `REAL ROOM` → 条件 → 商品 → local画像 → 公開 | Public Coordinate Detail | JPEG / PNG / WebPだけをdecodeし、EXIFを落としてrandom WebP名でlocal保存。購入証明ではない | Upload失敗時はPLANとして公開し、REAL uploadは説明だけに切替 |
 | InPrivateで公開URLを開き、`参考になった`、`あとで参考にする`、`アレンジ` | 別SessionのHelpful / Save / Private PLAN | 自分の投稿へのHelpfulは禁止。役立ち、保存、Adaptは別Intent | 既に反応済みならInPrivateを閉じ、新しいInPrivate Sessionで開く |
-| PLANをPublic derivativeとして共有 → 元Creator Profile | lineageとCreator Impact | Popularity競争でなく「事例が保存・PLAN・再利用されたか」を返す | 時間不足ならSeed Coordinateのlineageを見せる |
+| PLANをPublic derivativeとして共有 → 元Creator Profile | lineageとCreator Impact | Popularity競争でなく「事例が保存・PLAN・再利用されたか」を返す | 時間不足なら`coord-031`のベッド・ソファ・収納の全景を見せ、手持ち家具を含むAdaptation説明へ切替 |
 
 ## Demo 3 — Previous year → Current Challenge — 1.5 minutes
 
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
 | Homeの`今のテーマと前年Archiveを見る` | Seasonal Landing | ChallengeはCore Productでも人気Contestでもなく、前年事例を今年の検討へ戻すGrowth Layer | `/seasonal`を直接開く |
-| `新生活の6畳 2027` → 前年REAL | Archived Challenge / Coordinate | Archiveは消えたCampaign pageでなく、再利用可能なCoordinate集合 | 先頭の`空間全体を見る`を選ぶ |
+| `新生活の6畳 2027` → 前年REAL（`coord-001`等） | Archived Challenge / Coordinate | Archiveは消えたCampaign pageでなく、収納中心の前年Coordinateを再利用できる集合。Current側の低いソファ中心（`coord-019`等）と見た目でも区別できる | 先頭の`空間全体を見る`を選ぶ |
 | `このコーデを自分向けにアレンジ` → Public PLANとして共有 | Private PLAN → Public derivative | Parent / Root lineageを維持しながら今年向けに変更 | stale PLANがあれば保存・PLANから既存PLANを使用 |
 | `新生活の6畳 2028`へ参加 | Current Challenge Entry | Serverがownership、公開状態、6畳・一人暮らし・賃貸・予算・商品数を再確認 | 条件外なら画面の理由を説明し、Seedの参加例へ切替 |
 | Prototype Pick / Creator seasonal summary | controlled recognition | NITORI公式選定でも人気順位でもない。直接派生数は1世代だけ | Entry済みならgalleryとProfileの参加履歴を見せる |
@@ -49,7 +49,7 @@
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
 | `/products/DEMO-BED-01` | Demo Product Detail | `DEMO-*`は架空IDで、価格・在庫・NITORI SKUではない | URLを直接入力 |
-| `この商品を使ったコーデを見る`のCard | Coordinate Detail | 単品から空間、別カテゴリ、PLANへ広げる | 最初の`空間全体を見る`を選ぶ |
+| `この商品を使ったコーデを見る`の先頭Card（`coord-001`） | Coordinate Detail | Demo商品画像と公式Coordinate参照画像を混同せず、単品から収納を含む空間、別カテゴリ、PLANへ広げる | 最初の`空間全体を見る`を選ぶ |
 | `このコーデを自分向けにアレンジ` | Private PLAN | Product reverse discoveryも同じPlanning Loopへ合流する | 作成済みPLANでもEdit画面が開けば成功 |
 
 ## Closing — 30 seconds

@@ -177,6 +177,11 @@ export function CoordinateDetailPage() {
   if (detail.loading) return <Loading />;
   if (detail.error || !detail.data) return <ErrorView message={detail.error || "見つかりません"} />;
   const coordinate = detail.data;
+  const imageRightsLabel = coordinate.image_rights === "USER_UPLOADED_LOCAL"
+    ? "User upload / Local prototype保存"
+    : coordinate.image_rights === "EXPLICITLY_PERMITTED"
+      ? "使用許可を得たNITORI Coordinate参照画像（ローカル収録）"
+      : "リポジトリ内のデモ画像";
 
   return (
     <div className="detail-page">
@@ -264,7 +269,7 @@ export function CoordinateDetailPage() {
         <dl>
           <div><dt>種別</dt><dd>{label(coordinate.kind)}</dd></div>
           <div><dt>出所モデル</dt><dd>{label(coordinate.provenance)}（すべてデモ）</dd></div>
-          <div><dt>画像の扱い</dt><dd>{coordinate.image_rights === "USER_UPLOADED_LOCAL" ? "User upload / Local prototype保存" : "リポジトリ内のデモ画像"}</dd></div>
+          <div><dt>画像の扱い</dt><dd>{imageRightsLabel}</dd></div>
           <div><dt>確認状態</dt><dd>{label(coordinate.verification_state)}</dd></div>
         </dl>
         <p>{coordinate.demo_disclosure}</p>

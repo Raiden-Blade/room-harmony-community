@@ -6,7 +6,7 @@
 
 ## Current status / Goal 4
 
-2026-08-19時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
+2026-08-19時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。Goal 4Bでは、主要15件のCoordinate画像を使用許可確認済みのNITORI公式参照画像へ差し替え、ローカル実行・出典追跡・SVG fallbackを維持しています。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
 
 本Prototypeは年間reuse loopとmulti-product explorationを操作・計測可能にしますが、Production効果、併売率・売上・購入率の向上、NITORIによる公式採用・選定、NITORI / Room Harmonyとの実接続は証明していません。
 
@@ -76,10 +76,11 @@ room-harmony-community/
 
 ## Dataと権利の境界
 
-- 36件のCoordinate、60件のProduct、価格、画像はすべて架空の機能検証Dataです。
+- 36件のCoordinate、60件のProduct、商品構成、価格、投稿者情報は架空の機能検証Dataです。
 - Product IDは`DEMO-*`であり、NITORI SKUではありません。
-- 画像はこのRepository用に生成したoriginal SVGです。Instagram、NITORI Coordinate投稿、商品画像を取得・転載していません。
-- Main Demoの15 Coordinateは個別のlocal SVGへmappingし、room size / style / need / furniture roleの違いを視覚的に分けています。将来のoriginal synthetic realistic画像は同じasset referenceだけを差し替え、Domain logicを変更せず導入できます。
+- Main Demoの15 Coordinateには、Userが本Prototypeでの使用許可を確認したNITORI公式「新生活用品」Coordinate参照画像をローカルWebPとして同梱しています。一般的なOpen licenseを意味せず、転載・再利用範囲を拡張するものではありません。
+- NITORI由来なのは上記の**部屋・Coordinate参照画像だけ**です。`DEMO-*`商品ID、商品画像、価格、商品構成はNITORIの商品Masterではなく、引き続き架空またはRepository-originalです。
+- 残りのCoordinate、Home、ProductにはRepository-original SVGを使い、主要15件の個別SVGと共通`room-fallback.svg`も読み込み失敗時の安全策として保持します。Runtime hotlinkはありません。
 - 価格は`デモ価格スナップショット`と明示し、未取得価格は0円にせず件数を表示します。
 - 外部URLはNITORI公式検索ページへの参考Linkで、在庫・Cart・購入・価格APIではありません。
 - REAL / PLAN、Official / Staff / User declaredは将来のData modelを示す架空例で、公式認定や実在投稿を意味しません。
@@ -88,7 +89,7 @@ room-harmony-community/
 - 6件のChallengeと8件のEntryも架空のSeasonal seedです。`Prototype Pick`はDemo上のcontrolled recognitionで、NITORI社員による公式選定、人気順位、品質保証ではありません。
 - Challenge参加数とREAL / PLAN内訳はcurrent SQLiteから計算し、fake view / like / rank countを保存しません。
 
-詳細は[`data/README.md`](data/README.md)と[`docs/sources/source-links.md`](docs/sources/source-links.md)を参照してください。
+画像ごとの対応は[`data/seed/visual_asset_manifest.json`](data/seed/visual_asset_manifest.json)、選定理由とfallbackは[`docs/operations/visual-asset-plan.md`](docs/operations/visual-asset-plan.md)、出典は[`docs/sources/source-links.md`](docs/sources/source-links.md)を参照してください。
 
 ## 推薦の意味
 

@@ -5,6 +5,8 @@ from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlsplit
 
+from PIL import Image
+
 
 ROOT = Path(__file__).resolve().parents[2]
 SEED = ROOT / "data" / "seed" / "demo_seed.json"
@@ -153,6 +155,9 @@ def validate() -> None:
     fallback = local_asset(str(visual_manifest.get("fallback_asset", "")))
     if fallback is None or not fallback.is_file():
         errors.append("visual manifest fallback asset is missing or external")
+    source_page = urlsplit(str(visual_manifest.get("source_page_url", "")))
+    if source_page.scheme != "https" or source_page.hostname != "www.nitori-net.jp":
+        errors.append("visual manifest source page must be an official HTTPS NITORI URL")
     for row in visual_rows:
         coordinate_id = str(row.get("coordinate_id", ""))
         coordinate = coordinate_by_id.get(coordinate_id)
@@ -161,11 +166,39 @@ def validate() -> None:
             continue
         if row.get("rights_status") not in ALLOWED_RIGHTS:
             errors.append(f"unsafe visual manifest rights: {coordinate_id}")
+        if row.get("rights_status") != "EXPLICITLY_PERMITTED":
+            errors.append(f"priority NITORI visual must be explicitly permitted: {coordinate_id}")
+        if row.get("asset_type") != "NITORI_APPROVED_COORDINATE":
+            errors.append(f"unexpected priority visual asset type: {coordinate_id}")
+        if row.get("permission_basis") != "USER_CONFIRMED_FOR_THIS_PROTOTYPE":
+            errors.append(f"missing permission basis: {coordinate_id}")
+        if not row.get("primary_demo_usage"):
+            errors.append(f"missing primary demo usage: {coordinate_id}")
+        if not str(row.get("visual_fit", "")).strip():
+            errors.append(f"missing visual fit note: {coordinate_id}")
         current_asset = local_asset(str(row.get("current_asset", "")))
         if current_asset is None or not current_asset.is_file():
             errors.append(f"missing current visual asset: {coordinate_id}")
+        elif current_asset.suffix.lower() != ".webp":
+            errors.append(f"priority visual must be an optimized WebP: {coordinate_id}")
+        else:
+            try:
+                with Image.open(current_asset) as image:
+                    if image.size != (640, 400):
+                        errors.append(f"priority visual must be 640x400: {coordinate_id} is {image.size}")
+            except OSError:
+                errors.append(f"unreadable priority visual: {coordinate_id}")
+            if current_asset.stat().st_size > 200_000:
+                errors.append(f"priority visual is unexpectedly large: {coordinate_id}")
+        row_fallback = local_asset(str(row.get("fallback_asset", "")))
+        if row_fallback is None or not row_fallback.is_file() or row_fallback.suffix.lower() != ".svg":
+            errors.append(f"missing repository-original SVG fallback: {coordinate_id}")
         if coordinate.get("image_url") != row.get("current_asset"):
             errors.append(f"seed/manifest image mismatch: {coordinate_id}")
+        if coordinate.get("image_rights") != row.get("rights_status"):
+            errors.append(f"seed/manifest image rights mismatch: {coordinate_id}")
+        if row.get("coordinate_title") != coordinate.get("title"):
+            errors.append(f"seed/manifest title mismatch: {coordinate_id}")
         expected_room = {
             "TINY_5_5": "5.5畳ワンルーム",
             "SMALL_6": "6畳ワンルーム",
@@ -180,11 +213,11 @@ def validate() -> None:
         actual_roles = {item.get("role") for item in coordinate.get("items", [])}
         if not set(row.get("product_roles", [])).issubset(actual_roles):
             errors.append(f"seed/manifest product role mismatch: {coordinate_id}")
-        future_asset = local_asset(str(row.get("future_asset", "")))
-        if future_asset is None:
-            errors.append(f"future visual path must stay local and use an approved format: {coordinate_id}")
-        if not str(row.get("future_direction", "")).strip():
-            errors.append(f"missing future visual direction: {coordinate_id}")
+        source_asset = urlsplit(str(row.get("source_asset_url", "")))
+        if source_asset.scheme != "https" or source_asset.hostname != "www.nitori-net.jp":
+            errors.append(f"source asset must be an official HTTPS NITORI URL: {coordinate_id}")
+        if not str(row.get("source_image_name", "")).strip():
+            errors.append(f"missing source image name: {coordinate_id}")
 
     golden = next(item for item in coordinates if item["id"] == "coord-001")
     if not {"STORAGE", "RENTAL"}.issubset(golden["needs"]) or golden["size_band"] != "SMALL_6":

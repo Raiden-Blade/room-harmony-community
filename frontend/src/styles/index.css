@@ -123,7 +123,7 @@ p { line-height: 1.75; }
 
 .coordinate-grid { display: grid; gap: 18px; }
 .coordinate-card { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; overflow: hidden; box-shadow: 0 7px 26px rgb(41 46 42 / 5%); }
-.coordinate-card__image { position: relative; display: block; aspect-ratio: 4 / 3; background: var(--sand); overflow: hidden; }
+.coordinate-card__image { position: relative; display: block; aspect-ratio: 16 / 10; background: var(--sand); overflow: hidden; }
 .coordinate-card__image img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
 .coordinate-card:hover .coordinate-card__image img { transform: scale(1.025); }
 .coordinate-card__badges { position: absolute; top: 12px; left: 12px; }
@@ -156,7 +156,7 @@ p { line-height: 1.75; }
 .detail-page { width: 100%; padding-top: 0; }
 .detail-hero { display: grid; background: #eff0e9; }
 .detail-hero__image { position: relative; }
-.detail-hero__image > img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.detail-hero__image > img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
 .detail-hero__copy { padding: 28px 20px 36px; }
 .detail-hero__copy h1 { font-size: clamp(2rem, 8vw, 4rem); }
 .detail-lead { color: var(--muted); }
@@ -362,7 +362,7 @@ p { line-height: 1.75; }
 .seasonal-hero, .challenge-hero { display: grid; gap: 24px; padding: 28px; border-radius: 24px; background: linear-gradient(145deg, #e3ebe2, #f3ede2); overflow: hidden; }
 .seasonal-hero h1, .challenge-hero h1 { margin-bottom: 16px; font-size: clamp(2.2rem, 8vw, 4.5rem); }
 .seasonal-hero > div > p:not(.eyebrow), .challenge-hero .detail-lead { max-width: 680px; color: #4d544d; }
-.seasonal-hero > img, .challenge-hero > img { width: 100%; min-height: 240px; max-height: 430px; object-fit: cover; border-radius: 18px; box-shadow: var(--shadow); }
+.seasonal-hero > img, .challenge-hero > img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 18px; box-shadow: var(--shadow); }
 .inline-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .seasonal-loop { margin: 34px 0 14px; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); }
 .seasonal-loop ol { display: grid; gap: 8px; margin: 22px 0 0; padding: 0; list-style: none; }
@@ -371,7 +371,7 @@ p { line-height: 1.75; }
 .seasonal-loop li small { color: var(--muted); }
 .challenge-grid { display: grid; gap: 16px; }
 .challenge-card { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; box-shadow: 0 10px 28px rgb(38 43 37 / 6%); overflow: hidden; }
-.challenge-card > img { width: 100%; height: 190px; object-fit: cover; }
+.challenge-card > img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; }
 .challenge-card__body { display: grid; gap: 10px; padding: 20px; }
 .challenge-card__body h3, .challenge-card__body p { margin-bottom: 0; }
 .challenge-card__body > p:not(.eyebrow) { color: var(--muted); font-size: .88rem; }
@@ -479,8 +479,8 @@ p { line-height: 1.75; }
   .quick-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
   .section--seasonal { display: grid; grid-template-columns: 330px 1fr; gap: 38px; padding-right: max(32px, calc((100vw - 1160px) / 2)); padding-left: max(32px, calc((100vw - 1160px) / 2)); }
   .coordinate-grid, .coordinate-grid--three, .saved-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .detail-hero { grid-template-columns: 1.05fr .95fr; min-height: 650px; }
-  .detail-hero__image > img { height: 100%; aspect-ratio: auto; }
+  .detail-hero { grid-template-columns: 1.2fr .8fr; min-height: 0; align-items: center; }
+  .detail-hero__image > img { height: auto; aspect-ratio: 16 / 10; }
   .detail-hero__copy { display: flex; flex-direction: column; justify-content: center; padding: 54px 6vw; }
   .action-stack { grid-template-columns: 1fr 1fr; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

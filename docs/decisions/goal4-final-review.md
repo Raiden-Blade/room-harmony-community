@@ -52,12 +52,12 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 40 | Accessibility basics | PASS | skip link、semantic controls、labels、alt、heading、focus、alert / status |
 | 41 | Analytics semantics | PASS | controlled event / property allowlist、passive exposureをruntime内`trackOnce`、Actionは非dedupe |
 | 42 | Session privacy | PASS | raw `owner_session_id`、filename、path、free textをPublic / Analyticsへ出さない |
-| 43 | Main image repetition | PASS | Main Demo 15 Coordinateを個別local SVGへmapping |
+| 43 | Main image repetition | PASS | Main Demo 15 Coordinateを15枚の別々のNITORI公式参照画像へlocal mapping |
 | 44 | Independent image replacement | PASS | manifest / seed asset referenceはranking・Save・PLAN logicから分離 |
-| 45 | Realistic synthetic readiness | PASS | future `.webp` filenameとvisual directionを15件定義 |
-| 46 | Fallback behavior | PASS | `SafeImage` + local room / product fallback、missing asset test |
-| 47 | Rights | PASS | repository-original SVG / user uploadのみ。NITORI / Instagram / third-party image copy・hotlinkなし |
-| 48 | Visual asset documentation | PASS | `visual-asset-plan.md`とmachine-readable manifest |
+| 45 | Optimized local imagery | PASS | 15件を640×400 WebP（各約20〜44KB）としてlocal収録、Runtime hotlinkなし |
+| 46 | Fallback behavior | PASS | `SafeImage`共通fallback + 15件の既存個別SVGを維持。missing asset test対象 |
+| 47 | Rights | PASS | User確認済みの本Prototype限定許可を`EXPLICITLY_PERMITTED`として記録。一般Open licenseとは主張しない |
+| 48 | Visual asset documentation | PASS | `visual-asset-plan.md`、Source registry、About、README、machine-readable manifestを同期 |
 | 49 | Visual QA isolation | PASS | process-scoped DB / upload、port 8100 / 5174、Main DB非汚染、residueなし |
 | 50 | Demo reset | PASS | Save / Helpful / PLAN / Creator / Public REAL / upload / Entryを作成後、Seed 36 / 60 / 6 / 8へ復元 |
 | 51 | Reset safety | PASS | exact `.demo` targets、confirmation、source / logs / captures保持、unmanaged process拒否 |
@@ -71,17 +71,18 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 59 | Fresh clone | PASS | `e3c7944`を新規clone。venv / node_modules / `.demo`なしからone-click start、health / frontend / Demo 1 API、stop / reset、tracked status cleanを確認 |
 | 60 | GitHub CI | PASS | PR #4の最新commitでbackend / frontend checkを確認。run URLはPR statusをSource of Truthとする |
 | 61 | Existing Room Harmony untouched | PASS | read-only checkout commit / clean statusをFinal Gateで再確認する |
-| 62 | Source registry | PASS | 新外部Sourceなし。assetはlocal originalでsource-links追加不要 |
+| 62 | Source registry | PASS | NIT-016として公式Source pageを追加し、個別asset URLはmanifestへ記録 |
 | 63 | Second physical Windows PC | MANUAL_SECOND_PC_TEST_REQUIRED | 実機Checklistあり。未実施をPASSとしない |
 | 64 | Projector / display | MANUAL_REQUIRED | zoom 100%、Home / Explore / Challenge / Handoffを人が確認 |
 
 ## Known limitations accepted for final human review
 
 - Production authentication、moderation console、deployment、schedulerはない。
-- Product / price / image / Challengeはsynthetic Demo data。`DEMO-*`を実SKUとして扱わない。
+- Product / price / Coordinate内容 / Challengeはsynthetic Demo data。主要15件の室内画像だけが許可済みNITORI参照素材で、`DEMO-*`を実SKUとして扱わない。
 - Current recommendationはfixed-weight deterministic ruleでAI / LLMではない。
 - HandoffはPreview contractだけで、Room Harmony、NITORI API、inventory、POS、Cartへ送信しない。
-- Built-in room imagesはoriginal flat SVG。15件は視覚差を付けたが、realistic synthetic imageryはHumanが後から提供する。
+- 15件以外のBuilt-in room imagesとHome heroはoriginal flat SVG。Product imagesもoriginal demo-safe SVGのままである。
+- 公式参照画像と架空の商品構成は実在SKU単位では対応付けていない。見た目のStyle / Need整合に限定する。
 - `trackOnce`はReact StrictMode等の同一runtime重複を抑える。Browser refreshは新しいpage exposureとして扱う。
 - Business upliftは未検証。正式User test、assignment、denominator、POS / order attributionが必要。
 
@@ -96,4 +97,5 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 - [x] 390 / 768 / 1280
 - [x] Handoff Preview / non-live disclosure
 - [x] Prototype Pick / non-official disclosure
-- [ ] realistic synthetic room imagesを採用する場合はrightsとmanifest mappingを再確認
+- [x] 15件の許可済み参照画像についてSource / rights / manifest / local fallbackを再確認
+- [ ] Merge前にHumanが15件のTitleと画像の意味的整合を最終確認

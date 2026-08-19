@@ -41,7 +41,7 @@ export function SeasonalLandingPage() {
             <a className="button button--ghost" href="#previous-year">昨年の参考コーデ</a>
           </div>
         </div>
-        {data.featured && <SafeImage src={data.featured.cover_asset} alt="新生活6畳の季節テーマを表すオリジナルデモイラスト" />}
+        {data.featured && <SafeImage src={data.featured.cover_asset} alt="新生活6畳の季節テーマを表すコーディネート画像" />}
       </header>
 
       <DemoNotice />
