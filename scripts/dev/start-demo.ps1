@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [switch]$NoBrowser,
+    [switch]$DisableAI,
     [ValidateRange(20, 300)]
     [int]$TimeoutSeconds = 120,
     [ValidateRange(1024, 65535)]
@@ -224,6 +225,14 @@ Write-Host "===============================================" -ForegroundColor Da
 Write-Host " Room Harmony Community - one-click demo" -ForegroundColor Green
 Write-Host "===============================================" -ForegroundColor DarkGray
 
+$secureAIKey = $null
+if ($DisableAI) {
+    Write-Host "AI PLAN Assist: disabled by -DisableAI" -ForegroundColor Yellow
+} else {
+    Write-Host "AI PLAN Assist is optional. The key is passed only to the backend process and is never saved." -ForegroundColor DarkGray
+    $secureAIKey = Read-Host "OpenAI API key (hidden; press Enter to disable AI)" -AsSecureString
+}
+
 if ($BackendPort -eq $FrontendPort) {
     Fail "BackendPort and FrontendPort must be different."
 }
@@ -333,12 +342,32 @@ $quotedViteEntry = '"' + $viteEntry + '"'
 $backendProcess = $null
 $frontendProcess = $null
 try {
+    $previousOpenAIKey = [Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "Process")
+    $previousRhcKey = [Environment]::GetEnvironmentVariable("RHC_OPENAI_API_KEY", "Process")
+    $previousAIEnabled = [Environment]::GetEnvironmentVariable("RHC_AI_ENABLED", "Process")
+    Remove-Item Env:OPENAI_API_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_API_KEY -ErrorAction SilentlyContinue
+    $env:RHC_AI_ENABLED = "false"
+    $keyPointer = [IntPtr]::Zero
+    if (-not $DisableAI -and $secureAIKey -and $secureAIKey.Length -gt 0) {
+        try {
+            $keyPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureAIKey)
+            $env:RHC_OPENAI_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($keyPointer)
+            $env:RHC_AI_ENABLED = "true"
+        } finally {
+            if ($keyPointer -ne [IntPtr]::Zero) {
+                [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($keyPointer)
+            }
+        }
+    }
     # --app-dir makes the repository identity visible in the child command line,
     # allowing stop-demo.cmd to distinguish this process from unrelated Python.
     $backendProcess = Start-Process -FilePath $pythonVenv `
         -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "$BackendPort", "--app-dir", $quotedBackendDirectory) `
         -WorkingDirectory $backendDirectory -WindowStyle Hidden -PassThru `
         -RedirectStandardOutput $backendOut -RedirectStandardError $backendErr
+    Remove-Item Env:RHC_OPENAI_API_KEY -ErrorAction SilentlyContinue
+    $env:RHC_AI_ENABLED = "false"
     # Windows PowerShell joins ArgumentList values into one command line. Keep
     # the JavaScript entry quoted so an extracted repository path may contain spaces.
     $frontendProcess = Start-Process -FilePath $node `
@@ -347,6 +376,13 @@ try {
         -RedirectStandardOutput $frontendOut -RedirectStandardError $frontendErr
 } catch {
     Fail "The API or web process could not be started: $($_.Exception.Message)" @($backendProcess, $frontendProcess)
+} finally {
+    Remove-Item Env:OPENAI_API_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_API_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_AI_ENABLED -ErrorAction SilentlyContinue
+    if ($null -ne $previousOpenAIKey) { $env:OPENAI_API_KEY = $previousOpenAIKey }
+    if ($null -ne $previousRhcKey) { $env:RHC_OPENAI_API_KEY = $previousRhcKey }
+    if ($null -ne $previousAIEnabled) { $env:RHC_AI_ENABLED = $previousAIEnabled }
 }
 
 $state = [ordered]@{

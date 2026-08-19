@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, func, inspect, select, text
 
 from app.core.config import REPOSITORY_DIR, Settings
-from app.core.schema import GOAL2_COORDINATE_COLUMNS, upgrade_demo_schema
+from app.core.schema import GOAL2_COORDINATE_COLUMNS, PHASE2_PRODUCT_COLUMNS, upgrade_demo_schema
 from app.main import create_app
 from app.models import Challenge, ChallengeEntry, Coordinate
 
@@ -14,12 +14,16 @@ def test_goal1_sqlite_schema_is_upgraded_without_rebuilding_data(tmp_path):
         connection.execute(
             text("CREATE TABLE coordinates (id VARCHAR(64) PRIMARY KEY, visibility VARCHAR(16) NOT NULL)")
         )
+        connection.execute(text("CREATE TABLE products (id VARCHAR(64) PRIMARY KEY)"))
         connection.execute(text("INSERT INTO coordinates (id, visibility) VALUES ('coord-old', 'PUBLIC')"))
 
     upgrade_demo_schema(engine)
 
     columns = {column["name"] for column in inspect(engine).get_columns("coordinates")}
     assert set(GOAL2_COORDINATE_COLUMNS).issubset(columns)
+    assert set(PHASE2_PRODUCT_COLUMNS).issubset(
+        {column["name"] for column in inspect(engine).get_columns("products")}
+    )
     with engine.connect() as connection:
         row = connection.execute(
             text("SELECT id, root_coordinate_id, moderation_status FROM coordinates WHERE id = 'coord-old'")

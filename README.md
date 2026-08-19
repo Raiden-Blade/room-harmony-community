@@ -4,17 +4,19 @@
 
 > 商品を一つずつ売るUIではなく、「なぜこの組み合わせが自分の暮らしに合うか」を理解し、手持ち家具も残しながら次の行動へ進めるかを検証します。
 
-## Current status / Goal 4
+## Current status / Phase 2A
 
 2026-08-20時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。Goal 4Bでは主要15件のCoordinate画像、Goal 4C / 4DではHomeの4枚と主要導線で使う18商品の画像・名称・商品参照ID・価格を、使用許可確認済みのNITORI公式Sourceへ対応付けました。写真中心のExploreとProduct pickerは、相互に重複しない確認済みの参照写真だけを表示します。すべてローカルWebPで、出典追跡とfallbackを維持しています。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
 
 本Prototypeは年間reuse loopとmulti-product explorationを操作・計測可能にしますが、Production効果、併売率・売上・購入率の向上、NITORIによる公式採用・選定、NITORI / Room Harmonyとの実接続は証明していません。
 
+Phase 2AではPrivate PLAN編集内に`AI PLAN Assist`を追加しました。希望条件を保存し、5軸の適合度を決定論的に計算したうえで、AIはServerが許可した`KEEP / REPLACE / ADD / REMOVE`と18件の`NTR-*`候補から次の一手を最大3件選びます。価格・適合度・変更可否はBackendが再計算し、Userが`この提案をPLANに反映`を押すまでPLANは変わりません。これは汎用Chatbot、美的正解の判定、在庫・購入APIではありません。
+
 ## いちばん簡単な起動方法（Windows）
 
 1. このRepositoryをZIPでDownloadし、**ZIPを展開**します。
 2. [Python 3.11以上](https://www.python.org/downloads/windows/)と[Node.js 20.19〜24.x](https://nodejs.org/)が未Installなら先にInstallします。GitはZIP利用では不要、`git clone`する場合はGit 2.xが必要です。Launcherは利用可能な`python.exe`を優先し、無ければWindows Python Launcherの`py.exe -3`を確認します。
-3. Repository直下の`start-demo.cmd`をDouble-clickします。
+3. Repository直下の`start-demo.cmd`をDouble-clickし、hidden promptへ任意のOpenAI API keyを入力します。空EnterならAIだけを無効にして起動します。
 4. 初回のみPython / Node依存関係が自動Installされ、Health check後にブラウザが開きます。
 
 起動後:
@@ -26,6 +28,8 @@
 - 発表前の初期化: `reset-demo.cmd`をDouble-clickし、確認欄へ大文字で`RESET`と入力してから再度`start-demo.cmd`
 
 LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port、owned process、backend health、frontend応答を確認し、120秒でTimeoutします。失敗時は`.demo/logs/`の場所と原因を表示します。ZIP内から直接実行、Microsoft Store alias、Python / Node不足、古いvirtualenv、他Processによるport使用は自動で隠さず、修正方法を表示します。
+
+API keyはBackend child processへだけ渡し、`.env`、command line、state file、logへ保存しません。LauncherはMachineに残る`OPENAI_API_KEY`を無視します。非対話検証は`start-demo.cmd -DisableAI -NoBrowser`を使用します。Keyが無くても通常のPLAN編集と決定論的な適合度表示はすべて動きます。
 
 既定portを使えない開発・検証環境だけは、Command Promptから`start-demo.cmd -NoBrowser -BackendPort 8303 -FrontendPort 5376`のように別portを指定できます。`stop-demo.cmd`は起動時の記録から同じportを確認し、`reset-demo.cmd -Force -BackendPort 8303 -FrontendPort 5376`はその検証用portだけを安全確認します。通常の利用者は指定不要です。
 
@@ -57,8 +61,9 @@ Product Detail → `この商品を使ったコーデを見る` → Coordinate �
 |---|---|---|
 | Frontend | React 18 / TypeScript / Vite / React Router | 13 route screens、Creator / Seasonal UI、responsive UI、typed API client |
 | Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy / Pillow | ranking、Save / PLAN、Creator、lineage、Seasonal eligibility / Entry、safe image normalization |
+| AI provider | OpenAI Python SDK / Responses API / Structured Outputs | 許可済み候補から構造化された1操作を選択。価格・score・DB mutationは担当しない |
 | Data | SQLite + generated JSON seed + ignored local uploads | anonymous Session ownership、36 Coordinates、60 Products、6 Challenges、8 Entries、User contributions |
-| Test | pytest / Vitest / Testing Library / Playwright | 63 backend tests、33 frontend tests、9 functional browser flows、3 responsive checks |
+| Test | pytest / Vitest / Testing Library / Playwright | Backend / Frontend / provider fake / functional browser / responsive checks |
 
 Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/src/api/types.ts`](frontend/src/api/types.ts)のTypeScript contractと[`frontend/src/api/client.ts`](frontend/src/api/client.ts)を通してだけ接続します。
 
@@ -98,6 +103,8 @@ room-harmony-community/
 ## 推薦の意味
 
 `あなたに近い`はAI / LLMではありません。Room size、Need、Budget、Room / Housing / Household、Style、手持ち家具との相性を固定weightで採点し、同点時もID順で決まるdeterministic rankingです。表示理由も同じ一致条件から生成します。`編集部ピック`はH1比較用のPopular / editorial baselineです。
+
+PLAN編集の`AI PLAN Assist`はこの発見rankingとは別です。Preference profileと現在PLANを材料にAIが許可済みの操作候補を選び、Backendが同じ5軸を再採点します。詳細なweight、provider boundary、key/privacy、stale fingerprintは[`docs/architecture/personalized-ai-plan-assist.md`](docs/architecture/personalized-ai-plan-assist.md)を参照してください。
 
 このMVPは併売率や売上改善を証明しません。H1〜H3の操作EventとUser選択の`comparison_condition`を蓄積し、「次に正式なUser testで何を比較できるか」を示します。Randomized assignment、sticky group、sample-size設計、統計解析は未実装です。
 
@@ -164,7 +171,7 @@ Pull Requestでは`.github/workflows/ci.yml`がbackend tests、frontend tests、
 ## MVPに含まれないもの
 
 - Generic Like、Comment、Follow、DM、Notification、Following Feed、Leaderboard、vote Contest、reward
-- AI / LLM / image recognition
+- Generic chatbot、AI画像生成、画像認識、3D / AR、美的正解の自動判定
 - 価格・在庫を継続更新するNITORI商品Master、POS、決済、店内Map
 - Production authentication / deployment
 - Live Room Harmony integration

@@ -1,4 +1,5 @@
 from app.models.entities import (
+    AISuggestionPreview,
     AnalyticsEvent,
     Challenge,
     ChallengeEntry,
@@ -11,9 +12,11 @@ from app.models.entities import (
     CreatorProfile,
     HelpfulReaction,
     Product,
+    UserPreferenceProfile,
 )
 
 __all__ = [
+    "AISuggestionPreview",
     "AnalyticsEvent",
     "Challenge",
     "ChallengeEntry",
@@ -26,4 +29,5 @@ __all__ = [
     "CreatorProfile",
     "HelpfulReaction",
     "Product",
+    "UserPreferenceProfile",
 ]

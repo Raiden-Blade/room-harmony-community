@@ -23,3 +23,8 @@ def test_openapi_exposes_the_mvp_contract():
     assert "/api/challenges" in paths
     assert "/api/challenges/{challenge_slug}" in paths
     assert "/api/challenges/{challenge_slug}/entries" in paths
+    assert "/api/ai/status" in paths
+    assert "/api/ai/profile" in paths
+    assert "/api/plans/{plan_id}/fit" in paths
+    assert "/api/plans/{plan_id}/ai/suggestions" in paths
+    assert "/api/plans/{plan_id}/ai/apply" in paths

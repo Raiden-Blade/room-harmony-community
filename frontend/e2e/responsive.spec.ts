@@ -17,6 +17,9 @@ async function expectNoHorizontalOverflow(page: Page) {
 
 for (const viewport of viewports) {
   test(`responsive ${viewport.name}: key screens fit and remain operable`, async ({ page, request }, testInfo: TestInfo) => {
+    // This is the screenshot-oriented 9-screen visual pass, intentionally
+    // separate from the shorter functional flows and AI drawer checks.
+    test.setTimeout(60_000);
     const sessionId = `responsive-${viewport.name}-${Date.now()}`;
     const planResponse = await request.post(`${API_BASE_URL}/api/plans/from-coordinate/coord-001`, {
       headers: { "X-Session-ID": sessionId },
@@ -113,13 +116,40 @@ for (const viewport of viewports) {
       body: await page.screenshot({ fullPage: true }),
       contentType: "image/png",
     });
-
     await page.goto(`/plans/${plan.id}/handoff`);
     await expect(page.getByText("接続前プレビュー")).toBeVisible();
     await page.getByText("開発者向け：連携データを確認").click();
     await expect(page.getByLabel("Room Harmony handoff payload")).toContainText('"live_integration": false');
     await expectNoHorizontalOverflow(page);
     await testInfo.attach(`${viewport.name}-handoff`, {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: "image/png",
+    });
+  });
+}
+
+for (const viewport of viewports) {
+  test(`responsive AI ${viewport.name}: drawer, radar, and disabled state fit`, async ({ page, request }, testInfo: TestInfo) => {
+    const sessionId = `responsive-ai-${viewport.name}-${Date.now()}`;
+    const planResponse = await request.post(`${API_BASE_URL}/api/plans/from-coordinate/coord-001`, {
+      headers: { "X-Session-ID": sessionId },
+      data: {},
+    });
+    expect(planResponse.ok()).toBeTruthy();
+    const plan = await planResponse.json() as { id: string };
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
+
+    await page.goto(`/plans/${plan.id}/edit`);
+    await page.getByRole("button", { name: "AIと一緒に調整する" }).click();
+    const aiDialog = page.getByRole("dialog", { name: "希望から、次の一手を考える" });
+    await expect(aiDialog).toBeVisible();
+    await expect(aiDialog.getByRole("img", { name: /PLAN適合度/ })).toBeVisible();
+    await expect(aiDialog.getByText(/AI提案は停止中/)).toBeVisible();
+    const drawerBox = await aiDialog.boundingBox();
+    expect(drawerBox?.width ?? 0).toBeLessThanOrEqual(viewport.width);
+    await expectNoHorizontalOverflow(page);
+    await testInfo.attach(`${viewport.name}-ai-plan-assist`, {
       body: await page.screenshot({ fullPage: true }),
       contentType: "image/png",
     });

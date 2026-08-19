@@ -16,11 +16,13 @@ Git / Python / npm commandに慣れていないReviewerが、ZIP展開後に同�
 ## Start
 
 1. ZIPを右Clickし`すべて展開`。ZIP viewer内からは実行しない。
-2. 展開Folder直下の`start-demo.cmd`をDouble-click。
+2. 展開Folder直下の`start-demo.cmd`をDouble-click。hidden promptで任意のOpenAI API keyを入力する。空EnterならAIだけ無効になる。
 3. `Room Harmony Community is ready.`を待つ。
 4. Browserが開かない場合は<http://127.0.0.1:5173>を手動で開く。
 
 Install済みの依存関係はlock / requirements hashで再利用する。Backend / Frontend process IDは`.demo/processes.json`へ保存する。
+
+Keyは`.env`やfileへ保存せず、Backend child processだけへ渡す。Machineの`OPENAI_API_KEY`は継承しない。自動検証、Keyを使わない発表、CI相当の起動は`start-demo.cmd -DisableAI -NoBrowser`を使う。AI無効時も通常PLAN編集と5軸の適合度は利用できる。
 
 通常は既定portを使う。既定portを利用できない開発・検証環境に限り、`start-demo.cmd -NoBrowser -BackendPort 8303 -FrontendPort 5376`で別portを指定できる。`stop-demo.cmd`はprocess記録から同じportを読み、Reset時は`reset-demo.cmd -Force -BackendPort 8303 -FrontendPort 5376`のように同じ値を渡す。
 
@@ -52,6 +54,8 @@ Resetはlauncher-owned processを安全に停止し、`.demo/room-harmony-commun
 | `Port 8000/5173 is already in use` | 別Serverまたは前回Process | `stop-demo.cmd`、または表示されたPIDのAppを終了 |
 | Package installation failed | Network / proxy / permission | Network確認後に再実行。`backend/.venv`や`node_modules`を手動削除しない |
 | Health timeout | Backend / Frontend crash | `.demo/logs/*err.log`の末尾を確認 |
+| AI提案は停止中 | 空Enter、`-DisableAI`、Key未設定 | 通常機能はそのまま利用。必要時だけ停止後に再起動してhidden promptへKeyを入力 |
+| AI用APIキーを確認 | Provider authentication failure | Keyを画面やlogへ貼らず、停止後に再起動してhidden promptへ入力し直す |
 | Page opens but data is blank | Backend unavailable | <http://127.0.0.1:8000/health>が`status: ok`か確認 |
 | Save / Helpful / Challengeが既に操作済み | 前のDemo Session / DBが残っている | `stop-demo.cmd` → `reset-demo.cmd` → `start-demo.cmd` |
 | Reset refuses to continue | 8000 / 5173にunmanaged listenerがある | 表示されたPIDのAppを確認し、自分で終了してから再実行。Resetは強制終了しない |
@@ -59,7 +63,7 @@ Resetはlauncher-owned processを安全に停止し、`.demo/room-harmony-commun
 ## Manual health checklist
 
 - `/health` returns `{"status":"ok","dataset":"mixed-prototype-snapshot"}`
-- `/docs` lists catalog / saved / plans / analytics
+- `/docs` lists catalog / saved / plans / analytics / AI PLAN Assist
 - Home says `機能検証用デモ`
 - Main Demo Product IDsには公式対応の`NTR-*`、fallbackには`DEMO-*`を使う
 - Handoff says `PREVIEW ONLY` and `live_integration: false`

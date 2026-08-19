@@ -37,6 +37,7 @@
 - [Functional MVP implementation](architecture/implementation.md)
 - [Goal 2 creator loop](architecture/community-loop.md)
 - [Goal 3 seasonal growth](architecture/seasonal-growth.md)
+- [Phase 2A Personalized AI PLAN Assist](architecture/personalized-ai-plan-assist.md)
 
 ## Operations
 

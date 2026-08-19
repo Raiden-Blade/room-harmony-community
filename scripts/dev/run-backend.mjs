@@ -15,6 +15,11 @@ const demoDir = join(repositoryDir, ".demo");
 const defaultDbPath = join(demoDir, `e2e-${process.pid}.db`);
 const defaultUploadDir = join(demoDir, `e2e-uploads-${process.pid}`);
 const ownsTemporaryData = !process.env.RHC_DATABASE_URL && !process.env.RHC_UPLOAD_DIR;
+const {
+  OPENAI_API_KEY: _ignoredOpenAIKey,
+  RHC_OPENAI_API_KEY: _ignoredRhcKey,
+  ...cleanEnvironment
+} = process.env;
 
 if (!existsSync(python)) {
   console.error(`Backend Python was not found at ${python}. Run the setup steps first.`);
@@ -24,7 +29,8 @@ if (!existsSync(python)) {
 const child = spawn(python, ["-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", port], {
   cwd: backendDir,
   env: {
-    ...process.env,
+    ...cleanEnvironment,
+    RHC_AI_ENABLED: "false",
     RHC_DATABASE_URL: process.env.RHC_DATABASE_URL || `sqlite:///${defaultDbPath.replaceAll("\\", "/")}`,
     RHC_UPLOAD_DIR: process.env.RHC_UPLOAD_DIR || defaultUploadDir,
   },

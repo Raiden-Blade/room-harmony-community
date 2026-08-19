@@ -1,5 +1,10 @@
 import { getSessionId } from "../state/session";
 import type {
+  AIApplyResponse,
+  AIPreferenceProfile,
+  AIPreferenceProfileInput,
+  AISuggestionResponse,
+  AIStatus,
   AnalyticsEventName,
   ChallengeDetail,
   ChallengeEntry,
@@ -15,6 +20,7 @@ import type {
   ProductSummary,
   SeasonalLanding,
   UploadedImage,
+  FitAssessment,
 } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -70,6 +76,23 @@ const ELIGIBILITY_MESSAGES: Record<string, string> = {
   PRODUCT_COUNT_MISMATCH: "テーマで必要な商品点数を満たしていません。",
 };
 
+const AI_MESSAGES: Record<string, string> = {
+  AI_DISABLED: "AI PLAN Assistは現在無効です。通常のPLAN編集と適合度確認は引き続き使えます。",
+  AI_KEY_MISSING: "AI用APIキーが設定されていません。通常のPLAN編集は引き続き使えます。",
+  AI_AUTH_ERROR: "AI用APIキーを確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_PROVIDER_BUSY: "AIが混み合っています。少し待って再試行してください。",
+  AI_TIMEOUT: "AIの応答が時間内に完了しませんでした。もう一度お試しください。",
+  AI_CONNECTION_ERROR: "AIサービスへ接続できませんでした。通常のPLAN編集は引き続き使えます。",
+  AI_PROVIDER_ERROR: "AIサービスで問題が発生しました。通常のPLAN編集は引き続き使えます。",
+  AI_INVALID_RESPONSE: "安全に確認できる提案を作れませんでした。もう一度お試しください。",
+  AI_RATE_LIMITED: "短時間の利用上限に達しました。少し待って再試行してください。",
+  AI_STALE_PLAN: "PLANまたは希望条件が変わりました。提案を作り直してください。",
+  AI_SUGGESTION_EXPIRED: "このAI提案は期限切れです。もう一度提案を作成してください。",
+  AI_SUGGESTION_NOT_FOUND: "このAI提案は利用できません。もう一度提案を作成してください。",
+  AI_PRODUCT_NOT_ALLOWED: "提案の商品候補を確認できませんでした。",
+  AI_INVALID_SUGGESTION: "提案の操作を確認できませんでした。",
+};
+
 type RequestOptions = RequestInit & { json?: unknown };
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -95,12 +118,15 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
           ? "サーバーで問題が発生しました。少し待ってから再試行してください。"
           : `処理を完了できませんでした（${response.status}）。`;
     try {
-      const body = (await response.json()) as { detail?: string | Array<{ msg?: string }> | { reasons?: string[] } };
+      const body = (await response.json()) as { detail?: string | Array<{ msg?: string }> | { reasons?: string[]; code?: string } };
       if (typeof body.detail === "string") message = SERVER_MESSAGES[body.detail] || message;
       if (Array.isArray(body.detail)) message = "入力内容を確認してください。必須項目を選び直してから再試行してください。";
       if (body.detail && !Array.isArray(body.detail) && typeof body.detail === "object" && body.detail.reasons?.length) {
         const reasons = body.detail.reasons.map((reason) => ELIGIBILITY_MESSAGES[reason] || reason);
         message = `参加条件を確認してください。${reasons.join(" ")}`;
+      }
+      if (body.detail && !Array.isArray(body.detail) && typeof body.detail === "object" && body.detail.code) {
+        message = AI_MESSAGES[body.detail.code] || message;
       }
     } catch {
       // Keep the HTTP fallback message.
@@ -116,6 +142,21 @@ export function mediaUrl(path: string): string {
 }
 
 export const api = {
+  aiStatus: () => request<AIStatus>("/api/ai/status"),
+  aiProfile: (planId: string) => request<AIPreferenceProfile>(`/api/ai/profile?plan_id=${encodeURIComponent(planId)}`),
+  saveAIProfile: (profile: AIPreferenceProfileInput) =>
+    request<AIPreferenceProfile>("/api/ai/profile", { method: "PUT", json: profile }),
+  planFit: (planId: string) => request<FitAssessment>(`/api/plans/${planId}/fit`),
+  aiSuggestions: (planId: string, profile?: AIPreferenceProfileInput) =>
+    request<AISuggestionResponse>(`/api/plans/${planId}/ai/suggestions`, {
+      method: "POST",
+      json: { profile: profile || null },
+    }),
+  applyAISuggestion: (planId: string, suggestionId: string) =>
+    request<AIApplyResponse>(`/api/plans/${planId}/ai/apply`, {
+      method: "POST",
+      json: { suggestion_id: suggestionId },
+    }),
   options: () => request<OptionsResponse>("/api/meta/options"),
   seasonal: () => request<SeasonalLanding>("/api/seasonal"),
   challenge: (slug: string) => request<ChallengeDetail>(`/api/challenges/${slug}`),

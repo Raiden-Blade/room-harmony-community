@@ -23,6 +23,18 @@ def test_known_event_and_enum_properties_are_valid():
     )
     assert seasonal.properties["challenge_id"] == "challenge-newlife-2028"
 
+    ai = AnalyticsEventRequest(
+        event_name="ai_suggestion_apply",
+        coordinate_id="plan-11111111-1111-1111-1111-111111111111",
+        properties={
+            "strategy": "BALANCED",
+            "action": "REPLACE",
+            "before_score_bucket": "MEDIUM",
+            "after_score_bucket": "HIGH",
+        },
+    )
+    assert ai.properties["action"] == "REPLACE"
+
 
 def test_unknown_event_is_rejected():
     with pytest.raises(ValidationError):
@@ -35,6 +47,9 @@ def test_free_text_property_is_rejected():
 
     with pytest.raises(ValidationError):
         AnalyticsEventRequest(event_name="product_view", properties={"category": "my private room"})
+
+    with pytest.raises(ValidationError):
+        AnalyticsEventRequest(event_name="fit_score_view", properties={"before_score_bucket": "82 points"})
 
 
 def test_free_text_identifiers_are_rejected():

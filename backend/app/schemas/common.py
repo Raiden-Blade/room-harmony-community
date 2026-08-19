@@ -295,6 +295,14 @@ ALLOWED_EVENT_NAMES = {
     "challenge_adapt_start",
     "recognition_view",
     "archive_view",
+    "ai_assist_open",
+    "ai_profile_update",
+    "fit_score_view",
+    "ai_suggestion_request",
+    "ai_suggestion_received",
+    "ai_suggestion_apply",
+    "ai_suggestion_reject",
+    "ai_provider_unavailable",
 }
 
 ALLOWED_EVENT_PROPERTIES = {
@@ -318,6 +326,13 @@ ALLOWED_EVENT_PROPERTIES = {
     "season",
     "challenge_type",
     "recognition",
+    "priority_focus",
+    "strategy",
+    "action",
+    "before_score_bucket",
+    "after_score_bucket",
+    "provider_status",
+    "suggestion_count",
 }
 
 ANALYTICS_ENUM_VALUES = {
@@ -340,7 +355,13 @@ ANALYTICS_ENUM_VALUES = {
     "role": {"MAIN_FURNITURE", "SUPPORT_FURNITURE", "STORAGE", "LIGHTING", "TEXTILE"},
     "category": {"BED", "SUPPORT", "STORAGE", "LIGHTING", "TEXTILE", "DESK"},
     "destination": {"NITORI_SEARCH", "NITORI_PRODUCT_PAGE", "ROOM_HARMONY_PREVIEW", "PREVIEW_ONLY"},
-    "mutation": {"KEPT", "REPLACED", "ADDED"},
+    "mutation": {"KEPT", "REPLACED", "ADDED", "REMOVED"},
+    "priority_focus": {"BALANCED", "BUDGET", "NEEDS", "EXISTING_FURNITURE", "STYLE"},
+    "strategy": {"PREFERENCE_SAFE", "BALANCED", "DISCOVERY"},
+    "action": {"KEEP", "REPLACE", "ADD", "REMOVE"},
+    "before_score_bucket": {"LOW", "MEDIUM", "HIGH"},
+    "after_score_bucket": {"LOW", "MEDIUM", "HIGH"},
+    "provider_status": {"READY", "DISABLED", "KEY_MISSING", "AUTH_ERROR", "PROVIDER_ERROR"},
     "kind": {"REAL", "PLAN"},
     "derivation_type": {
         "LOWER_BUDGET",
@@ -374,6 +395,7 @@ ANALYTICS_INTEGER_RANGES = {
     "match_dimension_count": (0, 8),
     "category_count": (0, 100),
     "product_count": (0, 100),
+    "suggestion_count": (0, 3),
 }
 
 

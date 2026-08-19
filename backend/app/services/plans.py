@@ -155,6 +155,17 @@ def add_existing(
     return load_coordinate(session, plan.id)
 
 
+def remove_product(session: Session, plan: Coordinate, item_id: int) -> Coordinate:
+    item = _plan_item(plan, item_id)
+    if item.source == "EXISTING_EXTERNAL" or not item.product_id:
+        raise HTTPException(status_code=422, detail="Existing furniture cannot be removed by AI")
+    if sum(1 for candidate in plan.items if candidate.product_id) <= 1:
+        raise HTTPException(status_code=422, detail="PLAN requires at least one product")
+    session.delete(item)
+    session.commit()
+    return load_coordinate(session, plan.id)
+
+
 def mark_ready(session: Session, plan: Coordinate) -> Coordinate:
     if not any(item.product_id for item in plan.items):
         raise HTTPException(status_code=422, detail="PLAN requires at least one product")

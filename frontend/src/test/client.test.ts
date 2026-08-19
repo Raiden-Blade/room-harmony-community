@@ -57,4 +57,16 @@ describe("API client hardening", () => {
     expect(error?.message).toContain("サーバーで問題が発生しました");
     expect(error?.message).not.toContain("sqlite internal path");
   });
+
+  it("maps AI provider errors without exposing provider payloads", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      detail: { code: "AI_AUTH_ERROR", message: "sentinel-fake-secret-never-use" },
+    }), {
+      status: 503,
+      headers: { "Content-Type": "application/json" },
+    })));
+    const error = await api.aiSuggestions("plan-001").then(() => null, (reason: Error) => reason);
+    expect(error?.message).toContain("APIキーを確認");
+    expect(error?.message).not.toContain("sentinel-fake-secret-never-use");
+  });
 });

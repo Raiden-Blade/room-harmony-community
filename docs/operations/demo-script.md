@@ -3,7 +3,7 @@
 ## Before the audience arrives
 
 1. Browser zoomを100%にする。
-2. `stop-demo.cmd` → `reset-demo.cmd` → confirmationへ`RESET` → `start-demo.cmd`の順で実行する。
+2. `stop-demo.cmd` → `reset-demo.cmd` → confirmationへ`RESET` → `start-demo.cmd`の順で実行する。AI提案も実演する場合だけhidden promptへ一時Keyを入力し、通常は空Enterでよい。
 3. <http://127.0.0.1:8000/health>が`status: ok`、Homeが表示されることを確認する。
 4. Demo 2用に通常WindowとInPrivate / Incognito Windowを一つずつ用意する。SessionはBrowser localStorage単位で分離される。
 5. Upload用には個人情報・人物・brand logoを含まないJPEG / PNG / WebPを用意する。
@@ -23,6 +23,9 @@
 | 1商品の`商品と使用コーデを見る` → 戻る | Product Detail → Coordinate | 商品から同じ商品を使うCoordinateへ逆探索できる | 新Tabを開いた場合は元Tabへ戻る |
 | `あとで参考にする` → `このコーデを自分向けにアレンジ` | 保存済み → Private PLAN Edit | Saveは後で見るIntent、PLANは自分向けに変更するIntent | 既に保存済みでもPLAN作成は続行可能。混乱時はReset |
 | `別の商品に変更`、手持ち家具名 / サイズ、`手持ち家具を追加` | 商品置換とExisting Furniture | 全部買い替えず、手持ち品は概算購入額へ含めない | 置換候補が見えなければ別roleの商品で試す |
+| `AIと一緒に調整する` → 希望を保存 | 5軸レーダー / AI PLAN Assist | 適合度はAIの感想ではなく、予算・困りごと・手持ち家具・検証可能なStyle・構成の決定論的計算。評価不能軸は`--` | Keyなしでもここまでは表示できる |
+| `この希望でAI提案をつくる` → 提案Card | 最大3件の構造化提案 | AIはServer許可済みの1操作とNTR候補を選ぶだけ。priceとbefore/after scoreはBackendが計算し、この時点ではPLAN未変更 | AI停止中なら静止画ではなく、disabled状態と通常編集の継続を説明 |
+| `この提案をPLANに反映` | 商品・価格・適合度が更新 | Human confirmation後だけ既存PLAN mutationを実行。stale PLANは拒否して提案を作り直す | Provider障害時は通常の商品置換へ戻る |
 | `この内容で比較準備へ` → `店舗で5商品を比較する` | PLAN Summary → Handoff Preview | 人が読むSummaryがMain。Room Harmonyへ送信せず、共有しない情報も明示 | `開発者向け：連携データを確認`で`live_integration: false`を示す |
 
 ## Demo 2 — Creator reuse — 1.5 minutes
@@ -54,7 +57,7 @@
 
 ## Closing — 30 seconds
 
-現在Claimできるのは、18商品の日付付きIdentity snapshotを含む複数商品探索、PLAN、Store / EC action、Community / Seasonal reuseを操作・計測できることです。併売率・売上・購入率の向上はまだ証明していません。全商品Master mapping、正式API契約、認証、在庫・価格・POS、Room Harmony live integrationはHuman approval後の別段階です。
+現在Claimできるのは、18商品の日付付きIdentity snapshotを含む複数商品探索、PLAN、決定論的適合度、Human-confirmed AI editing assist、Store / EC action、Community / Seasonal reuseを操作・計測できることです。AIの提案品質や、併売率・売上・購入率の向上はまだ証明していません。全商品Master mapping、正式API契約、認証、在庫・価格・POS、Room Harmony live integrationはHuman approval後の別段階です。
 
 ## Recovery matrix
 
@@ -68,5 +71,6 @@
 | port 8000 / 5173 occupied | 表示されたPIDを確認。`stop-demo.cmd`はowned processだけを停止し、unmanaged processは人が判断して終了 |
 | Browser refresh / route issue | Homeへ戻り同じPrimary pathを再開。PLAN / Saveは同じSessionに保持される |
 | Backend unavailable | `/health`と`.demo/logs/*err.log`を確認。復旧しなければcapture済み画面でBoundaryを説明 |
+| AI disabled / timeout / auth error | PLAN fitと通常編集は継続できる。Keyを画面やlogへ貼らず、必要なら停止後にhidden promptから再入力 |
 
 物理的な別Windows PC、Projector / display、100% zoomは[`second-pc-checklist.md`](second-pc-checklist.md)で本番前に人が確認する。

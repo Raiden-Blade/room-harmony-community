@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { api, track } from "../api/client";
-import type { ChallengeDetail, ChallengeSummary, CoordinateDetail, CoordinateSummary, CreatorProfile, HandoffPayload, ProductSummary, SeasonalLanding } from "../api/types";
+import type { AIPreferenceProfile, ChallengeDetail, ChallengeSummary, CoordinateDetail, CoordinateSummary, CreatorProfile, FitAssessment, HandoffPayload, ProductSummary, SeasonalLanding } from "../api/types";
 import { ChallengeDetailPage } from "../pages/ChallengeDetailPage";
 import { HERO_SLIDES } from "../components/home/HeroCarousel";
 import { CreateCoordinatePage } from "../pages/CreateCoordinatePage";
@@ -28,6 +28,8 @@ vi.mock("../api/client", () => ({
     uploadImage: vi.fn(), createCoordinate: vi.fn(), editCoordinate: vi.fn(), unpublishCoordinate: vi.fn(),
     helpful: vi.fn(), unhelpful: vi.fn(), report: vi.fn(), publishPlan: vi.fn(),
     seasonal: vi.fn(), challenge: vi.fn(), enterChallenge: vi.fn(),
+    aiStatus: vi.fn(), aiProfile: vi.fn(), saveAIProfile: vi.fn(), planFit: vi.fn(),
+    aiSuggestions: vi.fn(), applyAISuggestion: vi.fn(),
   },
   mediaUrl: (path: string) => path,
   track: vi.fn().mockResolvedValue(undefined),
@@ -85,6 +87,20 @@ const options = {
   styles: [{ value: "NATURAL", label: "ナチュラル" }],
 };
 
+const aiProfile: AIPreferenceProfile = {
+  room_size: "SMALL_6", housing_type: "RENTAL", budget_max: 50000, needs: ["STORAGE"],
+  preferred_style: "NATURAL", priority_focus: "BALANCED", preserve_existing_furniture: false,
+  source: "PLAN_DEFAULT",
+};
+const fit: FitAssessment = {
+  policy_version: "prototype-recommendation-policy-1.0", overall_score: 82, fingerprint: "a".repeat(64),
+  summary: "現在の適合度は82点です。",
+  axes: [
+    ["BUDGET", "予算", 100], ["NEEDS", "困りごと", 60], ["EXISTING_FURNITURE", "手持ち家具", null],
+    ["STYLE", "テイスト", null], ["COMPOSITION", "構成", 90],
+  ].map(([code, axisLabel, score]) => ({ code, label: axisLabel, score, available: score !== null, base_weight: 20, applied_weight: score === null ? 0 : 33.3, evidence: [], reason: score === null ? "評価対象外です。" : "ルール計算です。" })) as FitAssessment["axes"],
+};
+
 const emptySeasonal = { challenge_entries: 0, recognized_coordinates: 0, direct_seasonal_reuse_count: 0, participations: [] };
 
 const challengeSummary: ChallengeSummary = {
@@ -134,6 +150,10 @@ beforeEach(() => {
   vi.mocked(api.saved).mockResolvedValue([summary]);
   vi.mocked(api.plans).mockResolvedValue([plan]);
   vi.mocked(api.plan).mockResolvedValue(plan);
+  vi.mocked(api.aiStatus).mockResolvedValue({ enabled: false, configured: false, available: false, reason_code: "DISABLED", model: "gpt-5.6" });
+  vi.mocked(api.aiProfile).mockResolvedValue(aiProfile);
+  vi.mocked(api.saveAIProfile).mockResolvedValue({ ...aiProfile, source: "SAVED_PROFILE" });
+  vi.mocked(api.planFit).mockResolvedValue(fit);
   vi.mocked(api.products).mockResolvedValue({ results: [{ ...product, id: "DEMO-BED-02", name: "別のベッド" }] });
   vi.mocked(api.save).mockResolvedValue({ saved: true });
   vi.mocked(api.createPlan).mockResolvedValue(plan);
@@ -473,6 +493,73 @@ describe("functional MVP pages", () => {
     expect(screen.getByText(`${mixedNotice} 手持ち家具は購入候補額に含みません。`)).toBeInTheDocument();
     expect(screen.getByText(/購入候補額を再計算/)).toBeInTheDocument();
     expect(screen.queryByText("デモ価格です。手持ち家具は含みません。")).not.toBeInTheDocument();
+  });
+
+  it("Plan editor keeps deterministic fit available while AI is disabled", async () => {
+    const user = userEvent.setup();
+    renderRoute(<PlanEditPage />, "/plans/plan-001/edit", "/plans/:planId/edit");
+    expect(await screen.findByText("82")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "AIと一緒に調整する" }));
+    expect(screen.getByRole("dialog", { name: "希望から、次の一手を考える" })).toBeInTheDocument();
+    expect(screen.getByText(/AI提案は停止中/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "この希望でAI提案をつくる" })).toBeDisabled();
+    expect(screen.getAllByText("予算").length).toBeGreaterThan(0);
+    expect(screen.getByRole("img", { name: /^PLAN適合度 82点/ })).toBeInTheDocument();
+    expect(screen.getAllByText("--")).toHaveLength(2);
+  });
+
+  it("AI profile editor saves structured preferences and recalculates fit", async () => {
+    const user = userEvent.setup();
+    renderRoute(<PlanEditPage />, "/plans/plan-001/edit", "/plans/:planId/edit");
+    await user.click(await screen.findByRole("button", { name: "AIと一緒に調整する" }));
+    await user.selectOptions(screen.getByLabelText("最優先"), "STYLE");
+    await user.click(screen.getByRole("checkbox", { name: "省スペース" }));
+    await user.click(screen.getByRole("button", { name: "希望条件を保存して再計算" }));
+
+    await waitFor(() => expect(api.saveAIProfile).toHaveBeenCalledWith(expect.objectContaining({
+      priority_focus: "STYLE",
+      needs: ["STORAGE", "COMPACT"],
+    })));
+    expect(api.planFit).toHaveBeenCalledWith("plan-001");
+  });
+
+  it("AI suggestion loading and provider errors stay inside the drawer", async () => {
+    const user = userEvent.setup();
+    vi.mocked(api.aiStatus).mockResolvedValue({ enabled: true, configured: true, available: true, reason_code: "READY", model: "gpt-5.6" });
+    let rejectSuggestion!: (reason: Error) => void;
+    vi.mocked(api.aiSuggestions).mockImplementation(() => new Promise((_, reject) => { rejectSuggestion = reject; }));
+    renderRoute(<PlanEditPage />, "/plans/plan-001/edit", "/plans/:planId/edit");
+    await user.click(await screen.findByRole("button", { name: "AIと一緒に調整する" }));
+    await user.click(screen.getByRole("button", { name: "この希望でAI提案をつくる" }));
+    expect(screen.getByRole("button", { name: "確認中…" })).toBeDisabled();
+
+    rejectSuggestion(new Error("AIサービスへ接続できませんでした。通常のPLAN編集は引き続き使えます。"));
+    expect(await screen.findByRole("alert")).toHaveTextContent("通常のPLAN編集は引き続き使えます");
+    expect(screen.getByRole("dialog", { name: "希望から、次の一手を考える" })).toBeInTheDocument();
+  });
+
+  it("AI suggestion is previewed before an explicit apply action", async () => {
+    const user = userEvent.setup();
+    const nextFit = { ...fit, overall_score: 88, fingerprint: "b".repeat(64), summary: "現在の適合度は88点です。" };
+    const suggestion = {
+      id: "ai-preview-11111111-1111-1111-1111-111111111111" as const,
+      strategy: "BALANCED" as const, action: "REPLACE" as const, title: "収納を保ちながら予算調整",
+      rationale: "同じ役割の商品を1点だけ見直します。", tradeoff: "現在の商品はPLANから外れます。",
+      target: { item_id: 1, product_id: product.id, name: product.name, role: product.default_role, price_snapshot: product.price_snapshot },
+      proposed_product: { item_id: null, product_id: "NTR-REPLACE-01", name: "公式候補ベッド", role: product.default_role, price_snapshot: 13900 },
+      before_price: 21800, after_price: 19800, price_delta: -2000, before_fit: fit, after_fit: nextFit,
+    };
+    vi.mocked(api.aiStatus).mockResolvedValue({ enabled: true, configured: true, available: true, reason_code: "READY", model: "gpt-5.6" });
+    vi.mocked(api.aiSuggestions).mockResolvedValue({ policy_version: fit.policy_version, profile: { ...aiProfile, source: "SAVED_PROFILE" }, current_fit: fit, suggestions: [suggestion] });
+    vi.mocked(api.applyAISuggestion).mockResolvedValue({ plan: { ...plan, items: [{ ...plan.items[0], product: { ...product, id: "NTR-REPLACE-01", name: "公式候補ベッド" }, mutation_state: "REPLACED" }, plan.items[1]] }, suggestion, before_fit: fit, after_fit: nextFit });
+    renderRoute(<PlanEditPage />, "/plans/plan-001/edit", "/plans/:planId/edit");
+    await user.click(await screen.findByRole("button", { name: "AIと一緒に調整する" }));
+    await user.click(screen.getByRole("button", { name: "この希望でAI提案をつくる" }));
+    expect(await screen.findByText("収納を保ちながら予算調整")).toBeInTheDocument();
+    expect(api.applyAISuggestion).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "この提案をPLANに反映" }));
+    expect(api.applyAISuggestion).toHaveBeenCalledWith("plan-001", suggestion.id);
+    expect(await screen.findByRole("status")).toHaveTextContent("適合度 82 → 88");
   });
 
   it("Plan and handoff pages expose a goal-centered preview CTA", async () => {
