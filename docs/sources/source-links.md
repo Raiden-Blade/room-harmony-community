@@ -23,7 +23,8 @@
 | NIT-013 | 店舗在庫・展示確認 FAQ | https://www.faq.nitori-net.jp/question/01j2rwgse30e751ca31wa8dr01 | NITORI official FAQ | 店舗情報の公式補足 | PARTIALLY_READ | 商品単位の在庫・展示確認、店舗受取の存在 | 詳細な社内 API 契約は公開情報から確認できない。 |
 | NIT-014 | NITORI EC home | https://www.nitori-net.jp/ec/ | NITORI official EC | Product Master の上位出所 | READ | 商品ページ・検索・購入の公式 EC | Room Harmony 商品 CSV の出所説明にも使用。 |
 | NIT-015 | System kitchen reform material | https://www.nitori.co.jp/reform/reformmenu/system_kitchen/ | NITORI official corporate | 既存課題資料 URL の保存 | NOT_YET_VERIFIED | System kitchen / reform の背景資料候補 | 現 Room Harmony の9カテゴリ商品入力元ではないと既存 README が明記。今回の Product Definition の根拠には未使用。 |
-| NIT-016 | 新生活用品・お部屋別コーディネート | https://www.nitori-net.jp/ec/feature/newlifegoods/#room | NITORI official feature | Goal 4Bの主要Coordinate画像選定 | VERIFIED | 5つのワンルーム例と各4視点、収納・仕事・睡眠・くつろぎの視覚差 | Userが本Prototypeでの使用許可を確認。選定15画像をローカルWebP化。一般的なOpen licenseではなく、Runtime hotlinkもしない。個別asset URLはmanifestに記録。 |
+| NIT-016 | 新生活用品・お部屋別コーディネート | https://www.nitori-net.jp/ec/feature/newlifegoods/#room | NITORI official feature | Goal 4B/4Cの主要Coordinate・Home画像選定 | VERIFIED | 5つのワンルーム例と各4視点、収納・仕事・睡眠・くつろぎの視覚差 | Userが本Prototypeでの使用許可を確認。Coordinate 15枚とHome 4枚を別Source viewからローカルWebP化。一般的なOpen licenseではなく、Runtime hotlinkもしない。個別asset URLはmanifestに記録。 |
+| NIT-017 | Goal 4C curated product detail set | https://www.nitori-net.jp/ec/product/8842174/ | NITORI official product detail set | 18商品のIdentity / price / main image alignment | VERIFIED | 6Category×3件の商品名、商品コード、日付付き価格、主画像、公式商品URL | 代表LinkはNカラボ3段。18件すべての公式商品URLと公式主画像URLは`data/seed/product_asset_manifest.json`に記録し、ローカルWebPだけをRuntime表示する。価格は2026-08-19観察値。 |
 
 ## Existing Room Harmony sources
 

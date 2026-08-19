@@ -2,12 +2,12 @@
 
 ## 目的と境界
 
-Final Demoで繰り返し見える主要15件を、使用許可を確認したNITORI公式のワンルームCoordinate参照画像へ置き換えた。収納、在宅作業、低予算、くつろぎ、睡眠、compactの違いを、タイトルだけでなく画像からも読み取れる状態にする。
+Final Demoで繰り返し見える主要15件、Home heroの4枚、主要導線の18商品を、使用許可を確認したNITORI公式参照素材へ置き換えた。収納、在宅作業、低予算、くつろぎ、睡眠、compactの違いを画像からも読み取り、商品Cardでは写真と名称・参照ID・価格・公式URLが同じ商品を指す状態にする。
 
 - Source page: [新生活用品・お部屋別コーディネート](https://www.nitori-net.jp/ec/feature/newlifegoods/#room)
 - Permission: User confirmed usage for this prototype. **一般的なOpen licenseではない**。
-- Runtime: `frontend/public/assets/coordinates/nitori/`のlocal WebPだけを読む。Hotlinkしない。
-- Data boundary: NITORI由来なのは室内参照画像のみ。Coordinate内容、`DEMO-*`商品、価格、商品画像、投稿者は架空またはRepository-original。
+- Runtime: `frontend/public/assets/coordinates/nitori/`、`hero/nitori/`、`products/nitori/`のlocal WebPだけを読む。Hotlinkしない。
+- Data boundary: Coordinate構成と投稿者は検証用。18件の`NTR-*`だけが公式商品ページのIdentity snapshotで、42件の`DEMO-*`は架空またはRepository-original。
 - User upload boundary: 利用者が投稿するREAL ROOM画像は`.demo/uploads/`へ別管理され、許可済み公式参照画像とは混在させない。
 - Fallback: 既存の個別`room-scene-coord-*.svg`と共通`room-fallback.svg`を残す。
 
@@ -33,6 +33,13 @@ Final Demoで繰り返し見える主要15件を、使用許可を確認したNI
 
 個別の公式asset URL、Coordinate正式Title、権利状態、用途、選定理由は[`data/seed/visual_asset_manifest.json`](../../data/seed/visual_asset_manifest.json)をSource of Truthとする。
 
+## Home heroと商品画像
+
+- Homeは4枚の別Source imageを1200×750 WebPへ変換し、矢印・Dot・各条件へのCTAを備えたCarouselにした。Source of Truthは[`hero_asset_manifest.json`](../../data/seed/hero_asset_manifest.json)。
+- 商品は6Category×3件、計18件を640×640 WebPへ変換した。余白を足す`contain`基準で、家具本体をCropしない。Source of Truthは[`product_asset_manifest.json`](../../data/seed/product_asset_manifest.json)。
+- 18件は名称、商品参照ID、価格観察日、公式商品URL、公式主画像URL、Local assetを1行単位で固定する。どれか一つでも対応を確認できない商品は`NTR-*`へ昇格しない。
+- 同じProduct IDはCoordinate Card、Product Detail、PLAN、Product reverse discoveryで同じLocal imageと情報を使う。
+
 ## Asset仕様と差し替え条件
 
 1. Source取得時の650×414画像を中央基準で16:10へ最小Cropし、640×400 / WebP quality 84へ最適化する。
@@ -45,7 +52,7 @@ Final Demoで繰り返し見える主要15件を、使用許可を確認したNI
 
 ## 現在の制約
 
-- 公式参照画像と架空のCoordinate商品構成は1対1の実在商品対応を保証しない。画像から確認できる大きな用途・Styleの整合だけを取っている。
-- 15件以外のCoordinateとHome heroはRepository-original SVGのままである。
-- Product imageは今回の置換対象外であり、Repository-original demo-safe SVGを維持する。
+- 公式室内参照画像とCoordinate上の5商品構成は1対1の実在商品対応を保証しない。室内写真は空間の参考、商品Cardは購入候補の参照として分離する。
+- 15件以外のCoordinateと42件のDemo ProductはRepository-original SVGのままである。
+- 18件の価格は日付付きSnapshotで、現在価格・在庫・販売継続を保証しない。
 - 画像改善だけで購買率、併売率、投稿率が上がるとは主張しない。正式評価にはExposure、比較条件、行動指標、購入Dataが必要である。

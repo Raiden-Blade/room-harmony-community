@@ -71,6 +71,6 @@ export function dateStamp(value: string | null): string {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-    timeZone: "UTC",
+    timeZone: "Asia/Tokyo",
   }).format(new Date(value))}時点`;
 }

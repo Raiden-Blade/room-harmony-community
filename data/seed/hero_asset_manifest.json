@@ -1,0 +1,37 @@
+{
+  "manifest_version": "1.0",
+  "source_page_url": "https://www.nitori-net.jp/ec/feature/newlifegoods/#room",
+  "source_owner": "NITORI",
+  "permission_basis": "USER_CONFIRMED_FOR_THIS_PROTOTYPE",
+  "runtime_hotlinking": false,
+  "slides": [
+    {
+      "id": "newlife-storage",
+      "source_image_name": "room01-3_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room01-3_38w.jpg",
+      "local_asset": "/assets/hero/nitori/newlife-storage.webp",
+      "rights_status": "EXPLICITLY_PERMITTED"
+    },
+    {
+      "id": "compact-living",
+      "source_image_name": "room02-3_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room02-3_38w.jpg",
+      "local_asset": "/assets/hero/nitori/compact-living.webp",
+      "rights_status": "EXPLICITLY_PERMITTED"
+    },
+    {
+      "id": "work-relax",
+      "source_image_name": "room05-3_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room05-3_38w.jpg",
+      "local_asset": "/assets/hero/nitori/work-relax.webp",
+      "rights_status": "EXPLICITLY_PERMITTED"
+    },
+    {
+      "id": "seasonal-bedroom",
+      "source_image_name": "room03-2_38w.jpg",
+      "source_asset_url": "https://www.nitori-net.jp/ecstatic/include/feature/img25/newlifegoods/room03-2_38w.jpg",
+      "local_asset": "/assets/hero/nitori/seasonal-bedroom.webp",
+      "rights_status": "EXPLICITLY_PERMITTED"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import datetime
 from pathlib import Path
@@ -12,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SEED = ROOT / "data" / "seed" / "demo_seed.json"
 SEASONAL_SEED = ROOT / "data" / "seed" / "seasonal_seed.json"
 VISUAL_MANIFEST = ROOT / "data" / "seed" / "visual_asset_manifest.json"
+PRODUCT_MANIFEST = ROOT / "data" / "seed" / "product_asset_manifest.json"
+HERO_MANIFEST = ROOT / "data" / "seed" / "hero_asset_manifest.json"
 ALLOWED_RIGHTS = {"LOCALLY_CREATED_DEMO", "CC0", "EXPLICITLY_PERMITTED"}
 PUBLIC_ASSET_ROOT = (ROOT / "frontend" / "public").resolve()
 CHALLENGE_STATUSES = {"UPCOMING", "ACTIVE", "ENDED", "ARCHIVED"}
@@ -50,10 +53,20 @@ def local_asset(path: str) -> Path | None:
     return candidate
 
 
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def validate() -> None:
     payload = json.loads(SEED.read_text(encoding="utf-8"))
     seasonal_payload = json.loads(SEASONAL_SEED.read_text(encoding="utf-8"))
     visual_manifest = json.loads(VISUAL_MANIFEST.read_text(encoding="utf-8"))
+    product_manifest = json.loads(PRODUCT_MANIFEST.read_text(encoding="utf-8"))
+    hero_manifest = json.loads(HERO_MANIFEST.read_text(encoding="utf-8"))
     products = payload["products"]
     coordinates = payload["coordinates"]
     challenges = seasonal_payload["challenges"]
@@ -72,24 +85,87 @@ def validate() -> None:
     for product in products:
         if product["rights_status"] not in ALLOWED_RIGHTS:
             errors.append(f"unsafe product rights: {product['id']}")
-        if not product["id"].startswith("DEMO-"):
-            errors.append(f"non-demo product ID: {product['id']}")
         official_url = urlsplit(product["official_url"])
         if (
             official_url.scheme != "https"
             or official_url.hostname != "www.nitori-net.jp"
-            or not official_url.path.startswith("/ec/search/")
             or official_url.username
             or official_url.password
         ):
             errors.append(f"unexpected official URL: {product['id']}")
+        if product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT":
+            if not product["id"].startswith("NTR-"):
+                errors.append(f"official snapshot product must use an NTR ID: {product['id']}")
+            if not official_url.path.startswith("/ec/product/"):
+                errors.append(f"official snapshot must link to its product page: {product['id']}")
+            if product["rights_status"] != "EXPLICITLY_PERMITTED":
+                errors.append(f"official product visual must be explicitly permitted: {product['id']}")
+            if product["price_status"] != "NITORI_OFFICIAL_SNAPSHOT":
+                errors.append(f"official product has wrong price status: {product['id']}")
+        else:
+            if product["provenance"] != "DEMO" or not product["id"].startswith("DEMO-"):
+                errors.append(f"unexpected fallback product provenance or ID: {product['id']}")
+            if not official_url.path.startswith("/ec/search/"):
+                errors.append(f"demo fallback must link only to an official search: {product['id']}")
         asset = local_asset(product["image_url"])
         if asset is None:
             errors.append(f"external product image is not allowed: {product['id']}")
         elif not asset.is_file():
             errors.append(f"missing product asset: {product['id']}")
+        elif product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT":
+            if asset.suffix.lower() != ".webp":
+                errors.append(f"official product visual must be WebP: {product['id']}")
+            else:
+                try:
+                    with Image.open(asset) as image:
+                        if image.size != (640, 640):
+                            errors.append(f"official product visual must be 640x640: {product['id']} is {image.size}")
+                except OSError:
+                    errors.append(f"unreadable official product visual: {product['id']}")
+                if asset.stat().st_size > 200_000:
+                    errors.append(f"official product visual is unexpectedly large: {product['id']}")
         if (product["price_snapshot"] is None) != (product["price_status"] == "MISSING"):
             errors.append(f"inconsistent missing price state: {product['id']}")
+
+    product_rows = product_manifest.get("products", [])
+    if len(product_rows) != 18:
+        errors.append(f"product manifest must contain the curated 18-item set, found {len(product_rows)}")
+    if len({row.get("id") for row in product_rows}) != len(product_rows):
+        errors.append("duplicate product ID in product manifest")
+    if len({row.get("local_asset") for row in product_rows}) != len(product_rows):
+        errors.append("curated products must have distinct local assets")
+    product_asset_paths = [local_asset(str(row.get("local_asset", ""))) for row in product_rows]
+    existing_product_assets = [path for path in product_asset_paths if path is not None and path.is_file()]
+    if len(existing_product_assets) == len(product_rows) and len({sha256(path) for path in existing_product_assets}) != len(product_rows):
+        errors.append("curated product image contents must be non-repeating")
+    manifest_categories: dict[str, int] = {}
+    product_by_id = {product["id"]: product for product in products}
+    for row in product_rows:
+        product_id = str(row.get("id", ""))
+        seeded = product_by_id.get(product_id)
+        manifest_categories[str(row.get("category", ""))] = manifest_categories.get(str(row.get("category", "")), 0) + 1
+        if seeded is None:
+            errors.append(f"product manifest item missing from seed: {product_id}")
+            continue
+        for manifest_key, seed_key in (
+            ("name", "name"),
+            ("category", "category"),
+            ("default_role", "default_role"),
+            ("price_snapshot", "price_snapshot"),
+            ("official_url", "official_url"),
+            ("local_asset", "image_url"),
+        ):
+            if row.get(manifest_key) != seeded.get(seed_key):
+                errors.append(f"product seed/manifest {manifest_key} mismatch: {product_id}")
+        source_asset = urlsplit(str(row.get("source_asset_url", "")))
+        if source_asset.scheme != "https" or source_asset.hostname != "www.nitori-net.jp":
+            errors.append(f"product source asset must be official NITORI HTTPS: {product_id}")
+        if not str(row.get("source_product_code", "")).strip():
+            errors.append(f"missing source product code: {product_id}")
+    if set(manifest_categories) != {"BED", "DESK", "STORAGE", "LIGHTING", "TEXTILE", "SUPPORT"}:
+        errors.append("product manifest does not cover all six categories")
+    if any(count != 3 for count in manifest_categories.values()):
+        errors.append(f"product manifest must contain three products per category: {manifest_categories}")
 
     for coordinate in coordinates:
         required = {
@@ -152,6 +228,10 @@ def validate() -> None:
         errors.append("duplicate coordinate ID in visual manifest")
     if len(set(current_assets)) != len(current_assets):
         errors.append("main demo coordinates must have distinct current visual assets")
+    coordinate_asset_paths = [local_asset(str(path)) for path in current_assets]
+    existing_coordinate_assets = [path for path in coordinate_asset_paths if path is not None and path.is_file()]
+    if len(existing_coordinate_assets) == len(visual_rows) and len({sha256(path) for path in existing_coordinate_assets}) != len(visual_rows):
+        errors.append("main demo coordinate image contents must be non-repeating")
     fallback = local_asset(str(visual_manifest.get("fallback_asset", "")))
     if fallback is None or not fallback.is_file():
         errors.append("visual manifest fallback asset is missing or external")
@@ -218,6 +298,38 @@ def validate() -> None:
             errors.append(f"source asset must be an official HTTPS NITORI URL: {coordinate_id}")
         if not str(row.get("source_image_name", "")).strip():
             errors.append(f"missing source image name: {coordinate_id}")
+
+    hero_rows = hero_manifest.get("slides", [])
+    if not 3 <= len(hero_rows) <= 4:
+        errors.append(f"hero manifest needs 3-4 slides, found {len(hero_rows)}")
+    if len({row.get("local_asset") for row in hero_rows}) != len(hero_rows):
+        errors.append("hero slides must have distinct local assets")
+    hero_asset_paths = [local_asset(str(row.get("local_asset", ""))) for row in hero_rows]
+    existing_hero_assets = [path for path in hero_asset_paths if path is not None and path.is_file()]
+    if len(existing_hero_assets) == len(hero_rows) and len({sha256(path) for path in existing_hero_assets}) != len(hero_rows):
+        errors.append("hero image contents must be non-repeating")
+    hero_page = urlsplit(str(hero_manifest.get("source_page_url", "")))
+    if hero_page.scheme != "https" or hero_page.hostname != "www.nitori-net.jp":
+        errors.append("hero manifest source page must be an official NITORI URL")
+    for row in hero_rows:
+        slide_id = str(row.get("id", ""))
+        if row.get("rights_status") != "EXPLICITLY_PERMITTED":
+            errors.append(f"hero slide must be explicitly permitted: {slide_id}")
+        source_asset = urlsplit(str(row.get("source_asset_url", "")))
+        if source_asset.scheme != "https" or source_asset.hostname != "www.nitori-net.jp":
+            errors.append(f"hero source asset must be official NITORI HTTPS: {slide_id}")
+        asset = local_asset(str(row.get("local_asset", "")))
+        if asset is None or not asset.is_file() or asset.suffix.lower() != ".webp":
+            errors.append(f"hero asset must be a local WebP: {slide_id}")
+            continue
+        try:
+            with Image.open(asset) as image:
+                if image.size != (1200, 750):
+                    errors.append(f"hero asset must be 1200x750: {slide_id} is {image.size}")
+        except OSError:
+            errors.append(f"unreadable hero asset: {slide_id}")
+        if asset.stat().st_size > 250_000:
+            errors.append(f"hero asset is unexpectedly large: {slide_id}")
 
     golden = next(item for item in coordinates if item["id"] == "coord-001")
     if not {"STORAGE", "RENTAL"}.issubset(golden["needs"]) or golden["size_band"] != "SMALL_6":

@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import { api, trackOnce } from "../api/client";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
-import { SafeImage } from "../components/common/SafeImage";
 import { Loading } from "../components/common/StatusView";
+import { HeroCarousel } from "../components/home/HeroCarousel";
 import { useAsync } from "../hooks/useAsync";
 
 const quickEntries = [
@@ -37,10 +37,7 @@ export function HomePage() {
           <p className="hero__microcopy">入力内容はデモ端末内の匿名Sessionでのみ使用します。</p>
         </div>
         <div className="hero__visual">
-          <SafeImage src="/assets/room-natural.svg" alt="6畳の一人暮らしを表したオリジナルデモイラスト" />
-          <div className="hero__annotation hero__annotation--one"><strong>6畳</strong><span>サイズから絞る</span></div>
-          <div className="hero__annotation hero__annotation--two"><strong>5万円</strong><span>予算で現実的に</span></div>
-          <div className="hero__annotation hero__annotation--three"><strong>5商品</strong><span>空間全体で理解</span></div>
+          <HeroCarousel />
         </div>
       </section>
 

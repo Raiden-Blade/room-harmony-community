@@ -314,14 +314,26 @@ $env:RHC_DATABASE_URL = "sqlite:///$databasePath"
 $env:RHC_SEED_PATH = (Join-Path $repositoryDirectory "data\seed\demo_seed.json")
 $env:RHC_CORS_ORIGINS = '["http://127.0.0.1:5173","http://localhost:5173"]'
 $env:VITE_API_BASE_URL = "http://127.0.0.1:8000"
-$backendProcess = Start-Process -FilePath $pythonVenv `
-    -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000") `
-    -WorkingDirectory $backendDirectory -WindowStyle Hidden -PassThru `
-    -RedirectStandardOutput $backendOut -RedirectStandardError $backendErr
-$frontendProcess = Start-Process -FilePath $node `
-    -ArgumentList @($viteEntry, "--host", "127.0.0.1", "--port", "5173", "--strictPort") `
-    -WorkingDirectory $frontendDirectory -WindowStyle Hidden -PassThru `
-    -RedirectStandardOutput $frontendOut -RedirectStandardError $frontendErr
+$quotedBackendDirectory = '"' + $backendDirectory + '"'
+$quotedViteEntry = '"' + $viteEntry + '"'
+$backendProcess = $null
+$frontendProcess = $null
+try {
+    # --app-dir makes the repository identity visible in the child command line,
+    # allowing stop-demo.cmd to distinguish this process from unrelated Python.
+    $backendProcess = Start-Process -FilePath $pythonVenv `
+        -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000", "--app-dir", $quotedBackendDirectory) `
+        -WorkingDirectory $backendDirectory -WindowStyle Hidden -PassThru `
+        -RedirectStandardOutput $backendOut -RedirectStandardError $backendErr
+    # Windows PowerShell joins ArgumentList values into one command line. Keep
+    # the JavaScript entry quoted so an extracted repository path may contain spaces.
+    $frontendProcess = Start-Process -FilePath $node `
+        -ArgumentList @($quotedViteEntry, "--host", "127.0.0.1", "--port", "5173", "--strictPort", "--force") `
+        -WorkingDirectory $frontendDirectory -WindowStyle Hidden -PassThru `
+        -RedirectStandardOutput $frontendOut -RedirectStandardError $frontendErr
+} catch {
+    Fail "The API or web process could not be started: $($_.Exception.Message)" @($backendProcess, $frontendProcess)
+}
 
 $state = [ordered]@{
     repository = $repositoryDirectory

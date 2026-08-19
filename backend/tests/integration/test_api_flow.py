@@ -1,5 +1,5 @@
 def test_health_and_discovery_api(client):
-    assert client.get("/health").json() == {"status": "ok", "dataset": "synthetic-demo"}
+    assert client.get("/health").json() == {"status": "ok", "dataset": "mixed-prototype-snapshot"}
     response = client.get(
         "/api/coordinates",
         params={"mode": "similar", "room_size": "SMALL_6", "need": "STORAGE", "budget_max": 50_000},
@@ -13,11 +13,19 @@ def test_health_and_discovery_api(client):
 def test_coordinate_and_product_to_coordinate_api(client):
     coordinate = client.get("/api/coordinates/coord-001")
     assert coordinate.status_code == 200
-    assert len(coordinate.json()["items"]) >= 5
+    assert coordinate.json()["price"]["status"] == "NITORI_OFFICIAL_SNAPSHOT"
+    products = [item["product"] for item in coordinate.json()["items"] if item["product"]]
+    assert len(products) >= 5
+    assert all(product["id"].startswith("NTR-") for product in products)
+    assert all(product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT" for product in products)
+    assert len({product["image_url"] for product in products}) == len(products)
 
-    product_id = coordinate.json()["items"][0]["product"]["id"]
+    product_id = products[0]["id"]
     product = client.get(f"/api/products/{product_id}")
     assert product.status_code == 200
+    assert product.json()["image_url"] == products[0]["image_url"]
+    assert product.json()["name"] == products[0]["name"]
+    assert product.json()["price_snapshot"] == products[0]["price_snapshot"]
     assert any(row["id"] == "coord-001" for row in product.json()["coordinates"])
 
 
@@ -111,6 +119,11 @@ def test_analytics_validation_and_readiness_api(client):
         },
     )
     assert accepted.status_code == 202
+    product_reference = client.post(
+        "/api/analytics/events",
+        json={"event_name": "product_view", "product_id": "NTR-2110600044491-0000002000852"},
+    )
+    assert product_reference.status_code == 202
     rejected = client.post(
         "/api/analytics/events",
         json={"event_name": "product_view", "properties": {"free_text": "do not store"}},

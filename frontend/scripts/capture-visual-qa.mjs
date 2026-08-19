@@ -106,7 +106,7 @@ try {
       { name: "explore", path: "/explore?room_size=SMALL_6&need=STORAGE&budget_max=50000" },
       { name: "coordinate", path: "/coordinates/coord-001" },
       { name: "coordinate-error", path: "/coordinates/coord-does-not-exist" },
-      { name: "product", path: "/products/DEMO-BED-01" },
+      { name: "product", path: "/products/NTR-2110600044491-0000002000852" },
       { name: "create", path: "/create" },
       { name: "create-challenge", path: "/create?challenge=new-life-6tatami-2028" },
       { name: "create-products", path: "/create" },
@@ -121,6 +121,16 @@ try {
     ];
     const context = await browser.newContext({ viewport });
     const page = await context.newPage();
+    let runtimeIssues = [];
+    page.on("console", (message) => {
+      if (message.type() === "error") runtimeIssues.push(`console error: ${message.text()}`);
+    });
+    page.on("requestfailed", (request) => {
+      runtimeIssues.push(`request failed: ${request.method()} ${request.url()} (${request.failure()?.errorText || "unknown"})`);
+    });
+    page.on("response", (response) => {
+      if (response.status() >= 400) runtimeIssues.push(`HTTP ${response.status()}: ${response.request().method()} ${response.url()}`);
+    });
     await page.goto(baseUrl);
     for (const target of pages) {
       if (target.name === "creator" && !contribution) {
@@ -154,6 +164,7 @@ try {
         if (!entryResponse.ok) throw new Error(`Could not create visual QA Challenge Entry (${entryResponse.status})`);
       }
       await page.evaluate((value) => localStorage.setItem("rhc-demo-session", value), target.session || sessionId);
+      runtimeIssues = [];
       await page.goto(`${baseUrl}${target.path}`, { waitUntil: "networkidle" });
       if (target.name === "create-products" || target.name === "create-real-products") {
         if (target.name === "create-products") await page.getByRole("radio", { name: /PLAN/ }).check();
@@ -166,6 +177,15 @@ try {
         await page.getByRole("button", { name: "公開コーデとして共有" }).click();
         await page.getByRole("radio", { name: /REAL ROOMとして共有/ }).check();
       }
+      await page.evaluate(async () => {
+        const step = Math.max(Math.floor(window.innerHeight * 0.75), 300);
+        for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+          window.scrollTo(0, y);
+          await new Promise((resolvePromise) => setTimeout(resolvePromise, 25));
+        }
+        window.scrollTo(0, 0);
+      });
+      await page.waitForLoadState("networkidle");
       await page.evaluate(() => {
         document.documentElement.style.scrollBehavior = "auto";
         if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
@@ -177,6 +197,16 @@ try {
       }));
       if (dimensions.scrollWidth > dimensions.clientWidth + 1) {
         throw new Error(`${viewport.name}/${target.name} overflows by ${dimensions.scrollWidth - dimensions.clientWidth}px`);
+      }
+      const unexpectedIssues = runtimeIssues.filter((issue) => !(
+        target.name === "coordinate-error"
+        && (
+          (issue.includes("HTTP 404") && issue.includes("/api/coordinates/coord-does-not-exist"))
+          || issue === "console error: Failed to load resource: the server responded with a status of 404 (Not Found)"
+        )
+      ));
+      if (unexpectedIssues.length > 0) {
+        throw new Error(`${viewport.name}/${target.name} has runtime issues:\n${unexpectedIssues.join("\n")}`);
       }
       const outputPath = join(outputDirectory, `${viewport.name}-${target.name}.png`);
       await page.screenshot({ path: outputPath, fullPage: true });

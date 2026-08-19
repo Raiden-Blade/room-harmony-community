@@ -3,6 +3,9 @@
 ## Sources
 
 - [Source link registry](sources/source-links.md)
+- [Coordinate image manifest](../data/seed/visual_asset_manifest.json)
+- [Home hero image manifest](../data/seed/hero_asset_manifest.json)
+- [Identity-matched product manifest](../data/seed/product_asset_manifest.json)
 
 ## Audits
 

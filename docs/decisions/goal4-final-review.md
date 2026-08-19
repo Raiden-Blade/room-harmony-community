@@ -48,41 +48,46 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 36 | Error states | PASS | backend unavailable、missing entity、upload、eligibility、duplicateを日本語化。stack traceなし |
 | 37 | Empty states | PASS | Saved / PLAN / Creator / Challenge candidate / Explore / Productにnext CTA |
 | 38 | Loading states | PASS | common Loading statusを主要async routeで使用 |
-| 39 | Responsive | PASS | 390 / 768 / 1280 E2E + 57 rendered captures、horizontal overflowなし |
+| 39 | Responsive | PASS | 390 / 768 / 1280 E2E + 57 rendered captures、horizontal overflowなし。全ページを段階Scrollしてlazy画像も実Load |
 | 40 | Accessibility basics | PASS | skip link、semantic controls、labels、alt、heading、focus、alert / status |
 | 41 | Analytics semantics | PASS | controlled event / property allowlist、passive exposureをruntime内`trackOnce`、Actionは非dedupe |
 | 42 | Session privacy | PASS | raw `owner_session_id`、filename、path、free textをPublic / Analyticsへ出さない |
-| 43 | Main image repetition | PASS | Main Demo 15 Coordinateを15枚の別々のNITORI公式参照画像へlocal mapping |
-| 44 | Independent image replacement | PASS | manifest / seed asset referenceはranking・Save・PLAN logicから分離 |
-| 45 | Optimized local imagery | PASS | 15件を640×400 WebP（各約20〜44KB）としてlocal収録、Runtime hotlinkなし |
-| 46 | Fallback behavior | PASS | `SafeImage`共通fallback + 15件の既存個別SVGを維持。missing asset test対象 |
+| 43 | Main image repetition | PASS | Main Demo 15 Coordinate、Home Hero 4枚、公式対応18商品を、それぞれ重複しないNITORI公式参照画像へlocal mapping |
+| 44 | Independent image replacement | PASS | Coordinate / Hero / Productの各manifestとseed asset referenceをranking・Save・PLAN logicから分離 |
+| 45 | Optimized local imagery | PASS | Coordinate 15件は640×400、Product 18件は640×640、Hero 4枚は1200×750のWebPとしてlocal収録。Runtime hotlinkなし |
+| 46 | Fallback behavior | PASS | `SafeImage`共通fallbackと既存個別SVGを維持。公式Identityを確認できない42商品は無理に実写化しない |
 | 47 | Rights | PASS | User確認済みの本Prototype限定許可を`EXPLICITLY_PERMITTED`として記録。一般Open licenseとは主張しない |
-| 48 | Visual asset documentation | PASS | `visual-asset-plan.md`、Source registry、About、README、machine-readable manifestを同期 |
+| 48 | Visual asset documentation | PASS | `visual-asset-plan.md`、Source registry、About、README、Coordinate / Hero / Productのmachine-readable manifestを同期 |
 | 49 | Visual QA isolation | PASS | process-scoped DB / upload、port 8100 / 5174、Main DB非汚染、residueなし |
 | 50 | Demo reset | PASS | Save / Helpful / PLAN / Creator / Public REAL / upload / Entryを作成後、Seed 36 / 60 / 6 / 8へ復元 |
 | 51 | Reset safety | PASS | exact `.demo` targets、confirmation、source / logs / captures保持、unmanaged process拒否 |
-| 52 | Windows lifecycle | PASS | current checkoutでreset → `start-demo.cmd -NoBrowser` → health確認。owned stop / port release |
+| 52 | Windows lifecycle | PASS | 空白を含む実Copy pathでdependency check → `start-demo.cmd -NoBrowser` → Home / API / WebP 200 → repeated start → owned stop / port release → reset |
 | 53 | Backend tests | PASS | 54 passed |
-| 54 | Frontend tests | PASS | 24 passed |
+| 54 | Frontend tests | PASS | 25 passed（JST snapshot date regressionを含む） |
 | 55 | Browser E2E | PASS | 12 passed、9 functional + 3 responsive、temporary residue 0 |
-| 56 | Production build | PASS | Vite build、64 modules、JS gzip約103kB |
+| 56 | Production build | PASS | Vite build、65 modules、JS gzip 104.49kB |
 | 57 | Dependency checks | PASS | npm audit 0 vulnerabilities、pip check clean |
-| 58 | Seed validator | PASS | 36 Coordinate / 60 Product / 6 Challenge / 8 Entry + asset manifest |
+| 58 | Seed validator | PASS | 36 Coordinate / 60 Product / 6 Challenge / 8 Entry + 15 Coordinate / 4 Hero / 18 Product asset mapping |
 | 59 | Fresh clone | PASS | `e3c7944`を新規clone。venv / node_modules / `.demo`なしからone-click start、health / frontend / Demo 1 API、stop / reset、tracked status cleanを確認 |
 | 60 | GitHub CI | PASS | PR #4の最新commitでbackend / frontend checkを確認。run URLはPR statusをSource of Truthとする |
 | 61 | Existing Room Harmony untouched | PASS | read-only checkout commit / clean statusをFinal Gateで再確認する |
-| 62 | Source registry | PASS | NIT-016として公式Source pageを追加し、個別asset URLはmanifestへ記録 |
-| 63 | Second physical Windows PC | MANUAL_SECOND_PC_TEST_REQUIRED | 実機Checklistあり。未実施をPASSとしない |
-| 64 | Projector / display | MANUAL_REQUIRED | zoom 100%、Home / Explore / Challenge / Handoffを人が確認 |
+| 62 | Source registry | PASS | NIT-016（Coordinate）とNIT-017（Product）を追加し、個別asset URLは各manifestへ記録 |
+| 63 | Home realism | PASS | 4枚の別々の公式室内画像を使う落ち着いたCarousel。矢印・dot・8秒Auto-play・hover/focus pause・reduced-motion・条件別CTA |
+| 64 | Product identity alignment | PASS | 6Category×3件の18商品で、名称・商品参照ID・価格・公式URL・主画像・Card / Detail表示を同一Identityへ固定 |
+| 65 | Asset non-repetition | PASS | SHA-256で15 Coordinate / 4 Hero / 18 Productの各集合内に同一内容がないことをValidatorで強制 |
+| 66 | Official reference reachability | PASS | 18公式商品pageがHTTP 200かつ商品参照codeを含み、18 source imageがHTTP 200 `image/jpeg`であることを2026-08-19にlive確認 |
+| 67 | Second physical Windows PC | MANUAL_SECOND_PC_TEST_REQUIRED | 実機Checklistあり。未実施をPASSとしない |
+| 68 | Projector / display | MANUAL_REQUIRED | zoom 100%、Home / Explore / Product / Handoffを人が確認 |
 
 ## Known limitations accepted for final human review
 
 - Production authentication、moderation console、deployment、schedulerはない。
-- Product / price / Coordinate内容 / Challengeはsynthetic Demo data。主要15件の室内画像だけが許可済みNITORI参照素材で、`DEMO-*`を実SKUとして扱わない。
+- Coordinate構成、投稿者、Challengeはsynthetic Demo data。60商品のうち18件だけがNITORI公式商品ページと同一Identityの日付付き参照スナップショットで、残る`DEMO-*` 42件を実SKUとして扱わない。
 - Current recommendationはfixed-weight deterministic ruleでAI / LLMではない。
 - HandoffはPreview contractだけで、Room Harmony、NITORI API、inventory、POS、Cartへ送信しない。
-- 15件以外のBuilt-in room imagesとHome heroはoriginal flat SVG。Product imagesもoriginal demo-safe SVGのままである。
-- 公式参照画像と架空の商品構成は実在SKU単位では対応付けていない。見た目のStyle / Need整合に限定する。
+- 15件以外のBuilt-in Coordinate画像と42件のDemo Product画像はRepository-original SVGのままである。
+- 公式の部屋画像は検証用Coordinate構成の参考表示であり、画像内の家具一式を構成商品として特定したものではない。これに対し、18件の商品写真は名称・参照ID・価格・公式URLと商品単位で対応付けている。
+- 公式商品価格は2026-08-19時点の参照Snapshotで、現在価格・在庫・販売継続を保証しない。
 - `trackOnce`はReact StrictMode等の同一runtime重複を抑える。Browser refreshは新しいpage exposureとして扱う。
 - Business upliftは未検証。正式User test、assignment、denominator、POS / order attributionが必要。
 
@@ -97,5 +102,5 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 - [x] 390 / 768 / 1280
 - [x] Handoff Preview / non-live disclosure
 - [x] Prototype Pick / non-official disclosure
-- [x] 15件の許可済み参照画像についてSource / rights / manifest / local fallbackを再確認
-- [ ] Merge前にHumanが15件のTitleと画像の意味的整合を最終確認
+- [x] 15 Coordinate + 4 Hero + 18 Productの許可済み参照画像についてSource / rights / manifest / local fallbackを再確認
+- [ ] Merge前にHumanが4枚のHero、主要15件のCoordinate、18件の商品Identityと画像の意味的整合を最終確認

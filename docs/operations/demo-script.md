@@ -48,13 +48,13 @@
 
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
-| `/products/DEMO-BED-01` | Demo Product Detail | `DEMO-*`は架空IDで、価格・在庫・NITORI SKUではない | URLを直接入力 |
-| `この商品を使ったコーデを見る`の先頭Card（`coord-001`） | Coordinate Detail | Demo商品画像と公式Coordinate参照画像を混同せず、単品から収納を含む空間、別カテゴリ、PLANへ広げる | 最初の`空間全体を見る`を選ぶ |
+| `/products/NTR-2110600044491-0000002000852` | NITORI Product Reference Detail | 名称・参照ID・日付付き価格・主画像・公式商品URLが同じ商品へ対応する。現在価格・在庫ではない | URLを直接入力 |
+| `この商品を使ったコーデを見る`の先頭Card（`coord-001`） | Coordinate Detail | 商品参照と公式室内参照画像を別の根拠として示し、単品から収納を含む空間、別カテゴリ、PLANへ広げる | 最初の`空間全体を見る`を選ぶ |
 | `このコーデを自分向けにアレンジ` | Private PLAN | Product reverse discoveryも同じPlanning Loopへ合流する | 作成済みPLANでもEdit画面が開けば成功 |
 
 ## Closing — 30 seconds
 
-現在Claimできるのは、複数商品探索、PLAN、Store / EC action、Community / Seasonal reuseを操作・計測できることです。併売率・売上・購入率の向上はまだ証明していません。実商品ID mapping、正式API契約、認証、在庫・価格・POS、Room Harmony live integrationはHuman approval後の別段階です。
+現在Claimできるのは、18商品の日付付きIdentity snapshotを含む複数商品探索、PLAN、Store / EC action、Community / Seasonal reuseを操作・計測できることです。併売率・売上・購入率の向上はまだ証明していません。全商品Master mapping、正式API契約、認証、在庫・価格・POS、Room Harmony live integrationはHuman approval後の別段階です。
 
 ## Recovery matrix
 

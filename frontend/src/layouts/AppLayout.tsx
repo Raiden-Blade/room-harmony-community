@@ -44,7 +44,7 @@ export function AppLayout() {
         ))}
       </nav>
       <footer className="site-footer">
-        <p>商品・価格・投稿内容は架空デモです。一部の部屋画像のみ許可済み公式参照素材で、NITORI・Room Harmonyとの実接続はありません。</p>
+        <p>18商品の名称・参照ID・価格・画像と、部屋・Hero画像の一部は、許可済みNITORI公式素材を使った日付付き参照スナップショットです。その他は架空デモで、現在価格・在庫・NITORI／Room Harmonyとの実接続を示しません。</p>
       </footer>
     </div>
   );

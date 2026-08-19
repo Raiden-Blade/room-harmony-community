@@ -8,6 +8,7 @@ from urllib.parse import quote
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = ROOT / "data" / "seed" / "demo_seed.json"
 VISUAL_MANIFEST = ROOT / "data" / "seed" / "visual_asset_manifest.json"
+PRODUCT_MANIFEST = ROOT / "data" / "seed" / "product_asset_manifest.json"
 
 CATEGORIES = [
     ("BED", "MAIN_FURNITURE", "ベッド", 15_900),
@@ -45,13 +46,30 @@ PROVENANCE = [
 
 
 def build_products() -> list[dict[str, object]]:
-    products: list[dict[str, object]] = []
-    observed_at = "2026-08-18T00:00:00+00:00"
+    manifest = json.loads(PRODUCT_MANIFEST.read_text(encoding="utf-8"))
+    observed_at = manifest["observed_at"]
+    products: list[dict[str, object]] = [
+        {
+            "id": row["id"],
+            "name": row["name"],
+            "category": row["category"],
+            "default_role": row["default_role"],
+            "price_snapshot": row["price_snapshot"],
+            "price_status": "NITORI_OFFICIAL_SNAPSHOT",
+            "price_observed_at": observed_at,
+            "official_url": row["official_url"],
+            "image_url": row["local_asset"],
+            "provenance": "NITORI_OFFICIAL_SNAPSHOT",
+            "rights_status": "EXPLICITLY_PERMITTED",
+            "style_hint": row["style_hint"],
+        }
+        for row in manifest["products"]
+    ]
     for category, role, label, base_price in CATEGORIES:
-        for index in range(10):
-            style_code, style_label, _ = STYLES[index % len(STYLES)]
+        for index in range(7):
+            style_code, style_label, _ = STYLES[(index + 3) % len(STYLES)]
             name = f"{style_label}{label} デモ{index + 1:02d}"
-            missing = index == 9
+            missing = index == 6
             products.append(
                 {
                     "id": f"DEMO-{category}-{index + 1:02d}",
@@ -85,6 +103,8 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
         for style_index, (style_code, style_label, style_copy) in enumerate(STYLES):
             coordinate_index = need_index * len(STYLES) + style_index
             product_index = (need_index * 2 + style_index) % 9
+            if need_code == "LOW_BUDGET" and product_index == 2:
+                product_index = 0
             selected_categories = ["BED", "DESK", "STORAGE", "LIGHTING", "TEXTILE"]
             if need_code == "RELAX":
                 selected_categories[1] = "SUPPORT"
@@ -118,18 +138,29 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                 else f"{style_label}で整える、{need_label}{size_label}プラン"
             )
             visual_entry = visual_entries.get(coordinate_id)
+            official_product_count = sum(
+                product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT" for product in product_rows
+            )
             image_url = (
                 visual_entry["current_asset"]
                 if visual_entry
                 else f"/assets/room-{style_code.lower().replace('_', '-')}.svg"
             )
             image_rights = visual_entry["rights_status"] if visual_entry else "LOCALLY_CREATED_DEMO"
-            demo_disclosure = (
-                "室内画像は、許可を前提に似鳥公式Coordinateページからローカル収録した参照素材です。"
-                "商品構成・ID・価格・投稿者情報は架空のデモです。"
-                if visual_entry
-                else "オリジナルSVGと架空の商品構成によるデモです。実在の投稿・在庫・価格ではありません。"
-            )
+            disclosure_parts = [
+                (
+                    "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。"
+                    if visual_entry
+                    else "室内画像はリポジトリ内で制作したデモSVGです。"
+                ),
+                (
+                    f"購入候補{official_product_count}件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。"
+                    if official_product_count
+                    else "購入候補は架空の商品名・価格・画像によるデモです。"
+                ),
+                "コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+            ]
+            demo_disclosure = "".join(disclosure_parts)
             coordinates.append(
                 {
                     "id": coordinate_id,
@@ -137,7 +168,7 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                     "status": "PUBLISHED" if kind == "REAL" else "READY_FOR_ACTION",
                     "visibility": "PUBLIC",
                     "title": title,
-                    "description": f"{style_copy} {need_copy} 商品構成・価格はデモです。画像の出所は詳細画面に表示します。",
+                    "description": f"{style_copy} {need_copy} コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
                     "room_type": "ONE_ROOM",
                     "size_band": size_band,
                     "housing_type": "RENTAL",
@@ -179,10 +210,10 @@ def main() -> None:
     products = build_products()
     payload = {
         "metadata": {
-            "generated_at": "2026-08-18T00:00:00+00:00",
-            "dataset_kind": "SYNTHETIC_FUNCTIONAL_PROTOTYPE",
-            "rights_notice": "Fifteen approved NITORI coordinate reference images are bundled locally for this prototype; other room and all product visuals remain repository-original demo assets.",
-            "price_notice": "All prices are fictional demo snapshots and may not match current official prices.",
+            "generated_at": "2026-08-19T00:00:00+09:00",
+            "dataset_kind": "MIXED_OFFICIAL_SNAPSHOT_FUNCTIONAL_PROTOTYPE",
+            "rights_notice": "Fifteen NITORI coordinate references, four hero references, and eighteen identity-matched NITORI product images are bundled locally under the user-confirmed prototype permission basis. Remaining room and product visuals are repository-created demo assets.",
+            "price_notice": "NITORI-aligned product prices are dated snapshots; fallback product prices are fictional demo values. Neither represents current stock.",
         },
         "products": products,
         "coordinates": build_coordinates(products),

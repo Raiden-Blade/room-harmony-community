@@ -6,7 +6,7 @@
 
 ## Current status / Goal 4
 
-2026-08-19時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。Goal 4Bでは、主要15件のCoordinate画像を使用許可確認済みのNITORI公式参照画像へ差し替え、ローカル実行・出典追跡・SVG fallbackを維持しています。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
+2026-08-19時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。Goal 4Bでは主要15件のCoordinate画像、Goal 4CではHomeの4枚と主要導線で使う18商品の画像・名称・商品参照ID・価格を、使用許可確認済みのNITORI公式Sourceへ対応付けました。すべてローカルWebPで、出典追跡とfallbackを維持しています。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
 
 本Prototypeは年間reuse loopとmulti-product explorationを操作・計測可能にしますが、Production効果、併売率・売上・購入率の向上、NITORIによる公式採用・選定、NITORI / Room Harmonyとの実接続は証明していません。
 
@@ -66,7 +66,7 @@ Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/
 room-harmony-community/
 ├── frontend/        React UI、typed API client、Vitest、Playwright
 ├── backend/         FastAPI、domain / service / repository、pytest
-├── data/seed/       generated synthetic demo dataset
+├── data/seed/       generated mixed official-snapshot / demo dataset
 ├── docs/            Phase 0定義 + implementation / runbook / decisions
 ├── scripts/         seed / validation / launcher helpers
 ├── start-demo.cmd   Windows one-click start
@@ -76,20 +76,20 @@ room-harmony-community/
 
 ## Dataと権利の境界
 
-- 36件のCoordinate、60件のProduct、商品構成、価格、投稿者情報は架空の機能検証Dataです。
-- Product IDは`DEMO-*`であり、NITORI SKUではありません。
+- 36件のCoordinate構成と投稿者情報は機能検証用です。公式画像に写る商品と、デモ上の5商品構成が同一だとは保証しません。
+- 60件のProductのうち18件は、NITORI公式商品ページの名称・商品参照ID・日付付き価格・主画像を商品単位で対応付けた`NTR-*`参照スナップショットです。残る42件は`DEMO-*`の架空商品です。
 - Main Demoの15 Coordinateには、Userが本Prototypeでの使用許可を確認したNITORI公式「新生活用品」Coordinate参照画像をローカルWebPとして同梱しています。一般的なOpen licenseを意味せず、転載・再利用範囲を拡張するものではありません。
-- NITORI由来なのは上記の**部屋・Coordinate参照画像だけ**です。`DEMO-*`商品ID、商品画像、価格、商品構成はNITORIの商品Masterではなく、引き続き架空またはRepository-originalです。
-- 残りのCoordinate、Home、ProductにはRepository-original SVGを使い、主要15件の個別SVGと共通`room-fallback.svg`も読み込み失敗時の安全策として保持します。Runtime hotlinkはありません。
-- 価格は`デモ価格スナップショット`と明示し、未取得価格は0円にせず件数を表示します。
-- 外部URLはNITORI公式検索ページへの参考Linkで、在庫・Cart・購入・価格APIではありません。
+- Homeは、公式新生活特集から選定した別々の4画像を使うCarouselです。各Slideは自然なExplore条件またはSeasonalへ接続します。
+- 残りのCoordinateと42件のDemo ProductにはRepository-original SVGを使い、主要15件の個別SVGと共通fallbackも読み込み失敗時の安全策として保持します。Runtime hotlinkはありません。
+- `NTR-*`価格は2026-08-19時点の公式参照スナップショット、`DEMO-*`価格は架空です。未取得価格は0円にせず件数を表示します。
+- `NTR-*`は対応するNITORI公式商品ページ、`DEMO-*`は公式検索ページへの参考Linkです。どちらも在庫・Cart・購入・価格APIではありません。
 - REAL / PLAN、Official / Staff / User declaredは将来のData modelを示す架空例で、公式認定や実在投稿を意味しません。
 - Goal 2でUserがUploadした画像は`.demo/uploads/`へrandom filenameのWebPとしてLocal保存され、Git対象外です。元filename、client path、EXIFは保存しません。
 - `USER_DECLARED` REALはUser申告であり、NITORIまたはSystemによる本人・購入・実在性の確認済み情報ではありません。
 - 6件のChallengeと8件のEntryも架空のSeasonal seedです。`Prototype Pick`はDemo上のcontrolled recognitionで、NITORI社員による公式選定、人気順位、品質保証ではありません。
 - Challenge参加数とREAL / PLAN内訳はcurrent SQLiteから計算し、fake view / like / rank countを保存しません。
 
-画像ごとの対応は[`data/seed/visual_asset_manifest.json`](data/seed/visual_asset_manifest.json)、選定理由とfallbackは[`docs/operations/visual-asset-plan.md`](docs/operations/visual-asset-plan.md)、出典は[`docs/sources/source-links.md`](docs/sources/source-links.md)を参照してください。
+画像・商品の対応は[`data/seed/visual_asset_manifest.json`](data/seed/visual_asset_manifest.json)、[`data/seed/hero_asset_manifest.json`](data/seed/hero_asset_manifest.json)、[`data/seed/product_asset_manifest.json`](data/seed/product_asset_manifest.json)、選定理由とfallbackは[`docs/operations/visual-asset-plan.md`](docs/operations/visual-asset-plan.md)、出典は[`docs/sources/source-links.md`](docs/sources/source-links.md)を参照してください。
 
 ## 推薦の意味
 
@@ -161,7 +161,7 @@ Pull Requestでは`.github/workflows/ci.yml`がbackend tests、frontend tests、
 
 - Generic Like、Comment、Follow、DM、Notification、Following Feed、Leaderboard、vote Contest、reward
 - AI / LLM / image recognition
-- 本物のNITORI商品・価格・在庫・POS・決済・店内Map
+- 価格・在庫を継続更新するNITORI商品Master、POS、決済、店内Map
 - Production authentication / deployment
 - Live Room Harmony integration
 

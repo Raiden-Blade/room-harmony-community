@@ -56,7 +56,7 @@ test("E2E 3: Product → Coordinate → private PLAN", async ({ page }) => {
   const sessionId = `e2e-product-reverse-${Date.now()}`;
   await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
 
-  await page.goto("/products/DEMO-BED-01");
+  await page.goto("/products/NTR-2110600044491-0000002000852");
   await expect(page.getByRole("heading", { name: "この商品を使ったコーデを見る" })).toBeVisible();
   await page.getByRole("link", { name: "空間全体を見る" }).first().click();
 

@@ -268,7 +268,7 @@ export function CoordinateDetailPage() {
         <div><p className="eyebrow">Trust & provenance</p><h2 id="trust-title">この事例について</h2></div>
         <dl>
           <div><dt>種別</dt><dd>{label(coordinate.kind)}</dd></div>
-          <div><dt>出所モデル</dt><dd>{label(coordinate.provenance)}（すべてデモ）</dd></div>
+          <div><dt>コーデの出所</dt><dd>{label(coordinate.provenance)}（検証用構成）</dd></div>
           <div><dt>画像の扱い</dt><dd>{imageRightsLabel}</dd></div>
           <div><dt>確認状態</dt><dd>{label(coordinate.verification_state)}</dd></div>
         </dl>

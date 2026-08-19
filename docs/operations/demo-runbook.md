@@ -22,6 +22,8 @@ Git / Python / npm commandに慣れていないReviewerが、ZIP展開後に同�
 
 Install済みの依存関係はlock / requirements hashで再利用する。Backend / Frontend process IDは`.demo/processes.json`へ保存する。
 
+展開先Folder名に空白が含まれても起動できる。LauncherはVite entryを明示的にquoteし、Backend processにはRepository pathを含む`--app-dir`を渡すため、`stop-demo.cmd`は他のPython processと区別できる。
+
 Python discoveryはusable `python.exe` → `py.exe -3` → explicit failureの順で行う。Microsoft Store aliasやPython 3.10以下は理由を表示して次候補へ進む。Virtual environment作成とdependency installは選択されたInterpreter系統から作った`backend/.venv`を使用し、既存venvのversionも再確認する。
 
 ## Stop
@@ -54,10 +56,10 @@ Resetはlauncher-owned processを安全に停止し、`.demo/room-harmony-commun
 
 ## Manual health checklist
 
-- `/health` returns `{"status":"ok","dataset":"synthetic-demo"}`
+- `/health` returns `{"status":"ok","dataset":"mixed-prototype-snapshot"}`
 - `/docs` lists catalog / saved / plans / analytics
 - Home says `機能検証用デモ`
-- Product IDs use `DEMO-*`
+- Main Demo Product IDsには公式対応の`NTR-*`、fallbackには`DEMO-*`を使う
 - Handoff says `PREVIEW ONLY` and `live_integration: false`
 - Main Demo Coordinateが同じroom imageの連続表示になっていない
 - Stop leaves no listener on port 8000 / 5173
