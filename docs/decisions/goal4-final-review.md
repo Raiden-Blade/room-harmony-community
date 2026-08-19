@@ -61,15 +61,15 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 49 | Visual QA isolation | PASS | process-scoped DB / upload、port 8100 / 5174、Main DB非汚染、residueなし |
 | 50 | Demo reset | PASS | Save / Helpful / PLAN / Creator / Public REAL / upload / Entryを作成後、Seed 36 / 60 / 6 / 8へ復元 |
 | 51 | Reset safety | PASS | exact `.demo` targets、confirmation、source / logs / captures保持、unmanaged process拒否 |
-| 52 | Windows lifecycle | PASS | alternate portでdependency check → `start-demo.cmd -NoBrowser` → Home / API / WebP 200 → repeated start → owned stop / port release → reset。fresh-clone空白pathは最終push後に再確認 |
+| 52 | Windows lifecycle | PASS | 空白を含むfresh-clone pathとalternate portでdependency install → `start-demo.cmd -NoBrowser` → Home / API / WebP 200 → repeated start → owned stop / port release → reset |
 | 53 | Backend tests | PASS | 60 passed |
 | 54 | Frontend tests | PASS | 30 passed（reference / PLAN / REAL、Hero metadata、matching reason、fallbackを含む） |
 | 55 | Browser E2E | PASS | 12 passed、9 functional + 3 responsive、temporary residue 0 |
 | 56 | Production build | PASS | Vite build、65 modules、JS gzip 105.53kB |
 | 57 | Dependency checks | PASS | npm audit 0 vulnerabilities、pip check clean |
 | 58 | Seed validator | PASS | 36 Coordinate / 60 Product / 6 Challenge / 8 Entry + 15 Coordinate / 4 Hero / 18 Product asset mapping |
-| 59 | Fresh clone | PENDING_FINAL_PUSH | 最終push後、空白を含む新規cloneでvenv / node_modules / `.demo`なしからone-click lifecycleを再確認する |
-| 60 | GitHub CI | PENDING_FINAL_PUSH | PR #4の最終headでbackend / frontend checkを確認する。run URLはPR statusをSource of Truthとする |
+| 59 | Fresh clone | PASS | `28c3399`を空白を含む新規cloneへ取得。venv / node_modules / `.demo`なしからinstall、15 unique photos、one-click lifecycle、reset、tracked status cleanを確認 |
+| 60 | GitHub CI | PASS | PR #4の`28c3399`でbackend / frontendがPASS。最終review文書commitも同じCIを通すことをrelease gateとする |
 | 61 | Existing Room Harmony untouched | PASS | read-only checkout commit / clean statusをFinal Gateで再確認する |
 | 62 | Source registry | PASS | NIT-016（Coordinate）とNIT-017（Product）を追加し、個別asset URLは各manifestへ記録 |
 | 63 | Home realism | PASS | 4枚の別々の公式室内画像を使う落ち着いたCarousel。原Conceptに沿うcopy / CTA / destination、SVG矢印、image-relative dots、8秒Auto-play、pause、reduced-motion |
