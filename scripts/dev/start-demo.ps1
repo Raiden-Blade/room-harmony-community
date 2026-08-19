@@ -2,7 +2,11 @@
 param(
     [switch]$NoBrowser,
     [ValidateRange(20, 300)]
-    [int]$TimeoutSeconds = 120
+    [int]$TimeoutSeconds = 120,
+    [ValidateRange(1024, 65535)]
+    [int]$BackendPort = 8000,
+    [ValidateRange(1024, 65535)]
+    [int]$FrontendPort = 5173
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,6 +29,8 @@ $backendOut = Join-Path $logDirectory "backend-$timestamp.out.log"
 $backendErr = Join-Path $logDirectory "backend-$timestamp.err.log"
 $frontendOut = Join-Path $logDirectory "frontend-$timestamp.out.log"
 $frontendErr = Join-Path $logDirectory "frontend-$timestamp.err.log"
+$backendBaseUrl = "http://127.0.0.1:$BackendPort"
+$frontendBaseUrl = "http://127.0.0.1:$FrontendPort"
 
 function Write-Step([string]$Message) {
     Write-Host ">> $Message" -ForegroundColor Cyan
@@ -218,22 +224,30 @@ Write-Host "===============================================" -ForegroundColor Da
 Write-Host " Room Harmony Community - one-click demo" -ForegroundColor Green
 Write-Host "===============================================" -ForegroundColor DarkGray
 
+if ($BackendPort -eq $FrontendPort) {
+    Fail "BackendPort and FrontendPort must be different."
+}
+
 if (Test-Path -LiteralPath $statePath) {
     try {
         $state = Get-Content -Raw -LiteralPath $statePath | ConvertFrom-Json
+        $stateBackendPort = if ($state.backendPort) { [int]$state.backendPort } else { 8000 }
+        $stateFrontendPort = if ($state.frontendPort) { [int]$state.frontendPort } else { 5173 }
+        $stateBackendBaseUrl = "http://127.0.0.1:$stateBackendPort"
+        $stateFrontendBaseUrl = "http://127.0.0.1:$stateFrontendPort"
         $backendOwned = Test-OwnedProcess -ProcessId ([int]$state.backendPid)
         $frontendOwned = Test-OwnedProcess -ProcessId ([int]$state.frontendPid)
         $backendHealthy = $false
         $frontendHealthy = $false
         if ($backendOwned -and $frontendOwned) {
-            try { $backendHealthy = (Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:8000/health" -TimeoutSec 2).StatusCode -eq 200 } catch {}
-            try { $frontendHealthy = (Invoke-WebRequest -UseBasicParsing -Uri "http://127.0.0.1:5173" -TimeoutSec 2).StatusCode -eq 200 } catch {}
+            try { $backendHealthy = (Invoke-WebRequest -UseBasicParsing -Uri "$stateBackendBaseUrl/health" -TimeoutSec 2).StatusCode -eq 200 } catch {}
+            try { $frontendHealthy = (Invoke-WebRequest -UseBasicParsing -Uri $stateFrontendBaseUrl -TimeoutSec 2).StatusCode -eq 200 } catch {}
         }
         if ($backendHealthy -and $frontendHealthy) {
             Write-Host "The demo is already running." -ForegroundColor Green
-            Write-Host "App: http://127.0.0.1:5173"
-            Write-Host "API: http://127.0.0.1:8000/docs"
-            if (-not $NoBrowser) { Start-Process "http://127.0.0.1:5173" }
+            Write-Host "App: $stateFrontendBaseUrl"
+            Write-Host "API: $stateBackendBaseUrl/docs"
+            if (-not $NoBrowser) { Start-Process $stateFrontendBaseUrl }
             exit 0
         }
         if ($backendOwned) { Stop-OwnedProcess -ProcessId ([int]$state.backendPid) }
@@ -260,8 +274,8 @@ if ($nodeVersion -lt [version]"20.19.0" -or $nodeVersion -ge [version]"25.0.0") 
 }
 Write-Host "$($pythonRuntime.Label) (Python $pythonVersion) / Node.js ${nodeVersion}: OK" -ForegroundColor Green
 
-Test-PortAvailable -Port 8000 | Out-Null
-Test-PortAvailable -Port 5173 | Out-Null
+Test-PortAvailable -Port $BackendPort | Out-Null
+Test-PortAvailable -Port $FrontendPort | Out-Null
 
 Write-Step "Preparing backend dependencies"
 if (-not (Test-Path -LiteralPath $pythonVenv)) {
@@ -312,8 +326,8 @@ Write-Step "Starting API and web app"
 $databasePath = (Join-Path $demoDirectory "room-harmony-community.db").Replace("\", "/")
 $env:RHC_DATABASE_URL = "sqlite:///$databasePath"
 $env:RHC_SEED_PATH = (Join-Path $repositoryDirectory "data\seed\demo_seed.json")
-$env:RHC_CORS_ORIGINS = '["http://127.0.0.1:5173","http://localhost:5173"]'
-$env:VITE_API_BASE_URL = "http://127.0.0.1:8000"
+$env:RHC_CORS_ORIGINS = ConvertTo-Json @($frontendBaseUrl, "http://localhost:$FrontendPort") -Compress
+$env:VITE_API_BASE_URL = $backendBaseUrl
 $quotedBackendDirectory = '"' + $backendDirectory + '"'
 $quotedViteEntry = '"' + $viteEntry + '"'
 $backendProcess = $null
@@ -322,13 +336,13 @@ try {
     # --app-dir makes the repository identity visible in the child command line,
     # allowing stop-demo.cmd to distinguish this process from unrelated Python.
     $backendProcess = Start-Process -FilePath $pythonVenv `
-        -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000", "--app-dir", $quotedBackendDirectory) `
+        -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "$BackendPort", "--app-dir", $quotedBackendDirectory) `
         -WorkingDirectory $backendDirectory -WindowStyle Hidden -PassThru `
         -RedirectStandardOutput $backendOut -RedirectStandardError $backendErr
     # Windows PowerShell joins ArgumentList values into one command line. Keep
     # the JavaScript entry quoted so an extracted repository path may contain spaces.
     $frontendProcess = Start-Process -FilePath $node `
-        -ArgumentList @($quotedViteEntry, "--host", "127.0.0.1", "--port", "5173", "--strictPort", "--force") `
+        -ArgumentList @($quotedViteEntry, "--host", "127.0.0.1", "--port", "$FrontendPort", "--strictPort", "--force") `
         -WorkingDirectory $frontendDirectory -WindowStyle Hidden -PassThru `
         -RedirectStandardOutput $frontendOut -RedirectStandardError $frontendErr
 } catch {
@@ -340,23 +354,25 @@ $state = [ordered]@{
     startedAt = (Get-Date).ToString("o")
     backendPid = $backendProcess.Id
     frontendPid = $frontendProcess.Id
+    backendPort = $BackendPort
+    frontendPort = $FrontendPort
     backendLog = $backendOut
     frontendLog = $frontendOut
 }
 $state | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding UTF8
 
-if (-not (Wait-ForUrl -Url "http://127.0.0.1:8000/health" -Seconds $TimeoutSeconds -Processes @($backendProcess, $frontendProcess))) {
+if (-not (Wait-ForUrl -Url "$backendBaseUrl/health" -Seconds $TimeoutSeconds -Processes @($backendProcess, $frontendProcess))) {
     Fail "The backend did not become healthy within $TimeoutSeconds seconds." @($backendProcess, $frontendProcess)
 }
-if (-not (Wait-ForUrl -Url "http://127.0.0.1:5173" -Seconds $TimeoutSeconds -Processes @($backendProcess, $frontendProcess))) {
+if (-not (Wait-ForUrl -Url $frontendBaseUrl -Seconds $TimeoutSeconds -Processes @($backendProcess, $frontendProcess))) {
     Fail "The frontend did not become ready within $TimeoutSeconds seconds." @($backendProcess, $frontendProcess)
 }
 
 Write-Host ""
 Write-Host "Room Harmony Community is ready." -ForegroundColor Green
-Write-Host "App:      http://127.0.0.1:5173"
-Write-Host "API docs: http://127.0.0.1:8000/docs"
+Write-Host "App:      $frontendBaseUrl"
+Write-Host "API docs: $backendBaseUrl/docs"
 Write-Host "Logs:     $logDirectory"
 Write-Host "Stop:     double-click stop-demo.cmd"
-if (-not $NoBrowser) { Start-Process "http://127.0.0.1:5173" }
+if (-not $NoBrowser) { Start-Process $frontendBaseUrl }
 exit 0

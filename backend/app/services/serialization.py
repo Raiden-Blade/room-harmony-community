@@ -149,6 +149,18 @@ def coordinate_genealogy(
             Coordinate.visibility == "PRIVATE",
         )
     ) or 0
+    owned_private_plans = list(
+        session.scalars(
+            select(Coordinate)
+            .where(
+                Coordinate.parent_coordinate_id == coordinate.id,
+                Coordinate.kind == "PLAN",
+                Coordinate.visibility == "PRIVATE",
+                Coordinate.owner_session_id == session_id,
+            )
+            .order_by(Coordinate.created_at.desc())
+        ).all()
+    )
     public_adaptation_count = session.scalar(
         select(func.count())
         .select_from(Coordinate)
@@ -163,6 +175,7 @@ def coordinate_genealogy(
         parent=_genealogy_node(parent, session_id),
         root=_genealogy_node(root, session_id),
         plan_started_count=private_plan_count,
+        owned_private_plans=[_genealogy_node(plan, session_id) for plan in owned_private_plans],
         public_adaptation_count=public_adaptation_count,
         public_children=[_genealogy_node(child, session_id) for child in children],
     )

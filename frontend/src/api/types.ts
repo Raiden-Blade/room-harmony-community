@@ -97,6 +97,7 @@ export type Genealogy = {
   parent: GenealogyNode | null;
   root: GenealogyNode | null;
   plan_started_count: number;
+  owned_private_plans: GenealogyNode[];
   public_adaptation_count: number;
   public_children: GenealogyNode[];
 };

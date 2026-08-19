@@ -30,12 +30,23 @@ STYLES = [
 
 NEEDS = [
     ("STORAGE", "収納を増やしたい", "壁面とベッド周りを使って床を広く保ちます。"),
-    ("LOW_BUDGET", "5万円前後で揃えたい", "優先順位を決め、最初に必要な商品へ予算を寄せます。"),
+    ("LOW_BUDGET", "5万円以内で揃えたい", "優先順位を決め、最初に必要な商品へ予算を寄せます。"),
     ("WORK_FROM_HOME", "勉強・在宅作業をしたい", "作業面と照明を確保し、睡眠空間と緩やかに分けます。"),
     ("RELAX", "帰宅後にくつろぎたい", "低い家具と布ものを使い、視線の抜けを残します。"),
     ("SLEEP", "睡眠環境を整えたい", "ベッド周辺の光と収納を整理し、休みやすさを優先します。"),
     ("COMPACT", "6畳を広く使いたい", "奥行きの浅い家具と兼用できる商品を中心にします。"),
 ]
+
+# A Coordinate is a need-led composition, not the same five categories with a
+# different title. Repeated categories intentionally select different products.
+NEED_PRODUCT_TEMPLATES: dict[str, tuple[str, ...]] = {
+    "STORAGE": ("BED", "STORAGE", "STORAGE", "LIGHTING", "TEXTILE"),
+    "LOW_BUDGET": ("BED", "STORAGE", "LIGHTING"),
+    "WORK_FROM_HOME": ("BED", "DESK", "SUPPORT", "LIGHTING", "STORAGE"),
+    "RELAX": ("BED", "SUPPORT", "SUPPORT", "LIGHTING", "TEXTILE"),
+    "SLEEP": ("BED", "TEXTILE", "LIGHTING", "STORAGE"),
+    "COMPACT": ("BED", "DESK", "STORAGE", "SUPPORT"),
+}
 
 PROVENANCE = [
     ("DEMO", "Community demo team", "DEMO_TEAM"),
@@ -102,13 +113,20 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
     for need_index, (need_code, need_label, need_copy) in enumerate(NEEDS):
         for style_index, (style_code, style_label, style_copy) in enumerate(STYLES):
             coordinate_index = need_index * len(STYLES) + style_index
-            product_index = (need_index * 2 + style_index) % 9
-            if need_code == "LOW_BUDGET" and product_index == 2:
-                product_index = 0
-            selected_categories = ["BED", "DESK", "STORAGE", "LIGHTING", "TEXTILE"]
-            if need_code == "RELAX":
-                selected_categories[1] = "SUPPORT"
-            product_rows = [by_category[category][product_index] for category in selected_categories]
+            # Product rows 0-5 intentionally follow the six style variants so
+            # the primary item remains consistent with the Coordinate style.
+            product_index = style_index
+            category_occurrences: dict[str, int] = {}
+            product_rows: list[dict[str, object]] = []
+            for category in NEED_PRODUCT_TEMPLATES[need_code]:
+                occurrence = category_occurrences.get(category, 0)
+                category_occurrences[category] = occurrence + 1
+                priced_rows = [row for row in by_category[category] if row["price_snapshot"] is not None]
+                official_rows = [
+                    row for row in priced_rows if row["provenance"] == "NITORI_OFFICIAL_SNAPSHOT"
+                ]
+                candidates = official_rows or priced_rows
+                product_rows.append(candidates[(product_index + occurrence) % len(candidates)])
             product_items = [
                 {
                     "product_id": product["id"],
@@ -120,9 +138,11 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                 for position, product in enumerate(product_rows)
             ]
             known_total = sum(int(product["price_snapshot"] or 0) for product in product_rows)
-            budget_max = 50_000 if coordinate_index == 0 else _budget_ceiling(known_total)
+            budget_max = 50_000 if need_code == "LOW_BUDGET" or coordinate_index == 0 else _budget_ceiling(known_total)
             provenance, creator_display, creator_type = PROVENANCE[coordinate_index % len(PROVENANCE)]
-            kind = "PLAN" if coordinate_index % 4 == 1 else "REAL"
+            # Built-in records are reference/prototype compositions. REAL is
+            # reserved for a user's own uploaded room, declared by that user.
+            kind = "PLAN"
             needs = [need_code, "RENTAL"]
             if need_code != "COMPACT" and coordinate_index % 3 == 0:
                 needs.append("COMPACT")
@@ -165,7 +185,7 @@ def build_coordinates(products: list[dict[str, object]]) -> list[dict[str, objec
                 {
                     "id": coordinate_id,
                     "kind": kind,
-                    "status": "PUBLISHED" if kind == "REAL" else "READY_FOR_ACTION",
+                    "status": "READY_FOR_ACTION",
                     "visibility": "PUBLIC",
                     "title": title,
                     "description": f"{style_copy} {need_copy} コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",

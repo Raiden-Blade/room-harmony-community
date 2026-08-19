@@ -23,6 +23,13 @@ export function ExplorePage() {
     return next;
   }, [mode, searchParams]);
   const discovery = useAsync(() => api.discover(requestParams), [requestParams.toString()]);
+  const detailQuery = mode === "similar"
+    ? new URLSearchParams({
+        room_size: searchParams.get("room_size") || "SMALL_6",
+        need: searchParams.get("need") || "STORAGE",
+        budget_max: searchParams.get("budget_max") || "50000",
+      }).toString()
+    : "";
 
   useEffect(() => {
     if (!discovery.data) return;
@@ -99,7 +106,14 @@ export function ExplorePage() {
         </EmptyView>
       )}
       <section className="coordinate-grid" aria-label="コーディネート一覧">
-        {discovery.data?.results.map((coordinate) => <CoordinateCard key={coordinate.id} coordinate={coordinate} />)}
+        {discovery.data?.results.map((coordinate) => (
+          <CoordinateCard
+            key={coordinate.id}
+            coordinate={coordinate}
+            detailQuery={detailQuery}
+            showMatchReasons={mode === "similar"}
+          />
+        ))}
       </section>
     </div>
   );

@@ -102,6 +102,7 @@ class GenealogySummary(BaseModel):
     parent: GenealogyNode | None
     root: GenealogyNode | None
     plan_started_count: int
+    owned_private_plans: list[GenealogyNode] = Field(default_factory=list)
     public_adaptation_count: int
     public_children: list[GenealogyNode]
 

@@ -115,7 +115,7 @@ export function ChallengeDetailPage() {
 
       <section className="challenge-facts" aria-label="テーマの参加状況">
         <article><strong>{data.participation_count}</strong><span>参加コーデ</span><small>現在のデモDBから集計</small></article>
-        <article><strong>{data.real_count}</strong><span>REAL ROOM</span><small>利用者申告 / デモを区別</small></article>
+        <article><strong>{data.real_count}</strong><span>REAL ROOM</span><small>ユーザー申告の投稿だけ</small></article>
         <article><strong>{data.plan_count}</strong><span>PLAN</span><small>購入済みではない</small></article>
       </section>
 
@@ -126,7 +126,7 @@ export function ChallengeDetailPage() {
 
       {data.status === "ACTIVE" && (
         <section className="entry-panel" aria-labelledby="entry-panel-title">
-          <div><p className="eyebrow">公開済みコーデを活用</p><h2 id="entry-panel-title">自分の投稿で参加</h2><p>条件に合う公開済みのREAL ROOM / PLANから参加できます。</p></div>
+          <div><p className="eyebrow">公開済みコーデを活用</p><h2 id="entry-panel-title">自分の投稿で参加</h2><p>条件に合う公開済みのユーザー申告REAL ROOM / PLANから参加できます。</p></div>
           {data.my_candidates.length ? (
             <div className="candidate-list">
               {data.my_candidates.map((candidate) => (
@@ -152,7 +152,7 @@ export function ChallengeDetailPage() {
       )}
 
       <section id="challenge-gallery" className="section section--flush" aria-labelledby="challenge-gallery-title">
-        <div className="section-heading"><div><p className="eyebrow">テーマに合う事例</p><h2 id="challenge-gallery-title">このテーマの参考コーデ</h2></div><p>人気順位は付けず、REAL ROOM / PLANと工夫の種類を明示します。</p></div>
+        <div className="section-heading"><div><p className="eyebrow">テーマに合う事例</p><h2 id="challenge-gallery-title">このテーマの参考コーデ</h2></div><p>人気順位は付けず、参照画像・投稿PLAN・ユーザー申告REAL ROOMを区別します。</p></div>
         {data.entries.length ? <div className="coordinate-grid coordinate-grid--three">{data.entries.map((entry) => <div className="challenge-entry" key={entry.id}>{entry.recognition && <div className="challenge-entry__recognition"><Badge tone="warning">PROTOTYPE PICK</Badge><span>{label(entry.recognition)}</span></div>}<CoordinateCard coordinate={entry.coordinate} /></div>)}</div> : <p className="empty-card">公開中の参加コーデはまだありません。{data.status === "ACTIVE" && <><br /><Link to={`/create?challenge=${data.slug}`}>最初のコーデをつくる →</Link></>}</p>}
       </section>
     </div>

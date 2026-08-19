@@ -1,6 +1,6 @@
 # Goal 4 Final Self-review
 
-Review date: 2026-08-19 JST
+Review date: 2026-08-20 JST
 
 Branch: `agent/final-demo-hardening`
 
@@ -13,7 +13,7 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 1 | Product positioning | PASS | Coordinateを見る→PLAN→店舗・EC準備→REALとして循環するPlatform |
 | 2 | NITORI版Instagram化していない | PASS | Feed / Follow / Comment / DM / generic Likeなし |
 | 3 | Coordinate core | PASS | Planning / CommerceがMain navigationとHomeの主導線 |
-| 4 | Similar-to-me | PASS | deterministic Room / Need / Budget ranking、理由表示 |
+| 4 | Similar-to-me | PASS | ExploreでUserが選んだRoom / Need / Budgetだけを実一致理由として表示。Direct detailは中立な「このコーデの特徴」 |
 | 5 | Product reverse discovery | PASS | Product → Coordinate → Private PLAN E2E |
 | 6 | Save | PASS | current Sessionのunique save、empty CTAあり |
 | 7 | Private PLAN | PASS | owner Sessionだけread / mutate可能 |
@@ -36,7 +36,7 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 24 | Seasonal Landing | PASS | Active / Upcoming / Ended / Archiveを分離 |
 | 25 | Eligibility | PASS | server-side structured rule、actionable Japanese reason |
 | 26 | Challenge Entry | PASS | owner Public Active Coordinate、duplicate prevention |
-| 27 | Archive | PASS | 2027 archived REAL examplesをCurrent PLANへ再利用 |
+| 27 | Archive | PASS | 2027 archived reference PLAN examplesをCurrent PLANへ再利用。SeedをUser REALと誤表示しない |
 | 28 | Previous-year reuse | PASS | Archive → PLAN → derivative → 2028 Entry E2E |
 | 29 | Prototype Pick disclosure | PASS | non-official / non-staff / non-popularityをUI明示 |
 | 30 | Recognition self-assignment | PASS | request schema `extra=forbid`、controlled seed only |
@@ -48,31 +48,31 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 | 36 | Error states | PASS | backend unavailable、missing entity、upload、eligibility、duplicateを日本語化。stack traceなし |
 | 37 | Empty states | PASS | Saved / PLAN / Creator / Challenge candidate / Explore / Productにnext CTA |
 | 38 | Loading states | PASS | common Loading statusを主要async routeで使用 |
-| 39 | Responsive | PASS | 390 / 768 / 1280 E2E + 57 rendered captures、horizontal overflowなし。全ページを段階Scrollしてlazy画像も実Load |
+| 39 | Responsive | PASS | 390 / 768 / 1280 E2E + 57 rendered captures、horizontal overflowなし。全ページを段階Scrollし、長いMobile Exploreでも全15写真の描画を目視確認 |
 | 40 | Accessibility basics | PASS | skip link、semantic controls、labels、alt、heading、focus、alert / status |
 | 41 | Analytics semantics | PASS | controlled event / property allowlist、passive exposureをruntime内`trackOnce`、Actionは非dedupe |
 | 42 | Session privacy | PASS | raw `owner_session_id`、filename、path、free textをPublic / Analyticsへ出さない |
-| 43 | Main image repetition | PASS | Main Demo 15 Coordinate、Home Hero 4枚、公式対応18商品を、それぞれ重複しないNITORI公式参照画像へlocal mapping |
+| 43 | Main image repetition | PASS | 写真中心Explore 15 Coordinate、Home Hero 4枚、Product / Create 18商品を、それぞれ集合内重複なしのNITORI公式参照画像へlocal mapping |
 | 44 | Independent image replacement | PASS | Coordinate / Hero / Productの各manifestとseed asset referenceをranking・Save・PLAN logicから分離 |
 | 45 | Optimized local imagery | PASS | Coordinate 15件は640×400、Product 18件は640×640、Hero 4枚は1200×750のWebPとしてlocal収録。Runtime hotlinkなし |
-| 46 | Fallback behavior | PASS | `SafeImage`共通fallbackと既存個別SVGを維持。公式Identityを確認できない42商品は無理に実写化しない |
+| 46 | Fallback behavior | PASS | `SafeImage`共通fallbackと既存個別SVGを維持。公式Identityを確認できない42商品は無理に実写化せず、写真中心Explore / Product pickerから除外 |
 | 47 | Rights | PASS | User確認済みの本Prototype限定許可を`EXPLICITLY_PERMITTED`として記録。一般Open licenseとは主張しない |
 | 48 | Visual asset documentation | PASS | `visual-asset-plan.md`、Source registry、About、README、Coordinate / Hero / Productのmachine-readable manifestを同期 |
 | 49 | Visual QA isolation | PASS | process-scoped DB / upload、port 8100 / 5174、Main DB非汚染、residueなし |
 | 50 | Demo reset | PASS | Save / Helpful / PLAN / Creator / Public REAL / upload / Entryを作成後、Seed 36 / 60 / 6 / 8へ復元 |
 | 51 | Reset safety | PASS | exact `.demo` targets、confirmation、source / logs / captures保持、unmanaged process拒否 |
-| 52 | Windows lifecycle | PASS | 空白を含む実Copy pathでdependency check → `start-demo.cmd -NoBrowser` → Home / API / WebP 200 → repeated start → owned stop / port release → reset |
-| 53 | Backend tests | PASS | 54 passed |
-| 54 | Frontend tests | PASS | 25 passed（JST snapshot date regressionを含む） |
+| 52 | Windows lifecycle | PASS | alternate portでdependency check → `start-demo.cmd -NoBrowser` → Home / API / WebP 200 → repeated start → owned stop / port release → reset。fresh-clone空白pathは最終push後に再確認 |
+| 53 | Backend tests | PASS | 60 passed |
+| 54 | Frontend tests | PASS | 30 passed（reference / PLAN / REAL、Hero metadata、matching reason、fallbackを含む） |
 | 55 | Browser E2E | PASS | 12 passed、9 functional + 3 responsive、temporary residue 0 |
-| 56 | Production build | PASS | Vite build、65 modules、JS gzip 104.49kB |
+| 56 | Production build | PASS | Vite build、65 modules、JS gzip 105.53kB |
 | 57 | Dependency checks | PASS | npm audit 0 vulnerabilities、pip check clean |
 | 58 | Seed validator | PASS | 36 Coordinate / 60 Product / 6 Challenge / 8 Entry + 15 Coordinate / 4 Hero / 18 Product asset mapping |
-| 59 | Fresh clone | PASS | `e3c7944`を新規clone。venv / node_modules / `.demo`なしからone-click start、health / frontend / Demo 1 API、stop / reset、tracked status cleanを確認 |
-| 60 | GitHub CI | PASS | PR #4の最新commitでbackend / frontend checkを確認。run URLはPR statusをSource of Truthとする |
+| 59 | Fresh clone | PENDING_FINAL_PUSH | 最終push後、空白を含む新規cloneでvenv / node_modules / `.demo`なしからone-click lifecycleを再確認する |
+| 60 | GitHub CI | PENDING_FINAL_PUSH | PR #4の最終headでbackend / frontend checkを確認する。run URLはPR statusをSource of Truthとする |
 | 61 | Existing Room Harmony untouched | PASS | read-only checkout commit / clean statusをFinal Gateで再確認する |
 | 62 | Source registry | PASS | NIT-016（Coordinate）とNIT-017（Product）を追加し、個別asset URLは各manifestへ記録 |
-| 63 | Home realism | PASS | 4枚の別々の公式室内画像を使う落ち着いたCarousel。矢印・dot・8秒Auto-play・hover/focus pause・reduced-motion・条件別CTA |
+| 63 | Home realism | PASS | 4枚の別々の公式室内画像を使う落ち着いたCarousel。原Conceptに沿うcopy / CTA / destination、SVG矢印、image-relative dots、8秒Auto-play、pause、reduced-motion |
 | 64 | Product identity alignment | PASS | 6Category×3件の18商品で、名称・商品参照ID・価格・公式URL・主画像・Card / Detail表示を同一Identityへ固定 |
 | 65 | Asset non-repetition | PASS | SHA-256で15 Coordinate / 4 Hero / 18 Productの各集合内に同一内容がないことをValidatorで強制 |
 | 66 | Official reference reachability | PASS | 18公式商品pageがHTTP 200かつ商品参照codeを含み、18 source imageがHTTP 200 `image/jpeg`であることを2026-08-19にlive確認 |
@@ -85,7 +85,7 @@ Goal 4 result target: `READY_FOR_FINAL_HUMAN_REVIEW`
 - Coordinate構成、投稿者、Challengeはsynthetic Demo data。60商品のうち18件だけがNITORI公式商品ページと同一Identityの日付付き参照スナップショットで、残る`DEMO-*` 42件を実SKUとして扱わない。
 - Current recommendationはfixed-weight deterministic ruleでAI / LLMではない。
 - HandoffはPreview contractだけで、Room Harmony、NITORI API、inventory、POS、Cartへ送信しない。
-- 15件以外のBuilt-in Coordinate画像と42件のDemo Product画像はRepository-original SVGのままである。
+- 15件以外のBuilt-in Coordinate画像と42件のDemo Product画像はRepository-original SVGのままだが、写真中心のExplore / Coordinate商品欄 / Create pickerには表示しない。Direct fallbackの機能検証用としてのみ残す。
 - 公式の部屋画像は検証用Coordinate構成の参考表示であり、画像内の家具一式を構成商品として特定したものではない。これに対し、18件の商品写真は名称・参照ID・価格・公式URLと商品単位で対応付けている。
 - 公式商品価格は2026-08-19時点の参照Snapshotで、現在価格・在庫・販売継続を保証しない。
 - `trackOnce`はReact StrictMode等の同一runtime重複を抑える。Browser refreshは新しいpage exposureとして扱う。

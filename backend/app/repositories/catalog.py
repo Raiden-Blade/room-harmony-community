@@ -1,9 +1,21 @@
 from __future__ import annotations
 
-from sqlalchemy import select
+from sqlalchemy import case, or_, select
 from sqlalchemy.orm import Session, joinedload, selectinload
 
 from app.models import Coordinate, CoordinateItem, Product
+
+
+def _browsable_visual_condition():
+    """Keep seeded illustrations out of photo-led browse surfaces.
+
+    User-owned Coordinates stay visible because an honest empty-image PLAN is
+    different from presenting a stock illustration as room evidence.
+    """
+    return or_(
+        Coordinate.owner_session_id.is_not(None),
+        Coordinate.image_rights.in_(["EXPLICITLY_PERMITTED", "USER_UPLOADED_LOCAL"]),
+    )
 
 
 def list_public_coordinates(session: Session) -> list[Coordinate]:
@@ -16,7 +28,11 @@ def list_public_coordinates(session: Session) -> list[Coordinate]:
                 selectinload(Coordinate.images),
                 joinedload(Coordinate.creator),
             )
-            .where(Coordinate.visibility == "PUBLIC", Coordinate.moderation_status == "ACTIVE")
+            .where(
+                Coordinate.visibility == "PUBLIC",
+                Coordinate.moderation_status == "ACTIVE",
+                _browsable_visual_condition(),
+            )
         )
         .unique()
         .scalars()
@@ -29,7 +45,8 @@ def get_product(session: Session, product_id: str) -> Product | None:
 
 
 def list_products(session: Session, role: str | None, exclude: str | None, limit: int) -> list[Product]:
-    statement = select(Product).order_by(Product.category, Product.id)
+    official_first = case((Product.provenance == "NITORI_OFFICIAL_SNAPSHOT", 0), else_=1)
+    statement = select(Product).order_by(official_first, Product.category, Product.id)
     if role:
         statement = statement.where(Product.default_role == role)
     if exclude:
@@ -52,6 +69,7 @@ def coordinates_for_product(session: Session, product_id: str) -> list[Coordinat
                 CoordinateItem.product_id == product_id,
                 Coordinate.visibility == "PUBLIC",
                 Coordinate.moderation_status == "ACTIVE",
+                _browsable_visual_condition(),
             )
             .order_by(Coordinate.editorial_rank)
         )

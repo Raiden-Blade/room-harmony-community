@@ -125,7 +125,8 @@ export const api = {
       json: { coordinate_id: coordinateId },
     }),
   discover: (params: URLSearchParams) => request<DiscoveryResponse>(`/api/coordinates?${params}`),
-  coordinate: (id: string) => request<CoordinateDetail>(`/api/coordinates/${id}`),
+  coordinate: (id: string, params?: URLSearchParams) =>
+    request<CoordinateDetail>(`/api/coordinates/${id}${params?.size ? `?${params}` : ""}`),
   product: (id: string) => request<ProductDetail>(`/api/products/${id}`),
   products: (role?: string, exclude?: string) => {
     const params = new URLSearchParams();

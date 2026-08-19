@@ -22,6 +22,8 @@ Git / Python / npm commandに慣れていないReviewerが、ZIP展開後に同�
 
 Install済みの依存関係はlock / requirements hashで再利用する。Backend / Frontend process IDは`.demo/processes.json`へ保存する。
 
+通常は既定portを使う。既定portを利用できない開発・検証環境に限り、`start-demo.cmd -NoBrowser -BackendPort 8303 -FrontendPort 5376`で別portを指定できる。`stop-demo.cmd`はprocess記録から同じportを読み、Reset時は`reset-demo.cmd -Force -BackendPort 8303 -FrontendPort 5376`のように同じ値を渡す。
+
 展開先Folder名に空白が含まれても起動できる。LauncherはVite entryを明示的にquoteし、Backend processにはRepository pathを含む`--app-dir`を渡すため、`stop-demo.cmd`は他のPython processと区別できる。
 
 Python discoveryはusable `python.exe` → `py.exe -3` → explicit failureの順で行う。Microsoft Store aliasやPython 3.10以下は理由を表示して次候補へ進む。Virtual environment作成とdependency installは選択されたInterpreter系統から作った`backend/.venv`を使用し、既存venvのversionも再確認する。
@@ -66,6 +68,6 @@ Resetはlauncher-owned processを安全に停止し、`.demo/room-harmony-commun
 
 ## Clean-room acceptance
 
-Release前はtemporary directoryへfresh cloneし、venv / node_modules / `.demo`が無いtracked fileだけの状態から`start-demo.cmd -NoBrowser`を実行する。Health check、Home 200、Demo 1 sanity、Seasonal API、`stop-demo.cmd`、port解放、tracked worktree cleanまで確認する。
+Release前は空白を含むtemporary directoryへfresh cloneし、venv / node_modules / `.demo`が無いtracked fileだけの状態から`start-demo.cmd -NoBrowser`を実行する。既定portが別のDemoで使用中の場合だけ上記の検証用portを指定する。Health check、Home 200、Demo 1 sanity、Seasonal API、real WebP 200、repeated start、`stop-demo.cmd`、port解放、`reset-demo.cmd -Force`、tracked worktree cleanまで確認する。
 
 これは別Physical PCの確認ではない。別PCは[`second-pc-checklist.md`](second-pc-checklist.md)を使い、未実施なら`MANUAL_SECOND_PC_TEST_REQUIRED`と記録する。

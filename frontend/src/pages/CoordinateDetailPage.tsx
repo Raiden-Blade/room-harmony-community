@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { api, mediaUrl, track, trackOnce } from "../api/client";
 import { Badge } from "../components/common/Badge";
@@ -8,12 +8,19 @@ import { SafeImage } from "../components/common/SafeImage";
 import { ErrorView, Loading } from "../components/common/StatusView";
 import { ProductCard } from "../components/product/ProductCard";
 import { useAsync } from "../hooks/useAsync";
-import { label, yen } from "../utils/labels";
+import { coordinatePresentation, label, yen } from "../utils/labels";
 
 export function CoordinateDetailPage() {
   const { coordinateId = "" } = useParams();
   const navigate = useNavigate();
-  const detail = useAsync(() => api.coordinate(coordinateId), [coordinateId]);
+  const [searchParams] = useSearchParams();
+  const discoveryParams = new URLSearchParams();
+  for (const key of ["room_size", "need", "budget_max"] as const) {
+    const value = searchParams.get(key);
+    if (value) discoveryParams.set(key, value);
+  }
+  const discoveryQuery = discoveryParams.toString();
+  const detail = useAsync(() => api.coordinate(coordinateId, discoveryParams), [coordinateId, discoveryQuery]);
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const [reportOpen, setReportOpen] = useState(false);
@@ -177,8 +184,16 @@ export function CoordinateDetailPage() {
   if (detail.loading) return <Loading />;
   if (detail.error || !detail.data) return <ErrorView message={detail.error || "見つかりません"} />;
   const coordinate = detail.data;
+  const presentation = coordinatePresentation(coordinate);
+  const hasDiscoveryContext = discoveryParams.size > 0;
+  const characteristicReasons = [
+    label(coordinate.size_band),
+    label(coordinate.style),
+    ...coordinate.needs.filter((need) => need !== "RENTAL").slice(0, 2).map(label),
+  ];
+  const displayedReasons = hasDiscoveryContext ? coordinate.match_reasons : characteristicReasons;
   const imageRightsLabel = coordinate.image_rights === "USER_UPLOADED_LOCAL"
-    ? "User upload / Local prototype保存"
+    ? "ユーザーがアップロードした画像（このデモ端末内に保存）"
     : coordinate.image_rights === "EXPLICITLY_PERMITTED"
       ? "使用許可を得たNITORI Coordinate参照画像（ローカル収録）"
       : "リポジトリ内のデモ画像";
@@ -187,14 +202,14 @@ export function CoordinateDetailPage() {
     <div className="detail-page">
       <div className="detail-hero">
         <div className="detail-hero__image">
-          <SafeImage src={mediaUrl(coordinate.image_urls?.[0] || coordinate.image_url)} alt={`${coordinate.title}の部屋・コーデ画像`} />
+          <SafeImage src={mediaUrl(coordinate.image_urls?.[0] || coordinate.image_url)} alt={`${coordinate.title}の部屋・コーデ画像`} fallbackLabel={presentation.fallbackLabel} />
           <div className="coordinate-card__badges">
-            <Badge tone={coordinate.kind === "REAL" ? "accent" : "quiet"}>{label(coordinate.kind)}</Badge>
-            <Badge tone="warning">デモ</Badge>
+            <Badge tone={presentation.tone}>{presentation.primary}</Badge>
+            <Badge tone="warning">{presentation.secondary}</Badge>
           </div>
         </div>
         <div className="detail-hero__copy">
-          <Link className="back-link" to="/explore">← 一覧へ戻る</Link>
+          <Link className="back-link" to={`/explore${discoveryQuery ? `?${discoveryQuery}` : ""}`}>← 一覧へ戻る</Link>
           <p className="eyebrow">{label(coordinate.size_band)} · {label(coordinate.household)} · {label(coordinate.housing_type)}</p>
           {editing ? <div className="owner-edit"><label>タイトル<input value={editTitle} onChange={(event) => setEditTitle(event.target.value)} maxLength={180} /></label><label>説明<textarea value={editDescription} onChange={(event) => setEditDescription(event.target.value)} maxLength={800} rows={4} /></label><div className="inline-actions"><button className="button button--primary" disabled={busy || !editTitle.trim()} onClick={() => void saveEdit()}>変更を保存</button><button className="button button--ghost" onClick={() => setEditing(false)}>キャンセル</button></div></div> : <><h1>{coordinate.title}</h1><p className="detail-lead">{coordinate.description}</p></>}
           {coordinate.creator_id && <p className="creator-byline">共有：<Link to={`/creators/${coordinate.creator_id}`}>{coordinate.creator_display} →</Link></p>}
@@ -230,26 +245,73 @@ export function CoordinateDetailPage() {
         </section>
       )}
 
-      {(coordinate.genealogy.parent || coordinate.genealogy.public_adaptation_count > 0 || coordinate.genealogy.plan_started_count > 0) && <section className="section detail-section lineage-panel" aria-labelledby="lineage-title"><div className="section-heading"><div><p className="eyebrow">Coordinate genealogy</p><h2 id="lineage-title">参考とアレンジのつながり</h2></div><p>巨大な人気グラフではなく、暮らしの再利用だけを示します。</p></div><div className="lineage-grid"><article><span>参考元</span>{coordinate.genealogy.parent ? coordinate.genealogy.parent.available && coordinate.genealogy.parent.id ? <Link to={`/coordinates/${coordinate.genealogy.parent.id}`}>{coordinate.genealogy.parent.title} →</Link> : <strong>{coordinate.genealogy.parent.title}</strong> : <strong>オリジナル</strong>}{coordinate.derivation_type && <small>{label(coordinate.derivation_type)}{coordinate.remix_note && ` · ${coordinate.remix_note}`}</small>}</article><article><span>Private PLAN</span><strong>{coordinate.genealogy.plan_started_count}件</strong><small>このコーデから直接検討を開始</small></article><article><span>公開アレンジ</span><strong>{coordinate.genealogy.public_adaptation_count}件</strong><small>Rootから生まれた公開コーデ</small></article></div>{coordinate.genealogy.public_children.length > 0 && <div className="lineage-children"><h3>公開中の直接アレンジ</h3>{coordinate.genealogy.public_children.map((child) => child.id && <Link key={child.id} to={`/coordinates/${child.id}`}>{child.title} →</Link>)}</div>}</section>}
+      {(coordinate.genealogy.parent || coordinate.genealogy.public_adaptation_count > 0 || coordinate.genealogy.plan_started_count > 0) && (
+        <section className="section detail-section lineage-panel" aria-labelledby="lineage-title">
+          <div className="section-heading">
+            <div><p className="eyebrow">参考元とアレンジ</p><h2 id="lineage-title">このコーデがどう活用されたか</h2></div>
+            <p>公開された参考関係と件数だけを表示し、他の利用者の非公開PLANは見せません。</p>
+          </div>
+          <div className="lineage-grid">
+            <article>
+              <span>参考元</span>
+              {coordinate.genealogy.parent
+                ? coordinate.genealogy.parent.available && coordinate.genealogy.parent.id
+                  ? <Link to={`/coordinates/${coordinate.genealogy.parent.id}`}>{coordinate.genealogy.parent.title} →</Link>
+                  : <strong>{coordinate.genealogy.parent.title}</strong>
+                : <strong>このコーデが出発点です</strong>}
+              {coordinate.derivation_type && <small>{label(coordinate.derivation_type)}{coordinate.remix_note && ` · ${coordinate.remix_note}`}</small>}
+            </article>
+            <article className="lineage-stat">
+              <span>このコーデから始めた自分用PLAN</span>
+              <strong>{coordinate.genealogy.plan_started_count}件</strong>
+              <small>全利用者の合計件数。内容は非公開です。</small>
+            </article>
+            <article className="lineage-stat">
+              <span>公開アレンジ</span>
+              <strong>{coordinate.genealogy.public_adaptation_count}件</strong>
+              <small>公開された派生コーデだけを集計します。</small>
+            </article>
+          </div>
+          {coordinate.genealogy.owned_private_plans.length > 0 && (
+            <div className="lineage-links">
+              <h3>この端末で作成した自分用PLAN</h3>
+              {coordinate.genealogy.owned_private_plans.map((plan) => plan.id && (
+                <Link key={plan.id} to={`/plans/${plan.id}`}>{plan.title}を開く →</Link>
+              ))}
+            </div>
+          )}
+          {coordinate.genealogy.public_children.length > 0 && (
+            <div className="lineage-links">
+              <h3>公開中の直接アレンジ</h3>
+              {coordinate.genealogy.public_children.map((child) => child.id && (
+                <Link key={child.id} to={`/coordinates/${child.id}`}>{child.title} →</Link>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
-      {coordinate.creator_id && <section className="section detail-section creator-impact-panel" aria-labelledby="creator-impact-title"><div><p className="eyebrow">Useful creator impact</p><h2 id="creator-impact-title">この暮らしが生んだ参考</h2><p>閲覧数ではなく、保存・PLAN・公開アレンジを表示します。</p></div><div className="impact-mini"><span><strong>{coordinate.creator_impact.helpful_count}</strong>参考になった</span><span><strong>{coordinate.creator_impact.saved_count}</strong>保存</span><span><strong>{coordinate.creator_impact.plan_started_count}</strong>PLAN開始</span><span><strong>{coordinate.creator_impact.public_adaptation_count}</strong>公開アレンジ</span></div><Link className="button button--secondary" to={`/creators/${coordinate.creator_id}`}>{coordinate.creator_display}のProfileへ</Link></section>}
+      {coordinate.creator_id && <section className="section detail-section creator-impact-panel" aria-labelledby="creator-impact-title"><div><p className="eyebrow">このコーデが役立った記録</p><h2 id="creator-impact-title">この暮らしが生んだ参考</h2><p>閲覧数ではなく、保存・PLAN・公開アレンジを表示します。</p></div><div className="impact-mini"><span><strong>{coordinate.creator_impact.helpful_count}</strong>参考になった</span><span><strong>{coordinate.creator_impact.saved_count}</strong>保存</span><span><strong>{coordinate.creator_impact.plan_started_count}</strong>PLAN開始</span><span><strong>{coordinate.creator_impact.public_adaptation_count}</strong>公開アレンジ</span></div><Link className="button button--secondary" to={`/creators/${coordinate.creator_id}`}>{coordinate.creator_display}のプロフィールへ</Link></section>}
 
       <section className="section detail-section" aria-labelledby="why-title">
         <div className="section-heading">
-          <div><p className="eyebrow">Why it fits</p><h2 id="why-title">自分に近い理由</h2></div>
-          <p>人気度ではなく、選んだ生活条件との一致です。</p>
+          <div><p className="eyebrow">{hasDiscoveryContext ? "選んだ条件との一致" : "コーデの特徴"}</p><h2 id="why-title">{hasDiscoveryContext ? "選んだ条件との一致" : "このコーデの特徴"}</h2></div>
+          <p>{hasDiscoveryContext ? "Exploreで選んだ条件のうち、実際に一致した項目だけを表示します。" : "広さ・テイスト・目的を、個人向けの判定ではなく事例の属性として表示します。"}</p>
         </div>
-        <div className="reason-grid">
-          {(coordinate.match_reasons.length ? coordinate.match_reasons : [label(coordinate.size_band), label(coordinate.housing_type), label(coordinate.style)]).map((reason, index) => (
-            <div key={reason}><span>0{index + 1}</span><strong>{reason}</strong></div>
-          ))}
-        </div>
+        {displayedReasons.length > 0
+          ? <ul className="condition-tags" aria-label={hasDiscoveryContext ? "一致した条件" : "コーデの属性"}>{displayedReasons.map((reason) => <li key={reason}>{reason}</li>)}</ul>
+          : <p className="empty-inline">選んだ条件と一致した項目はありません。</p>}
+        {hasDiscoveryContext && <Link className="text-link" to={`/explore?${discoveryQuery}`}>条件を変更する →</Link>}
       </section>
 
       <section className="section detail-section" aria-labelledby="products-title">
         <div className="section-heading">
-          <div><p className="eyebrow">Products in the space</p><h2 id="products-title">空間をつくる商品と役割</h2></div>
+          <div><p className="eyebrow">商品と役割</p><h2 id="products-title">空間をつくる商品と役割</h2></div>
           <p>一つずつではなく、何のための商品かを確認できます。</p>
+        </div>
+        <div className="evidence-boundary" role="note">
+          <strong>室内画像と購入候補は、別々の参照情報です。</strong>
+          <p>室内画像に写る商品を画像だけで特定していません。下の商品一覧は、この機能を試すために別途構成した購入候補です。</p>
         </div>
         <div className="product-grid">
           {coordinate.items.filter((item) => item.product).map((item) => (
@@ -259,15 +321,15 @@ export function CoordinateDetailPage() {
         {coordinate.items.some((item) => item.source === "EXISTING_EXTERNAL") && (
           <div className="existing-callout">
             <span aria-hidden="true">＋</span>
-            <div><strong>手持ち家具も含む例</strong><p>{coordinate.items.filter((item) => item.source === "EXISTING_EXTERNAL").map((item) => item.existing_label).join("、")}</p></div>
+            <div><strong>手持ち家具も含む例</strong><p>{coordinate.items.filter((item) => item.source === "EXISTING_EXTERNAL").map((item) => item.existing_label).join("、")}は購入額に含めず、自分用PLANにも引き継げます。</p><button className="text-button" disabled={busy} onClick={() => void createPlan()}>この家具を残して自分用PLANへ →</button></div>
           </div>
         )}
       </section>
 
       <section className="section trust-panel" aria-labelledby="trust-title">
-        <div><p className="eyebrow">Trust & provenance</p><h2 id="trust-title">この事例について</h2></div>
+        <div><p className="eyebrow">情報の出所</p><h2 id="trust-title">この事例について</h2></div>
         <dl>
-          <div><dt>種別</dt><dd>{label(coordinate.kind)}</dd></div>
+          <div><dt>種別</dt><dd>{presentation.trustType}</dd></div>
           <div><dt>コーデの出所</dt><dd>{label(coordinate.provenance)}（検証用構成）</dd></div>
           <div><dt>画像の扱い</dt><dd>{imageRightsLabel}</dd></div>
           <div><dt>確認状態</dt><dd>{label(coordinate.verification_state)}</dd></div>

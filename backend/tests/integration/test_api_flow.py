@@ -9,10 +9,25 @@ def test_health_and_discovery_api(client):
     assert body["results"][0]["id"] == "coord-001"
     assert body["results"][0]["match_reasons"]
 
+    photo_gallery = client.get("/api/coordinates", params={"limit": 50}).json()["results"]
+    assert len(photo_gallery) == 15
+    assert all(row["image_rights"] == "EXPLICITLY_PERMITTED" for row in photo_gallery)
+    assert len({row["image_url"] for row in photo_gallery}) == len(photo_gallery)
+
+
+def test_default_product_picker_uses_the_18_photo_backed_reference_products(client):
+    products = client.get("/api/products").json()["results"]
+
+    assert len(products) == 18
+    assert all(product["provenance"] == "NITORI_OFFICIAL_SNAPSHOT" for product in products)
+    assert len({product["image_url"] for product in products}) == len(products)
+
 
 def test_coordinate_and_product_to_coordinate_api(client):
     coordinate = client.get("/api/coordinates/coord-001")
     assert coordinate.status_code == 200
+    assert coordinate.json()["kind"] == "PLAN"
+    assert coordinate.json()["match_reasons"] == []
     assert coordinate.json()["price"]["status"] == "NITORI_OFFICIAL_SNAPSHOT"
     products = [item["product"] for item in coordinate.json()["items"] if item["product"]]
     assert len(products) >= 5
@@ -29,6 +44,20 @@ def test_coordinate_and_product_to_coordinate_api(client):
     assert any(row["id"] == "coord-001" for row in product.json()["coordinates"])
 
 
+def test_coordinate_detail_only_returns_real_selected_context_matches(client):
+    detail = client.get(
+        "/api/coordinates/coord-001",
+        params={"room_size": "SMALL_6", "need": "STORAGE", "budget_max": 50_000},
+    )
+
+    assert detail.status_code == 200
+    assert detail.json()["match_reasons"] == [
+        "収納不足に対応",
+        "6畳前後に近い",
+        "予算5万円以内",
+    ]
+
+
 def test_save_and_plan_creation_api(client):
     assert client.post("/api/saved/coord-001").json()["saved"] is True
     assert any(item["id"] == "coord-001" for item in client.get("/api/saved").json())
@@ -38,6 +67,9 @@ def test_save_and_plan_creation_api(client):
     assert created.json()["parent_coordinate_id"] == "coord-001"
     assert created.json()["kind"] == "PLAN"
     assert "owner_session_id" not in created.json()
+    parent = client.get("/api/coordinates/coord-001").json()
+    assert parent["genealogy"]["plan_started_count"] == 1
+    assert [row["id"] for row in parent["genealogy"]["owned_private_plans"]] == [created.json()["id"]]
 
 
 def test_plan_update_and_handoff_preview_api(client):

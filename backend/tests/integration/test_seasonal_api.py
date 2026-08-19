@@ -91,8 +91,8 @@ def test_challenge_detail_exposes_structured_constraints_breakdown_and_prototype
     assert response.status_code == 200
     body = response.json()
     assert body["participation_count"] == 3
-    assert body["real_count"] == 3
-    assert body["plan_count"] == 0
+    assert body["real_count"] == 0
+    assert body["plan_count"] == 3
     assert body["eligibility"]["size_bands"] == ["SMALL_6"]
     assert {item["code"] for item in body["constraints"]} >= {"SIZE_BAND", "BUDGET_MAX"}
     assert body["prototype_picks"]

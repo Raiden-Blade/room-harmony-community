@@ -12,14 +12,14 @@
 
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
-| Home | 「好き」だけで終わらせず、自分の部屋で試せるPLANへ | 単品商品やSNS投稿を見るだけでなく、暮らしの条件から複数商品を検討し、実現した事例を次の人へ循環させるCoordinate Platform。Seasonalは補助的な再発見Layer | Homeが開かなければ`/health`確認。失敗時はRecovery手順へ |
+| Home | 「好き」だけで終わらせず、自分の部屋で試せるPLANへ | 左側は固定したProduct promise、右側はNITORI公式のRoom conceptに沿う4つの参考入口。単品商品やSNS投稿を見るだけでなく、暮らしの条件から複数商品を検討するCoordinate Platform | Homeが開かなければ`/health`確認。失敗時はRecovery手順へ |
 
 ## Demo 1 — Similar-to-me → PLAN — 2 minutes
 
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
-| `6畳のおすすめを見る` | `あなたの条件に近いコーデ` | AIではなく、広さ・困りごと・予算のdeterministic一致。PopularとのA/B結果ではない | 条件が違えば6畳 / 収納 / 5万円を選び`この条件で探す` |
-| 先頭Card（`coord-001`）の`空間全体を見る` | Coordinate Detail | 明るい木目と収納が見える許可済み参照画像を入口に、近い理由、5商品 / 5カテゴリ、概算を空間単位で見る。画像は公式参照、商品構成はDEMOという境界も説明 | Cardが無ければHomeへ戻り6畳 / 収納 / 5万円を再指定 |
+| `条件から参考コーデを探す` | `あなたの条件に近いコーデ` | AIではなく、広さ・困りごと・予算のdeterministic一致。PopularとのA/B結果ではない | 6畳 / 収納 / 5万円を選び`この条件で探す` |
+| 先頭Card（`coord-001`）の`空間全体を見る` | Coordinate Detail | 明るい木目と収納が見える許可済みREFERENCE ROOMを入口に、選択条件との実際の一致、5商品 / 4カテゴリ、概算を空間単位で見る。室内画像と購入候補は別の参照情報であることも説明 | Cardが無ければHomeへ戻り6畳 / 収納 / 5万円を再指定 |
 | 1商品の`商品と使用コーデを見る` → 戻る | Product Detail → Coordinate | 商品から同じ商品を使うCoordinateへ逆探索できる | 新Tabを開いた場合は元Tabへ戻る |
 | `あとで参考にする` → `このコーデを自分向けにアレンジ` | 保存済み → Private PLAN Edit | Saveは後で見るIntent、PLANは自分向けに変更するIntent | 既に保存済みでもPLAN作成は続行可能。混乱時はReset |
 | `別の商品に変更`、手持ち家具名 / サイズ、`手持ち家具を追加` | 商品置換とExisting Furniture | 全部買い替えず、手持ち品は概算購入額へ含めない | 置換候補が見えなければ別roleの商品で試す |
@@ -39,7 +39,7 @@
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
 | Homeの`今のテーマと前年Archiveを見る` | Seasonal Landing | ChallengeはCore Productでも人気Contestでもなく、前年事例を今年の検討へ戻すGrowth Layer | `/seasonal`を直接開く |
-| `新生活の6畳 2027` → 前年REAL（`coord-001`等） | Archived Challenge / Coordinate | Archiveは消えたCampaign pageでなく、収納中心の前年Coordinateを再利用できる集合。Current側の低いソファ中心（`coord-019`等）と見た目でも区別できる | 先頭の`空間全体を見る`を選ぶ |
+| `新生活の6畳 2027` → 前年の参考コーデ（`coord-001`等） | Archived Challenge / Coordinate | Archiveは消えたCampaign pageでなく、収納中心の前年REFERENCE ROOM / PROTOTYPE PLANを再利用できる集合。User申告REAL ROOMとは呼ばない | 先頭の`空間全体を見る`を選ぶ |
 | `このコーデを自分向けにアレンジ` → Public PLANとして共有 | Private PLAN → Public derivative | Parent / Root lineageを維持しながら今年向けに変更 | stale PLANがあれば保存・PLANから既存PLANを使用 |
 | `新生活の6畳 2028`へ参加 | Current Challenge Entry | Serverがownership、公開状態、6畳・一人暮らし・賃貸・予算・商品数を再確認 | 条件外なら画面の理由を説明し、Seedの参加例へ切替 |
 | Prototype Pick / Creator seasonal summary | controlled recognition | NITORI公式選定でも人気順位でもない。直接派生数は1世代だけ | Entry済みならgalleryとProfileの参加履歴を見せる |

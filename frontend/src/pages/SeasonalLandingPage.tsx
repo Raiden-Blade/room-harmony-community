@@ -35,7 +35,7 @@ export function SeasonalLandingPage() {
         <div>
           <p className="eyebrow">季節ごとの再利用 · デモ</p>
           <h1>前年の暮らしを、<br />今年のPLANへ。</h1>
-          <p>投稿数を競う場所ではありません。過去のREAL ROOM / PLANを見つけ、自分の条件へアレンジし、次年度の参考へ戻す循環を試します。</p>
+          <p>投稿数を競う場所ではありません。過去の参考コーデ / 投稿PLANを見つけ、自分の条件へアレンジし、次年度の参考へ戻す循環を試します。</p>
           <div className="inline-actions">
             {data.featured && <Link className="button button--primary" to={`/challenges/${data.featured.slug}`}>今のテーマを見る</Link>}
             <a className="button button--ghost" href="#previous-year">昨年の参考コーデ</a>
@@ -49,7 +49,7 @@ export function SeasonalLandingPage() {
       <section className="seasonal-loop" aria-labelledby="seasonal-loop-title">
         <div><p className="eyebrow">競争より、役立つ再利用</p><h2 id="seasonal-loop-title">季節のコーデ再利用ループ</h2></div>
         <ol>
-          <li><span>01</span><strong>前年のREAL / PLAN</strong><small>Archiveから近い事例を探す</small></li>
+          <li><span>01</span><strong>前年の参考コーデ / PLAN</strong><small>Archiveから近い事例を探す</small></li>
           <li><span>02</span><strong>自分向けPLAN</strong><small>予算・広さ・手持ち家具に合わせる</small></li>
           <li><span>03</span><strong>店舗・公式サイトで比較</strong><small>選んだ商品の実現を検討</small></li>
           <li><span>04</span><strong>次年度へ戻す</strong><small>REAL / PLANを構造化して再共有</small></li>

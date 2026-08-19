@@ -11,6 +11,8 @@ Final Demoで繰り返し見える主要15件、Home heroの4枚、主要導線�
 - User upload boundary: 利用者が投稿するREAL ROOM画像は`.demo/uploads/`へ別管理され、許可済み公式参照画像とは混在させない。
 - Fallback: 既存の個別`room-scene-coord-*.svg`と共通`room-fallback.svg`を残す。
 
+公式Sourceには5つのRoom conceptごとに「使用しているアイテムはこちら」という商品導線があることを2026-08-19に確認した。ただし、現行Seedの購入候補はそのRoom別商品IDとの対応を確認した集合ではない。画像から商品Identityを推定せず、Built-in公式室内画像は`REFERENCE ROOM`、商品Listは別に構成したPrototype layerとしてUIでも明記する。Built-in 36件はすべてPLANで、REAL ROOMはUser自身が部屋画像をUploadして申告した場合だけ使用する。
+
 ## 主要15件の確定Mapping
 
 | ID | Demo上の役割 | Local NITORI WebP | 公式Source image | SVG fallback | 選定理由 |
@@ -52,7 +54,7 @@ Final Demoで繰り返し見える主要15件、Home heroの4枚、主要導線�
 
 ## 現在の制約
 
-- 公式室内参照画像とCoordinate上の5商品構成は1対1の実在商品対応を保証しない。室内写真は空間の参考、商品Cardは購入候補の参照として分離する。
+- 公式室内参照画像とCoordinate上の商品構成は1対1の実在商品対応を保証しない。室内写真は空間の参考、商品Cardは購入候補の参照として分離する。
 - 15件以外のCoordinateと42件のDemo ProductはRepository-original SVGのままである。
 - 18件の価格は日付付きSnapshotで、現在価格・在庫・販売継続を保証しない。
 - 画像改善だけで購買率、併売率、投稿率が上がるとは主張しない。正式評価にはExposure、比較条件、行動指標、購入Dataが必要である。

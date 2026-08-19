@@ -1,6 +1,8 @@
 {
   "schema_version": "2.0",
   "fallback_asset": "/assets/room-fallback.svg",
+  "display_classification": "REFERENCE_ROOM",
+  "product_relationship": "ROOM_IMAGE_AND_PROTOTYPE_PRODUCT_LIST_ARE_SEPARATE_EVIDENCE_LAYERS",
   "rights_policy": "The 15 NITORI coordinate images below are bundled for this prototype under permission confirmed by the user. This permission is not a general open license. Repository-original SVGs remain as local fallbacks; demo product assets remain separate.",
   "source_page_url": "https://www.nitori-net.jp/ec/feature/newlifegoods/#room",
   "coordinates": [
@@ -37,7 +39,7 @@
       "coordinate_id": "coord-003",
       "coordinate_title": "ダンディで整える、収納を増やしたい6畳プラン",
       "room": "6畳ワンルーム", "style": "DANDY", "need": "STORAGE",
-      "product_roles": ["MAIN_FURNITURE", "STORAGE", "SUPPORT_FURNITURE"],
+      "product_roles": ["MAIN_FURNITURE", "STORAGE", "LIGHTING"],
       "layout": "storage-wall", "variant": 3, "palette": "dandy",
       "current_asset": "/assets/coordinates/nitori/coord-003-storage-dandy.webp",
       "fallback_asset": "/assets/room-scene-coord-003.svg",
@@ -77,9 +79,9 @@
     },
     {
       "coordinate_id": "coord-007",
-      "coordinate_title": "ナチュラルで整える、5万円前後で揃えたい6畳プラン",
+      "coordinate_title": "ナチュラルで整える、5万円以内で揃えたい6畳プラン",
       "room": "6畳ワンルーム", "style": "NATURAL", "need": "LOW_BUDGET",
-      "product_roles": ["MAIN_FURNITURE", "SUPPORT_FURNITURE", "LIGHTING"],
+      "product_roles": ["MAIN_FURNITURE", "STORAGE", "LIGHTING"],
       "layout": "budget-minimal", "variant": 1, "palette": "natural",
       "current_asset": "/assets/coordinates/nitori/coord-007-budget-natural.webp",
       "fallback_asset": "/assets/room-scene-coord-007.svg",
@@ -91,9 +93,9 @@
     },
     {
       "coordinate_id": "coord-008",
-      "coordinate_title": "クリアクールで整える、5万円前後で揃えたい7〜8畳プラン",
+      "coordinate_title": "クリアクールで整える、5万円以内で揃えたい7〜8畳プラン",
       "room": "7〜8畳ワンルーム", "style": "CLEAR_COOL", "need": "LOW_BUDGET",
-      "product_roles": ["MAIN_FURNITURE", "SUPPORT_FURNITURE", "TEXTILE"],
+      "product_roles": ["MAIN_FURNITURE", "STORAGE", "LIGHTING"],
       "layout": "budget-minimal", "variant": 2, "palette": "clear-cool",
       "current_asset": "/assets/coordinates/nitori/coord-008-budget-clear-cool.webp",
       "fallback_asset": "/assets/room-scene-coord-008.svg",

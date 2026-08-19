@@ -1,6 +1,10 @@
 [CmdletBinding()]
 param(
-    [switch]$Force
+    [switch]$Force,
+    [ValidateRange(1024, 65535)]
+    [int]$BackendPort = 8000,
+    [ValidateRange(1024, 65535)]
+    [int]$FrontendPort = 5173
 )
 
 $ErrorActionPreference = "Stop"
@@ -38,7 +42,7 @@ if (Test-Path -LiteralPath $statePath) {
     }
 }
 
-$listeners = @(@(8000, 5173) | ForEach-Object {
+$listeners = @(@($BackendPort, $FrontendPort) | ForEach-Object {
     Get-NetTCPConnection -LocalPort $_ -State Listen -ErrorAction SilentlyContinue
 })
 if ($listeners.Count -gt 0) {

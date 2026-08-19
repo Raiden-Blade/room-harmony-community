@@ -31,7 +31,7 @@ export function ProductDetailPage() {
     <div className="page-shell">
       <button className="back-link back-link--button" onClick={() => navigate(-1)}>← 前の画面へ戻る</button>
       <section className="product-detail">
-        <div className="product-detail__image"><SafeImage src={item.image_url} fallbackSrc="/assets/product-fallback.svg" alt={`${item.name}の商品画像`} /></div>
+        <div className="product-detail__image"><SafeImage src={item.image_url} fallbackSrc="/assets/product-fallback.svg" fallbackLabel={isOfficialSnapshot ? "商品参照画像を表示できないため、デモ画像を表示中" : "機能検証用の商品画像"} alt={`${item.name}の商品画像`} /></div>
         <div className="product-detail__copy">
           <div className="badge-row"><Badge tone={isOfficialSnapshot ? "accent" : "warning"}>{isOfficialSnapshot ? "NITORI商品参照" : "DEMO PRODUCT"}</Badge><Badge>{label(item.default_role)}</Badge></div>
           <p className="eyebrow">{isOfficialSnapshot ? "商品参照ID" : "デモID"}: {item.id.replace(/^NTR-/, "")}</p>

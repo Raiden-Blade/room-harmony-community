@@ -850,8 +850,8 @@
   "coordinates": [
     {
       "id": "coord-001",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ナチュラルで整える、収納を増やしたい6畳プラン",
       "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 壁面とベッド周りを使って床を広く保ちます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -887,14 +887,14 @@
           "position": 0
         },
         {
-          "product_id": "NTR-5637001",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "NTR-8842174",
+          "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -934,8 +934,8 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "CLEAR_COOL",
       "needs": [
         "STORAGE",
@@ -961,14 +961,14 @@
           "position": 0
         },
         {
-          "product_id": "NTR-2110700072028",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "NTR-4904746153517-1000000000000",
+          "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -993,8 +993,8 @@
     },
     {
       "id": "coord-003",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ダンディで整える、収納を増やしたい6畳プラン",
       "description": "濃い木目と低い家具で落ち着きを出した部屋 壁面とベッド周りを使って床を広く保ちます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -1002,8 +1002,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "DANDY",
       "needs": [
         "STORAGE",
@@ -1029,14 +1029,14 @@
           "position": 0
         },
         {
-          "product_id": "NTR-6201526",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "NTR-2115200004555",
+          "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -1061,8 +1061,8 @@
     },
     {
       "id": "coord-004",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "エレガントで整える、収納を増やしたい7〜8畳プラン",
       "description": "やわらかな色と照明で上品に整えた部屋 壁面とベッド周りを使って床を広く保ちます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -1070,8 +1070,8 @@
       "size_band": "MEDIUM_7_8",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "ELEGANT",
       "needs": [
         "STORAGE",
@@ -1084,42 +1084,42 @@
       "creator_type": "USER_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-004-storage-elegant.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 4,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-01",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-01",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-01",
+          "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-01",
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-01",
+          "product_id": "NTR-7349091",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -1130,8 +1130,8 @@
     },
     {
       "id": "coord-005",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "コージーで整える、収納を増やしたい6畳プラン",
       "description": "布ものと間接照明でくつろぎを重視した部屋 壁面とベッド周りを使って床を広く保ちます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -1139,8 +1139,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "COZY",
       "needs": [
         "STORAGE",
@@ -1152,42 +1152,42 @@
       "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-005-storage-cozy.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 5,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-02",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-02",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-02",
+          "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-02",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-02",
+          "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -1220,42 +1220,42 @@
       "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 6,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-03",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-03",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-03",
+          "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-03",
+          "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-03",
+          "product_id": "NTR-7545501",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -1272,10 +1272,10 @@
     },
     {
       "id": "coord-007",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
-      "title": "ナチュラルで整える、5万円前後で揃えたい6畳プラン",
+      "title": "ナチュラルで整える、5万円以内で揃えたい6畳プラン",
       "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
       "room_type": "ONE_ROOM",
       "size_band": "SMALL_6",
@@ -1295,7 +1295,7 @@
       "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-007-budget-natural.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 7,
       "official_pick": false,
@@ -1309,42 +1309,28 @@
           "position": 0
         },
         {
-          "product_id": "NTR-5637001",
-          "role": "SUPPORT_FURNITURE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 1
-        },
-        {
           "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 2
+          "position": 1
         },
         {
           "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "NTR-7349091",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
+          "position": 2
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-008",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
-      "title": "クリアクールで整える、5万円前後で揃えたい7〜8畳プラン",
+      "title": "クリアクールで整える、5万円以内で揃えたい7〜8畳プラン",
       "description": "白とグレーを基調に、狭さを感じにくくした部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
       "room_type": "ONE_ROOM",
       "size_band": "MEDIUM_7_8",
@@ -1363,56 +1349,42 @@
       "creator_type": "USER_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-008-budget-clear-cool.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 8,
       "official_pick": true,
       "seasonal_recognition": "NEW_LIFE_DEMO_PICK",
       "items": [
         {
-          "product_id": "DEMO-BED-01",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-01",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-01",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 2
-        },
-        {
-          "product_id": "DEMO-LIGHTING-01",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-01",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
+          "position": 2
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-009",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
-      "title": "ダンディで整える、5万円前後で揃えたい6畳プラン",
+      "title": "ダンディで整える、5万円以内で揃えたい6畳プラン",
       "description": "濃い木目と低い家具で落ち着きを出した部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
       "room_type": "ONE_ROOM",
       "size_band": "SMALL_6",
@@ -1431,46 +1403,32 @@
       "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-dandy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 9,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-02",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-02",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-02",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 2
-        },
-        {
-          "product_id": "DEMO-LIGHTING-02",
+          "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-02",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
+          "position": 2
         }
       ],
       "existing_furniture": []
@@ -1480,7 +1438,7 @@
       "kind": "PLAN",
       "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
-      "title": "エレガントで整える、5万円前後で揃えたい5.5畳プラン",
+      "title": "エレガントで整える、5万円以内で揃えたい5.5畳プラン",
       "description": "やわらかな色と照明で上品に整えた部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
       "room_type": "ONE_ROOM",
       "size_band": "TINY_5_5",
@@ -1500,56 +1458,42 @@
       "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 10,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-03",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-03",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-03",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 2
-        },
-        {
-          "product_id": "DEMO-LIGHTING-03",
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-03",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
+          "position": 2
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-011",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
-      "title": "コージーで整える、5万円前後で揃えたい6畳プラン",
+      "title": "コージーで整える、5万円以内で揃えたい6畳プラン",
       "description": "布ものと間接照明でくつろぎを重視した部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
       "room_type": "ONE_ROOM",
       "size_band": "SMALL_6",
@@ -1568,46 +1512,32 @@
       "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 11,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-04",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-04",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-04",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 2
-        },
-        {
-          "product_id": "DEMO-LIGHTING-04",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-04",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
+          "position": 2
         }
       ],
       "existing_furniture": [
@@ -1620,17 +1550,17 @@
     },
     {
       "id": "coord-012",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
-      "title": "カラフルで整える、5万円前後で揃えたい7〜8畳プラン",
+      "title": "カラフルで整える、5万円以内で揃えたい7〜8畳プラン",
       "description": "小物の色を絞り、生活感を楽しく見せる部屋 優先順位を決め、最初に必要な商品へ予算を寄せます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
       "room_type": "ONE_ROOM",
       "size_band": "MEDIUM_7_8",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "COLORFUL",
       "needs": [
         "LOW_BUDGET",
@@ -1642,54 +1572,40 @@
       "creator_type": "USER_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補3件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 12,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-05",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-05",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-05",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 2
-        },
-        {
-          "product_id": "DEMO-LIGHTING-05",
+          "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-05",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
+          "position": 2
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-013",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ナチュラルで整える、勉強・在宅作業をしたい6畳プラン",
       "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -1697,8 +1613,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "NATURAL",
       "needs": [
         "WORK_FROM_HOME",
@@ -1711,43 +1627,43 @@
       "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-013-work-natural.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 13,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-02",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-02",
+          "product_id": "NTR-5637001",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-02",
-          "role": "STORAGE",
+          "product_id": "NTR-8760844",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-02",
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-02",
-          "role": "TEXTILE",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 4
@@ -1766,8 +1682,8 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "CLEAR_COOL",
       "needs": [
         "WORK_FROM_HOME",
@@ -1779,43 +1695,43 @@
       "creator_type": "STAFF_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-014-work-clear-cool.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 14,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-03",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-03",
+          "product_id": "NTR-2110700072028",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-03",
-          "role": "STORAGE",
+          "product_id": "NTR-2113300027863",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-03",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-03",
-          "role": "TEXTILE",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 4
@@ -1825,8 +1741,8 @@
     },
     {
       "id": "coord-015",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ダンディで整える、勉強・在宅作業をしたい6畳プラン",
       "description": "濃い木目と低い家具で落ち着きを出した部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -1847,43 +1763,43 @@
       "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-015-work-dandy.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 15,
       "official_pick": true,
       "seasonal_recognition": "NEW_LIFE_DEMO_PICK",
       "items": [
         {
-          "product_id": "DEMO-BED-04",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-04",
+          "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-04",
-          "role": "STORAGE",
+          "product_id": "NTR-2113200014178",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-04",
+          "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-04",
-          "role": "TEXTILE",
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 4
@@ -1893,8 +1809,8 @@
     },
     {
       "id": "coord-016",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "エレガントで整える、勉強・在宅作業をしたい7〜8畳プラン",
       "description": "やわらかな色と照明で上品に整えた部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -1902,8 +1818,8 @@
       "size_band": "MEDIUM_7_8",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "ELEGANT",
       "needs": [
         "WORK_FROM_HOME",
@@ -1916,43 +1832,43 @@
       "creator_type": "USER_DEMO",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 16,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-05",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-05",
+          "product_id": "NTR-5637001",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-05",
-          "role": "STORAGE",
+          "product_id": "NTR-8760844",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-05",
+          "product_id": "NTR-8380201",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-05",
-          "role": "TEXTILE",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 4
@@ -1968,8 +1884,8 @@
     },
     {
       "id": "coord-017",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "コージーで整える、勉強・在宅作業をしたい6畳プラン",
       "description": "布ものと間接照明でくつろぎを重視した部屋 作業面と照明を確保し、睡眠空間と緩やかに分けます。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -1977,8 +1893,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "COZY",
       "needs": [
         "WORK_FROM_HOME",
@@ -1990,43 +1906,43 @@
       "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": "NEW_LIFE_2027",
       "editorial_rank": 17,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-06",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-06",
+          "product_id": "NTR-2110700072028",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-06",
-          "role": "STORAGE",
+          "product_id": "NTR-2113300027863",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-06",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-06",
-          "role": "TEXTILE",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 4
@@ -2065,6 +1981,75 @@
       "seasonal_recognition": null,
       "items": [
         {
+          "product_id": "NTR-2000915-2000865",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "NTR-6201526",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "NTR-2113200014178",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "NTR-8380204",
+          "role": "LIGHTING",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        },
+        {
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 4
+        }
+      ],
+      "existing_furniture": []
+    },
+    {
+      "id": "coord-019",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "ナチュラルで整える、帰宅後にくつろぎたい6畳プラン",
+      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 低い家具と布ものを使い、視線の抜けを残します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
+      "room_type": "ONE_ROOM",
+      "size_band": "SMALL_6",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "NATURAL",
+      "needs": [
+        "RELAX",
+        "RENTAL",
+        "COMPACT"
+      ],
+      "provenance": "OFFICIAL",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "公式想定デモ",
+      "creator_type": "OFFICIAL_DEMO",
+      "image_url": "/assets/coordinates/nitori/coord-019-relax-natural.webp",
+      "image_rights": "EXPLICITLY_PERMITTED",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "seasonal_collection": null,
+      "editorial_rank": 19,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
           "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
@@ -2072,15 +2057,15 @@
           "position": 0
         },
         {
-          "product_id": "NTR-5637001",
+          "product_id": "NTR-8760844",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "NTR-8842174",
-          "role": "STORAGE",
+          "product_id": "NTR-2113300027863",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
@@ -2103,78 +2088,9 @@
       "existing_furniture": []
     },
     {
-      "id": "coord-019",
-      "kind": "REAL",
-      "status": "PUBLISHED",
-      "visibility": "PUBLIC",
-      "title": "ナチュラルで整える、帰宅後にくつろぎたい6畳プラン",
-      "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 低い家具と布ものを使い、視線の抜けを残します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
-      "room_type": "ONE_ROOM",
-      "size_band": "SMALL_6",
-      "housing_type": "RENTAL",
-      "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
-      "style": "NATURAL",
-      "needs": [
-        "RELAX",
-        "RENTAL",
-        "COMPACT"
-      ],
-      "provenance": "OFFICIAL",
-      "verification_state": "DEMO_ONLY",
-      "creator_display": "公式想定デモ",
-      "creator_type": "OFFICIAL_DEMO",
-      "image_url": "/assets/coordinates/nitori/coord-019-relax-natural.webp",
-      "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
-      "seasonal_collection": null,
-      "editorial_rank": 19,
-      "official_pick": false,
-      "seasonal_recognition": null,
-      "items": [
-        {
-          "product_id": "DEMO-BED-04",
-          "role": "MAIN_FURNITURE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 0
-        },
-        {
-          "product_id": "DEMO-SUPPORT-04",
-          "role": "SUPPORT_FURNITURE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 1
-        },
-        {
-          "product_id": "DEMO-STORAGE-04",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 2
-        },
-        {
-          "product_id": "DEMO-LIGHTING-04",
-          "role": "LIGHTING",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-04",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
-        }
-      ],
-      "existing_furniture": []
-    },
-    {
       "id": "coord-020",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "クリアクールで整える、帰宅後にくつろぎたい7〜8畳プラン",
       "description": "白とグレーを基調に、狭さを感じにくくした部屋 低い家具と布ものを使い、視線の抜けを残します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2182,8 +2098,8 @@
       "size_band": "MEDIUM_7_8",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "CLEAR_COOL",
       "needs": [
         "RELAX",
@@ -2195,42 +2111,42 @@
       "creator_type": "USER_DEMO",
       "image_url": "/assets/room-clear-cool.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 20,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-05",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-SUPPORT-05",
+          "product_id": "NTR-2113300027863",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-05",
-          "role": "STORAGE",
+          "product_id": "NTR-2113200014178",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-05",
+          "product_id": "NTR-2113400003101",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-05",
+          "product_id": "NTR-2113100016593",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -2241,8 +2157,8 @@
     },
     {
       "id": "coord-021",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ダンディで整える、帰宅後にくつろぎたい6畳プラン",
       "description": "濃い木目と低い家具で落ち着きを出した部屋 低い家具と布ものを使い、視線の抜けを残します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2250,8 +2166,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "DANDY",
       "needs": [
         "RELAX",
@@ -2263,42 +2179,42 @@
       "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-021-relax-dandy.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 21,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-06",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-SUPPORT-06",
+          "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-06",
-          "role": "STORAGE",
+          "product_id": "NTR-8760844",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-06",
+          "product_id": "NTR-8380204",
           "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
         },
         {
-          "product_id": "DEMO-TEXTILE-06",
+          "product_id": "NTR-7545501",
           "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
@@ -2324,8 +2240,8 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_30000",
-      "budget_max": 30000,
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
       "style": "ELEGANT",
       "needs": [
         "RELAX",
@@ -2359,8 +2275,8 @@
           "position": 1
         },
         {
-          "product_id": "NTR-8842174",
-          "role": "STORAGE",
+          "product_id": "NTR-2113300027863",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
@@ -2384,8 +2300,8 @@
     },
     {
       "id": "coord-023",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "コージーで整える、帰宅後にくつろぎたい6畳プラン",
       "description": "布ものと間接照明でくつろぎを重視した部屋 低い家具と布ものを使い、視線の抜けを残します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2427,8 +2343,8 @@
           "position": 1
         },
         {
-          "product_id": "NTR-4904746153517-1000000000000",
-          "role": "STORAGE",
+          "product_id": "NTR-2113200014178",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
@@ -2452,8 +2368,8 @@
     },
     {
       "id": "coord-024",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "カラフルで整える、帰宅後にくつろぎたい7〜8畳プラン",
       "description": "小物の色を絞り、生活感を楽しく見せる部屋 低い家具と布ものを使い、視線の抜けを残します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2495,8 +2411,8 @@
           "position": 1
         },
         {
-          "product_id": "NTR-2115200004555",
-          "role": "STORAGE",
+          "product_id": "NTR-8760844",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
@@ -2520,8 +2436,8 @@
     },
     {
       "id": "coord-025",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ナチュラルで整える、睡眠環境を整えたい6畳プラン",
       "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2529,8 +2445,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "NATURAL",
       "needs": [
         "SLEEP",
@@ -2543,46 +2459,39 @@
       "creator_type": "DEMO_TEAM",
       "image_url": "/assets/coordinates/nitori/coord-025-sleep-natural.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 25,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-06",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-06",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-7349091",
+          "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-06",
-          "role": "STORAGE",
+          "product_id": "NTR-8380201",
+          "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-06",
-          "role": "LIGHTING",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-06",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
@@ -2598,8 +2507,8 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "CLEAR_COOL",
       "needs": [
         "SLEEP",
@@ -2611,46 +2520,39 @@
       "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-clear-cool.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 26,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600044491-0000002000852",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "NTR-5637001",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-2113100016593",
+          "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "NTR-8842174",
-          "role": "STORAGE",
+          "product_id": "NTR-2113400003101",
+          "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "NTR-8380201",
-          "role": "LIGHTING",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "NTR-7349091",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": [
@@ -2663,8 +2565,8 @@
     },
     {
       "id": "coord-027",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ダンディで整える、睡眠環境を整えたい6畳プラン",
       "description": "濃い木目と低い家具で落ち着きを出した部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2685,54 +2587,47 @@
       "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-dandy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 27,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2110600061047",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "NTR-2110700072028",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-7545501",
+          "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "NTR-4904746153517-1000000000000",
-          "role": "STORAGE",
+          "product_id": "NTR-8380204",
+          "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "NTR-2113400003101",
-          "role": "LIGHTING",
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "NTR-2113100016593",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-028",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "エレガントで整える、睡眠環境を整えたい7〜8畳プラン",
       "description": "やわらかな色と照明で上品に整えた部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2740,8 +2635,8 @@
       "size_band": "MEDIUM_7_8",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "ELEGANT",
       "needs": [
         "SLEEP",
@@ -2754,54 +2649,47 @@
       "creator_type": "USER_DEMO",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 28,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "NTR-2000915-2000865",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "NTR-6201526",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-7349091",
+          "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "NTR-2115200004555",
-          "role": "STORAGE",
+          "product_id": "NTR-8380201",
+          "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "NTR-8380204",
-          "role": "LIGHTING",
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "NTR-7545501",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-029",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "コージーで整える、睡眠環境を整えたい6畳プラン",
       "description": "布ものと間接照明でくつろぎを重視した部屋 ベッド周辺の光と収納を整理し、休みやすさを優先します。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2809,8 +2697,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "COZY",
       "needs": [
         "SLEEP",
@@ -2822,46 +2710,39 @@
       "creator_type": "DEMO_TEAM",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 29,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-01",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-01",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-2113100016593",
+          "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-01",
-          "role": "STORAGE",
+          "product_id": "NTR-2113400003101",
+          "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-01",
-          "role": "LIGHTING",
+          "product_id": "NTR-4904746153517-1000000000000",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-01",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
@@ -2890,54 +2771,47 @@
       "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 30,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-02",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-02",
-          "role": "SUPPORT_FURNITURE",
+          "product_id": "NTR-7545501",
+          "role": "TEXTILE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-02",
-          "role": "STORAGE",
+          "product_id": "NTR-8380204",
+          "role": "LIGHTING",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-02",
-          "role": "LIGHTING",
+          "product_id": "NTR-2115200004555",
+          "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-02",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-031",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "ナチュラルで整える、6畳を広く使うプラン",
       "description": "明るい木目と生成りで、初めてでもまとめやすい部屋 奥行きの浅い家具と兼用できる商品を中心にします。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -2945,8 +2819,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "NATURAL",
       "needs": [
         "COMPACT",
@@ -2958,9 +2832,76 @@
       "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/coordinates/nitori/coord-031-compact-natural.webp",
       "image_rights": "EXPLICITLY_PERMITTED",
-      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像は、使用許可を前提にNITORI公式Coordinateページからローカル収録した参照素材です。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 31,
+      "official_pick": false,
+      "seasonal_recognition": null,
+      "items": [
+        {
+          "product_id": "NTR-2110600044491-0000002000852",
+          "role": "MAIN_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 0
+        },
+        {
+          "product_id": "NTR-5637001",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 1
+        },
+        {
+          "product_id": "NTR-8842174",
+          "role": "STORAGE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 2
+        },
+        {
+          "product_id": "NTR-8760844",
+          "role": "SUPPORT_FURNITURE",
+          "source": "CATALOG_TO_BUY",
+          "quantity": 1,
+          "position": 3
+        }
+      ],
+      "existing_furniture": [
+        {
+          "label": "手持ちのチェア",
+          "category": "SUPPORT_FURNITURE",
+          "dimensions": "幅45cm（デモ）"
+        }
+      ]
+    },
+    {
+      "id": "coord-032",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
+      "visibility": "PUBLIC",
+      "title": "クリアクールで整える、7〜8畳を広く使うプラン",
+      "description": "白とグレーを基調に、狭さを感じにくくした部屋 奥行きの浅い家具と兼用できる商品を中心にします。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
+      "room_type": "ONE_ROOM",
+      "size_band": "MEDIUM_7_8",
+      "housing_type": "RENTAL",
+      "household": "SINGLE",
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
+      "style": "CLEAR_COOL",
+      "needs": [
+        "COMPACT",
+        "RENTAL"
+      ],
+      "provenance": "USER_DECLARED",
+      "verification_state": "DEMO_ONLY",
+      "creator_display": "暮らし手想定デモ",
+      "creator_type": "USER_DEMO",
+      "image_url": "/assets/room-clear-cool.svg",
+      "image_rights": "LOCALLY_CREATED_DEMO",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "seasonal_collection": null,
+      "editorial_rank": 32,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
@@ -2986,55 +2927,42 @@
           "position": 2
         },
         {
-          "product_id": "NTR-2113400003101",
-          "role": "LIGHTING",
+          "product_id": "NTR-2113300027863",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "NTR-2113100016593",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
-      "existing_furniture": [
-        {
-          "label": "手持ちのチェア",
-          "category": "SUPPORT_FURNITURE",
-          "dimensions": "幅45cm（デモ）"
-        }
-      ]
+      "existing_furniture": []
     },
     {
-      "id": "coord-032",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "id": "coord-033",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
-      "title": "クリアクールで整える、7〜8畳を広く使うプラン",
-      "description": "白とグレーを基調に、狭さを感じにくくした部屋 奥行きの浅い家具と兼用できる商品を中心にします。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
+      "title": "ダンディで整える、6畳を広く使うプラン",
+      "description": "濃い木目と低い家具で落ち着きを出した部屋 奥行きの浅い家具と兼用できる商品を中心にします。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
       "room_type": "ONE_ROOM",
-      "size_band": "MEDIUM_7_8",
+      "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_80000",
-      "budget_max": 80000,
-      "style": "CLEAR_COOL",
+      "budget_band": "UNDER_50000",
+      "budget_max": 50000,
+      "style": "DANDY",
       "needs": [
         "COMPACT",
         "RENTAL"
       ],
-      "provenance": "USER_DECLARED",
+      "provenance": "DEMO",
       "verification_state": "DEMO_ONLY",
-      "creator_display": "暮らし手想定デモ",
-      "creator_type": "USER_DEMO",
-      "image_url": "/assets/room-clear-cool.svg",
+      "creator_display": "Community demo team",
+      "creator_type": "DEMO_TEAM",
+      "image_url": "/assets/room-dandy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補5件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
-      "editorial_rank": 32,
+      "editorial_rank": 33,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
@@ -3060,86 +2988,11 @@
           "position": 2
         },
         {
-          "product_id": "NTR-8380204",
-          "role": "LIGHTING",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 3
-        },
-        {
-          "product_id": "NTR-7545501",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
-        }
-      ],
-      "existing_furniture": []
-    },
-    {
-      "id": "coord-033",
-      "kind": "REAL",
-      "status": "PUBLISHED",
-      "visibility": "PUBLIC",
-      "title": "ダンディで整える、6畳を広く使うプラン",
-      "description": "濃い木目と低い家具で落ち着きを出した部屋 奥行きの浅い家具と兼用できる商品を中心にします。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
-      "room_type": "ONE_ROOM",
-      "size_band": "SMALL_6",
-      "housing_type": "RENTAL",
-      "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
-      "style": "DANDY",
-      "needs": [
-        "COMPACT",
-        "RENTAL"
-      ],
-      "provenance": "DEMO",
-      "verification_state": "DEMO_ONLY",
-      "creator_display": "Community demo team",
-      "creator_type": "DEMO_TEAM",
-      "image_url": "/assets/room-dandy.svg",
-      "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
-      "seasonal_collection": null,
-      "editorial_rank": 33,
-      "official_pick": false,
-      "seasonal_recognition": null,
-      "items": [
-        {
-          "product_id": "DEMO-BED-01",
-          "role": "MAIN_FURNITURE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 0
-        },
-        {
-          "product_id": "DEMO-DESK-01",
+          "product_id": "NTR-2113200014178",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
-          "position": 1
-        },
-        {
-          "product_id": "DEMO-STORAGE-01",
-          "role": "STORAGE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 2
-        },
-        {
-          "product_id": "DEMO-LIGHTING-01",
-          "role": "LIGHTING",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-01",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
@@ -3155,8 +3008,8 @@
       "size_band": "TINY_5_5",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "ELEGANT",
       "needs": [
         "COMPACT",
@@ -3168,54 +3021,47 @@
       "creator_type": "STAFF_DEMO",
       "image_url": "/assets/room-elegant.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 34,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-02",
+          "product_id": "NTR-2110600044491-0000002000852",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-02",
+          "product_id": "NTR-5637001",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-02",
+          "product_id": "NTR-8842174",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-02",
-          "role": "LIGHTING",
+          "product_id": "NTR-8760844",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-02",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-035",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "コージーで整える、6畳を広く使うプラン",
       "description": "布ものと間接照明でくつろぎを重視した部屋 奥行きの浅い家具と兼用できる商品を中心にします。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -3223,8 +3069,8 @@
       "size_band": "SMALL_6",
       "housing_type": "RENTAL",
       "household": "SINGLE",
-      "budget_band": "UNDER_50000",
-      "budget_max": 50000,
+      "budget_band": "UNDER_30000",
+      "budget_max": 30000,
       "style": "COZY",
       "needs": [
         "COMPACT",
@@ -3236,54 +3082,47 @@
       "creator_type": "OFFICIAL_DEMO",
       "image_url": "/assets/room-cozy.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 35,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-03",
+          "product_id": "NTR-2110600061047",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-03",
+          "product_id": "NTR-2110700072028",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-03",
+          "product_id": "NTR-4904746153517-1000000000000",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-03",
-          "role": "LIGHTING",
+          "product_id": "NTR-2113300027863",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-03",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": []
     },
     {
       "id": "coord-036",
-      "kind": "REAL",
-      "status": "PUBLISHED",
+      "kind": "PLAN",
+      "status": "READY_FOR_ACTION",
       "visibility": "PUBLIC",
       "title": "カラフルで整える、7〜8畳を広く使うプラン",
       "description": "小物の色を絞り、生活感を楽しく見せる部屋 奥行きの浅い家具と兼用できる商品を中心にします。 コーデ構成は検証用です。室内画像と商品の出所は詳細画面に表示します。",
@@ -3304,46 +3143,39 @@
       "creator_type": "USER_DEMO",
       "image_url": "/assets/room-colorful.svg",
       "image_rights": "LOCALLY_CREATED_DEMO",
-      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補は架空の商品名・価格・画像によるデモです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
+      "demo_disclosure": "室内画像はリポジトリ内で制作したデモSVGです。購入候補4件はNITORI公式商品ページの名称・商品コード・価格・主画像を2026年8月19日時点で対応付けた参照スナップショットです。コーデ構成・投稿者・在庫は実在や公式推奨を示しません。",
       "seasonal_collection": null,
       "editorial_rank": 36,
       "official_pick": false,
       "seasonal_recognition": null,
       "items": [
         {
-          "product_id": "DEMO-BED-04",
+          "product_id": "NTR-2000915-2000865",
           "role": "MAIN_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 0
         },
         {
-          "product_id": "DEMO-DESK-04",
+          "product_id": "NTR-6201526",
           "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 1
         },
         {
-          "product_id": "DEMO-STORAGE-04",
+          "product_id": "NTR-2115200004555",
           "role": "STORAGE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 2
         },
         {
-          "product_id": "DEMO-LIGHTING-04",
-          "role": "LIGHTING",
+          "product_id": "NTR-2113200014178",
+          "role": "SUPPORT_FURNITURE",
           "source": "CATALOG_TO_BUY",
           "quantity": 1,
           "position": 3
-        },
-        {
-          "product_id": "DEMO-TEXTILE-04",
-          "role": "TEXTILE",
-          "source": "CATALOG_TO_BUY",
-          "quantity": 1,
-          "position": 4
         }
       ],
       "existing_furniture": [

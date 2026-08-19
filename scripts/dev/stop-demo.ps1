@@ -17,6 +17,8 @@ try {
     Write-Host "The process record is unreadable: $statePath" -ForegroundColor Red
     exit 1
 }
+$backendPort = if ($state.backendPort) { [int]$state.backendPort } else { 8000 }
+$frontendPort = if ($state.frontendPort) { [int]$state.frontendPort } else { 5173 }
 
 $refused = @()
 $stopped = @()
@@ -49,7 +51,7 @@ do {
     Start-Sleep -Milliseconds 200
 } while ((Get-Date) -lt $deadline)
 
-$listeners = @(@(8000, 5173) | ForEach-Object {
+$listeners = @(@($backendPort, $frontendPort) | ForEach-Object {
     Get-NetTCPConnection -LocalPort $_ -State Listen -ErrorAction SilentlyContinue
 })
 if ($listeners.Count -gt 0) {

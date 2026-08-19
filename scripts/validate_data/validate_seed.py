@@ -198,9 +198,12 @@ def validate() -> None:
         elif not asset.is_file():
             errors.append(f"missing coordinate asset: {coordinate['id']}")
         categories = set()
+        selected_products = []
         for item in coordinate["items"]:
             if item["product_id"] not in product_ids:
                 errors.append(f"unknown product {item['product_id']} in {coordinate['id']}")
+                continue
+            selected_products.append(product_by_id[item["product_id"]])
             categories.add(item["role"])
         if len(categories) < 2:
             errors.append(f"{coordinate['id']} has fewer than two roles")
@@ -209,6 +212,29 @@ def validate() -> None:
         )
         if not size_label or size_label not in coordinate["title"]:
             errors.append(f"coordinate title does not match room size: {coordinate['id']}")
+        product_categories = [product["category"] for product in selected_products]
+        if coordinate["image_rights"] == "EXPLICITLY_PERMITTED" and any(
+            product["provenance"] != "NITORI_OFFICIAL_SNAPSHOT" for product in selected_products
+        ):
+            errors.append(f"photo-backed coordinate includes an illustrated demo product: {coordinate['id']}")
+        primary_need = next((need for need in coordinate["needs"] if need != "RENTAL"), None)
+        if primary_need == "SLEEP" and "DESK" in product_categories:
+            errors.append(f"sleep composition must not require a desk: {coordinate['id']}")
+        if primary_need == "RELAX" and "DESK" in product_categories:
+            errors.append(f"relax composition must not be work-desk centered: {coordinate['id']}")
+        if primary_need == "WORK_FROM_HOME" and not {"DESK", "SUPPORT", "LIGHTING"}.issubset(product_categories):
+            errors.append(f"work composition lacks desk/support/light: {coordinate['id']}")
+        if primary_need == "STORAGE" and product_categories.count("STORAGE") < 2:
+            errors.append(f"storage composition needs at least two storage products: {coordinate['id']}")
+        known_total = sum(int(product["price_snapshot"] or 0) for product in selected_products)
+        if any(product["price_snapshot"] is None for product in selected_products):
+            errors.append(f"coordinate budget cannot be claimed with unknown seed prices: {coordinate['id']}")
+        if known_total > coordinate["budget_max"]:
+            errors.append(f"coordinate total exceeds its budget claim: {coordinate['id']}")
+        if primary_need == "LOW_BUDGET" and (known_total > 50_000 or coordinate["budget_max"] > 50_000):
+            errors.append(f"low-budget composition exceeds 50,000 yen: {coordinate['id']}")
+        if coordinate["id"].startswith("coord-") and coordinate["kind"] != "PLAN":
+            errors.append(f"built-in reference/prototype must not be labeled REAL: {coordinate['id']}")
 
     if len({row["size_band"] for row in coordinates}) < 3:
         errors.append("seed does not cover all three room-size bands")
@@ -238,6 +264,10 @@ def validate() -> None:
     source_page = urlsplit(str(visual_manifest.get("source_page_url", "")))
     if source_page.scheme != "https" or source_page.hostname != "www.nitori-net.jp":
         errors.append("visual manifest source page must be an official HTTPS NITORI URL")
+    if visual_manifest.get("display_classification") != "REFERENCE_ROOM":
+        errors.append("official room imagery must be classified as REFERENCE_ROOM")
+    if visual_manifest.get("product_relationship") != "ROOM_IMAGE_AND_PROTOTYPE_PRODUCT_LIST_ARE_SEPARATE_EVIDENCE_LAYERS":
+        errors.append("official room imagery must not imply a verified product mapping")
     for row in visual_rows:
         coordinate_id = str(row.get("coordinate_id", ""))
         coordinate = coordinate_by_id.get(coordinate_id)
@@ -330,6 +360,20 @@ def validate() -> None:
             errors.append(f"unreadable hero asset: {slide_id}")
         if asset.stat().st_size > 250_000:
             errors.append(f"hero asset is unexpectedly large: {slide_id}")
+        for key in ("source_theme", "ui_kicker", "ui_title", "cta", "destination"):
+            if not str(row.get(key, "")).strip():
+                errors.append(f"hero slide is missing {key}: {slide_id}")
+        unsupported_claims = " ".join(str(row.get(key, "")) for key in ("ui_kicker", "ui_title", "cta"))
+        if "畳" in unsupported_claims or "万円" in unsupported_claims:
+            errors.append(f"hero copy must not add unverified size/budget claims: {slide_id}")
+        expected_need = {
+            "newlife-storage": "STORAGE",
+            "compact-living": "STORAGE",
+            "work-relax": "WORK_FROM_HOME",
+            "seasonal-bedroom": "COMPACT",
+        }.get(slide_id)
+        if expected_need and row.get("destination") != f"/explore?need={expected_need}":
+            errors.append(f"hero destination does not match its source theme: {slide_id}")
 
     golden = next(item for item in coordinates if item["id"] == "coord-001")
     if not {"STORAGE", "RENTAL"}.issubset(golden["needs"]) or golden["size_band"] != "SMALL_6":

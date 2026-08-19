@@ -70,7 +70,7 @@ test.describe.serial("Goal 2 creator loop", () => {
     await page.getByLabel("変更の補足（任意）").fill("予算に合わせて商品を置き換えました。");
     await page.getByRole("button", { name: "PLANとして公開" }).click();
     await expect(page).toHaveURL(/\/coordinates\/community-/);
-    await expect(page.getByText("参考とアレンジのつながり")).toBeVisible();
+    await expect(page.getByText("参考元とアレンジ")).toBeVisible();
     await expect(page.getByText("予算を抑えた").first()).toBeVisible();
 
     await page.goto(`/creators/${originalCreatorId}`);

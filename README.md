@@ -6,7 +6,7 @@
 
 ## Current status / Goal 4
 
-2026-08-19時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。Goal 4Bでは主要15件のCoordinate画像、Goal 4CではHomeの4枚と主要導線で使う18商品の画像・名称・商品参照ID・価格を、使用許可確認済みのNITORI公式Sourceへ対応付けました。すべてローカルWebPで、出典追跡とfallbackを維持しています。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
+2026-08-20時点で、Goal 1のPlanning / Commerce、Goal 2のCreator / Community、Goal 3のSeasonal Growthを一つのLocal Functional Prototypeとして維持し、Goal 4で最終Demo向けの信頼性・画面品質・Reset・Error recoveryを強化しました。Goal 4Bでは主要15件のCoordinate画像、Goal 4C / 4DではHomeの4枚と主要導線で使う18商品の画像・名称・商品参照ID・価格を、使用許可確認済みのNITORI公式Sourceへ対応付けました。写真中心のExploreとProduct pickerは、相互に重複しない確認済みの参照写真だけを表示します。すべてローカルWebPで、出典追跡とfallbackを維持しています。これは、暮らしの事例を「見る」だけで終わらせず、自分向けPLANへ変え、店舗・ECで実現する準備をし、REAL ROOMとして次の人へ循環させるCoordinate Platformです。Seasonal ChallengeはCoreではなく、前年事例を再発見するGrowth Layerです。
 
 本Prototypeは年間reuse loopとmulti-product explorationを操作・計測可能にしますが、Production効果、併売率・売上・購入率の向上、NITORIによる公式採用・選定、NITORI / Room Harmonyとの実接続は証明していません。
 
@@ -27,13 +27,15 @@
 
 LauncherはPython / virtualenv / Node version、依存関係、8000 / 5173 port、owned process、backend health、frontend応答を確認し、120秒でTimeoutします。失敗時は`.demo/logs/`の場所と原因を表示します。ZIP内から直接実行、Microsoft Store alias、Python / Node不足、古いvirtualenv、他Processによるport使用は自動で隠さず、修正方法を表示します。
 
+既定portを使えない開発・検証環境だけは、Command Promptから`start-demo.cmd -NoBrowser -BackendPort 8303 -FrontendPort 5376`のように別portを指定できます。`stop-demo.cmd`は起動時の記録から同じportを確認し、`reset-demo.cmd -Force -BackendPort 8303 -FrontendPort 5376`はその検証用portだけを安全確認します。通常の利用者は指定不要です。
+
 別Physical Windows PCでの確認はまだ自動検証と分けて扱います。Merge前の5分確認は[`docs/operations/second-pc-checklist.md`](docs/operations/second-pc-checklist.md)を使用してください。現在の状態は`MANUAL_SECOND_PC_TEST_REQUIRED`です。
 
 ## Primary Demo 4本
 
 ### Demo 1 — Similar-to-me → PLAN → 店舗比較Preview
 
-Home → `6畳のおすすめを見る` → 条件に近いCoordinate → 商品 → 保存 → Private PLAN → 商品の置換 / 手持ち家具 → 概算 → 店舗比較 → Handoff Preview。
+Home → `条件から参考コーデを探す` → 条件に近いCoordinate → 商品 → 保存 → 自分用PLAN → 商品の置換 / 手持ち家具 → 概算 → 店舗比較 → Handoff Preview。
 
 ### Demo 2 — Creator / Community reuse
 
@@ -41,7 +43,7 @@ Home → `6畳のおすすめを見る` → 条件に近いCoordinate → 商品
 
 ### Demo 3 — 前年Archive → Current Challenge
 
-Seasonal → `新生活の6畳 2027` Archive → 前年REAL → Private PLAN → Public derivative → `新生活の6畳 2028`へ参加。Challengeは人気Contestではなく、条件付きの再利用導線です。
+Seasonal → `新生活の6畳 2027` Archive → 前年の参考コーデ → Private PLAN → Public derivative → `新生活の6畳 2028`へ参加。Challengeは人気Contestではなく、条件付きの再利用導線です。
 
 ### Demo 4 — Product reverse discovery
 
@@ -56,7 +58,7 @@ Product Detail → `この商品を使ったコーデを見る` → Coordinate �
 | Frontend | React 18 / TypeScript / Vite / React Router | 13 route screens、Creator / Seasonal UI、responsive UI、typed API client |
 | Backend | Python 3.11+ / FastAPI / Pydantic / SQLAlchemy / Pillow | ranking、Save / PLAN、Creator、lineage、Seasonal eligibility / Entry、safe image normalization |
 | Data | SQLite + generated JSON seed + ignored local uploads | anonymous Session ownership、36 Coordinates、60 Products、6 Challenges、8 Entries、User contributions |
-| Test | pytest / Vitest / Testing Library / Playwright | 54 backend tests、24 frontend tests、9 functional browser flows、3 responsive checks |
+| Test | pytest / Vitest / Testing Library / Playwright | 60 backend tests、30 frontend tests、9 functional browser flows、3 responsive checks |
 
 Backendはruntime OpenAPIを`/openapi.json`で公開し、Frontendは[`frontend/src/api/types.ts`](frontend/src/api/types.ts)のTypeScript contractと[`frontend/src/api/client.ts`](frontend/src/api/client.ts)を通してだけ接続します。
 
@@ -76,14 +78,15 @@ room-harmony-community/
 
 ## Dataと権利の境界
 
-- 36件のCoordinate構成と投稿者情報は機能検証用です。公式画像に写る商品と、デモ上の5商品構成が同一だとは保証しません。
+- Built-in 36件はすべて参考 / 機能検証用PLANです。主要15件の公式室内画像は`REFERENCE ROOM`、残りは`PROTOTYPE PLAN`として表示し、User投稿のREAL ROOMとは区別します。
+- 公式Sourceには各Roomの「使用しているアイテム」導線がありますが、本Prototypeの購入候補はそのRoom別商品IDとの一致を確認したものではありません。画像に写る商品を見た目から推定せず、室内画像と購入候補を別の参照情報として表示します。
 - 60件のProductのうち18件は、NITORI公式商品ページの名称・商品参照ID・日付付き価格・主画像を商品単位で対応付けた`NTR-*`参照スナップショットです。残る42件は`DEMO-*`の架空商品です。
 - Main Demoの15 Coordinateには、Userが本Prototypeでの使用許可を確認したNITORI公式「新生活用品」Coordinate参照画像をローカルWebPとして同梱しています。一般的なOpen licenseを意味せず、転載・再利用範囲を拡張するものではありません。
 - Homeは、公式新生活特集から選定した別々の4画像を使うCarouselです。各Slideは自然なExplore条件またはSeasonalへ接続します。
-- 残りのCoordinateと42件のDemo ProductにはRepository-original SVGを使い、主要15件の個別SVGと共通fallbackも読み込み失敗時の安全策として保持します。Runtime hotlinkはありません。
+- 残りのCoordinateと42件のDemo ProductにはRepository-original SVGを使いますが、写真中心のExplore、Coordinateの商品欄、Createの商品選択には混在させません。個別SVGと共通fallbackは、直接参照と読み込み失敗時の安全策として保持します。Runtime hotlinkはありません。
 - `NTR-*`価格は2026-08-19時点の公式参照スナップショット、`DEMO-*`価格は架空です。未取得価格は0円にせず件数を表示します。
 - `NTR-*`は対応するNITORI公式商品ページ、`DEMO-*`は公式検索ページへの参考Linkです。どちらも在庫・Cart・購入・価格APIではありません。
-- REAL / PLAN、Official / Staff / User declaredは将来のData modelを示す架空例で、公式認定や実在投稿を意味しません。
+- Built-in provenanceやCreator表示は検証用で、公式認定や実在投稿を意味しません。REAL ROOMは、Userが自分の部屋画像をUploadして`USER_DECLARED_UNVERIFIED`として公開した場合だけ使います。
 - Goal 2でUserがUploadした画像は`.demo/uploads/`へrandom filenameのWebPとしてLocal保存され、Git対象外です。元filename、client path、EXIFは保存しません。
 - `USER_DECLARED` REALはUser申告であり、NITORIまたはSystemによる本人・購入・実在性の確認済み情報ではありません。
 - 6件のChallengeと8件のEntryも架空のSeasonal seedです。`Prototype Pick`はDemo上のcontrolled recognitionで、NITORI社員による公式選定、人気順位、品質保証ではありません。

@@ -28,11 +28,11 @@ export function HomePage() {
     <>
       <section className="hero">
         <div className="hero__copy">
-          <p className="eyebrow">新生活 × 一人暮らし × 6畳</p>
+          <p className="eyebrow">暮らしの事例から、自分用PLANへ</p>
           <h1>「好き」だけで終わらせず、<br />自分の部屋で試せるPLANへ。</h1>
-          <p className="hero__lead">部屋・困りごと・予算の3つだけ。近い暮らしの事例から、必要な家具を空間ごとに考えられます。</p>
-          <Link className="button button--primary" to="/explore?room_size=SMALL_6&need=STORAGE&budget_max=50000">
-            6畳のおすすめを見る
+          <p className="hero__lead">近い暮らしの事例を見つけ、必要な家具を空間ごとに比べ、自分の条件に合わせたPLANへ進めます。</p>
+          <Link className="button button--primary" to="/explore">
+            条件から参考コーデを探す
           </Link>
           <p className="hero__microcopy">入力内容はデモ端末内の匿名Sessionでのみ使用します。</p>
         </div>
@@ -61,9 +61,9 @@ export function HomePage() {
         <div className="seasonal-story">
           <p className="eyebrow">Seasonal collection</p>
           <h2 id="seasonal-title">{seasonal.data?.featured?.title || "新生活の6畳"}</h2>
-          <p>前年のREAL ROOM例を、今年の一人暮らしPLANへ。順位を競わず、実現に役立つ季節ごとの再利用として扱います。</p>
+          <p>前年の参考コーデを、今年の一人暮らしPLANへ。順位を競わず、実現に役立つ季節ごとの再利用として扱います。</p>
           <ol className="story-steps" aria-label="季節の循環">
-            <li><span>01</span>前年のREAL例</li>
+            <li><span>01</span>前年の参考例</li>
             <li><span>02</span>自分向けPLAN</li>
             <li><span>03</span>店舗・ECで確認</li>
           </ol>

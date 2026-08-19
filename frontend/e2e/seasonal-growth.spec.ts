@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { API_BASE_URL } from "./support";
 
 
 test.describe.serial("Goal 3 seasonal growth loop", () => {
@@ -22,13 +23,13 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
 
   test("E2E B: Creator → owned Coordinate → Challenge Entry → gallery", async ({ page, request }) => {
     const sessionId = `e2e-seasonal-entry-${Date.now()}`;
-    const creatorResponse = await request.put("http://127.0.0.1:8000/api/creators/me", {
+    const creatorResponse = await request.put(`${API_BASE_URL}/api/creators/me`, {
       headers: { "X-Session-ID": sessionId },
       data: { display_name: "E2E Seasonal Creator", bio: "Seasonal参加の検証用Display Identity" },
     });
     expect(creatorResponse.ok()).toBeTruthy();
     const creator = await creatorResponse.json() as { id: string };
-    const coordinateResponse = await request.post("http://127.0.0.1:8000/api/community/coordinates", {
+    const coordinateResponse = await request.post(`${API_BASE_URL}/api/community/coordinates`, {
       headers: { "X-Session-ID": sessionId },
       data: {
         kind: "PLAN",
@@ -85,7 +86,7 @@ test.describe.serial("Goal 3 seasonal growth loop", () => {
     await expect(page).toHaveURL(/\/coordinates\/community-/);
     const derivativeId = new URL(page.url()).pathname.split("/").at(-1);
     expect(derivativeId).toBeTruthy();
-    await expect(page.getByText("参考とアレンジのつながり")).toBeVisible();
+    await expect(page.getByText("参考元とアレンジ")).toBeVisible();
     await expect(page.getByText("収納を重視した").first()).toBeVisible();
 
     const newLifeOption = page.locator(".challenge-option-list article").filter({ hasText: "新生活の6畳 2028" });
