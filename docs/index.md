@@ -26,6 +26,7 @@
 - [KPI](product/kpi.md)
 - [MVP definition](product/mvp-definition.md)
 - [Phase 1 implementation plan](product/phase-1-plan.md)
+- [Global discovery bridge](product/global-discovery-bridge.md)
 
 ## Architecture
 
@@ -37,6 +38,7 @@
 - [Functional MVP implementation](architecture/implementation.md)
 - [Goal 2 creator loop](architecture/community-loop.md)
 - [Goal 3 seasonal growth](architecture/seasonal-growth.md)
+- [Phase 2A Personalized AI PLAN Assist](architecture/personalized-ai-plan-assist.md)
 
 ## Operations
 

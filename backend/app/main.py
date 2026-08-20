@@ -7,14 +7,17 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.api import analytics, catalog, community, plans, saved, seasonal
+from app.ai.openai_provider import OpenAIPlanProvider
+from app.ai.provider import AIProvider, DisabledAIProvider
+from app.ai.service import SessionRateLimiter
+from app.api import ai, analytics, catalog, community, plans, saved, seasonal
 from app.core.config import Settings
 from app.core.database import Base, create_database
 from app.core.schema import upgrade_demo_schema
 from app.services.seed import seed_if_empty, seed_seasonal_if_empty
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+def create_app(settings: Settings | None = None, ai_provider: AIProvider | None = None) -> FastAPI:
     active_settings = settings or Settings()
     database_path = _sqlite_path(active_settings.database_url)
     if database_path:
@@ -41,6 +44,27 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = active_settings
     app.state.engine = engine
     app.state.session_factory = session_factory
+    key = active_settings.openai_api_key.get_secret_value().strip() if active_settings.openai_api_key else ""
+    if ai_provider is not None:
+        app.state.ai_provider = ai_provider
+    elif active_settings.ai_enabled and key:
+        app.state.ai_provider = OpenAIPlanProvider(
+            api_key=key,
+            base_url=active_settings.openai_base_url,
+            model=active_settings.openai_model,
+            timeout=active_settings.ai_timeout_seconds,
+            max_retries=active_settings.ai_max_retries,
+            max_output_tokens=active_settings.ai_max_output_tokens,
+        )
+    else:
+        app.state.ai_provider = DisabledAIProvider(
+            model=active_settings.openai_model,
+            enabled=active_settings.ai_enabled,
+            configured=bool(key),
+        )
+    app.state.ai_rate_limiter = SessionRateLimiter(
+        active_settings.ai_rate_limit_requests, active_settings.ai_rate_limit_window_seconds
+    )
     app.mount("/uploads", StaticFiles(directory=active_settings.upload_dir), name="uploads")
     app.add_middleware(
         CORSMiddleware,
@@ -55,6 +79,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(community.router)
     app.include_router(seasonal.router)
     app.include_router(analytics.router)
+    app.include_router(ai.router)
 
     @app.get("/health", tags=["system"])
     def health() -> dict[str, str]:

@@ -3,11 +3,10 @@ import { API_BASE_URL } from "./support";
 
 
 test.describe.serial("Goal 3 seasonal growth loop", () => {
-  test("E2E A: Home → Seasonal → Active Challenge → REAL → Save → Adapt", async ({ page }) => {
+  test("E2E A: Seasonal → Active Challenge → REAL → Save → Adapt", async ({ page }) => {
     const sessionId = `e2e-seasonal-discovery-${Date.now()}`;
     await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
-    await page.goto("/");
-    await page.getByRole("link", { name: "今のテーマと前年Archiveを見る" }).click();
+    await page.goto("/seasonal");
     await expect(page).toHaveURL(/\/seasonal$/);
     await expect(page.getByRole("heading", { name: "季節のコーデ再利用ループ" })).toBeVisible();
     await page.getByRole("link", { name: "今のテーマを見る" }).click();

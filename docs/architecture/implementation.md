@@ -10,6 +10,7 @@ flowchart LR
   G[Generated seed JSON<br/>36 Coordinate / 60 Product<br/>6 Challenge / 8 Entry] -->|independent seed when empty| D
   V[Visual asset manifest<br/>15 primary Coordinate mappings] --> G
   A -. preview only .-> H[Room Harmony handoff contract]
+  A -->|store=false / structured output| O[OpenAI Responses API\noptional PLAN Assist]
 ```
 
 FrontendとBackendはHTTP boundaryで分離する。React componentからSQLiteへ直接Accessせず、FastAPI routeからUI stateを直接操作しない。
@@ -28,7 +29,7 @@ FrontendとBackendはHTTP boundaryで分離する。React componentからSQLite�
 | `/products/:id` | Product detail → use Coordinate |
 | `/saved` | Saved and private PLAN separation |
 | `/plans/:id` | PLAN summary and action readiness |
-| `/plans/:id/edit` | keep / replace / add / existing furniture / total |
+| `/plans/:id/edit` | keep / replace / add / existing furniture / total / deterministic fit / AI PLAN Assist |
 | `/plans/:id/handoff` | Room Harmony payload preview only |
 | `/about` | Demo truth boundary / H1〜H3 readiness |
 
@@ -47,6 +48,7 @@ FrontendとBackendはHTTP boundaryで分離する。React componentからSQLite�
 - `backend/app/integrations/room_harmony/handoff.py`: versioned payload creation; no network call
 - `backend/app/api/`: catalog、saved、plans、analytics HTTP routes
 - `backend/app/api/seasonal.py`: Seasonal landing、Challenge list/detail、Entry HTTP routes
+- `backend/app/ai/`: versioned policy、preference profile、deterministic scoring、server candidate validation、OpenAI Responses adapter、stale-safe preview/apply
 
 ## Contract ownership
 
@@ -78,6 +80,10 @@ Recognitionはbundled Demo seedだけのcontrolled `Prototype Pick`で、User AP
 - passive page exposure eventは`trackOnce`で同一Browser runtime内の重複送信を抑える。Save、Helpful、Publish等の明示Action eventは通常通り送る。
 - visual QAはport 8100 / 5174とprocess-scoped SQLite / upload directoryを所有し、Main Demo DBを変更しない。
 - `reset-demo.cmd`は明示確認後、Repository内`.demo`のknown DB / uploadsだけを初期化する。Source、logs、visual QA capture、unmanaged processは変更しない。
+
+## Phase 2A Personalized AI PLAN Assist
+
+AIはPLAN Edit内の補助層で、別Chat pageではない。BackendがNTR候補、action、対象item、price、fit、fingerprintを所有する。ProviderはStructured Outputsで候補を返すだけで、`store=False`、no tools、no historyで呼ぶ。Human apply後は既存PLAN mutation serviceを通し、同じdeterministic scorerで再評価する。Key、privacy、weight、error / stale contractは[`personalized-ai-plan-assist.md`](personalized-ai-plan-assist.md)に固定する。
 
 ## Security / trust boundary
 

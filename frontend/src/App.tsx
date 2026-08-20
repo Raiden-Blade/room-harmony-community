@@ -16,10 +16,10 @@ import { SeasonalLandingPage } from "./pages/SeasonalLandingPage";
 import { SavedPage } from "./pages/SavedPage";
 
 export const router = createBrowserRouter([
+  { path: "/", element: <HomePage /> },
   {
     element: <AppLayout />,
     children: [
-      { path: "/", element: <HomePage /> },
       { path: "/explore", element: <ExplorePage /> },
       { path: "/seasonal", element: <SeasonalLandingPage /> },
       { path: "/challenges/:challengeSlug", element: <ChallengeDetailPage /> },

@@ -123,6 +123,144 @@ export type CoordinateDetail = CoordinateSummary & {
   challenge_options: CoordinateChallengeOption[];
 };
 
+export type AIPriority = "BALANCED" | "BUDGET" | "NEEDS" | "EXISTING_FURNITURE" | "STYLE";
+export type AIStrategy = "PREFERENCE_SAFE" | "BALANCED" | "DISCOVERY";
+export type AIAction = "KEEP" | "REPLACE" | "ADD" | "REMOVE";
+
+export type AIPreferenceProfileInput = {
+  room_size: "TINY_5_5" | "SMALL_6" | "MEDIUM_7_8";
+  housing_type: "RENTAL" | "OWNED" | "OTHER";
+  budget_max: number | null;
+  needs: Array<"STORAGE" | "LOW_BUDGET" | "WORK_FROM_HOME" | "RELAX" | "SLEEP" | "COMPACT">;
+  preferred_style: "NATURAL" | "CLEAR_COOL" | "DANDY" | "ELEGANT" | "COZY" | "COLORFUL" | null;
+  priority_focus: AIPriority;
+  preserve_existing_furniture: boolean;
+};
+
+export type AIPreferenceProfile = AIPreferenceProfileInput & { source: "PLAN_DEFAULT" | "SAVED_PROFILE" };
+
+export type FitAxis = {
+  code: "BUDGET" | "NEEDS" | "EXISTING_FURNITURE" | "STYLE" | "COMPOSITION";
+  label: string;
+  score: number | null;
+  available: boolean;
+  base_weight: number;
+  applied_weight: number;
+  evidence: string[];
+  reason: string;
+};
+
+export type FitAssessment = {
+  policy_version: string;
+  overall_score: number;
+  axes: FitAxis[];
+  summary: string;
+  fingerprint: string;
+};
+
+export type AIStatus = {
+  enabled: boolean;
+  configured: boolean;
+  available: boolean;
+  verified: boolean;
+  reason_code:
+    | "NOT_CHECKED"
+    | "READY"
+    | "DISABLED"
+    | "KEY_MISSING"
+    | "AUTH_ERROR"
+    | "RATE_LIMITED"
+    | "QUOTA_EXCEEDED"
+    | "MODEL_ERROR"
+    | "REQUEST_ERROR"
+    | "PROVIDER_ERROR";
+  model: string;
+};
+
+export type AIProductRef = {
+  item_id: number | null;
+  product_id: string;
+  name: string;
+  role: string;
+  price_snapshot: number | null;
+};
+
+export type AISuggestion = {
+  id: string;
+  strategy: AIStrategy;
+  action: AIAction;
+  title: string;
+  rationale: string;
+  tradeoff: string;
+  target: AIProductRef | null;
+  proposed_product: AIProductRef | null;
+  before_price: number;
+  after_price: number;
+  price_delta: number;
+  before_fit: FitAssessment;
+  after_fit: FitAssessment;
+};
+
+export type AISuggestionResponse = {
+  policy_version: string;
+  profile: AIPreferenceProfile;
+  current_fit: FitAssessment;
+  suggestions: AISuggestion[];
+};
+
+export type AIApplyResponse = {
+  plan: CoordinateDetail;
+  suggestion: AISuggestion;
+  before_fit: FitAssessment;
+  after_fit: FitAssessment;
+};
+
+export type VisualLayoutItem = {
+  item_id: number;
+  product_id: string;
+  x: number;
+  y: number;
+  scale: number;
+  rotation: number;
+  visible: boolean;
+};
+
+export type VisualObservation = {
+  code: "COLOR_HARMONY" | "VISUAL_BALANCE" | "SPACIOUSNESS" | "STYLE_COHERENCE";
+  label: string;
+  observation: string;
+  evidence: string;
+  suggestion: string;
+  confidence: "LOW" | "MEDIUM" | "HIGH";
+};
+
+export type VisualLayoutChange = {
+  item_id: number;
+  x: number;
+  y: number;
+  scale: number;
+  rotation: number;
+  reason: string;
+};
+
+export type PlanVisualLayout = {
+  plan_id: string;
+  version: number;
+  status: "NOT_SAVED" | "SAVED" | "RESET_DUE_TO_PLAN_CHANGE";
+  updated_at: string | null;
+  layout_items: VisualLayoutItem[];
+};
+
+export type AIVisualReview = {
+  policy_version: string;
+  image_used: true;
+  summary: string;
+  observations: VisualObservation[];
+  next_action: string;
+  layout_changes: VisualLayoutChange[];
+  disclaimer: string;
+};
+
 export type CoordinateChallengeContext = {
   challenge_id: string;
   challenge_slug: string;
@@ -333,6 +471,7 @@ export type OptionsResponse = {
 export type AnalyticsEventName =
   | "session_start"
   | "home_view"
+  | "global_lens_select"
   | "context_select"
   | "discovery_impression"
   | "coordinate_view"
@@ -373,4 +512,12 @@ export type AnalyticsEventName =
   | "previous_year_coordinate_view"
   | "challenge_adapt_start"
   | "recognition_view"
-  | "archive_view";
+  | "archive_view"
+  | "ai_assist_open"
+  | "ai_profile_update"
+  | "fit_score_view"
+  | "ai_suggestion_request"
+  | "ai_suggestion_received"
+  | "ai_suggestion_apply"
+  | "ai_suggestion_reject"
+  | "ai_provider_unavailable";

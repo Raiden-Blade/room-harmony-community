@@ -15,6 +15,7 @@ def seed_if_empty(session: Session, seed_path: Path) -> None:
     payload = json.loads(seed_path.read_text(encoding="utf-8"))
     if session.scalar(select(func.count()).select_from(Product)):
         _repair_stale_built_in_user_provenance(session, payload)
+        _repair_product_style_hints(session, payload)
         return
     for row in payload["products"]:
         session.add(
@@ -30,6 +31,7 @@ def seed_if_empty(session: Session, seed_path: Path) -> None:
                 image_url=row["image_url"],
                 provenance=row["provenance"],
                 rights_status=row["rights_status"],
+                style_hint=row.get("style_hint"),
             )
         )
     session.flush()
@@ -112,6 +114,17 @@ def _repair_stale_built_in_user_provenance(session: Session, payload: dict) -> N
         coordinate.creator_display = row["creator_display"]
         coordinate.creator_type = row["creator_type"]
         changed = True
+    if changed:
+        session.commit()
+
+
+def _repair_product_style_hints(session: Session, payload: dict) -> None:
+    expected = {row["id"]: row.get("style_hint") for row in payload["products"]}
+    changed = False
+    for product in session.scalars(select(Product).where(Product.id.in_(expected))):
+        if product.style_hint != expected[product.id]:
+            product.style_hint = expected[product.id]
+            changed = True
     if changed:
         session.commit()
 

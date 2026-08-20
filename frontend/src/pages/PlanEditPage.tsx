@@ -6,6 +6,7 @@ import type { CoordinateDetail, CoordinateItem, ProductSummary } from "../api/ty
 import { Badge } from "../components/common/Badge";
 import { ErrorView, Loading } from "../components/common/StatusView";
 import { SafeImage } from "../components/common/SafeImage";
+import { AIPlanAssist } from "../components/plan/AIPlanAssist";
 import { useAsync } from "../hooks/useAsync";
 import { dateStamp, label, yen } from "../utils/labels";
 
@@ -104,6 +105,7 @@ export function PlanEditPage() {
         <h1>自分向けに変更する</h1>
         <p>残す・1商品を置き換える・買い足す・手持ち家具を加える。フル3D編集ではありません。</p>
       </header>
+      <AIPlanAssist planId={planId} plan={plan.data} onApplied={plan.setData} />
       <div className="editor-layout">
         <div className="editor-main">
           <section aria-labelledby="edit-products-title">
@@ -162,15 +164,17 @@ export function PlanEditPage() {
           </section>
         </div>
 
-        <aside className="plan-total-card">
-          <p className="eyebrow">Estimated total</p>
-          <strong>{yen(plan.data.price.known_total)}</strong>
-          <span>{plan.data.product_count}商品 · {plan.data.category_count}カテゴリ</span>
-          <span>購入候補額を再計算 · {dateStamp(plan.data.price.calculated_at)}</span>
-          {plan.data.price.unknown_item_count > 0 && <p>価格未取得 {plan.data.price.unknown_item_count}件</p>}
-          <p className="price-caveat">{plan.data.price.notice} 手持ち家具は購入候補額に含みません。</p>
-          <button className="button button--primary" disabled={busy} onClick={finish}>この内容で比較準備へ</button>
-          {actionError && <p className="inline-error" role="alert">{actionError}</p>}
+        <aside className="plan-assist-rail">
+          <section className="plan-total-card">
+            <p className="eyebrow">Estimated total</p>
+            <strong>{yen(plan.data.price.known_total)}</strong>
+            <span>{plan.data.product_count}商品 · {plan.data.category_count}カテゴリ</span>
+            <span>購入候補額を再計算 · {dateStamp(plan.data.price.calculated_at)}</span>
+            {plan.data.price.unknown_item_count > 0 && <p>価格未取得 {plan.data.price.unknown_item_count}件</p>}
+            <p className="price-caveat">{plan.data.price.notice} 手持ち家具は購入候補額に含みません。</p>
+            <button className="button button--primary" disabled={busy} onClick={finish}>この内容で比較準備へ</button>
+            {actionError && <p className="inline-error" role="alert">{actionError}</p>}
+          </section>
         </aside>
       </div>
     </div>

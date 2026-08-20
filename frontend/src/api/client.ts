@@ -1,5 +1,11 @@
 import { getSessionId } from "../state/session";
 import type {
+  AIApplyResponse,
+  AIVisualReview,
+  AIPreferenceProfile,
+  AIPreferenceProfileInput,
+  AISuggestionResponse,
+  AIStatus,
   AnalyticsEventName,
   ChallengeDetail,
   ChallengeEntry,
@@ -13,8 +19,11 @@ import type {
   OptionsResponse,
   ProductDetail,
   ProductSummary,
+  PlanVisualLayout,
   SeasonalLanding,
   UploadedImage,
+  VisualLayoutItem,
+  FitAssessment,
 } from "./types";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -56,6 +65,10 @@ const SERVER_MESSAGES: Record<string, string> = {
   "PLAN item not found": "変更するPLAN商品が見つかりません。画面を再読み込みしてください。",
   "Product already exists in PLAN": "その商品はすでにPLANに含まれています。",
   "Select a different product": "現在とは別の商品を選んでください。",
+  "Layout contains duplicate PLAN items": "同じPLAN商品が配置に重複しています。配置画面を開き直してください。",
+  "PLAN products changed; reload the layout": "PLANの商品構成が変わりました。配置画面を開き直してください。",
+  "PLAN layout was updated; reload before saving": "別の画面で配置が更新されました。配置画面を開き直してください。",
+  "Saved PLAN layout is invalid": "保存済みの配置を読み込めませんでした。配置を初期状態からやり直してください。",
   "No products available for handoff": "比較する商品がありません。PLANに商品を追加してください。",
   "Anchor product must be selected in the PLAN": "比較の起点はPLANに含まれる商品から選んでください。",
 };
@@ -68,6 +81,30 @@ const ELIGIBILITY_MESSAGES: Record<string, string> = {
   KIND_MISMATCH: "コーデの種別がテーマ条件と一致しません。",
   IMAGE_REQUIRED: "このテーマへの参加には画像が必要です。",
   PRODUCT_COUNT_MISMATCH: "テーマで必要な商品点数を満たしていません。",
+};
+
+const AI_MESSAGES: Record<string, string> = {
+  AI_DISABLED: "AI PLAN Assistは現在無効です。通常のPLAN編集と適合度確認は引き続き使えます。",
+  AI_KEY_MISSING: "AI用APIキーが設定されていません。通常のPLAN編集は引き続き使えます。",
+  AI_AUTH_ERROR: "AI用APIキーを確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_PROVIDER_BUSY: "APIのリクエスト上限に達しました。少し待って再試行してください。",
+  AI_PROVIDER_RATE_LIMITED: "APIのリクエスト上限に達しました。少し待って再試行してください。",
+  AI_QUOTA_EXCEEDED: "API利用枠または請求設定を確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_MODEL_NOT_AVAILABLE: "設定したAIモデル名と利用権限を確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_MODEL_ACCESS_ERROR: "設定したAIモデルの利用権限を確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_REQUEST_ERROR: "AIリクエスト設定（モデル名・出力形式）を確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_TIMEOUT: "AIの応答が時間内に完了しませんでした。もう一度お試しください。",
+  AI_CONNECTION_ERROR: "AIサービスへ接続できませんでした。通常のPLAN編集は引き続き使えます。",
+  AI_PROVIDER_ERROR: "AIサービスで問題が発生しました。通常のPLAN編集は引き続き使えます。",
+  AI_INVALID_RESPONSE: "安全に確認できる提案を作れませんでした。もう一度お試しください。",
+  AI_RATE_LIMITED: "短時間の利用上限に達しました。少し待って再試行してください。",
+  AI_STALE_PLAN: "PLANまたは希望条件が変わりました。提案を作り直してください。",
+  AI_SUGGESTION_EXPIRED: "このAI提案は期限切れです。もう一度提案を作成してください。",
+  AI_SUGGESTION_NOT_FOUND: "このAI提案は利用できません。もう一度提案を作成してください。",
+  AI_PRODUCT_NOT_ALLOWED: "提案の商品候補を確認できませんでした。",
+  AI_INVALID_SUGGESTION: "提案の操作を確認できませんでした。",
+  AI_INVALID_IMAGE: "配置画像を読み取れませんでした。配置を元に戻して、もう一度お試しください。",
+  AI_INVALID_LAYOUT: "配置商品の対応関係を確認できませんでした。ページを再読み込みしてください。",
 };
 
 type RequestOptions = RequestInit & { json?: unknown };
@@ -95,12 +132,15 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
           ? "サーバーで問題が発生しました。少し待ってから再試行してください。"
           : `処理を完了できませんでした（${response.status}）。`;
     try {
-      const body = (await response.json()) as { detail?: string | Array<{ msg?: string }> | { reasons?: string[] } };
+      const body = (await response.json()) as { detail?: string | Array<{ msg?: string }> | { reasons?: string[]; code?: string } };
       if (typeof body.detail === "string") message = SERVER_MESSAGES[body.detail] || message;
       if (Array.isArray(body.detail)) message = "入力内容を確認してください。必須項目を選び直してから再試行してください。";
       if (body.detail && !Array.isArray(body.detail) && typeof body.detail === "object" && body.detail.reasons?.length) {
         const reasons = body.detail.reasons.map((reason) => ELIGIBILITY_MESSAGES[reason] || reason);
         message = `参加条件を確認してください。${reasons.join(" ")}`;
+      }
+      if (body.detail && !Array.isArray(body.detail) && typeof body.detail === "object" && body.detail.code) {
+        message = AI_MESSAGES[body.detail.code] || message;
       }
     } catch {
       // Keep the HTTP fallback message.
@@ -116,6 +156,32 @@ export function mediaUrl(path: string): string {
 }
 
 export const api = {
+  aiStatus: () => request<AIStatus>("/api/ai/status"),
+  aiProfile: (planId: string) => request<AIPreferenceProfile>(`/api/ai/profile?plan_id=${encodeURIComponent(planId)}`),
+  saveAIProfile: (profile: AIPreferenceProfileInput) =>
+    request<AIPreferenceProfile>("/api/ai/profile", { method: "PUT", json: profile }),
+  planFit: (planId: string) => request<FitAssessment>(`/api/plans/${planId}/fit`),
+  aiSuggestions: (planId: string, profile?: AIPreferenceProfileInput) =>
+    request<AISuggestionResponse>(`/api/plans/${planId}/ai/suggestions`, {
+      method: "POST",
+      json: { profile: profile || null },
+    }),
+  applyAISuggestion: (planId: string, suggestionId: string) =>
+    request<AIApplyResponse>(`/api/plans/${planId}/ai/apply`, {
+      method: "POST",
+      json: { suggestion_id: suggestionId },
+    }),
+  aiVisualReview: (planId: string, imageDataUrl: string, layoutItems: VisualLayoutItem[]) =>
+    request<AIVisualReview>(`/api/plans/${planId}/ai/visual-review`, {
+      method: "POST",
+      json: { image_data_url: imageDataUrl, layout_items: layoutItems },
+    }),
+  planVisualLayout: (planId: string) => request<PlanVisualLayout>(`/api/plans/${planId}/visual-layout`),
+  savePlanVisualLayout: (planId: string, baseVersion: number, layoutItems: VisualLayoutItem[]) =>
+    request<PlanVisualLayout>(`/api/plans/${planId}/visual-layout`, {
+      method: "PUT",
+      json: { base_version: baseVersion, layout_items: layoutItems },
+    }),
   options: () => request<OptionsResponse>("/api/meta/options"),
   seasonal: () => request<SeasonalLanding>("/api/seasonal"),
   challenge: (slug: string) => request<ChallengeDetail>(`/api/challenges/${slug}`),

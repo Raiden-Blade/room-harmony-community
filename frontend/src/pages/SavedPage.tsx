@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { api, track } from "../api/client";
 import { EmptyView, ErrorView, Loading } from "../components/common/StatusView";
@@ -10,6 +10,8 @@ import { label, yen } from "../utils/labels";
 
 export function SavedPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const aiIntent = searchParams.get("intent") === "ai";
   const collection = useAsync(async () => ({ saved: await api.saved(), plans: await api.plans() }), []);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
@@ -38,6 +40,16 @@ export function SavedPage() {
         <h1>あとで見る事例と、自分のPLAN</h1>
         <p>Saveは「参考候補」、PLANは「自分の条件へ変え始めたもの」です。</p>
       </header>
+      {aiIntent && (
+        <aside className="ai-entry-handoff" aria-labelledby="ai-entry-title">
+          <p className="eyebrow">AI Room Check</p>
+          <h2 id="ai-entry-title">AIと調整するPLANを選ぶ</h2>
+          <p>AI評価は単独のChat画面ではなく、商品と配置を持つ自分用PLANの編集画面で行います。</p>
+          {collection.data.plans.length === 0
+            ? <Link className="button button--primary" to="/explore">元になるコーデを探す</Link>
+            : <a className="button button--secondary" href="#plans-title">My PLANから選ぶ</a>}
+        </aside>
+      )}
       {actionError && <p className="inline-error" role="alert">{actionError}</p>}
 
       <section className="section section--flush" aria-labelledby="plans-title">
@@ -50,7 +62,7 @@ export function SavedPage() {
               <article className="plan-row" key={plan.id}>
                 <SafeImage src={plan.image_url} alt="PLANの元になったコーディネート画像" />
                 <div><p className="eyebrow">{label(plan.status)} · {label(plan.size_band)}</p><h3>{plan.title}</h3><p>{yen(plan.price.known_total)} · {plan.product_count}商品</p></div>
-                <Link className="button button--secondary" to={`/plans/${plan.id}`}>PLANを確認</Link>
+                <Link className="button button--secondary" to={aiIntent ? `/plans/${plan.id}/edit` : `/plans/${plan.id}`}>{aiIntent ? "AIと調整する" : "PLANを確認"}</Link>
               </article>
             ))}
           </div>

@@ -198,6 +198,29 @@ class AddItemRequest(BaseModel):
     role: str = Field(min_length=1, max_length=48)
 
 
+class PlanVisualLayoutItem(BaseModel):
+    item_id: int
+    product_id: str = Field(min_length=1, max_length=96)
+    x: float = Field(ge=0, le=1)
+    y: float = Field(ge=0, le=1)
+    scale: float = Field(ge=0.75, le=1.25)
+    rotation: int = Field(ge=-180, le=180)
+    visible: bool = True
+
+
+class PlanVisualLayoutRequest(BaseModel):
+    base_version: int = Field(ge=0)
+    layout_items: list[PlanVisualLayoutItem] = Field(min_length=1, max_length=20)
+
+
+class PlanVisualLayoutResponse(BaseModel):
+    plan_id: str
+    version: int
+    status: Literal["NOT_SAVED", "SAVED", "RESET_DUE_TO_PLAN_CHANGE"]
+    updated_at: datetime | None = None
+    layout_items: list[PlanVisualLayoutItem] = Field(default_factory=list)
+
+
 class HandoffRequest(BaseModel):
     anchor_product_id: str | None = None
     store_id: str | None = Field(default=None, max_length=64)
@@ -252,6 +275,7 @@ class HandoffPayload(BaseModel):
 ALLOWED_EVENT_NAMES = {
     "session_start",
     "home_view",
+    "global_lens_select",
     "context_select",
     "discovery_impression",
     "coordinate_view",
@@ -295,6 +319,14 @@ ALLOWED_EVENT_NAMES = {
     "challenge_adapt_start",
     "recognition_view",
     "archive_view",
+    "ai_assist_open",
+    "ai_profile_update",
+    "fit_score_view",
+    "ai_suggestion_request",
+    "ai_suggestion_received",
+    "ai_suggestion_apply",
+    "ai_suggestion_reject",
+    "ai_provider_unavailable",
 }
 
 ALLOWED_EVENT_PROPERTIES = {
@@ -318,6 +350,14 @@ ALLOWED_EVENT_PROPERTIES = {
     "season",
     "challenge_type",
     "recognition",
+    "priority_focus",
+    "strategy",
+    "action",
+    "before_score_bucket",
+    "after_score_bucket",
+    "provider_status",
+    "suggestion_count",
+    "global_lens",
 }
 
 ANALYTICS_ENUM_VALUES = {
@@ -340,7 +380,16 @@ ANALYTICS_ENUM_VALUES = {
     "role": {"MAIN_FURNITURE", "SUPPORT_FURNITURE", "STORAGE", "LIGHTING", "TEXTILE"},
     "category": {"BED", "SUPPORT", "STORAGE", "LIGHTING", "TEXTILE", "DESK"},
     "destination": {"NITORI_SEARCH", "NITORI_PRODUCT_PAGE", "ROOM_HARMONY_PREVIEW", "PREVIEW_ONLY"},
-    "mutation": {"KEPT", "REPLACED", "ADDED"},
+    "mutation": {"KEPT", "REPLACED", "ADDED", "REMOVED"},
+    "priority_focus": {"BALANCED", "BUDGET", "NEEDS", "EXISTING_FURNITURE", "STYLE"},
+    "strategy": {"PREFERENCE_SAFE", "BALANCED", "DISCOVERY"},
+    "action": {"KEEP", "REPLACE", "ADD", "REMOVE"},
+    "before_score_bucket": {"LOW", "MEDIUM", "HIGH"},
+    "after_score_bucket": {"LOW", "MEDIUM", "HIGH"},
+    "provider_status": {
+        "NOT_CHECKED", "READY", "DISABLED", "KEY_MISSING", "AUTH_ERROR", "RATE_LIMITED",
+        "QUOTA_EXCEEDED", "MODEL_ERROR", "REQUEST_ERROR", "PROVIDER_ERROR",
+    },
     "kind": {"REAL", "PLAN"},
     "derivation_type": {
         "LOWER_BUDGET",
@@ -362,6 +411,7 @@ ANALYTICS_ENUM_VALUES = {
         "EXISTING_FURNITURE",
         "REAL_ROOM_STORY",
     },
+    "global_lens": {"JP", "CN", "TH", "MY", "SG", "AU", "CA", "US", "BR", "FR", "IT", "SE"},
 }
 
 ANALYTICS_IDENTIFIER_PATTERNS = {
@@ -374,6 +424,7 @@ ANALYTICS_INTEGER_RANGES = {
     "match_dimension_count": (0, 8),
     "category_count": (0, 100),
     "product_count": (0, 100),
+    "suggestion_count": (0, 3),
 }
 
 

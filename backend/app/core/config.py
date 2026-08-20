@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from pydantic import field_validator
+from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -18,8 +18,20 @@ class Settings(BaseSettings):
     upload_dir: Path = REPOSITORY_DIR / ".demo" / "uploads"
     max_upload_bytes: int = 8 * 1024 * 1024
     cors_origins: list[str] = ["http://127.0.0.1:5173", "http://localhost:5173"]
+    ai_enabled: bool = False
+    openai_api_key: SecretStr | None = None
+    openai_base_url: str | None = None
+    openai_model: str = "gpt-5.6"
+    ai_timeout_seconds: float = 30.0
+    ai_max_retries: int = 1
+    ai_max_output_tokens: int = 1800
+    ai_rate_limit_requests: int = 4
+    ai_rate_limit_window_seconds: int = 60
 
-    model_config = SettingsConfigDict(env_prefix="RHC_", env_file=REPOSITORY_DIR / ".env", extra="ignore")
+    # Secrets are accepted only from the current process environment. In
+    # particular, the optional AI key must never be loaded from a persisted
+    # repository .env file.
+    model_config = SettingsConfigDict(env_prefix="RHC_", env_file=None, extra="ignore")
 
     @field_validator("cors_origins", mode="before")
     @classmethod

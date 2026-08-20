@@ -1,4 +1,5 @@
 from app.models.entities import (
+    AISuggestionPreview,
     AnalyticsEvent,
     Challenge,
     ChallengeEntry,
@@ -10,10 +11,13 @@ from app.models.entities import (
     CoordinateSave,
     CreatorProfile,
     HelpfulReaction,
+    PlanVisualLayout,
     Product,
+    UserPreferenceProfile,
 )
 
 __all__ = [
+    "AISuggestionPreview",
     "AnalyticsEvent",
     "Challenge",
     "ChallengeEntry",
@@ -25,5 +29,7 @@ __all__ = [
     "CoordinateSave",
     "CreatorProfile",
     "HelpfulReaction",
+    "PlanVisualLayout",
     "Product",
+    "UserPreferenceProfile",
 ]

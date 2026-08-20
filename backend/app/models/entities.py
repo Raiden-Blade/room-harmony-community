@@ -26,6 +26,7 @@ class Product(Base):
     image_url: Mapped[str] = mapped_column(String(500))
     provenance: Mapped[str] = mapped_column(String(32), default="DEMO")
     rights_status: Mapped[str] = mapped_column(String(64), default="LOCALLY_CREATED_DEMO")
+    style_hint: Mapped[str | None] = mapped_column(String(32), nullable=True)
 
     items: Mapped[list[CoordinateItem]] = relationship(back_populates="product")
 
@@ -237,3 +238,42 @@ class AnalyticsEvent(Base):
         "experiment_group", String(32), nullable=True, index=True
     )
     properties_json: Mapped[str] = mapped_column(Text, default="{}")
+
+
+class UserPreferenceProfile(Base):
+    __tablename__ = "user_preference_profiles"
+
+    owner_session_id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    room_size: Mapped[str] = mapped_column(String(32))
+    housing_type: Mapped[str] = mapped_column(String(32))
+    budget_max: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    needs_json: Mapped[str] = mapped_column(Text, default="[]")
+    preferred_style: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    priority_focus: Mapped[str] = mapped_column(String(32), default="BALANCED")
+    preserve_existing_furniture: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)
+
+
+class AISuggestionPreview(Base):
+    __tablename__ = "ai_suggestion_previews"
+
+    id: Mapped[str] = mapped_column(String(64), primary_key=True)
+    owner_session_id: Mapped[str] = mapped_column(String(64), index=True)
+    plan_id: Mapped[str] = mapped_column(String(64), index=True)
+    fingerprint: Mapped[str] = mapped_column(String(64))
+    suggestion_json: Mapped[str] = mapped_column(Text)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
+    applied_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class PlanVisualLayout(Base):
+    __tablename__ = "plan_visual_layouts"
+
+    plan_id: Mapped[str] = mapped_column(ForeignKey("coordinates.id", ondelete="CASCADE"), primary_key=True)
+    owner_session_id: Mapped[str] = mapped_column(String(64), index=True)
+    product_fingerprint: Mapped[str] = mapped_column(String(64))
+    layout_json: Mapped[str] = mapped_column(Text, default="[]")
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)

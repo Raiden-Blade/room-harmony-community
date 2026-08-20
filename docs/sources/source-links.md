@@ -26,6 +26,12 @@
 | NIT-016 | 新生活用品・お部屋別コーディネート | https://www.nitori-net.jp/ec/feature/newlifegoods/#room | NITORI official feature | Goal 4B/4C/4Dの主要Coordinate・Home画像と原Concept確認 | VERIFIED | 「シンプル」「推しグッズ」「友達を呼べる」「おうちカフェ」「集中」の5 Room concept、各4視点、各Roomの「使用しているアイテム」導線 | 2026-08-19に原Conceptと商品導線を再確認。現Seedの商品候補はRoom別商品IDとの一致未確認なので別Prototype layerとして表示。Userが本Prototypeでの使用許可を確認。一般Open licenseではなくRuntime hotlinkもしない。 |
 | NIT-017 | Goal 4C curated product detail set | https://www.nitori-net.jp/ec/product/8842174/ | NITORI official product detail set | 18商品のIdentity / price / main image alignment | VERIFIED | 6Category×3件の商品名、商品コード、日付付き価格、主画像、公式商品URL | 代表LinkはNカラボ3段。18件すべての公式商品URLと公式主画像URLは`data/seed/product_asset_manifest.json`に記録し、ローカルWebPだけをRuntime表示する。価格は2026-08-19観察値。 |
 
+## User-provided design prototype
+
+| Source ID | Source name | URL | Source type | Purpose | Retrieval status | What it supports | Notes |
+|---|---|---|---|---|---|---|---|
+| UXP-001 | Room Around global prototype | https://room-around-global.lyu-hao.chatgpt.site | User-provided interactive prototype | Global discovery Homeの画面・状態遷移監査 | READ | Globeを中心にした初期発見、国→地域→Coordinateの視覚導線、未接続CTAの存在 | 2026-08-20に実画面を操作確認。事実Dataや効果の根拠ではなく、UI conceptの参照。Local実装は既存Coordinate / PLANへ接続し、国名を撮影地とは扱わない。 |
+
 ## Existing Room Harmony sources
 
 監査基準 commit: `d41f411a783f555fd4828cb001695c30126e3bb5`（2026-08-18）。以下の GitHub URL は同 commit に固定する。
@@ -53,6 +59,10 @@
 |---|---|---|---|---|---|---|---|
 | DEV-001 | Python Releases for Windows | https://www.python.org/downloads/windows/ | Python official | Windows runtime install destination | VERIFIED | Python official Windows installer availability | MVPのminimum versionはRepository contract / test environmentによる。 |
 | DEV-002 | Node.js official download | https://nodejs.org/ | Node.js official | Node / npm install destination | VERIFIED | Node.js official distribution entry | Supported rangeはVite engineとlocal clean-room testに基づく。 |
+| DEV-003 | OpenAI API quickstart | https://developers.openai.com/api/docs/quickstart | OpenAI official docs | Server-side API key / Responses API configuration boundary | READ | Backend-only key handling and Responses API usage | OpenAI official service向け。第三者gatewayの品質・契約は保証しない。 |
+| DEV-004 | VectorEngine console | https://api.vectorengine.ai/ | Third-party gateway console | User-approved local demo provider preset | READ | Account-side model / key / usage surface and supplied Base URL | OpenAI公式Serviceではない。Synthetic demo data限定。 |
+| DEV-005 | VectorEngine API catalog | https://vectorengine.apifox.cn/ | Third-party API catalog | OpenAI-compatible endpoint review | PARTIALLY_READ | `/v1` API shape, model listing, structured-output compatibility candidate | Live key testを別途実施。NITORI実Data利用の承認根拠にはしない。 |
+| DEV-006 | VectorEngine community integration notes | https://github.com/Archer-ai-hub/vectorengine-api-gateway/blob/main/vectorengine-api-gateway-UPLOAD/README.md | Third-party community repository | Console / Base URL / model-group navigation cross-check | READ | `base_url` + Bearer key + model id integration pattern | Authoritative contractではない。Live console / API catalogを優先する。 |
 
 ## Retrieval caveats
 
