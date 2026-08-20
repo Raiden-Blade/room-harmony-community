@@ -4,11 +4,14 @@ import { useSearchParams } from "react-router-dom";
 import { api, track, trackOnce } from "../api/client";
 import { CoordinateCard } from "../components/coordinate/CoordinateCard";
 import { EmptyView, ErrorView, Loading } from "../components/common/StatusView";
+import { globalLensLabels } from "../data/globalLenses";
 import { useAsync } from "../hooks/useAsync";
 
 export function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const mode = searchParams.get("mode") || "similar";
+  const globalLens = searchParams.get("global_lens") || "";
+  const globalLensLabel = globalLensLabels[globalLens];
   const [roomSize, setRoomSize] = useState(searchParams.get("room_size") || "SMALL_6");
   const [need, setNeed] = useState(searchParams.get("need") || "STORAGE");
   const [budget, setBudget] = useState(searchParams.get("budget_max") || "50000");
@@ -62,8 +65,8 @@ export function ExplorePage() {
     <div className="page-shell">
       <header className="page-intro">
         <p className="eyebrow">Explore</p>
-        <h1>あなたの条件に近いコーデ</h1>
-        <p>人気だけでなく、部屋・困りごと・予算の一致を優先します。</p>
+        <h1>{globalLensLabel ? `${globalLensLabel}から広げるコーデ` : "あなたの条件に近いコーデ"}</h1>
+        <p>{globalLensLabel ? `${globalLensLabel}は発見の入口です。現在の商品データに撮影国情報はないため、地域別実績ではなく、部屋・困りごと・予算の条件に沿った既存コーデを表示します。` : "人気だけでなく、部屋・困りごと・予算の一致を優先します。"}</p>
       </header>
 
       <div className="explore-tabs" role="tablist" aria-label="表示基準">

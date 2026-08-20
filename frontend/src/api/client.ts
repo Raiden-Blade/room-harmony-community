@@ -1,6 +1,7 @@
 import { getSessionId } from "../state/session";
 import type {
   AIApplyResponse,
+  AIVisualReview,
   AIPreferenceProfile,
   AIPreferenceProfileInput,
   AISuggestionResponse,
@@ -18,8 +19,10 @@ import type {
   OptionsResponse,
   ProductDetail,
   ProductSummary,
+  PlanVisualLayout,
   SeasonalLanding,
   UploadedImage,
+  VisualLayoutItem,
   FitAssessment,
 } from "./types";
 
@@ -62,6 +65,10 @@ const SERVER_MESSAGES: Record<string, string> = {
   "PLAN item not found": "変更するPLAN商品が見つかりません。画面を再読み込みしてください。",
   "Product already exists in PLAN": "その商品はすでにPLANに含まれています。",
   "Select a different product": "現在とは別の商品を選んでください。",
+  "Layout contains duplicate PLAN items": "同じPLAN商品が配置に重複しています。配置画面を開き直してください。",
+  "PLAN products changed; reload the layout": "PLANの商品構成が変わりました。配置画面を開き直してください。",
+  "PLAN layout was updated; reload before saving": "別の画面で配置が更新されました。配置画面を開き直してください。",
+  "Saved PLAN layout is invalid": "保存済みの配置を読み込めませんでした。配置を初期状態からやり直してください。",
   "No products available for handoff": "比較する商品がありません。PLANに商品を追加してください。",
   "Anchor product must be selected in the PLAN": "比較の起点はPLANに含まれる商品から選んでください。",
 };
@@ -80,7 +87,12 @@ const AI_MESSAGES: Record<string, string> = {
   AI_DISABLED: "AI PLAN Assistは現在無効です。通常のPLAN編集と適合度確認は引き続き使えます。",
   AI_KEY_MISSING: "AI用APIキーが設定されていません。通常のPLAN編集は引き続き使えます。",
   AI_AUTH_ERROR: "AI用APIキーを確認してください。通常のPLAN編集は引き続き使えます。",
-  AI_PROVIDER_BUSY: "AIが混み合っています。少し待って再試行してください。",
+  AI_PROVIDER_BUSY: "APIのリクエスト上限に達しました。少し待って再試行してください。",
+  AI_PROVIDER_RATE_LIMITED: "APIのリクエスト上限に達しました。少し待って再試行してください。",
+  AI_QUOTA_EXCEEDED: "API利用枠または請求設定を確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_MODEL_NOT_AVAILABLE: "設定したAIモデル名と利用権限を確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_MODEL_ACCESS_ERROR: "設定したAIモデルの利用権限を確認してください。通常のPLAN編集は引き続き使えます。",
+  AI_REQUEST_ERROR: "AIリクエスト設定（モデル名・出力形式）を確認してください。通常のPLAN編集は引き続き使えます。",
   AI_TIMEOUT: "AIの応答が時間内に完了しませんでした。もう一度お試しください。",
   AI_CONNECTION_ERROR: "AIサービスへ接続できませんでした。通常のPLAN編集は引き続き使えます。",
   AI_PROVIDER_ERROR: "AIサービスで問題が発生しました。通常のPLAN編集は引き続き使えます。",
@@ -91,6 +103,8 @@ const AI_MESSAGES: Record<string, string> = {
   AI_SUGGESTION_NOT_FOUND: "このAI提案は利用できません。もう一度提案を作成してください。",
   AI_PRODUCT_NOT_ALLOWED: "提案の商品候補を確認できませんでした。",
   AI_INVALID_SUGGESTION: "提案の操作を確認できませんでした。",
+  AI_INVALID_IMAGE: "配置画像を読み取れませんでした。配置を元に戻して、もう一度お試しください。",
+  AI_INVALID_LAYOUT: "配置商品の対応関係を確認できませんでした。ページを再読み込みしてください。",
 };
 
 type RequestOptions = RequestInit & { json?: unknown };
@@ -156,6 +170,17 @@ export const api = {
     request<AIApplyResponse>(`/api/plans/${planId}/ai/apply`, {
       method: "POST",
       json: { suggestion_id: suggestionId },
+    }),
+  aiVisualReview: (planId: string, imageDataUrl: string, layoutItems: VisualLayoutItem[]) =>
+    request<AIVisualReview>(`/api/plans/${planId}/ai/visual-review`, {
+      method: "POST",
+      json: { image_data_url: imageDataUrl, layout_items: layoutItems },
+    }),
+  planVisualLayout: (planId: string) => request<PlanVisualLayout>(`/api/plans/${planId}/visual-layout`),
+  savePlanVisualLayout: (planId: string, baseVersion: number, layoutItems: VisualLayoutItem[]) =>
+    request<PlanVisualLayout>(`/api/plans/${planId}/visual-layout`, {
+      method: "PUT",
+      json: { base_version: baseVersion, layout_items: layoutItems },
     }),
   options: () => request<OptionsResponse>("/api/meta/options"),
   seasonal: () => request<SeasonalLanding>("/api/seasonal"),

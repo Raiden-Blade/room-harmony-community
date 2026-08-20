@@ -26,6 +26,7 @@
 - [KPI](product/kpi.md)
 - [MVP definition](product/mvp-definition.md)
 - [Phase 1 implementation plan](product/phase-1-plan.md)
+- [Global discovery bridge](product/global-discovery-bridge.md)
 
 ## Architecture
 

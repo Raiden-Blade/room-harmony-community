@@ -100,6 +100,58 @@ def test_plan_update_and_handoff_preview_api(client):
     assert len(preview.json()["product_ids"]) >= 1
 
 
+def test_plan_visual_layout_is_private_versioned_and_restored(client):
+    plan = client.post("/api/plans/from-coordinate/coord-001", json={}).json()
+    plan_id = plan["id"]
+    product_items = [item for item in plan["items"] if item["product"]]
+    layout_items = [
+        {
+            "item_id": item["id"],
+            "product_id": item["product"]["id"],
+            "x": round(0.18 + index * 0.12, 3),
+            "y": round(0.35 + index * 0.04, 3),
+            "scale": 1,
+            "rotation": index * 15,
+            "visible": True,
+        }
+        for index, item in enumerate(product_items)
+    ]
+
+    empty = client.get(f"/api/plans/{plan_id}/visual-layout")
+    assert empty.status_code == 200
+    assert empty.json()["status"] == "NOT_SAVED"
+    assert empty.json()["version"] == 0
+
+    saved = client.put(
+        f"/api/plans/{plan_id}/visual-layout",
+        json={"base_version": 0, "layout_items": layout_items},
+    )
+    assert saved.status_code == 200
+    assert saved.json()["version"] == 1
+    assert saved.json()["layout_items"] == layout_items
+
+    restored = client.get(f"/api/plans/{plan_id}/visual-layout")
+    assert restored.json()["status"] == "SAVED"
+    assert restored.json()["layout_items"] == layout_items
+
+    stale_version = client.put(
+        f"/api/plans/{plan_id}/visual-layout",
+        json={"base_version": 0, "layout_items": layout_items},
+    )
+    assert stale_version.status_code == 409
+    assert client.get(
+        f"/api/plans/{plan_id}/visual-layout",
+        headers={"X-Session-ID": "other-session"},
+    ).status_code == 404
+
+    tampered = [dict(item) for item in layout_items]
+    tampered[0]["product_id"] = "NTR-NOT-IN-PLAN"
+    assert client.put(
+        f"/api/plans/{plan_id}/visual-layout",
+        json={"base_version": 1, "layout_items": tampered},
+    ).status_code == 409
+
+
 def test_private_plan_is_not_visible_or_cloneable_by_another_session(client):
     owner_headers = {"X-Session-ID": "owner-session"}
     plan = client.post("/api/plans/from-coordinate/coord-001", json={}, headers=owner_headers).json()

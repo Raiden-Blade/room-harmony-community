@@ -198,6 +198,29 @@ class AddItemRequest(BaseModel):
     role: str = Field(min_length=1, max_length=48)
 
 
+class PlanVisualLayoutItem(BaseModel):
+    item_id: int
+    product_id: str = Field(min_length=1, max_length=96)
+    x: float = Field(ge=0, le=1)
+    y: float = Field(ge=0, le=1)
+    scale: float = Field(ge=0.75, le=1.25)
+    rotation: int = Field(ge=-180, le=180)
+    visible: bool = True
+
+
+class PlanVisualLayoutRequest(BaseModel):
+    base_version: int = Field(ge=0)
+    layout_items: list[PlanVisualLayoutItem] = Field(min_length=1, max_length=20)
+
+
+class PlanVisualLayoutResponse(BaseModel):
+    plan_id: str
+    version: int
+    status: Literal["NOT_SAVED", "SAVED", "RESET_DUE_TO_PLAN_CHANGE"]
+    updated_at: datetime | None = None
+    layout_items: list[PlanVisualLayoutItem] = Field(default_factory=list)
+
+
 class HandoffRequest(BaseModel):
     anchor_product_id: str | None = None
     store_id: str | None = Field(default=None, max_length=64)
@@ -252,6 +275,7 @@ class HandoffPayload(BaseModel):
 ALLOWED_EVENT_NAMES = {
     "session_start",
     "home_view",
+    "global_lens_select",
     "context_select",
     "discovery_impression",
     "coordinate_view",
@@ -333,6 +357,7 @@ ALLOWED_EVENT_PROPERTIES = {
     "after_score_bucket",
     "provider_status",
     "suggestion_count",
+    "global_lens",
 }
 
 ANALYTICS_ENUM_VALUES = {
@@ -361,7 +386,10 @@ ANALYTICS_ENUM_VALUES = {
     "action": {"KEEP", "REPLACE", "ADD", "REMOVE"},
     "before_score_bucket": {"LOW", "MEDIUM", "HIGH"},
     "after_score_bucket": {"LOW", "MEDIUM", "HIGH"},
-    "provider_status": {"READY", "DISABLED", "KEY_MISSING", "AUTH_ERROR", "PROVIDER_ERROR"},
+    "provider_status": {
+        "NOT_CHECKED", "READY", "DISABLED", "KEY_MISSING", "AUTH_ERROR", "RATE_LIMITED",
+        "QUOTA_EXCEEDED", "MODEL_ERROR", "REQUEST_ERROR", "PROVIDER_ERROR",
+    },
     "kind": {"REAL", "PLAN"},
     "derivation_type": {
         "LOWER_BUDGET",
@@ -383,6 +411,7 @@ ANALYTICS_ENUM_VALUES = {
         "EXISTING_FURNITURE",
         "REAL_ROOM_STORY",
     },
+    "global_lens": {"JP", "CN", "TH", "MY", "SG", "AU", "CA", "US", "BR", "FR", "IT", "SE"},
 }
 
 ANALYTICS_IDENTIFIER_PATTERNS = {

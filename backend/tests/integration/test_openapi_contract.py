@@ -10,6 +10,7 @@ def test_openapi_exposes_the_mvp_contract():
     assert "/api/saved/{coordinate_id}" in paths
     assert "/api/plans/from-coordinate/{coordinate_id}" in paths
     assert "/api/plans/{plan_id}/handoff-preview" in paths
+    assert "/api/plans/{plan_id}/visual-layout" in paths
     assert "/api/analytics/events" in paths
     assert "/api/analytics/readiness" in paths
     assert "/api/creators/me" in paths

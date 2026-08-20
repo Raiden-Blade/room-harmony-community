@@ -1,13 +1,41 @@
 import { expect, test } from "@playwright/test";
 import { API_BASE_URL } from "./support";
 
+test("Global entry: each primary bridge opens the existing application flow", async ({ page }) => {
+  await page.goto("/");
+  const global = page.frameLocator('iframe[title="Room Around 全球コーディネート"]');
+  await expect(global.getByRole("link", { name: "Room Around ホーム" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Room Harmony Community ホーム" })).toHaveCount(0);
+
+  await global.getByRole("button", { name: /06\s*オーストラリア/ }).click();
+  await global.getByRole("button", { name: "オーストラリアを深く見る ↗" }).click();
+  await global.getByRole("button", { name: /シドニー/ }).click();
+  await global.getByRole("button", { name: "詳しく見る →" }).click();
+  await expect(page).toHaveURL(/\/explore\?global_lens=AU$/);
+  await expect(page.getByRole("heading", { name: "オーストラリアから広げるコーデ" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Room Harmony Community ホーム" })).toBeVisible();
+
+  await page.goto("/");
+  await page.frameLocator('iframe[title="Room Around 全球コーディネート"]').getByRole("button", { name: /AIに部屋を評価してもらう/ }).click();
+  await expect(page).toHaveURL(/\/saved\?intent=ai$/);
+  await expect(page.getByRole("heading", { name: "AIと調整するPLANを選ぶ" })).toBeVisible();
+
+  await page.goto("/");
+  await page.frameLocator('iframe[title="Room Around 全球コーディネート"]').getByRole("button", { name: "コーディネートを投稿", exact: true }).first().click();
+  await expect(page).toHaveURL(/\/create$/);
+  await expect(page.getByRole("heading", { name: "暮らしを、誰かの参考にする" })).toBeVisible();
+});
+
 test("E2E 1: Home → Similar-to-me → products → Save", async ({ page }) => {
   const sessionId = `e2e-user-one-${Date.now()}`;
   await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
   await page.goto("/");
-  await expect(page.getByText("暮らしの事例から、自分用PLANへ")).toBeVisible();
-  await page.getByRole("link", { name: "条件から参考コーデを探す" }).click();
-  await expect(page.getByRole("heading", { name: "あなたの条件に近いコーデ" })).toBeVisible();
+  const global = page.frameLocator('iframe[title="Room Around 全球コーディネート"]');
+  await expect(global.getByRole("heading", { name: /世界の部屋から/ })).toBeVisible();
+  await global.getByRole("button", { name: "日本を深く見る ↗" }).click();
+  await global.getByRole("button", { name: /北海道/ }).click();
+  await global.getByRole("button", { name: "詳しく見る →" }).click();
+  await expect(page.getByRole("heading", { name: "日本から広げるコーデ" })).toBeVisible();
   await expect(page.getByText("収納不足に対応").first()).toBeVisible();
 
   await page.getByRole("link", { name: "空間全体を見る" }).first().click();

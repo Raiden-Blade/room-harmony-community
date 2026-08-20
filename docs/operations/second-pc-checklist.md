@@ -9,9 +9,9 @@ Purpose: Codexのfresh-clone simulationとは別に、実際の2台目Windows 10
 1. Phase 2A PRのGitHub画面からZIPをDownloadするか、`git clone https://github.com/Raiden-Blade/room-harmony-community.git`後にbranch `agent/personalized-ai-plan-assist`をcheckoutする。Phase 2A PRは人間がMergeするまでmainへ入っていない。
 2. ZIPの場合は右Click → `すべて展開`。ZIP viewer内から直接実行しない。
 3. PowerShellまたはCommand Promptで`python --version`を確認する。無い場合は`py -3 --version`を確認し、Python 3.11以上であることを確認する。続けて`node --version`が20.19〜24.x、`npm --version`が表示されることを確認する。
-4. Repository直下の`start-demo.cmd`をDouble-clickする。hidden promptはまず空Enterで進み、初回Install完了後、Browserで<http://127.0.0.1:5173>が自動表示されることを確認する。
+4. Repository直下の`start-demo.cmd`をDouble-clickする。AI service選択はまず空Enterで無効化し、初回Install完了後、Browserで<http://127.0.0.1:5173>が自動表示されることを確認する。AI実演時だけ再起動して`1. OpenAI official`または`2. VectorEngine`を選び、hidden promptへ一時Keyを入力する。
 5. Flow A: `条件から参考コーデを探す` → 選んだ条件との一致 → Coordinate Detail → 2商品以上のProduct Detail → ProductからCoordinateへ戻る → `あとで参考にする`を実行する。
-6. Flow B: `保存・PLAN` → Private PLAN作成 → `AIと一緒に調整する` → 5軸適合度 → AI提案disabled状態 → 手持ち家具追加 → 商品置換 → Total更新 → `比較準備へ` → `PREVIEW ONLY / live_integration: false`を確認する。
+6. Flow B: `保存・PLAN` → Private PLAN作成 → `AI調整案を見る` → 5軸適合度と動的な判定根拠 → AI調整案disabled状態 → 手持ち家具追加 → 商品置換 → Total更新 → `比較準備へ` → `PREVIEW ONLY / live_integration: false`を確認する。
 7. Product Detail → `この商品を使ったコーデを見る` → Coordinate → Private PLANが動くことを確認する。
 8. `stop-demo.cmd` → `reset-demo.cmd`を実行し、大文字`RESET`を入力する。再起動後、保存・PLAN・試験投稿・Uploadが残らず、Seed画面へ戻ることを確認する。
 9. `stop-demo.cmd`をDouble-clickする。

@@ -266,3 +266,14 @@ class AISuggestionPreview(Base):
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
     applied_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
+class PlanVisualLayout(Base):
+    __tablename__ = "plan_visual_layouts"
+
+    plan_id: Mapped[str] = mapped_column(ForeignKey("coordinates.id", ondelete="CASCADE"), primary_key=True)
+    owner_session_id: Mapped[str] = mapped_column(String(64), index=True)
+    product_fingerprint: Mapped[str] = mapped_column(String(64))
+    layout_json: Mapped[str] = mapped_column(Text, default="[]")
+    version: Mapped[int] = mapped_column(Integer, default=1)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now)

@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import base64
 import json
 import time
 from collections import defaultdict, deque
 from datetime import datetime, timedelta, timezone
+from io import BytesIO
 from threading import Lock
 from uuid import uuid4
 
+from PIL import Image, UnidentifiedImageError
 from sqlalchemy import delete, or_, select
 from sqlalchemy.orm import Session
 
@@ -18,6 +21,8 @@ from app.ai.schemas import (
     AIPlanContext,
     AIPlanItemContext,
     AIProductRef,
+    AIVisualReviewRequest,
+    AIVisualReviewResponse,
     AISuggestion,
     AISuggestionResponse,
     PreferenceProfile,
@@ -104,6 +109,115 @@ def fit_for_plan(session: Session, session_id: str, plan: Coordinate):
     return assess(snapshot_plan(plan), PreferenceProfileInput.model_validate(profile.model_dump(exclude={"source"})))
 
 
+def generate_visual_review(
+    session: Session,
+    session_id: str,
+    plan: Coordinate,
+    provider,
+    limiter: SessionRateLimiter,
+    payload: AIVisualReviewRequest,
+) -> AIVisualReviewResponse:
+    provider_status = provider.status()
+    if not provider_status.enabled:
+        raise AIProviderError("AI_DISABLED", "AI PLAN Assistは無効です。", 503)
+    if not provider_status.configured:
+        raise AIProviderError("AI_KEY_MISSING", "AI用のAPIキーが設定されていません。", 503)
+    if provider_status.reason_code == "AUTH_ERROR":
+        raise AIProviderError("AI_AUTH_ERROR", "AI用APIキーを確認してください。", 503)
+    if provider_status.reason_code == "MODEL_ERROR":
+        raise AIProviderError("AI_MODEL_NOT_AVAILABLE", "設定したAIモデルの利用権限またはモデル名を確認してください。", 503)
+    if provider_status.reason_code == "REQUEST_ERROR":
+        raise AIProviderError("AI_REQUEST_ERROR", "AIリクエスト設定（モデル名・画像入力・出力形式）を確認してください。", 502)
+    limiter.check(session_id)
+    _validate_visual_image(payload.image_data_url)
+
+    product_items = {item.id: item for item in plan.items if item.product_id and item.product}
+    requested_ids = [item.item_id for item in payload.layout_items]
+    if len(requested_ids) != len(set(requested_ids)):
+        raise AIProviderError("AI_INVALID_LAYOUT", "同じ商品が配置情報に重複しています。", 422)
+    if set(requested_ids) != set(product_items):
+        raise AIProviderError("AI_STALE_PLAN", "PLANの商品構成が変わりました。配置を元に戻して再試行してください。", 409)
+
+    layout_context = []
+    for layout in payload.layout_items:
+        plan_item = product_items.get(layout.item_id)
+        if not plan_item or plan_item.product_id != layout.product_id or not plan_item.product:
+            raise AIProviderError("AI_STALE_PLAN", "PLANの商品構成が変わりました。配置を元に戻して再試行してください。", 409)
+        layout_context.append({
+            "item_id": plan_item.id,
+            "product_id": plan_item.product_id,
+            "name": plan_item.product.name,
+            "role": plan_item.role,
+            "category": plan_item.product.category,
+            "style_hint": plan_item.product.style_hint,
+            "layout": layout.model_dump(exclude={"item_id", "product_id"}),
+        })
+
+    profile = get_profile(session, session_id, plan)
+    context = {
+        "task": "2D配置イメージの視覚的な特徴を説明し、実行可能な次の一手を1つ示す",
+        "room": {
+            "room_type": plan.room_type,
+            "size_band": profile.room_size,
+            "housing_type": profile.housing_type,
+        },
+        "preferences": {
+            "budget_max": profile.budget_max,
+            "needs": profile.needs,
+            "preferred_style": profile.preferred_style,
+            "priority_focus": profile.priority_focus,
+        },
+        "items": layout_context,
+        "rendering_limits": [
+            "商品画像には撮影背景が含まれる場合がある",
+            "自由配置の2Dイメージであり実寸ではない",
+            "画像から設置可否・安全性・正確な動線を判断しない",
+        ],
+    }
+    review = provider.analyze_visual(context, payload.image_data_url)
+    current_layout = {item.item_id: item for item in payload.layout_items}
+    safe_changes = []
+    for change in review.layout_changes:
+        current = current_layout.get(change.item_id)
+        if not current or not current.visible:
+            continue
+        safe_changes.append(change.model_copy(update={
+            "x": max(0.0, min(1.0, max(current.x - 0.18, min(current.x + 0.18, change.x)))),
+            "y": max(0.0, min(1.0, max(current.y - 0.18, min(current.y + 0.18, change.y)))),
+            "scale": max(0.75, min(1.25, max(current.scale - 0.2, min(current.scale + 0.2, change.scale)))),
+            "rotation": max(-180, min(180, max(current.rotation - 30, min(current.rotation + 30, change.rotation)))),
+        }))
+    return AIVisualReviewResponse(
+        **review.model_dump(exclude={"layout_changes"}),
+        layout_changes=safe_changes,
+        policy_version=f"{POLICY_VERSION}-visual-1",
+        image_used=True,
+        disclaimer="機能検証用の視覚評価です。実寸・設置可否・安全性を判定するものではありません。",
+    )
+
+
+def _validate_visual_image(image_data_url: str) -> None:
+    allowed_prefixes = ("data:image/jpeg;base64,", "data:image/png;base64,", "data:image/webp;base64,")
+    prefix = next((item for item in allowed_prefixes if image_data_url.startswith(item)), None)
+    if prefix is None:
+        raise AIProviderError("AI_INVALID_IMAGE", "配置画像の形式を確認してください。", 422)
+    try:
+        raw = base64.b64decode(image_data_url[len(prefix):], validate=True)
+    except (ValueError, TypeError) as exc:
+        raise AIProviderError("AI_INVALID_IMAGE", "配置画像を読み取れませんでした。", 422) from exc
+    if not raw or len(raw) > 1_000_000:
+        raise AIProviderError("AI_INVALID_IMAGE", "配置画像のサイズを小さくして再試行してください。", 422)
+    try:
+        with Image.open(BytesIO(raw)) as image:
+            image.verify()
+        with Image.open(BytesIO(raw)) as image:
+            width, height = image.size
+            if width < 320 or height < 200 or width > 1600 or height > 1200:
+                raise AIProviderError("AI_INVALID_IMAGE", "配置画像の縦横サイズを確認してください。", 422)
+    except (UnidentifiedImageError, OSError) as exc:
+        raise AIProviderError("AI_INVALID_IMAGE", "配置画像を読み取れませんでした。", 422) from exc
+
+
 def generate_suggestions(
     session: Session,
     session_id: str,
@@ -119,6 +233,10 @@ def generate_suggestions(
         raise AIProviderError("AI_KEY_MISSING", "AI用のAPIキーが設定されていません。", 503)
     if provider_status.reason_code == "AUTH_ERROR":
         raise AIProviderError("AI_AUTH_ERROR", "AI用APIキーを確認してください。", 503)
+    if provider_status.reason_code == "MODEL_ERROR":
+        raise AIProviderError("AI_MODEL_NOT_AVAILABLE", "設定したAIモデルの利用権限またはモデル名を確認してください。", 503)
+    if provider_status.reason_code == "REQUEST_ERROR":
+        raise AIProviderError("AI_REQUEST_ERROR", "AIリクエスト設定（モデル名・出力形式）を確認してください。", 502)
     limiter.check(session_id)
     if profile_override is not None:
         profile = save_profile(session, session_id, profile_override)

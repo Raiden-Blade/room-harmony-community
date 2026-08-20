@@ -97,7 +97,19 @@ class AIStatus(BaseModel):
     enabled: bool
     configured: bool
     available: bool
-    reason_code: Literal["READY", "DISABLED", "KEY_MISSING", "AUTH_ERROR", "PROVIDER_ERROR"]
+    verified: bool
+    reason_code: Literal[
+        "NOT_CHECKED",
+        "READY",
+        "DISABLED",
+        "KEY_MISSING",
+        "AUTH_ERROR",
+        "RATE_LIMITED",
+        "QUOTA_EXCEEDED",
+        "MODEL_ERROR",
+        "REQUEST_ERROR",
+        "PROVIDER_ERROR",
+    ]
     model: str
 
 
@@ -117,6 +129,52 @@ class ProviderSuggestionEnvelope(BaseModel):
 
 class AISuggestionRequest(BaseModel):
     profile: PreferenceProfileInput | None = None
+
+
+class VisualLayoutItem(BaseModel):
+    item_id: int
+    product_id: str = Field(min_length=1, max_length=96)
+    x: float = Field(ge=0, le=1)
+    y: float = Field(ge=0, le=1)
+    scale: float = Field(ge=0.75, le=1.25)
+    rotation: int = Field(ge=-180, le=180)
+    visible: bool = True
+
+
+class AIVisualReviewRequest(BaseModel):
+    image_data_url: str = Field(min_length=32, max_length=1_500_000)
+    layout_items: list[VisualLayoutItem] = Field(min_length=1, max_length=20)
+
+
+class VisualObservation(BaseModel):
+    code: Literal["COLOR_HARMONY", "VISUAL_BALANCE", "SPACIOUSNESS", "STYLE_COHERENCE"]
+    label: str = Field(min_length=1, max_length=32)
+    observation: str = Field(min_length=1, max_length=140)
+    evidence: str = Field(min_length=1, max_length=140)
+    suggestion: str = Field(min_length=1, max_length=160)
+    confidence: Literal["LOW", "MEDIUM", "HIGH"]
+
+
+class VisualLayoutChange(BaseModel):
+    item_id: int
+    x: float = Field(ge=0, le=1)
+    y: float = Field(ge=0, le=1)
+    scale: float = Field(ge=0.75, le=1.25)
+    rotation: int = Field(ge=-180, le=180)
+    reason: str = Field(min_length=1, max_length=120)
+
+
+class VisualReview(BaseModel):
+    summary: str = Field(min_length=1, max_length=180)
+    observations: list[VisualObservation] = Field(min_length=2, max_length=4)
+    next_action: str = Field(min_length=1, max_length=180)
+    layout_changes: list[VisualLayoutChange] = Field(default_factory=list, max_length=2)
+
+
+class AIVisualReviewResponse(VisualReview):
+    policy_version: str
+    image_used: bool = True
+    disclaimer: str
 
 
 class AIProductRef(BaseModel):

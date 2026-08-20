@@ -11,6 +11,7 @@ from app.models.entities import (
     CoordinateSave,
     CreatorProfile,
     HelpfulReaction,
+    PlanVisualLayout,
     Product,
     UserPreferenceProfile,
 )
@@ -28,6 +29,7 @@ __all__ = [
     "CoordinateSave",
     "CreatorProfile",
     "HelpfulReaction",
+    "PlanVisualLayout",
     "Product",
     "UserPreferenceProfile",
 ]

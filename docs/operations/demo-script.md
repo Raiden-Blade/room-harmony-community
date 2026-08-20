@@ -3,7 +3,7 @@
 ## Before the audience arrives
 
 1. Browser zoomを100%にする。
-2. `stop-demo.cmd` → `reset-demo.cmd` → confirmationへ`RESET` → `start-demo.cmd`の順で実行する。AI提案も実演する場合だけhidden promptへ一時Keyを入力し、通常は空Enterでよい。
+2. `stop-demo.cmd` → `reset-demo.cmd` → confirmationへ`RESET` → `start-demo.cmd`の順で実行する。AI提案も実演する場合だけServiceを選んでhidden promptへ一時Keyを入力し、通常は最初の選択で空EnterしてAIを無効化する。
 3. <http://127.0.0.1:8000/health>が`status: ok`、Homeが表示されることを確認する。
 4. Demo 2用に通常WindowとInPrivate / Incognito Windowを一つずつ用意する。SessionはBrowser localStorage単位で分離される。
 5. Upload用には個人情報・人物・brand logoを含まないJPEG / PNG / WebPを用意する。
@@ -12,19 +12,19 @@
 
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
-| Home | 「好き」だけで終わらせず、自分の部屋で試せるPLANへ | 左側は固定したProduct promise、右側はNITORI公式のRoom conceptに沿う4つの参考入口。単品商品やSNS投稿を見るだけでなく、暮らしの条件から複数商品を検討するCoordinate Platform | Homeが開かなければ`/health`確認。失敗時はRecovery手順へ |
+| Home | 独立したRoom Around Global Home | 起動時は発見に集中し、商品一覧や条件Formを同一画面へ詰め込まない。国・地域名は撮影地ではなく探索ラベル。多様性や併売率の効果は未検証 | Homeが開かなければ`/health`確認。失敗時はRecovery手順へ |
 
 ## Demo 1 — Similar-to-me → PLAN — 2 minutes
 
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
-| `条件から参考コーデを探す` | `あなたの条件に近いコーデ` | AIではなく、広さ・困りごと・予算のdeterministic一致。PopularとのA/B結果ではない | 6畳 / 収納 / 5万円を選び`この条件で探す` |
+| 国・地域ラベル → `○○を深く見る` | App Headerを持つExplore | Global側は視覚的な探索入口。遷移後は国別実績ではなく、広さ・困りごと・予算のdeterministic一致へ切り替わる | `/explore?room_size=SMALL_6&need=STORAGE&budget_max=50000`を直接開く |
 | 先頭Card（`coord-001`）の`空間全体を見る` | Coordinate Detail | 明るい木目と収納が見える許可済みREFERENCE ROOMを入口に、選択条件との実際の一致、5商品 / 4カテゴリ、概算を空間単位で見る。室内画像と購入候補は別の参照情報であることも説明 | Cardが無ければHomeへ戻り6畳 / 収納 / 5万円を再指定 |
 | 1商品の`商品と使用コーデを見る` → 戻る | Product Detail → Coordinate | 商品から同じ商品を使うCoordinateへ逆探索できる | 新Tabを開いた場合は元Tabへ戻る |
 | `あとで参考にする` → `このコーデを自分向けにアレンジ` | 保存済み → Private PLAN Edit | Saveは後で見るIntent、PLANは自分向けに変更するIntent | 既に保存済みでもPLAN作成は続行可能。混乱時はReset |
 | `別の商品に変更`、手持ち家具名 / サイズ、`手持ち家具を追加` | 商品置換とExisting Furniture | 全部買い替えず、手持ち品は概算購入額へ含めない | 置換候補が見えなければ別roleの商品で試す |
-| `AIと一緒に調整する` → 希望を保存 | 5軸レーダー / AI PLAN Assist | 適合度はAIの感想ではなく、予算・困りごと・手持ち家具・検証可能なStyle・構成の決定論的計算。評価不能軸は`--` | Keyなしでもここまでは表示できる |
-| `この希望でAI提案をつくる` → 提案Card | 最大3件の構造化提案 | AIはServer許可済みの1操作とNTR候補を選ぶだけ。priceとbefore/after scoreはBackendが計算し、この時点ではPLAN未変更 | AI停止中なら静止画ではなく、disabled状態と通常編集の継続を説明 |
+| PLAN総覧 → `AIと一緒に配置イメージを試す` | 参考コーデ画像、現在の商品画像、5軸レーダー、3点所見 / 保存可能な2D配置 | 現在PLANの商品を動かして保存し、同じ画面の`商品 / AIアドバイス`から画像評価または商品候補の見直しへ進む。AI位置案はpreview後にUserが保存するまで確定しない | Keyなしでも配置保存とルール分析は利用でき、AI操作時は設定方法を案内する |
+| `この条件でAI調整案をつくる` → 提案Card | 最大3件の構造化提案 | AIはServer許可済みの1操作とNTR候補を選ぶだけ。priceとbefore/after scoreはBackendが計算し、この時点ではPLAN未変更 | AI停止中ならdisabled状態と通常編集の継続を説明。失敗時は認証・利用枠・限流・モデル・接続の区別を示す |
 | `この提案をPLANに反映` | 商品・価格・適合度が更新 | Human confirmation後だけ既存PLAN mutationを実行。stale PLANは拒否して提案を作り直す | Provider障害時は通常の商品置換へ戻る |
 | `この内容で比較準備へ` → `店舗で5商品を比較する` | PLAN Summary → Handoff Preview | 人が読むSummaryがMain。Room Harmonyへ送信せず、共有しない情報も明示 | `開発者向け：連携データを確認`で`live_integration: false`を示す |
 
@@ -41,7 +41,7 @@
 
 | Click target | Expected screen | What to explain | Fallback |
 |---|---|---|---|
-| Homeの`今のテーマと前年Archiveを見る` | Seasonal Landing | ChallengeはCore Productでも人気Contestでもなく、前年事例を今年の検討へ戻すGrowth Layer | `/seasonal`を直接開く |
+| `/seasonal`を開く | Seasonal Landing | ChallengeはCore Productでも人気Contestでもなく、前年事例を今年の検討へ戻すGrowth Layer | `/seasonal`を直接開く |
 | `新生活の6畳 2027` → 前年の参考コーデ（`coord-001`等） | Archived Challenge / Coordinate | Archiveは消えたCampaign pageでなく、収納中心の前年REFERENCE ROOM / PROTOTYPE PLANを再利用できる集合。User申告REAL ROOMとは呼ばない | 先頭の`空間全体を見る`を選ぶ |
 | `このコーデを自分向けにアレンジ` → Public PLANとして共有 | Private PLAN → Public derivative | Parent / Root lineageを維持しながら今年向けに変更 | stale PLANがあれば保存・PLANから既存PLANを使用 |
 | `新生活の6畳 2028`へ参加 | Current Challenge Entry | Serverがownership、公開状態、6畳・一人暮らし・賃貸・予算・商品数を再確認 | 条件外なら画面の理由を説明し、Seedの参加例へ切替 |

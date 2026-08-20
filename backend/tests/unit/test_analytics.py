@@ -35,6 +35,12 @@ def test_known_event_and_enum_properties_are_valid():
     )
     assert ai.properties["action"] == "REPLACE"
 
+    global_discovery = AnalyticsEventRequest(
+        event_name="global_lens_select",
+        properties={"global_lens": "JP", "placement": "HOME", "rank": 1},
+    )
+    assert global_discovery.properties["global_lens"] == "JP"
+
 
 def test_unknown_event_is_rejected():
     with pytest.raises(ValidationError):
@@ -50,6 +56,9 @@ def test_free_text_property_is_rejected():
 
     with pytest.raises(ValidationError):
         AnalyticsEventRequest(event_name="fit_score_view", properties={"before_score_bucket": "82 points"})
+
+    with pytest.raises(ValidationError):
+        AnalyticsEventRequest(event_name="global_lens_select", properties={"global_lens": "free text"})
 
 
 def test_free_text_identifiers_are_rejected():

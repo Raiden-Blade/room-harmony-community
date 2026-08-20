@@ -12,11 +12,20 @@ from app.ai.schemas import (
     AISuggestionRequest,
     AISuggestionResponse,
     AIStatus,
+    AIVisualReviewRequest,
+    AIVisualReviewResponse,
     FitAssessment,
     PreferenceProfile,
     PreferenceProfileInput,
 )
-from app.ai.service import apply_suggestion, fit_for_plan, generate_suggestions, get_profile, save_profile
+from app.ai.service import (
+    apply_suggestion,
+    fit_for_plan,
+    generate_suggestions,
+    generate_visual_review,
+    get_profile,
+    save_profile,
+)
 from app.api.deps import get_db, get_session_id
 from app.schemas.common import CoordinateDetail
 from app.services.plans import require_owned_plan
@@ -103,6 +112,27 @@ def plan_ai_apply(
             suggestion=suggestion,
             before_fit=before,
             after_fit=after,
+        )
+    except AIProviderError as exc:
+        _raise_safe(exc)
+
+
+@router.post("/plans/{plan_id}/ai/visual-review", response_model=AIVisualReviewResponse)
+def plan_ai_visual_review(
+    plan_id: str,
+    payload: AIVisualReviewRequest,
+    request: Request,
+    db: Annotated[Session, Depends(get_db)],
+    session_id: Annotated[str, Depends(get_session_id)],
+) -> AIVisualReviewResponse:
+    try:
+        return generate_visual_review(
+            db,
+            session_id,
+            require_owned_plan(db, plan_id, session_id),
+            request.app.state.ai_provider,
+            request.app.state.ai_rate_limiter,
+            payload,
         )
     except AIProviderError as exc:
         _raise_safe(exc)

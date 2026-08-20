@@ -50,6 +50,7 @@ def create_app(settings: Settings | None = None, ai_provider: AIProvider | None 
     elif active_settings.ai_enabled and key:
         app.state.ai_provider = OpenAIPlanProvider(
             api_key=key,
+            base_url=active_settings.openai_base_url,
             model=active_settings.openai_model,
             timeout=active_settings.ai_timeout_seconds,
             max_retries=active_settings.ai_max_retries,

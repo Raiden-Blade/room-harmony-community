@@ -1,13 +1,23 @@
 from __future__ import annotations
 
+import base64
 import sqlite3
+from io import BytesIO
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
+from PIL import Image
 
 from app.ai.provider import AIProviderError
-from app.ai.schemas import AIStatus, ProviderSuggestion, ProviderSuggestionEnvelope
+from app.ai.schemas import (
+    AIStatus,
+    ProviderSuggestion,
+    ProviderSuggestionEnvelope,
+    VisualLayoutChange,
+    VisualObservation,
+    VisualReview,
+)
 from app.core.config import REPOSITORY_DIR, Settings
 from app.main import create_app
 
@@ -16,16 +26,17 @@ class FakeProvider:
     def __init__(self, mode: str = "replace"):
         self.mode = mode
         self.last_context: dict | None = None
+        self.last_visual_context: dict | None = None
 
     def status(self):
-        return AIStatus(enabled=True, configured=True, available=True, reason_code="READY", model="fake-model")
+        return AIStatus(enabled=True, configured=True, available=True, verified=True, reason_code="READY", model="fake-model")
 
     def generate(self, context: dict):
         self.last_context = context
         if self.mode == "error":
             raise AIProviderError("AI_AUTH_ERROR", "AI用APIキーを確認してください。", 503)
         if self.mode == "busy":
-            raise AIProviderError("AI_PROVIDER_BUSY", "AIが混み合っています。少し待って再試行してください。", 503)
+            raise AIProviderError("AI_PROVIDER_RATE_LIMITED", "APIのリクエスト上限に達しました。少し待って再試行してください。", 503)
         if self.mode == "timeout":
             raise AIProviderError("AI_TIMEOUT", "AIの応答が時間内に完了しませんでした。", 504)
         current = context["current_items"]
@@ -99,6 +110,35 @@ class FakeProvider:
             title="予算と希望を再調整", rationale="同じ役割の公式候補へ1点だけ置き換えます。", tradeoff="現在の商品はPLANから外れます。",
         )])
 
+    def analyze_visual(self, context: dict, image_data_url: str):
+        assert image_data_url.startswith("data:image/jpeg;base64,")
+        self.last_visual_context = context
+        first = context["items"][0]
+        return VisualReview(
+            summary="中央の商品群に視線が集まり、左右の余白には差があります。",
+            observations=[
+                VisualObservation(
+                    code="VISUAL_BALANCE", label="視覚的な重心",
+                    observation="主家具が中央寄りにまとまっています。",
+                    evidence="主家具と収納が画面中央から左側に集中しています。",
+                    suggestion="収納を少し左へ動かし、主家具との間隔を試してください。",
+                    confidence="HIGH",
+                ),
+                VisualObservation(
+                    code="STYLE_COHERENCE", label="スタイルのまとまり",
+                    observation="明るい木目の印象が共通しています。",
+                    evidence="画像内の商品タイルに近い明度が繰り返されています。",
+                    suggestion="アクセントを一箇所に絞って比較してください。",
+                    confidence="MEDIUM",
+                ),
+            ],
+            next_action="収納を左へ少し移動し、左右の余白を見比べてください。",
+            layout_changes=[VisualLayoutChange(
+                item_id=first["item_id"], x=1, y=0, scale=1.25, rotation=180,
+                reason="主家具から少し距離を取り、左右の重心を比較するためです。",
+            )],
+        )
+
 
 def _client(tmp_path: Path, provider=None, **overrides):
     ai_enabled = overrides.pop("ai_enabled", provider is not None)
@@ -128,6 +168,24 @@ def _neutral_profile(budget_max: int = 100_000) -> dict:
     }
 
 
+def _visual_payload(plan: dict) -> dict:
+    buffer = BytesIO()
+    Image.new("RGB", (760, 480), color=(238, 241, 236)).save(buffer, format="JPEG")
+    image_data_url = "data:image/jpeg;base64," + base64.b64encode(buffer.getvalue()).decode("ascii")
+    product_items = [item for item in plan["items"] if item["product"]]
+    return {
+        "image_data_url": image_data_url,
+        "layout_items": [
+            {
+                "item_id": item["id"], "product_id": item["product"]["id"],
+                "x": 0.2 + index * 0.1, "y": 0.55, "scale": 1,
+                "rotation": 0, "visible": True,
+            }
+            for index, item in enumerate(product_items)
+        ],
+    }
+
+
 def test_phase_one_remains_available_without_a_key_and_fit_is_deterministic(client):
     plan = _plan(client)
     status = client.get("/api/ai/status")
@@ -142,6 +200,65 @@ def test_phase_one_remains_available_without_a_key_and_fit_is_deterministic(clie
     disabled = client.post(f"/api/plans/{plan['id']}/ai/suggestions", json={"profile": None})
     assert disabled.status_code == 503
     assert disabled.json()["detail"]["code"] == "AI_DISABLED"
+    visual = client.post(f"/api/plans/{plan['id']}/ai/visual-review", json=_visual_payload(plan))
+    assert visual.status_code == 503
+    assert visual.json()["detail"]["code"] == "AI_DISABLED"
+
+
+def test_visual_review_uses_exact_current_plan_items_and_returns_bounded_feedback(tmp_path):
+    provider = FakeProvider()
+    with _client(tmp_path, provider) as client:
+        client.headers["X-Session-ID"] = "visual-review-session"
+        plan = _plan(client)
+        payload = _visual_payload(plan)
+        response = client.post(f"/api/plans/{plan['id']}/ai/visual-review", json=payload)
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["image_used"] is True
+    assert body["policy_version"].endswith("-visual-1")
+    assert len(body["observations"]) == 2
+    assert len(body["layout_changes"]) == 1
+    original = payload["layout_items"][0]
+    change = body["layout_changes"][0]
+    assert change["item_id"] == original["item_id"]
+    assert abs(change["x"] - original["x"]) <= 0.181
+    assert abs(change["y"] - original["y"]) <= 0.181
+    assert abs(change["rotation"] - original["rotation"]) <= 30
+    assert "実寸" in body["disclaimer"]
+    assert provider.last_visual_context is not None
+    assert {item["product_id"] for item in provider.last_visual_context["items"]} == {
+        item["product"]["id"] for item in plan["items"] if item["product"]
+    }
+    assert provider.last_visual_context["rendering_limits"]
+
+
+def test_visual_review_rejects_stale_product_mapping_before_provider_call(tmp_path):
+    provider = FakeProvider()
+    with _client(tmp_path, provider) as client:
+        client.headers["X-Session-ID"] = "visual-stale-session"
+        plan = _plan(client)
+        payload = _visual_payload(plan)
+        payload["layout_items"][0]["product_id"] = "NTR-NOT-IN-CURRENT-PLAN"
+        response = client.post(f"/api/plans/{plan['id']}/ai/visual-review", json=payload)
+
+    assert response.status_code == 409
+    assert response.json()["detail"]["code"] == "AI_STALE_PLAN"
+    assert provider.last_visual_context is None
+
+
+def test_visual_review_rejects_invalid_image_before_provider_call(tmp_path):
+    provider = FakeProvider()
+    with _client(tmp_path, provider) as client:
+        client.headers["X-Session-ID"] = "visual-invalid-image-session"
+        plan = _plan(client)
+        payload = _visual_payload(plan)
+        payload["image_data_url"] = "data:image/jpeg;base64," + base64.b64encode(b"not-an-image").decode("ascii")
+        response = client.post(f"/api/plans/{plan['id']}/ai/visual-review", json=payload)
+
+    assert response.status_code == 422
+    assert response.json()["detail"]["code"] == "AI_INVALID_IMAGE"
+    assert provider.last_visual_context is None
 
 
 def test_profile_is_private_per_anonymous_session(client):
@@ -375,7 +492,7 @@ def test_local_rate_limit_and_safe_provider_error(tmp_path):
 
 @pytest.mark.parametrize(
     ("mode", "status_code", "code"),
-    [("busy", 503, "AI_PROVIDER_BUSY"), ("timeout", 504, "AI_TIMEOUT")],
+    [("busy", 503, "AI_PROVIDER_RATE_LIMITED"), ("timeout", 504, "AI_TIMEOUT")],
 )
 def test_provider_busy_and_timeout_are_mapped_to_controlled_errors(tmp_path, mode, status_code, code):
     with _client(tmp_path / mode, FakeProvider(mode)) as client:
@@ -395,10 +512,36 @@ def test_settings_do_not_read_unprefixed_machine_key(monkeypatch):
     assert sentinel not in repr(settings)
 
 
+def test_settings_accept_runtime_openai_compatible_endpoint(monkeypatch):
+    monkeypatch.setenv("RHC_OPENAI_BASE_URL", "https://example.invalid/v1")
+    monkeypatch.setenv("RHC_OPENAI_MODEL", "gpt-4o-mini")
+
+    settings = Settings(_env_file=None)
+
+    assert settings.openai_base_url == "https://example.invalid/v1"
+    assert settings.openai_model == "gpt-4o-mini"
+
+
+def test_app_wires_openai_compatible_endpoint_to_provider(tmp_path):
+    with _client(
+        tmp_path,
+        ai_enabled=True,
+        openai_api_key="sentinel-fake-secret-never-use",
+        openai_base_url="https://example.invalid/v1",
+        openai_model="gpt-4o-mini",
+    ) as client:
+        provider = client.app.state.ai_provider
+
+        assert str(provider.client.base_url) == "https://example.invalid/v1/"
+        assert provider.status().model == "gpt-4o-mini"
+
+
 def test_ai_status_never_returns_configured_secret(tmp_path):
     sentinel = "sentinel-fake-secret-never-use"
     with _client(tmp_path, ai_enabled=True, openai_api_key=sentinel) as client:
         response = client.get("/api/ai/status")
         assert response.status_code == 200
-        assert response.json()["reason_code"] == "READY"
+        assert response.json()["reason_code"] == "NOT_CHECKED"
+        assert response.json()["verified"] is False
+        assert response.json()["available"] is True
         assert sentinel not in response.text

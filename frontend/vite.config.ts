@@ -8,6 +8,14 @@ export default defineConfig({
       "/uploads": "http://127.0.0.1:8000",
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: "index.html",
+        global: "global.html",
+      },
+    },
+  },
   test: {
     environment: "jsdom",
     include: ["src/**/*.test.{ts,tsx}"],

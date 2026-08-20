@@ -105,6 +105,7 @@ export function PlanEditPage() {
         <h1>自分向けに変更する</h1>
         <p>残す・1商品を置き換える・買い足す・手持ち家具を加える。フル3D編集ではありません。</p>
       </header>
+      <AIPlanAssist planId={planId} plan={plan.data} onApplied={plan.setData} />
       <div className="editor-layout">
         <div className="editor-main">
           <section aria-labelledby="edit-products-title">
@@ -174,7 +175,6 @@ export function PlanEditPage() {
             <button className="button button--primary" disabled={busy} onClick={finish}>この内容で比較準備へ</button>
             {actionError && <p className="inline-error" role="alert">{actionError}</p>}
           </section>
-          <AIPlanAssist planId={planId} plan={plan.data} onApplied={plan.setData} />
         </aside>
       </div>
     </div>

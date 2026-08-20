@@ -16,6 +16,8 @@ from app.schemas.common import (
     ExistingFurnitureRequest,
     HandoffPayload,
     HandoffRequest,
+    PlanVisualLayoutRequest,
+    PlanVisualLayoutResponse,
     ReplaceItemRequest,
 )
 from app.schemas.community import PublishPlanRequest
@@ -31,6 +33,7 @@ from app.services.plans import (
     require_owned_plan,
 )
 from app.services.serialization import coordinate_detail
+from app.services.visual_layouts import layout_for_plan, save_layout
 
 
 router = APIRouter(prefix="/api/plans", tags=["plans"])
@@ -76,6 +79,25 @@ def plan_by_id(
     session_id: Annotated[str, Depends(get_session_id)],
 ) -> CoordinateDetail:
     return coordinate_detail(require_owned_plan(db, plan_id, session_id), db, session_id)
+
+
+@router.get("/{plan_id}/visual-layout", response_model=PlanVisualLayoutResponse)
+def get_visual_layout(
+    plan_id: str,
+    db: Annotated[Session, Depends(get_db)],
+    session_id: Annotated[str, Depends(get_session_id)],
+) -> PlanVisualLayoutResponse:
+    return layout_for_plan(db, require_owned_plan(db, plan_id, session_id))
+
+
+@router.put("/{plan_id}/visual-layout", response_model=PlanVisualLayoutResponse)
+def put_visual_layout(
+    plan_id: str,
+    payload: PlanVisualLayoutRequest,
+    db: Annotated[Session, Depends(get_db)],
+    session_id: Annotated[str, Depends(get_session_id)],
+) -> PlanVisualLayoutResponse:
+    return save_layout(db, require_owned_plan(db, plan_id, session_id), session_id, payload)
 
 
 @router.post("/{plan_id}/items/{item_id}/keep", response_model=CoordinateDetail)

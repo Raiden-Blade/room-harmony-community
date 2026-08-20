@@ -38,6 +38,8 @@ def test_key_names_cannot_reach_frontend_source_or_noninteractive_runner():
 
     assert "OPENAI_API_KEY" not in frontend
     assert "RHC_OPENAI_API_KEY" not in frontend
+    assert "RHC_OPENAI_BASE_URL" not in frontend
+    assert "RHC_OPENAI_MODEL" not in frontend
     assert "OPENAI_API_KEY: _ignoredOpenAIKey" in runner
     assert "RHC_AI_ENABLED: \"false\"" in runner
 
@@ -47,8 +49,12 @@ def test_launcher_uses_hidden_runtime_input_and_reset_is_secret_agnostic():
     reset = (REPOSITORY_DIR / "scripts" / "dev" / "reset-demo.ps1").read_text(encoding="utf-8")
     parameter_block = launcher.split("$ErrorActionPreference", maxsplit=1)[0]
 
-    assert "Read-Host \"OpenAI API key (hidden; press Enter to disable AI)\" -AsSecureString" in launcher
+    assert "Read-Host \"API key (hidden; press Enter to disable AI)\" -AsSecureString" in launcher
+    assert "https://api.vectorengine.ai/v1" in launcher
+    assert '$selectedAIModel = "gpt-4o-mini"' in launcher
     assert "RHC_OPENAI_API_KEY" in launcher
+    assert "RHC_OPENAI_BASE_URL" in launcher
+    assert "RHC_OPENAI_MODEL" in launcher
     assert "OPENAI_API_KEY" not in parameter_block
     assert "RHC_OPENAI_API_KEY" not in parameter_block
     assert "OPENAI_API_KEY" not in reset

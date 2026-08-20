@@ -225,14 +225,6 @@ Write-Host "===============================================" -ForegroundColor Da
 Write-Host " Room Harmony Community - one-click demo" -ForegroundColor Green
 Write-Host "===============================================" -ForegroundColor DarkGray
 
-$secureAIKey = $null
-if ($DisableAI) {
-    Write-Host "AI PLAN Assist: disabled by -DisableAI" -ForegroundColor Yellow
-} else {
-    Write-Host "AI PLAN Assist is optional. The key is passed only to the backend process and is never saved." -ForegroundColor DarkGray
-    $secureAIKey = Read-Host "OpenAI API key (hidden; press Enter to disable AI)" -AsSecureString
-}
-
 if ($BackendPort -eq $FrontendPort) {
     Fail "BackendPort and FrontendPort must be different."
 }
@@ -265,6 +257,47 @@ if (Test-Path -LiteralPath $statePath) {
         Write-Warning "Ignoring a stale process record."
     }
     Remove-Item -LiteralPath $statePath -Force
+}
+
+$secureAIKey = $null
+$selectedAIBaseUrl = $null
+$selectedAIModel = $null
+$selectedAIProvider = "Disabled"
+if ($DisableAI) {
+    Write-Host "AI PLAN Assist: disabled by -DisableAI" -ForegroundColor Yellow
+} else {
+    Write-Host "AI PLAN Assist is optional. Select a service; Enter keeps AI disabled." -ForegroundColor DarkGray
+    Write-Host "  1. OpenAI official (gpt-5.6)"
+    Write-Host "  2. VectorEngine (gpt-4o-mini)"
+    $providerChoice = (Read-Host "AI service [Enter=disabled]").Trim()
+    switch ($providerChoice) {
+        "" {
+            Write-Host "AI PLAN Assist: disabled" -ForegroundColor Yellow
+        }
+        "1" {
+            $selectedAIProvider = "OpenAI official"
+            $selectedAIModel = "gpt-5.6"
+        }
+        "2" {
+            $selectedAIProvider = "VectorEngine"
+            $selectedAIBaseUrl = "https://api.vectorengine.ai/v1"
+            $selectedAIModel = "gpt-4o-mini"
+        }
+        default {
+            Fail "Unknown AI service choice '$providerChoice'. Enter 1, 2, or press Enter to disable AI."
+        }
+    }
+    if ($selectedAIModel) {
+        Write-Host "AI service: $selectedAIProvider / $selectedAIModel" -ForegroundColor Green
+        Write-Host "The key is hidden, passed only to the backend process, and never saved." -ForegroundColor DarkGray
+        $secureAIKey = Read-Host "API key (hidden; press Enter to disable AI)" -AsSecureString
+        if (-not $secureAIKey -or $secureAIKey.Length -eq 0) {
+            $selectedAIBaseUrl = $null
+            $selectedAIModel = $null
+            $selectedAIProvider = "Disabled"
+            Write-Host "AI PLAN Assist: disabled because no key was entered" -ForegroundColor Yellow
+        }
+    }
 }
 
 Write-Step "Checking Python and Node.js"
@@ -344,15 +377,21 @@ $frontendProcess = $null
 try {
     $previousOpenAIKey = [Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "Process")
     $previousRhcKey = [Environment]::GetEnvironmentVariable("RHC_OPENAI_API_KEY", "Process")
+    $previousRhcBaseUrl = [Environment]::GetEnvironmentVariable("RHC_OPENAI_BASE_URL", "Process")
+    $previousRhcModel = [Environment]::GetEnvironmentVariable("RHC_OPENAI_MODEL", "Process")
     $previousAIEnabled = [Environment]::GetEnvironmentVariable("RHC_AI_ENABLED", "Process")
     Remove-Item Env:OPENAI_API_KEY -ErrorAction SilentlyContinue
     Remove-Item Env:RHC_OPENAI_API_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_BASE_URL -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_MODEL -ErrorAction SilentlyContinue
     $env:RHC_AI_ENABLED = "false"
     $keyPointer = [IntPtr]::Zero
     if (-not $DisableAI -and $secureAIKey -and $secureAIKey.Length -gt 0) {
         try {
             $keyPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureAIKey)
             $env:RHC_OPENAI_API_KEY = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($keyPointer)
+            if ($selectedAIBaseUrl) { $env:RHC_OPENAI_BASE_URL = $selectedAIBaseUrl }
+            $env:RHC_OPENAI_MODEL = $selectedAIModel
             $env:RHC_AI_ENABLED = "true"
         } finally {
             if ($keyPointer -ne [IntPtr]::Zero) {
@@ -367,6 +406,8 @@ try {
         -WorkingDirectory $backendDirectory -WindowStyle Hidden -PassThru `
         -RedirectStandardOutput $backendOut -RedirectStandardError $backendErr
     Remove-Item Env:RHC_OPENAI_API_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_BASE_URL -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_MODEL -ErrorAction SilentlyContinue
     $env:RHC_AI_ENABLED = "false"
     # Windows PowerShell joins ArgumentList values into one command line. Keep
     # the JavaScript entry quoted so an extracted repository path may contain spaces.
@@ -379,9 +420,13 @@ try {
 } finally {
     Remove-Item Env:OPENAI_API_KEY -ErrorAction SilentlyContinue
     Remove-Item Env:RHC_OPENAI_API_KEY -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_BASE_URL -ErrorAction SilentlyContinue
+    Remove-Item Env:RHC_OPENAI_MODEL -ErrorAction SilentlyContinue
     Remove-Item Env:RHC_AI_ENABLED -ErrorAction SilentlyContinue
     if ($null -ne $previousOpenAIKey) { $env:OPENAI_API_KEY = $previousOpenAIKey }
     if ($null -ne $previousRhcKey) { $env:RHC_OPENAI_API_KEY = $previousRhcKey }
+    if ($null -ne $previousRhcBaseUrl) { $env:RHC_OPENAI_BASE_URL = $previousRhcBaseUrl }
+    if ($null -ne $previousRhcModel) { $env:RHC_OPENAI_MODEL = $previousRhcModel }
     if ($null -ne $previousAIEnabled) { $env:RHC_AI_ENABLED = $previousAIEnabled }
 }
 

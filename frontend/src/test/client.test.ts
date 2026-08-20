@@ -69,4 +69,23 @@ describe("API client hardening", () => {
     expect(error?.message).toContain("APIキーを確認");
     expect(error?.message).not.toContain("sentinel-fake-secret-never-use");
   });
+
+  it.each([
+    ["AI_PROVIDER_RATE_LIMITED", "リクエスト上限"],
+    ["AI_QUOTA_EXCEEDED", "API利用枠"],
+    ["AI_MODEL_NOT_AVAILABLE", "モデル名"],
+    ["AI_REQUEST_ERROR", "リクエスト設定"],
+  ])("maps %s to a specific recovery message", async (code, expected) => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      detail: { code, message: "sentinel-private-provider-detail" },
+    }), {
+      status: 503,
+      headers: { "Content-Type": "application/json" },
+    })));
+
+    const error = await api.aiSuggestions("plan-001").then(() => null, (reason: Error) => reason);
+
+    expect(error?.message).toContain(expected);
+    expect(error?.message).not.toContain("sentinel-private-provider-detail");
+  });
 });

@@ -94,6 +94,7 @@ def test_need_coverage_existing_furniture_and_composition_use_structured_facts_o
     axes = {axis.code: axis for axis in fit.axes}
 
     assert axes["NEEDS"].score == 60  # BED + purchase/existing STORAGE fill 3 of 5 required slots
+    assert "収納を増やしたい: 必要役割 3/5" in axes["NEEDS"].evidence
     assert axes["EXISTING_FURNITURE"].score == 75
     assert "明確なカテゴリ重複 1件" in axes["EXISTING_FURNITURE"].evidence
     assert axes["COMPOSITION"].score == 76  # two purchase items, two roles, no duplicate ID

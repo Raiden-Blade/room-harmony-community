@@ -26,6 +26,14 @@ NEED_TEMPLATES = {
     "SLEEP": ["BED", "TEXTILE", "LIGHTING", "STORAGE"],
     "COMPACT": ["BED", "DESK", "STORAGE", "SUPPORT"],
 }
+NEED_LABELS = {
+    "STORAGE": "収納を増やしたい",
+    "LOW_BUDGET": "予算を抑えたい",
+    "WORK_FROM_HOME": "在宅作業",
+    "RELAX": "くつろぎ",
+    "SLEEP": "眠り",
+    "COMPACT": "省スペース",
+}
 AXIS_LABELS = {
     "BUDGET": "予算",
     "NEEDS": "困りごと",
@@ -202,7 +210,7 @@ def _needs(snapshot: PlanSnapshot, profile: PreferenceProfileInput):
         required = Counter(NEED_TEMPLATES[need])
         matched = sum(min(counts[category], count) for category, count in required.items())
         scores.append(round(matched / sum(required.values()) * 100))
-        evidence.append(f"{need}: 必要役割 {matched}/{sum(required.values())}")
+        evidence.append(f"{NEED_LABELS[need]}: 必要役割 {matched}/{sum(required.values())}")
     return round(sum(scores) / len(scores)), evidence, "商品カテゴリと必要数だけで判定しています。"
 
 

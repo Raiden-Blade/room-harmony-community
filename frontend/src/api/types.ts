@@ -162,7 +162,18 @@ export type AIStatus = {
   enabled: boolean;
   configured: boolean;
   available: boolean;
-  reason_code: "READY" | "DISABLED" | "KEY_MISSING" | "AUTH_ERROR" | "PROVIDER_ERROR";
+  verified: boolean;
+  reason_code:
+    | "NOT_CHECKED"
+    | "READY"
+    | "DISABLED"
+    | "KEY_MISSING"
+    | "AUTH_ERROR"
+    | "RATE_LIMITED"
+    | "QUOTA_EXCEEDED"
+    | "MODEL_ERROR"
+    | "REQUEST_ERROR"
+    | "PROVIDER_ERROR";
   model: string;
 };
 
@@ -202,6 +213,52 @@ export type AIApplyResponse = {
   suggestion: AISuggestion;
   before_fit: FitAssessment;
   after_fit: FitAssessment;
+};
+
+export type VisualLayoutItem = {
+  item_id: number;
+  product_id: string;
+  x: number;
+  y: number;
+  scale: number;
+  rotation: number;
+  visible: boolean;
+};
+
+export type VisualObservation = {
+  code: "COLOR_HARMONY" | "VISUAL_BALANCE" | "SPACIOUSNESS" | "STYLE_COHERENCE";
+  label: string;
+  observation: string;
+  evidence: string;
+  suggestion: string;
+  confidence: "LOW" | "MEDIUM" | "HIGH";
+};
+
+export type VisualLayoutChange = {
+  item_id: number;
+  x: number;
+  y: number;
+  scale: number;
+  rotation: number;
+  reason: string;
+};
+
+export type PlanVisualLayout = {
+  plan_id: string;
+  version: number;
+  status: "NOT_SAVED" | "SAVED" | "RESET_DUE_TO_PLAN_CHANGE";
+  updated_at: string | null;
+  layout_items: VisualLayoutItem[];
+};
+
+export type AIVisualReview = {
+  policy_version: string;
+  image_used: true;
+  summary: string;
+  observations: VisualObservation[];
+  next_action: string;
+  layout_changes: VisualLayoutChange[];
+  disclaimer: string;
 };
 
 export type CoordinateChallengeContext = {
@@ -414,6 +471,7 @@ export type OptionsResponse = {
 export type AnalyticsEventName =
   | "session_start"
   | "home_view"
+  | "global_lens_select"
   | "context_select"
   | "discovery_impression"
   | "coordinate_view"

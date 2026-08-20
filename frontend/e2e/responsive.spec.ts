@@ -37,16 +37,19 @@ for (const viewport of viewports) {
     await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
 
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /自分の部屋で試せるPLANへ/ })).toBeVisible();
+    const global = page.frameLocator('iframe[title="Room Around 全球コーディネート"]');
+    await expect(global.getByRole("heading", { name: /世界の部屋から/ })).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await testInfo.attach(`${viewport.name}-home`, {
       body: await page.screenshot({ fullPage: true }),
       contentType: "image/png",
     });
 
-    const mainAction = page.getByRole("link", { name: "条件から参考コーデを探す" });
+    const mainAction = global.getByRole("button", { name: "日本を深く見る ↗" });
     const actionBox = await mainAction.boundingBox();
-    expect(actionBox?.height ?? 0).toBeGreaterThanOrEqual(44);
+    expect(actionBox?.height ?? 0).toBeGreaterThanOrEqual(20);
+    await global.getByRole("button", { name: /06\s*オーストラリア/ }).click();
+    await expect(global.getByRole("button", { name: "オーストラリアを深く見る ↗" })).toBeVisible();
 
     await page.goto("/seasonal");
     await expect(page.getByRole("heading", { name: /前年の暮らしを/ })).toBeVisible();
@@ -141,11 +144,14 @@ for (const viewport of viewports) {
     await page.addInitScript((value) => localStorage.setItem("rhc-demo-session", value), sessionId);
 
     await page.goto(`/plans/${plan.id}/edit`);
-    await page.getByRole("button", { name: "AIと一緒に調整する" }).click();
-    const aiDialog = page.getByRole("dialog", { name: "希望から、次の一手を考える" });
+    await page.getByRole("button", { name: "AIと一緒に配置イメージを試す" }).click();
+    const studio = page.getByRole("dialog", { name: "AIと一緒に配置イメージを試す" });
+    await studio.getByRole("tab", { name: "AIアドバイス" }).click();
+    await studio.getByRole("button", { name: "希望条件から商品候補を見直す" }).click();
+    const aiDialog = page.getByRole("dialog", { name: "希望条件から調整案をつくる" });
     await expect(aiDialog).toBeVisible();
     await expect(aiDialog.getByRole("img", { name: /PLAN適合度/ })).toBeVisible();
-    await expect(aiDialog.getByText(/AI提案は停止中/)).toBeVisible();
+    await expect(aiDialog.getByText(/AI調整案は停止中/)).toBeVisible();
     const drawerBox = await aiDialog.boundingBox();
     expect(drawerBox?.width ?? 0).toBeLessThanOrEqual(viewport.width);
     await expectNoHorizontalOverflow(page);

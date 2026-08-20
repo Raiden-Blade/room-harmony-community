@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["http://127.0.0.1:5173", "http://localhost:5173"]
     ai_enabled: bool = False
     openai_api_key: SecretStr | None = None
+    openai_base_url: str | None = None
     openai_model: str = "gpt-5.6"
     ai_timeout_seconds: float = 30.0
     ai_max_retries: int = 1
