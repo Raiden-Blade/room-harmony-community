@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sqlite3
 from pathlib import Path
 
 import pytest
@@ -28,6 +29,56 @@ class FakeProvider:
         if self.mode == "timeout":
             raise AIProviderError("AI_TIMEOUT", "AIの応答が時間内に完了しませんでした。", 504)
         current = context["current_items"]
+        if self.mode in {"category-match", "category-mismatch"}:
+            target = next(item for item in current if item["category"] == "DESK")
+            expected_category = "DESK" if self.mode == "category-match" else "SUPPORT"
+            candidate = next(item for item in context["allowed_products"] if (
+                item["category"] == expected_category and item["role"] == target["role"]
+            ))
+            return ProviderSuggestionEnvelope(suggestions=[ProviderSuggestion(
+                strategy="BALANCED", action="REPLACE", target_item_id=target["item_id"],
+                product_id=candidate["product_id"], title="作業家具を調整",
+                rationale="構造化された商品候補を比較します。", tradeoff="現在の商品はPLANから外れます。",
+            )])
+        if self.mode == "partial":
+            targets = [item for item in current if item["product_id"]][:2]
+            candidate = max(context["allowed_products"], key=lambda item: item["price_snapshot"] or 0)
+            return ProviderSuggestionEnvelope(suggestions=[
+                ProviderSuggestion(
+                    strategy="PREFERENCE_SAFE", action="KEEP", target_item_id=targets[0]["item_id"],
+                    product_id=None, title="主商品を維持", rationale="現在の商品を維持します。",
+                    tradeoff="商品構成は変わりません。",
+                ),
+                ProviderSuggestion(
+                    strategy="BALANCED", action="ADD", target_item_id=None,
+                    product_id=candidate["product_id"], title="予算を超える追加",
+                    rationale="候補商品を追加します。", tradeoff="予算条件に適合しません。",
+                ),
+                ProviderSuggestion(
+                    strategy="DISCOVERY", action="KEEP", target_item_id=targets[1]["item_id"],
+                    product_id=None, title="収納商品を維持", rationale="現在の商品を維持します。",
+                    tradeoff="商品構成は変わりません。",
+                ),
+            ])
+        if self.mode == "all-invalid":
+            target = next(item for item in current if item["product_id"])
+            return ProviderSuggestionEnvelope(suggestions=[
+                ProviderSuggestion(
+                    strategy="PREFERENCE_SAFE", action="ADD", target_item_id=None,
+                    product_id="NTR-NOT-ALLOWED-A", title="候補外追加",
+                    rationale="候補外の商品です。", tradeoff="サーバーで拒否されます。",
+                ),
+                ProviderSuggestion(
+                    strategy="BALANCED", action="REPLACE", target_item_id=target["item_id"],
+                    product_id="NTR-NOT-ALLOWED-B", title="候補外置換",
+                    rationale="候補外の商品です。", tradeoff="サーバーで拒否されます。",
+                ),
+                ProviderSuggestion(
+                    strategy="DISCOVERY", action="REMOVE", target_item_id=None,
+                    product_id=None, title="対象なし削除",
+                    rationale="対象商品がありません。", tradeoff="サーバーで拒否されます。",
+                ),
+            ])
         if self.mode == "unknown":
             return ProviderSuggestionEnvelope(suggestions=[ProviderSuggestion(
                 strategy="BALANCED", action="ADD", target_item_id=None, product_id="NTR-NOT-ALLOWED",
@@ -63,10 +114,18 @@ def _client(tmp_path: Path, provider=None, **overrides):
     return TestClient(create_app(settings, ai_provider=provider))
 
 
-def _plan(client: TestClient) -> dict:
-    response = client.post("/api/plans/from-coordinate/coord-001", json={"budget_max": 50_000})
+def _plan(client: TestClient, coordinate_id: str = "coord-001", budget_max: int = 50_000) -> dict:
+    response = client.post(f"/api/plans/from-coordinate/{coordinate_id}", json={"budget_max": budget_max})
     assert response.status_code == 201
     return response.json()
+
+
+def _neutral_profile(budget_max: int = 100_000) -> dict:
+    return {
+        "room_size": "SMALL_6", "housing_type": "RENTAL", "budget_max": budget_max,
+        "needs": [], "preferred_style": None, "priority_focus": "BALANCED",
+        "preserve_existing_furniture": False,
+    }
 
 
 def test_phase_one_remains_available_without_a_key_and_fit_is_deterministic(client):
@@ -209,6 +268,79 @@ def test_replace_role_mismatch_is_rejected_by_server_policy(tmp_path):
         response = client.post(f"/api/plans/{plan['id']}/ai/suggestions", json={"profile": None})
         assert response.status_code == 502
         assert response.json()["detail"]["code"] == "AI_INVALID_RESPONSE"
+
+
+def test_replace_rejects_desk_to_support_even_when_role_matches(tmp_path):
+    with _client(tmp_path, FakeProvider("category-mismatch")) as client:
+        client.headers["X-Session-ID"] = "category-mismatch-session"
+        plan = _plan(client, "coord-015", 100_000)
+        response = client.post(
+            f"/api/plans/{plan['id']}/ai/suggestions", json={"profile": _neutral_profile()}
+        )
+
+        assert response.status_code == 502
+        assert response.json()["detail"]["code"] == "AI_INVALID_RESPONSE"
+
+
+def test_replace_allows_desk_to_another_desk(tmp_path):
+    with _client(tmp_path, FakeProvider("category-match")) as client:
+        client.headers["X-Session-ID"] = "category-match-session"
+        plan = _plan(client, "coord-015", 100_000)
+        response = client.post(
+            f"/api/plans/{plan['id']}/ai/suggestions", json={"profile": _neutral_profile()}
+        )
+
+        assert response.status_code == 200
+        suggestion = response.json()["suggestions"][0]
+        assert suggestion["action"] == "REPLACE"
+        assert suggestion["target"]["product_id"] == "NTR-6201526"
+        assert suggestion["proposed_product"]["product_id"] in {"NTR-5637001", "NTR-2110700072028"}
+
+
+def test_partial_provider_response_keeps_valid_suggestions_only(tmp_path):
+    database = tmp_path / "ai-test.db"
+    with _client(tmp_path, FakeProvider("partial")) as client:
+        client.headers["X-Session-ID"] = "partial-response-session"
+        plan = _plan(client)
+        before = client.get(f"/api/plans/{plan['id']}").json()
+        profile = {
+            "room_size": "SMALL_6", "housing_type": "RENTAL", "budget_max": 27_000,
+            "needs": ["STORAGE"], "preferred_style": "NATURAL", "priority_focus": "BUDGET",
+            "preserve_existing_furniture": True,
+        }
+        response = client.post(f"/api/plans/{plan['id']}/ai/suggestions", json={"profile": profile})
+        after = client.get(f"/api/plans/{plan['id']}").json()
+
+        assert response.status_code == 200
+        assert [item["strategy"] for item in response.json()["suggestions"]] == ["PREFERENCE_SAFE", "DISCOVERY"]
+        assert [item["action"] for item in response.json()["suggestions"]] == ["KEEP", "KEEP"]
+        assert after["items"] == before["items"]
+
+    with sqlite3.connect(database) as connection:
+        rows = connection.execute("SELECT suggestion_json FROM ai_suggestion_previews").fetchall()
+    assert len(rows) == 2
+    assert all("予算を超える追加" not in row[0] for row in rows)
+
+
+def test_all_invalid_provider_suggestions_return_controlled_error_without_preview(tmp_path):
+    database = tmp_path / "ai-test.db"
+    with _client(tmp_path, FakeProvider("all-invalid")) as client:
+        client.headers["X-Session-ID"] = "all-invalid-response-session"
+        plan = _plan(client)
+        before = client.get(f"/api/plans/{plan['id']}").json()
+        response = client.post(f"/api/plans/{plan['id']}/ai/suggestions", json={"profile": None})
+        after = client.get(f"/api/plans/{plan['id']}").json()
+
+        assert response.status_code == 502
+        assert response.json()["detail"] == {
+            "code": "AI_INVALID_RESPONSE", "message": "AIの提案を安全に検証できませんでした。",
+        }
+        assert "NTR-NOT-ALLOWED" not in response.text
+        assert after["items"] == before["items"]
+
+    with sqlite3.connect(database) as connection:
+        count = connection.execute("SELECT COUNT(*) FROM ai_suggestion_previews").fetchone()[0]
+    assert count == 0
 
 
 def test_server_rejects_suggestion_that_worsens_hard_budget_constraint(tmp_path):

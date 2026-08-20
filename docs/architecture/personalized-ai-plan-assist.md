@@ -18,9 +18,11 @@ The model may select one of `KEEP / REPLACE / ADD / REMOVE` and one allowed targ
 
 ## Context and policy
 
-`prototype-recommendation-policy-1.0` is the versioned policy. The backend sends a compact JSON context containing the structured preference profile, current PLAN item facts, deterministic fit result, and a server-controlled candidate pool. User-authored existing-furniture labels and dimensions are removed before provider context construction. Remaining catalog text is still declared untrusted data. The provider is stateless: no tools, web, files, conversation history, background job, or `previous_response_id` is used.
+`prototype-recommendation-policy-1.1` is the versioned policy. The backend sends a compact JSON context containing the structured preference profile, current PLAN item facts, deterministic fit result, and a server-controlled candidate pool. User-authored existing-furniture labels and dimensions are removed before provider context construction. Remaining catalog text is still declared untrusted data. The provider is stateless: no tools, web, files, conversation history, background job, or `previous_response_id` is used.
 
 The provider uses the official OpenAI Python SDK, Responses API, and Pydantic Structured Outputs. The configured default model is `gpt-5.6`. Calls set `store=False`, a 30-second timeout, one retry at most, and a small output limit. `store=False` means this app does not request persistent Response storage; it is not a claim of Zero Data Retention, and provider-side handling still follows the API account's data-control settings and policy. Authentication failures are never retried by application code and are mapped to controlled error codes.
+
+Each returned suggestion is validated and simulated independently. Invalid alternatives are discarded without exposing their Product IDs or provider prose; the request fails with `AI_INVALID_RESPONSE` only when no safe suggestion remains. `REPLACE` requires a different allowed NTR Product with both the same Product category and compatible role, and the category rule is checked again at apply time.
 
 ## Preference profile
 
@@ -49,7 +51,7 @@ Every assessment returns 0–100 overall plus five explainable axes. Unavailable
 
 - Budget: at/below budget = 100; over budget = `max(0, round(100 - 200 × over_ratio))`. Missing budget or unknown price makes the axis unavailable.
 - Needs: counts category requirements in the six existing prototype templates.
-- Existing furniture: checks only structured role duplication when preservation is requested; it makes no visual compatibility claim.
+- Existing furniture: checks only reliably normalized category duplication when preservation is requested. Broad `SUPPORT_FURNITURE` does not imply that a desk, chair, side table, or floor chair duplicates another; it makes no visual compatibility claim.
 - Style: uses only official Product `style_hint` verified for `NATURAL / CLEAR_COOL / DANDY`. `ELEGANT / COZY / COLORFUL`, demo products, and unverified-neutral mappings never count as evidence.
 - Composition: conservative product-count, role-diversity, and duplicate-ID checks only.
 

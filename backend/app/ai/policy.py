@@ -1,9 +1,9 @@
-POLICY_VERSION = "prototype-recommendation-policy-1.0"
+POLICY_VERSION = "prototype-recommendation-policy-1.1"
 
 POLICY_PRINCIPLES = (
     "ユーザーが明示した予算・困りごと・手持ち家具・好み・優先軸を最優先する。",
     "モデルは候補を選ぶだけで、価格・適合度・商品事実を生成しない。",
-    "ADDとREPLACEはサーバーが提示したNTR商品IDだけを使う。",
+    "ADDとREPLACEはサーバーが提示したNTR商品IDだけを使い、REPLACEは現在の商品と同じカテゴリだけを選ぶ。",
     "KEEPとREMOVEは現在のPLAN内の商品だけを対象にする。",
     "手持ち家具はAIから削除しない。",
     "確証のない色・素材・寸法・在庫・配送・物理的適合・視覚的相性を断定しない。",

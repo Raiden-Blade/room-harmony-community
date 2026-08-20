@@ -33,6 +33,12 @@ AXIS_LABELS = {
     "STYLE": "テイスト",
     "COMPOSITION": "構成",
 }
+EXISTING_FURNITURE_CATEGORY_BY_ROLE = {
+    "MAIN_FURNITURE": "BED",
+    "STORAGE": "STORAGE",
+    "LIGHTING": "LIGHTING",
+    "TEXTILE": "TEXTILE",
+}
 
 
 @dataclass(frozen=True)
@@ -204,10 +210,14 @@ def _existing(snapshot: PlanSnapshot, profile: PreferenceProfileInput):
     existing = [item for item in snapshot.items if item.source == "EXISTING_EXTERNAL"]
     if not existing or not profile.preserve_existing_furniture:
         return None, [], "残したい手持ち家具がないため評価対象外です。"
-    purchase_counts = Counter(item.role for item in snapshot.items if item.source == "CATALOG_TO_BUY")
-    conflicts = sum(1 for item in existing if purchase_counts[item.role] > 0)
+    purchase_counts = Counter(item.category for item in snapshot.items if item.source == "CATALOG_TO_BUY")
+    existing_categories = [EXISTING_FURNITURE_CATEGORY_BY_ROLE.get(item.role) for item in existing]
+    conflicts = sum(1 for category in existing_categories if category and purchase_counts[category] > 0)
     score = max(0, 100 - conflicts * 25)
-    return score, [f"手持ち家具 {len(existing)}点", f"役割重複 {conflicts}件"], "役割の重複だけを確認し、見た目の相性は断定しません。"
+    reason = "確実に対応できる構造化カテゴリだけを比較し、見た目の相性は断定しません。"
+    if any(item.role == "SUPPORT_FURNITURE" for item in existing):
+        reason += " SUPPORT_FURNITUREは机・椅子等を区別できないため重複扱いしません。"
+    return score, [f"手持ち家具 {len(existing)}点", f"明確なカテゴリ重複 {conflicts}件"], reason
 
 
 def _style(snapshot: PlanSnapshot, profile: PreferenceProfileInput):

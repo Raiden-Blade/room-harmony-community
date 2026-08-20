@@ -1,6 +1,8 @@
-from app.ai.schemas import PreferenceProfileInput
 from dataclasses import replace
 
+import pytest
+
+from app.ai.schemas import PreferenceProfileInput
 from app.ai.scoring import ItemFact, PlanSnapshot, assess
 
 
@@ -93,8 +95,44 @@ def test_need_coverage_existing_furniture_and_composition_use_structured_facts_o
 
     assert axes["NEEDS"].score == 60  # BED + purchase/existing STORAGE fill 3 of 5 required slots
     assert axes["EXISTING_FURNITURE"].score == 75
-    assert "役割重複 1件" in axes["EXISTING_FURNITURE"].evidence
+    assert "明確なカテゴリ重複 1件" in axes["EXISTING_FURNITURE"].evidence
     assert axes["COMPOSITION"].score == 76  # two purchase items, two roles, no duplicate ID
+
+
+@pytest.mark.parametrize("purchase_category", ["DESK", "SUPPORT"])
+def test_broad_existing_support_role_does_not_invent_a_category_conflict(purchase_category):
+    purchase = _item("NTR-SUPPORT-ROLE", purchase_category, "SUPPORT_FURNITURE", 8_000)
+    existing = ItemFact(
+        item_id=2,
+        product_id=None,
+        name="手持ち家具",
+        role="SUPPORT_FURNITURE",
+        category="SUPPORT",
+        source="EXISTING_EXTERNAL",
+        mutation_state="ORIGINAL",
+        quantity=1,
+        price=None,
+        provenance=None,
+        style_hint=None,
+    )
+    profile = PreferenceProfileInput(
+        room_size="SMALL_6",
+        housing_type="RENTAL",
+        budget_max=50_000,
+        needs=[],
+        preferred_style=None,
+        priority_focus="EXISTING_FURNITURE",
+        preserve_existing_furniture=True,
+    )
+
+    axis = next(
+        item for item in assess(PlanSnapshot("ambiguous-support", (purchase, existing)), profile).axes
+        if item.code == "EXISTING_FURNITURE"
+    )
+
+    assert axis.score == 100
+    assert "明確なカテゴリ重複 0件" in axis.evidence
+    assert "区別できないため重複扱いしません" in axis.reason
 
 
 def test_composition_penalizes_duplicate_purchase_ids():

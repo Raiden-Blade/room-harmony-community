@@ -142,11 +142,16 @@ def generate_suggestions(
     for raw in envelope.suggestions:
         if raw.strategy in seen_strategies:
             continue
-        validated = _validate_provider_suggestion(raw, snapshot, candidates)
-        proposed = candidates.get(validated.product_id) if validated.product_id else None
-        after_snapshot = simulate(snapshot, validated.action, validated.target_item_id, proposed)
-        after_fit = assess(after_snapshot, profile_input)
-        _validate_effects(snapshot, after_snapshot, profile_input, current_fit, after_fit)
+        try:
+            validated = _validate_provider_suggestion(raw, snapshot, candidates)
+            proposed = candidates.get(validated.product_id) if validated.product_id else None
+            after_snapshot = simulate(snapshot, validated.action, validated.target_item_id, proposed)
+            after_fit = assess(after_snapshot, profile_input)
+            _validate_effects(snapshot, after_snapshot, profile_input, current_fit, after_fit)
+        except AIProviderError:
+            # Provider suggestions are independent alternatives. Reject only
+            # the unsafe alternative; never expose its IDs or provider prose.
+            continue
         before_price, _ = known_total(snapshot)
         after_price, _ = known_total(after_snapshot)
         target_fact = next((item for item in snapshot.items if item.item_id == validated.target_item_id), None)
@@ -210,7 +215,8 @@ def apply_suggestion(session: Session, session_id: str, plan: Coordinate, sugges
     elif suggestion.action == "REMOVE" and target_id is not None:
         updated = remove_product(session, plan, target_id)
     elif suggestion.action == "REPLACE" and target_id is not None and product_id:
-        _require_ai_product(session, product_id)
+        product = _require_ai_product(session, product_id)
+        _require_ai_replacement(plan, target_id, product)
         updated = replace_item(session, plan, target_id, product_id)
     elif suggestion.action == "ADD" and product_id and suggestion.proposed_product:
         product = _require_ai_product(session, product_id)
@@ -296,7 +302,15 @@ def _validate_provider_suggestion(raw: ProviderSuggestion, snapshot, candidates:
     elif raw.action == "REMOVE":
         valid = target is not None and target.source != "EXISTING_EXTERNAL" and raw.product_id is None and purchase_count > 1
     elif raw.action == "REPLACE":
-        valid = target is not None and target.source != "EXISTING_EXTERNAL" and product is not None and product.default_role == target.role
+        valid = (
+            target is not None
+            and target.source != "EXISTING_EXTERNAL"
+            and target.product_id is not None
+            and product is not None
+            and product.id != target.product_id
+            and product.category == target.category
+            and product.default_role == target.role
+        )
     else:
         valid = raw.target_item_id is None and product is not None
     if not valid:
@@ -309,6 +323,19 @@ def _require_ai_product(session: Session, product_id: str) -> Product:
     if not product or not product.id.startswith("NTR-") or product.provenance != "NITORI_OFFICIAL_SNAPSHOT":
         raise AIProviderError("AI_PRODUCT_NOT_ALLOWED", "AI提案の商品候補を確認できませんでした。", 422)
     return product
+
+
+def _require_ai_replacement(plan: Coordinate, target_item_id: int, product: Product) -> None:
+    target = next((item for item in plan.items if item.id == target_item_id), None)
+    if (
+        target is None
+        or target.source == "EXISTING_EXTERNAL"
+        or target.product is None
+        or product.id == target.product_id
+        or product.category != target.product.category
+        or product.default_role != target.role
+    ):
+        raise AIProviderError("AI_INVALID_SUGGESTION", "AI提案の商品カテゴリを確認できませんでした。", 422)
 
 
 def _item_ref(item) -> AIProductRef:
